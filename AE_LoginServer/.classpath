@@ -3,8 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/jsr166.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/commons-dbcp-1.2.2.jar"/>
-	<classpathentry kind="lib" path="C:/l2mworkspace/L2m_GSV02/lib/mysql-connector-java-5.1.6-bin.jar"/>
-	<classpathentry kind="lib" path="lib/commons-pool-1.4.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/AE_Commons"/>
+	<classpathentry kind="lib" path="lib/ae_commons.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

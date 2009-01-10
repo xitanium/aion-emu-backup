@@ -44,25 +44,10 @@ public class Config
 	public static int				NIO_READ_THREADS;
 	/** Number of Threads that will handle io write (>= 0) */
 	public static int				NIO_WRITE_THREADS;
-
-	// Database settings
-	/** DB Host */
-	public static String			DATABASE_HOST;
-	/** DB Port */
-	public static int				DATABASE_PORT;
-	/** DB URL */
-	public static String			DATABASE_DRIVER;
-	/** DB Login Alias */
-	public static String			DATABASE_LOGIN_USER;
-	/** DB Login Pass */
-	public static String			DATABASE_LOGIN_PASS;
-	/** DB Alias */
-	public static String			DATABASE_NAME;
-	/** DB Max Connections */
-	public static int				DATABASE_MAX_CON;
-
+	
 	
 	public static boolean			ACCOUNT_AUTO_CREATION = true;
+	
 	public static void load()
 	{
 		log.info("Loading loginserver.properties");
@@ -86,29 +71,6 @@ public class Config
 		{
 			log.log(Level.SEVERE, "Error while loading loginserver.properties " + e, e);
 			throw new Error("loginserver.cfg not loaded!");
-		}
-
-		try
-		{
-			Properties settings = new Properties();
-			log.info("Loading database.properties");
-			InputStream is = new FileInputStream(new File("./config/database.properties"));
-			settings.load(is);
-
-			DATABASE_HOST = settings.getProperty("DatabaseHost", "127.0.0.1");
-			DATABASE_PORT = Integer.parseInt(settings.getProperty("DatabasePort", "3306"));
-			DATABASE_DRIVER = settings.getProperty("DatabaseDriver", "com.mysql.jdbc.Driver");
-			DATABASE_NAME = settings.getProperty("DatabaseName", "db_name");
-			DATABASE_LOGIN_USER = settings.getProperty("DatabaseUser", "root");
-			DATABASE_LOGIN_PASS = settings.getProperty("DatabasePass", "pass");
-			DATABASE_MAX_CON = Integer.parseInt(settings.getProperty("DatabaseMaxConnections", "10"));
-
-			settings.clear();
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "Error while loading database.properties " + e, e);
-			throw new Error("database.properties not loaded!");
 		}
 	}
 }

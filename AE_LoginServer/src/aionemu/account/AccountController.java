@@ -48,7 +48,7 @@ public class AccountController
 		if(!ad.checkIP(address))
 			return AuthResponse.BAN_IP;
 		
-		DB.insertUpdate("UPDATE account_data SET time_last_active=?,last_ip=? WHERE name=?",  new IUStH(){
+		DB.insertUpdate("UPDATE account_data SET last_active=?,last_ip=? WHERE name=?",  new IUStH(){
 			public void handleInsertUpdate(PreparedStatement st) throws SQLException 
 			{
 				st.setLong(1, System.currentTimeMillis());
