@@ -23,17 +23,47 @@ package aionemu.account;
  */
 public enum AuthResponse
 {
-	//TODO correct ids, when we know their vaules
+	//TODO correct ids, when we know their values
 	
-	AUTHED				(0), // that one is not being sent to client, it's only for internal use 
-	INVALID_PASSWORD	(1), 
-	ACCOUNT_IN_USE_LS	(1), 
-	ACCOUNT_IN_USE_GS	(1), 
-	BAN					(1), 
-	RESTRICTED_IP		(1), 
-	PENALTY_ACTIVE		(1), 
-	TIME_EXPIRED		(1);
+	AUTHED					(0), // that one is not being sent to client, it's only for internal use 
+							 // Everything is OK
+	SYSTEM_ERROR			(1), // System error.
+	INVALID_PASSWORD		(2), // Invalid account name or password.
+	INVALID_PASSWORD2		(3), // Invalid account name or password.
+	FAILED_ACCOUNT_INFO		(4), // Failed to load your account info. 
+	FAILED_SOCIAL_NUMBER	(5), // Failed to load your social security number.
+	NO_GS_REGISTERED		(6), // No game server is registered to the authorizaton server.
+	ALREADY_LOGGED_IN		(7), // You are already logged in.
 	
+	
+	SERVER_DOWN				(8), // The selected server is down and not accessible.
+	ERROR_9					(9), // The login information does not match the information you provided.
+	NO_SUCH_ACCOUNT			(10), // No Login info available.
+	KICK_GM_TOOLS			(11), // You are kicked out by the GM or other administration tools.
+	ERROR_12				(12), // You are under the age limit.
+	ALREADY_LOGGED_IN2		(13), // Attempted to log in when you are already logged in.
+	ALREADY_LOGGED_IN3		(14), // You are already playing the game.
+	SERVER_DOWN2			(15), // The server is not available now.
+	CONNECT_ONLY_GM			(16), // Currently onle GMs are allowed to connect to the server.
+	ERROR_17				(17), // Please try to enter the game after changing your password
+	TIME_EXPIRED			(18), // You have used all your playing time allowed.
+	TIME_EXPIRED2			(19), // The is no time left of this account.
+	SYSTEM_ERROR2			(20), // System error.
+	ALREADY_USED_IP			(21), // The IP is already in use.
+	BAN_IP					(22), // You cannot access the game through this IP.
+	ERROR_23				(23), // Deleted the character.
+	MESSAGE_24				(24), // Created the character.
+	MESSAGE_25				(25), // Invalid character name.
+	MESSAGE_26				(26), // Invalid character info.
+	// ... some shit
+	USED_ALL_SERVER_RELAX_TIME	(30), // Used up all relax server time.
+	// .. some shit
+	RESTRICTED_SERVER		(33), // Restricted server.
+	TIME_EXPIRED3			(34), // Usage time has expired.
+	NO_TWOBOX_ONE_PC		(35), // Multiple client loading from one computer is not allowed in an Internet Cafe.
+	DORMANT_ACCOUNT			(36), // Dormant account.
+	UNKNOWN					(37); // Unknown error
+
 	private int messageId;
 	
 	private AuthResponse(int msgId)

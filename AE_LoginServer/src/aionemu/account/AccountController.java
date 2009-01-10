@@ -29,24 +29,24 @@ public class AccountController
 	public static final AuthResponse tryAuth(final String login, String pass, final String address)
 	{
 		if(BanIpList.isRestricted(address)) 
-			return AuthResponse.RESTRICTED_IP;
+			return AuthResponse.BAN_IP;
 		
 		AccountData ad = new AccountData(login, pass, address);
 		
 		if(!ad.exist())
-			return AuthResponse.INVALID_PASSWORD;
+			return AuthResponse.NO_SUCH_ACCOUNT;
 		
 		if(!ad.validatePassword(pass))
 			return AuthResponse.INVALID_PASSWORD;
 		
 		if(ad.penaltyActive()) 
-			return AuthResponse.PENALTY_ACTIVE;
+			return AuthResponse.KICK_GM_TOOLS;
 
 		if(ad.timeExpired())
-			return AuthResponse.TIME_EXPIRED;
+			return AuthResponse.TIME_EXPIRED3;
 		
 		if(!ad.checkIP(address))
-			return AuthResponse.RESTRICTED_IP;
+			return AuthResponse.BAN_IP;
 		
 		DB.insertUpdate("UPDATE account_data SET time_last_active=?,last_ip=? WHERE name=?",  new IUStH(){
 			public void handleInsertUpdate(PreparedStatement st) throws SQLException 
