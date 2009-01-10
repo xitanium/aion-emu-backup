@@ -14,27 +14,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package aionemu.database;
+package aionemu_commons.network;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.nio.channels.SelectionKey;
 
 /**
- * Insert/Update Statement handler.<br>
- * For usage details check documentation of DB class.
- * 
- * @author Disturbing
+ * @author -Nemesiss-
  */
-public interface IUStH
+public interface IAcceptor
 {
+	public void accept(SelectionKey key) throws IOException;
 
-	/**
-	 * Enables coder to manually modify statement or batch. Must execute batch
-	 * or statement manually. Automatically recycles connection.
-	 * 
-	 * @param stmt
-	 * @throws SQLException
-	 */
-	void handleInsertUpdate(PreparedStatement stmt) throws SQLException;
-
+	public String getName();
 }

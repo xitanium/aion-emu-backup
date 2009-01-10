@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package aionemu.database;
+package aionemu_commons.database;
 
 // Common SQL
 import java.io.File;
@@ -68,7 +68,7 @@ public final class DatabaseFactory
 	public static String			DATABASE_NAME;
 	/** DB Max Connections */
 	public static int				DATABASE_MAX_CON;
-	
+
 	// Required Objects
 	/** Logger */
 	protected static final Logger	log			= Logger.getLogger(DatabaseFactory.class.getName());
@@ -107,7 +107,7 @@ public final class DatabaseFactory
 			log.log(Level.SEVERE, "Error while loading database.properties " + e, e);
 			throw new Error("database.properties not loaded!");
 		}
-		
+
 		// Check if Driver exists
 		try
 		{

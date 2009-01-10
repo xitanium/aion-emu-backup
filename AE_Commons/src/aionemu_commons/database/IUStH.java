@@ -14,24 +14,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package aionemu.database;
+package aionemu_commons.database;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * Read statement handler.<br>
- * Allows to set query params before execution.<br>
+ * Insert/Update Statement handler.<br>
  * For usage details check documentation of DB class.
  * 
  * @author Disturbing
  */
-public interface ParamReadStH extends ReadStH
+public interface IUStH
 {
+
 	/**
-	 * Enables coder to manually modify statement parameters.
+	 * Enables coder to manually modify statement or batch. Must execute batch
+	 * or statement manually. Automatically recycles connection.
 	 * 
 	 * @param stmt
+	 * @throws SQLException
 	 */
-	public void setParams(PreparedStatement stmt) throws SQLException;
+	void handleInsertUpdate(PreparedStatement stmt) throws SQLException;
+
 }
