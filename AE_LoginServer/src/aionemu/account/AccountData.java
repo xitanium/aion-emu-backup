@@ -44,7 +44,7 @@ public class AccountData implements ParamReadStH, IUStH
 	private final String	lastIp;
 
 	private String			password;
-	private String			ipPattern	= "*";
+	private String			ipForce	= "*";
 	private long			expirationTime	= -1;
 	private long			timePenalty	= -1;
 	private int				access		= 0;
@@ -77,7 +77,7 @@ public class AccountData implements ParamReadStH, IUStH
 			this.timePenalty = rset.getLong("penalty_end");
 			this.access = rset.getInt("access");
 			this.lastServer = rset.getInt("last_server");
-			this.ipPattern = rset.getString("ip_pattern");
+			this.ipForce = rset.getString("ip_force");
 			this.exist = true;
 		}
 		else if (Config.ACCOUNT_AUTO_CREATION)
@@ -100,7 +100,7 @@ public class AccountData implements ParamReadStH, IUStH
 		stmt.setInt(6, access);
 		stmt.setInt(7, lastServer);
 		stmt.setString(8, lastIp);
-		stmt.setString(9, ipPattern);
+		stmt.setString(9, ipForce);
 		
 		stmt.executeUpdate();
 	}
@@ -117,7 +117,7 @@ public class AccountData implements ParamReadStH, IUStH
 
 	public final boolean checkIP(String address)
 	{
-		return NetworkUtils.checkIPMatching(ipPattern, address);
+		return NetworkUtils.checkIPMatching(ipForce, address);
 	}
 
 	/** Ban for time, example: for 20 hours */
