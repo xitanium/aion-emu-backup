@@ -18,8 +18,9 @@ package aionemu.account;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import aionemu.database.DB;
-import aionemu.database.IUStH;
+
+import aionemu_commons.database.DB;
+import aionemu_commons.database.IUStH;
 
 /**
  * @author -Nemesiss-, KID
@@ -28,28 +29,29 @@ public class AccountController
 {
 	public static final AuthResponse tryAuth(final String login, String pass, final String address)
 	{
-		if(BanIpList.isRestricted(address)) 
+		if (BanIpList.isRestricted(address))
 			return AuthResponse.BAN_IP;
-		
+
 		AccountData ad = new AccountData(login, pass, address);
-		
-		if(!ad.exist())
+
+		if (!ad.exist())
 			return AuthResponse.NO_SUCH_ACCOUNT;
-		
-		if(!ad.validatePassword(pass))
+
+		if (!ad.validatePassword(pass))
 			return AuthResponse.INVALID_PASSWORD;
-		
-		if(ad.penaltyActive()) 
+
+		if (ad.penaltyActive())
 			return AuthResponse.KICK_GM_TOOLS;
 
-		if(ad.timeExpired())
+		if (ad.timeExpired())
 			return AuthResponse.TIME_EXPIRED3;
-		
-		if(!ad.checkIP(address))
+
+		if (!ad.checkIP(address))
 			return AuthResponse.BAN_IP;
-		
-		DB.insertUpdate("UPDATE account_data SET last_active=?,last_ip=? WHERE name=?",  new IUStH(){
-			public void handleInsertUpdate(PreparedStatement st) throws SQLException 
+
+		DB.insertUpdate("UPDATE account_data SET last_active=?,last_ip=? WHERE name=?", new IUStH()
+		{
+			public void handleInsertUpdate(PreparedStatement st) throws SQLException
 			{
 				st.setLong(1, System.currentTimeMillis());
 				st.setString(2, address);
@@ -57,7 +59,7 @@ public class AccountController
 				st.executeUpdate();
 			}
 		});
-		
+
 		return AuthResponse.AUTHED;
 	}
 }

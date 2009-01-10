@@ -22,10 +22,10 @@ import java.util.logging.Logger;
 
 import aionemu.account.BanIpList;
 import aionemu.configs.Config;
-import aionemu.database.DatabaseFactory;
-import aionemu.network.nio.NioServer;
+import aionemu.network.IOServer;
 import aionemu.utils.DeadLockDetector;
 import aionemu.utils.ThreadPoolManager;
+import aionemu_commons.database.DatabaseFactory;
 
 /**
  * @author -Nemesiss-
@@ -64,7 +64,7 @@ public class LoginServer
 		// TODO! flood protector
 		// TODO! brute force protector
 
-		NioServer.getInstance();
+		IOServer.getInstance();
 		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
 
 		long freeMem = (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() + Runtime.getRuntime()

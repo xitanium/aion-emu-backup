@@ -19,8 +19,8 @@ package aionemu.network.aion;
 import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
-import aionemu.network.BasePacket;
-import aionemu.network.IServerPacket;
+import aionemu_commons.network.BasePacket;
+import aionemu_commons.network.IServerPacket;
 
 /**
  * @author -Nemesiss-

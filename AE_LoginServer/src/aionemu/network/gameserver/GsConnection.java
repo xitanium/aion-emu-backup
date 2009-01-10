@@ -22,8 +22,8 @@ import java.nio.channels.SocketChannel;
 import java.util.logging.Logger;
 
 import aionemu.GameServerTable;
-import aionemu.network.AConnection;
 import aionemu.utils.ThreadPoolManager;
+import aionemu_commons.network.AConnection;
 
 /**
  * @author -Nemesiss-

@@ -18,14 +18,14 @@ package aionemu.network.aion;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
-import aionemu.network.IAcceptor;
+import aionemu.network.IOServer;
 import aionemu.network.aion.serverpackets.Init;
-import aionemu.network.nio.Dispatcher;
-import aionemu.network.nio.NioServer;
+import aionemu_commons.network.IAcceptor;
+import aionemu_commons.network.nio.Dispatcher;
+import aionemu_commons.network.nio.NioServer;
 
 /**
  * @author -Nemesiss-
@@ -45,15 +45,20 @@ public class AionAcceptor implements IAcceptor
 		// we'd like to be notified when there's data waiting to be read
 		AionConnection con = new AionConnection(socketChannel);
 
-		Dispatcher readDispatcher = NioServer.getInstance().getReadDispatcher();
+		Dispatcher readDispatcher = IOServer.getInstance().getReadDispatcher();
 		SelectionKey readKey = readDispatcher.register(socketChannel, SelectionKey.OP_READ, con);
 
-		Dispatcher writeDispatcher = NioServer.getInstance().getWriteDispatcher();
+		Dispatcher writeDispatcher = IOServer.getInstance().getWriteDispatcher();
 		if (writeDispatcher != readDispatcher)
 			con.setWriteKey(writeDispatcher.register(socketChannel, 0, con));
 		else
 			con.setWriteKey(readKey);
 
 		con.sendPacket(new Init(con));
+	}
+
+	@Override public String getName()
+	{
+		return "Aion Connections";
 	}
 }

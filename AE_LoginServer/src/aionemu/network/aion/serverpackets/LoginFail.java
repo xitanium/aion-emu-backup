@@ -24,7 +24,7 @@ import aionemu.network.aion.AionServerPacket;
  */
 public class LoginFail extends AionServerPacket
 {
-	private AuthResponse response;
+	private AuthResponse	response;
 
 	public LoginFail(AuthResponse response)
 	{

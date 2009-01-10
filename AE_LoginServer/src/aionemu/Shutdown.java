@@ -25,9 +25,10 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 import aionemu.account.BanIpList;
-import aionemu.database.DatabaseFactory;
-import aionemu.network.nio.NioServer;
+import aionemu.network.IOServer;
 import aionemu.utils.ThreadPoolManager;
+import aionemu_commons.database.DatabaseFactory;
+import aionemu_commons.network.nio.NioServer;
 
 /**
  * @author -Nemesiss-
@@ -76,7 +77,7 @@ public class Shutdown extends Thread
 	{
 		SimpleDateFormat dateFmt = new SimpleDateFormat("dd MMM H:mm:ss");
 		log("[" + dateFmt.format(new Date(System.currentTimeMillis())) + "]");
-		
+
 		/* saaving ban ip list */
 		try
 		{
@@ -87,12 +88,12 @@ public class Shutdown extends Thread
 		catch (Throwable t)
 		{
 		}
-		
+
 		/* Disconnecting all the clients */
 		try
 		{
 			logln("Interrupting NioServer:");
-			NioServer.getInstance().shutdown();
+			IOServer.getInstance().shutdown();
 		}
 		catch (Throwable t)
 		{

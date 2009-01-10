@@ -16,13 +16,24 @@
  */
 package aionemu.network;
 
-import java.io.IOException;
-import java.nio.channels.SelectionKey;
+import aionemu.configs.Config;
+import aionemu.network.aion.AionAcceptor;
+import aionemu.network.gameserver.GsAcceptor;
+import aionemu_commons.network.nio.NioServer;
+import aionemu_commons.network.nio.ServerCfg;
 
 /**
  * @author -Nemesiss-
  */
-public interface IAcceptor
+public class IOServer
 {
-	public void accept(SelectionKey key) throws IOException;
+	private final static NioServer	instance	= new NioServer(Config.NIO_READ_THREADS, Config.NIO_WRITE_THREADS,
+													new ServerCfg(Config.LOGIN_BIND_ADDRESS, Config.LOGIN_PORT,
+														new AionAcceptor()), new ServerCfg("127.0.0.1", 9014,
+														new GsAcceptor()));
+
+	public final static NioServer getInstance()
+	{
+		return instance;
+	}
 }

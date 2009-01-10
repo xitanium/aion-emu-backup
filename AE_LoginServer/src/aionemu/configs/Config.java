@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  */
 public class Config
 {
-	protected static final Logger	log				= Logger.getLogger(Config.class.getName());
+	protected static final Logger	log						= Logger.getLogger(Config.class.getName());
 
 	/** Login Server port */
 	public static int				LOGIN_PORT;
@@ -39,15 +39,14 @@ public class Config
 	/** Ban time */
 	public static int				WRONG_LOGIN_BAN_TIME;
 	/** Show NC Licence */
-	public static boolean			SHOW_LICENCE	= true;
+	public static boolean			SHOW_LICENCE			= true;
 	/** Number of Threads that will handle io read (>= 0) */
 	public static int				NIO_READ_THREADS;
 	/** Number of Threads that will handle io write (>= 0) */
 	public static int				NIO_WRITE_THREADS;
-	
-	
-	public static boolean			ACCOUNT_AUTO_CREATION = true;
-	
+
+	public static boolean			ACCOUNT_AUTO_CREATION	= true;
+
 	public static void load()
 	{
 		log.info("Loading loginserver.properties");

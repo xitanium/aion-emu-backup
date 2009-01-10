@@ -16,8 +16,8 @@
  */
 package aionemu.network.gameserver.serverpackets;
 
-import aionemu.network.IServerPacket;
 import aionemu.network.gameserver.GsServerPacket;
+import aionemu_commons.network.IServerPacket;
 
 /**
  * @author -Nemesiss-

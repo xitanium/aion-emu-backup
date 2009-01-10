@@ -21,9 +21,9 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
-import aionemu.network.IAcceptor;
-import aionemu.network.nio.Dispatcher;
-import aionemu.network.nio.NioServer;
+import aionemu.network.IOServer;
+import aionemu_commons.network.IAcceptor;
+import aionemu_commons.network.nio.Dispatcher;
 
 /**
  * @author -Nemesiss-
@@ -43,13 +43,18 @@ public class GsAcceptor implements IAcceptor
 		// we'd like to be notified when there's data waiting to be read
 		GsConnection con = new GsConnection(socketChannel);
 
-		Dispatcher readDispatcher = NioServer.getInstance().getReadDispatcher();
+		Dispatcher readDispatcher = IOServer.getInstance().getReadDispatcher();
 		SelectionKey readKey = readDispatcher.register(socketChannel, SelectionKey.OP_READ, con);
 
-		Dispatcher writeDispatcher = NioServer.getInstance().getWriteDispatcher();
+		Dispatcher writeDispatcher = IOServer.getInstance().getWriteDispatcher();
 		if (writeDispatcher != readDispatcher)
 			con.setWriteKey(writeDispatcher.register(socketChannel, 0, con));
 		else
 			con.setWriteKey(readKey);
+	}
+
+	@Override public String getName()
+	{
+		return "GameServer connections";
 	}
 }

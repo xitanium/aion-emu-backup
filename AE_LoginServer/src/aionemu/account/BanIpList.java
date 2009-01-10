@@ -24,10 +24,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-import aionemu.database.DB;
-import aionemu.database.IUStH;
-import aionemu.database.ReadStH;
 import aionemu.utils.NetworkUtils;
+import aionemu_commons.database.DB;
+import aionemu_commons.database.IUStH;
+import aionemu_commons.database.ReadStH;
 
 /**
  * @author KID
@@ -35,7 +35,7 @@ import aionemu.utils.NetworkUtils;
 public class BanIpList
 {
 	protected static final Logger		_log		= Logger.getLogger(BanIpList.class.getName());
-	
+
 	private static Map<String, Long>	restricted	= new ConcurrentHashMap<String, Long>();
 
 	public static boolean isRestricted(String address)
@@ -52,9 +52,9 @@ public class BanIpList
 	public static void addBannedIp(final String address, int minutes)
 	{
 		final long time = (System.currentTimeMillis() + minutes * 60000);
-		
+
 		restricted.put(address, time);
-		
+
 		_log.info("Banned IP: adding " + address + " address up to " + minutes + " mins.");
 
 		DB.insertUpdate("REPLACE INTO ban_ip(mask, time_end) VALUES (?,?)", new IUStH()
@@ -63,7 +63,7 @@ public class BanIpList
 			{
 				stmt.setString(1, address);
 				stmt.setLong(2, time);
-				
+
 				stmt.executeUpdate();
 			}
 		});
@@ -71,8 +71,8 @@ public class BanIpList
 
 	public static void removeBannedIp(String address)
 	{
-		if(restricted.remove(address) != null)
-				_log.info("Banned IP: removed " + address + " address.");
+		if (restricted.remove(address) != null)
+			_log.info("Banned IP: removed " + address + " address.");
 
 	}
 
@@ -102,12 +102,12 @@ public class BanIpList
 	public static void store()
 	{
 		DB.insertUpdate("DELETE FROM ban_ip"); // clear table
-		
+
 		DB.insertUpdate("INSERT INTO ban_ip(mask, time_end) VALUES (?,?)", new IUStH()
 		{
 			public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
 			{
-				for(Map.Entry<String, Long> entry: restricted.entrySet())
+				for (Map.Entry<String, Long> entry : restricted.entrySet())
 				{
 					long timeEnd = entry.getValue();
 					if (timeEnd < System.currentTimeMillis())
@@ -115,7 +115,7 @@ public class BanIpList
 
 					stmt.setString(1, entry.getKey());
 					stmt.setLong(2, timeEnd);
-					
+
 					stmt.addBatch();
 				}
 

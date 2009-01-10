@@ -19,7 +19,7 @@ package aionemu.utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import aionemu.network.nio.Dispatcher;
+import aionemu_commons.network.nio.Dispatcher;
 
 /**
  * @author -Nemesiss-

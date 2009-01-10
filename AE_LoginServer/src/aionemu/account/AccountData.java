@@ -27,29 +27,29 @@ import java.util.logging.Logger;
 
 import sun.misc.BASE64Encoder;
 import aionemu.configs.Config;
-import aionemu.database.DB;
-import aionemu.database.IUStH;
-import aionemu.database.ParamReadStH;
 import aionemu.utils.NetworkUtils;
+import aionemu_commons.database.DB;
+import aionemu_commons.database.IUStH;
+import aionemu_commons.database.ParamReadStH;
 
 /**
  * @author KID, -Nemesiss-
  */
 public class AccountData implements ParamReadStH, IUStH
 {
-	private static Logger	log			= Logger.getLogger(AccountData.class.getName());
+	private static Logger	log				= Logger.getLogger(AccountData.class.getName());
 
 	private final String	name;
 	private final String	clientPassword;
 	private final String	lastIp;
 
 	private String			password;
-	private String			ipForce	= "*";
+	private String			ipForce			= "*";
 	private long			expirationTime	= -1;
-	private long			timePenalty	= -1;
-	private int				access		= 0;
-	private int				lastServer	= 0;
-	private boolean			exist	= false;
+	private long			timePenalty		= -1;
+	private int				access			= 0;
+	private int				lastServer		= 0;
+	private boolean			exist			= false;
 
 	public AccountData(String name, String clientPassword, String address)
 	{
@@ -60,14 +60,12 @@ public class AccountData implements ParamReadStH, IUStH
 		DB.select("SELECT * FROM account_data WHERE name=?", this);
 	}
 
-	@Override
-	public void setParams(PreparedStatement stmt) throws SQLException
+	@Override public void setParams(PreparedStatement stmt) throws SQLException
 	{
 		stmt.setString(1, name);
 	}
 
-	@Override
-	public void handleRead(ResultSet rset) throws SQLException
+	@Override public void handleRead(ResultSet rset) throws SQLException
 	{
 		// acc exist
 		if (rset.next())
@@ -83,14 +81,14 @@ public class AccountData implements ParamReadStH, IUStH
 		else if (Config.ACCOUNT_AUTO_CREATION)
 		{
 			password = encryptPassword(clientPassword);
-			this.exist = DB.insertUpdate(
+			this.exist = DB
+				.insertUpdate(
 					"INSERT INTO account_data(`name`,`password`,`last_active`,`expiration_time`,`penalty_end`,`access`,`last_server`,`last_ip`,`ip_force`) VALUES (?,?,?,?,?,?,?,?,?)",
 					this, "Error while creating new account");
 		}
 	}
 
-	@Override
-	public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
+	@Override public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
 	{
 		stmt.setString(1, name);
 		stmt.setString(2, password);
@@ -101,7 +99,7 @@ public class AccountData implements ParamReadStH, IUStH
 		stmt.setInt(7, lastServer);
 		stmt.setString(8, lastIp);
 		stmt.setString(9, ipForce);
-		
+
 		stmt.executeUpdate();
 	}
 

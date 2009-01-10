@@ -20,7 +20,7 @@ import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import aionemu.network.BasePacket;
+import aionemu_commons.network.BasePacket;
 
 /**
  * @author -Nemesiss-

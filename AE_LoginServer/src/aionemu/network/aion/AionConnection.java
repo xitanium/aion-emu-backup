@@ -23,10 +23,10 @@ import java.security.interfaces.RSAPrivateKey;
 import java.util.logging.Logger;
 
 import aionemu.LoginController;
-import aionemu.network.AConnection;
 import aionemu.network.crypt.LoginCrypt;
 import aionemu.network.crypt.ScrambledKeyPair;
 import aionemu.utils.ThreadPoolManager;
+import aionemu_commons.network.AConnection;
 
 /**
  * @author -Nemesiss-

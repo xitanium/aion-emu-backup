@@ -69,7 +69,7 @@ public class RequestAuthLogin extends AionClientPacket
 		}
 		catch (GeneralSecurityException e)
 		{
-			log.log(Level.WARNING,"Error while decripting data on user auth."+e,e);
+			log.log(Level.WARNING, "Error while decripting data on user auth." + e, e);
 			sendPacket(new LoginFail(AuthResponse.INVALID_PASSWORD));
 			return;
 		}
