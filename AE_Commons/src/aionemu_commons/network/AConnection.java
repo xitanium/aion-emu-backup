@@ -55,8 +55,11 @@ public abstract class AConnection
 
 	public final void enableWriteInterest()
 	{
-		this.writeKey.interestOps(writeKey.interestOps() | SelectionKey.OP_WRITE);
-		writeKey.selector().wakeup();
+		if(this.writeKey.isValid())
+		{
+			this.writeKey.interestOps(writeKey.interestOps() | SelectionKey.OP_WRITE);
+			writeKey.selector().wakeup();
+		}
 	}
 
 	public SocketChannel getSocketChannel()
