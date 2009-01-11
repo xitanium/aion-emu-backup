@@ -111,7 +111,7 @@ public class NioServer
 			return writeDispatchers[0];
 
 		if (currentWriteDispatcher >= writeDispatchers.length)
-			currentReadDispatcher = 0;
+			currentWriteDispatcher = 0;
 		return writeDispatchers[currentWriteDispatcher++];
 	}
 
