@@ -30,9 +30,9 @@ import org.apache.log4j.helpers.LogLog;
  * <li>{@link java.util.logging.Level#ALL} ->
  * {@link org.apache.log4j.Level#ALL}</li>
  * </ul>
- * <p/> Custom levels are passed with the same integer priority.
- * TODO: Implement better handling of custom levels, we should convert int values of JULI to
- * Log4j int values.
+ * <p/> Custom levels are passed with the same integer priority. <br>
+ * TODO: Implement better handling of custom levels, we should convert int
+ * values of JULI to Log4j int values.
  * 
  * @author SoulKeeper
  */

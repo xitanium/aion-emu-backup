@@ -18,12 +18,8 @@ package com.aionemu.commons.database;
 
 // Common SQL
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
 
 import javax.sql.DataSource;
 
@@ -43,75 +39,46 @@ import org.apache.log4j.Logger;
  * <br>
  * DB.java utilizes the class.<br>
  * <br>
+ * <p/> This class depends on file
+ * {@value com.aionemu.commons.database.DatabaseConfig#CONFIG_FILE}.
  * 
- * @depends database.properties
- * @requires commons-dbcp-1.2.2.jar
- * @requires commons-pool-1.4.jar
- * @requires mysql-connector-java-5.1.7-bin.jar
  * @author Disturbing
+ * @author SoulKeeper
  */
-public final class DatabaseFactory
+public class DatabaseFactory
 {
 
-	// Database settings
-	/** DB Host */
-	public static String			DATABASE_HOST;
-	/** DB Port */
-	public static int				DATABASE_PORT;
-	/** DB URL */
-	public static String			DATABASE_DRIVER;
-	/** DB Login Alias */
-	public static String			DATABASE_LOGIN_USER;
-	/** DB Login Pass */
-	public static String			DATABASE_LOGIN_PASS;
-	/** DB Alias */
-	public static String			DATABASE_NAME;
-	/** DB Max Connections */
-	public static int				DATABASE_MAX_CON;
-
-	// Required Objects
-	/** Logger */
-	protected static final Logger	log			= Logger.getLogger(DatabaseFactory.class.getName());
-	/** Data Source Generates all Connections */
-	private DataSource				dataSource;
-	/** Connection Pool holds all connections - Idle or Active */
-	private GenericObjectPool		conPool;
-	/** Factory Instance */
-	private static DatabaseFactory	instance	= new DatabaseFactory();
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger			log	= Logger.getLogger(DatabaseFactory.class);
 
 	/**
-	 * DatabaseFactory Constructor Creates Pool and Connection Factory using
-	 * database.properties
+	 * Data Source Generates all Connections This vaiable is also used as
+	 * indicator for "initalized" state of DatabaseFactory
 	 */
-	private DatabaseFactory()
+	private static DataSource			dataSource;
+
+	/**
+	 * Connection Pool holds all connections - Idle or Active
+	 */
+	private static GenericObjectPool	connectionPool;
+
+	/**
+	 * Initializes DatabaseFactory.
+	 */
+	public synchronized static void init()
 	{
-		try
+		if (dataSource != null)
 		{
-			Properties settings = new Properties();
-			log.info("Loading database.properties");
-			InputStream is = new FileInputStream(new File("./config/database.properties"));
-			settings.load(is);
-
-			DATABASE_HOST = settings.getProperty("DatabaseHost", "127.0.0.1");
-			DATABASE_PORT = Integer.parseInt(settings.getProperty("DatabasePort", "3306"));
-			DATABASE_DRIVER = settings.getProperty("DatabaseDriver", "com.mysql.jdbc.Driver");
-			DATABASE_NAME = settings.getProperty("DatabaseName", "db_name");
-			DATABASE_LOGIN_USER = settings.getProperty("DatabaseUser", "root");
-			DATABASE_LOGIN_PASS = settings.getProperty("DatabasePass", "pass");
-			DATABASE_MAX_CON = Integer.parseInt(settings.getProperty("DatabaseMaxConnections", "10"));
-
-			settings.clear();
-		}
-		catch (Exception e)
-		{
-			log.fatal("Error while loading database.properties", e);
-			throw new Error("database.properties not loaded!");
+			return;
 		}
 
-		// Check if Driver exists
+		DatabaseConfig.load();
+
 		try
 		{
-			java.lang.Class.forName(DATABASE_DRIVER).newInstance();
+			java.lang.Class.forName(DatabaseConfig.DATABASE_DRIVER).newInstance();
 		}
 		catch (Exception e)
 		{
@@ -119,9 +86,16 @@ public final class DatabaseFactory
 			throw new Error("DB Driver doesnt exist!");
 		}
 
-		conPool = new GenericObjectPool(null);
-		conPool.setMinIdle(1);
-		conPool.setMaxActive((DATABASE_MAX_CON < 5) ? 10 : DATABASE_MAX_CON);
+		connectionPool = new GenericObjectPool();
+
+		if (DatabaseConfig.DATABASE_CONNECTIONS_MIN < DatabaseConfig.DATABASE_CONNECTIONS_MAX)
+		{
+			log.error("Please check your database configuration. Minimum amount of connections is > maximum");
+			DatabaseConfig.DATABASE_CONNECTIONS_MAX = DatabaseConfig.DATABASE_CONNECTIONS_MIN;
+		}
+
+		connectionPool.setMaxIdle(DatabaseConfig.DATABASE_CONNECTIONS_MIN);
+		connectionPool.setMaxActive(DatabaseConfig.DATABASE_CONNECTIONS_MAX);
 
 		try
 		{
@@ -130,60 +104,31 @@ public final class DatabaseFactory
 		}
 		catch (Exception e)
 		{
-			log.fatal("Error with connection string: " + getConStr(), e);
+			log.fatal("Error with connection string: " + DatabaseConfig.DATABASE_URL, e);
 			throw new Error("DatabaseFactory not initialized!");
 		}
 
 		log.info("Successfully connected to database");
-
-	}
-
-	/**
-	 * Obtain instance of DatabaseFactory. Creates instances if none exists.
-	 * 
-	 * @return DatabaseFactory
-	 */
-	public static DatabaseFactory getInstance()
-	{
-		return instance;
-	}
-
-	/**
-	 * Get Connection String Returns Connection String used to connect to the
-	 * database.
-	 * 
-	 * @return String Connection String;
-	 */
-	private String getConStr()
-	{
-		String driver = DATABASE_DRIVER;
-		driver = driver.toLowerCase();
-		String postUrl = "invalid:url";
-
-		if (driver.contains("mysql"))
-			postUrl = "jdbc:mysql:";
-		else if (driver.contains("mssql"))
-			postUrl = "jdbc:mssql:";
-
-		return postUrl + "//" + DATABASE_HOST + ":" + DATABASE_PORT + "/" + DATABASE_NAME;
 	}
 
 	/**
 	 * Sets up Connection Factory and Pool
 	 * 
-	 * @return DataSource
+	 * @return DataSource configured datasource
+	 * @throws Exception
+	 *             if initialization failed
 	 */
-	private DataSource setupDataSource() throws Exception
+	private static DataSource setupDataSource() throws Exception
 	{
 		// Create Connection Factory
-		ConnectionFactory conFactory = new DriverManagerConnectionFactory(getConStr(), DATABASE_LOGIN_USER,
-			DATABASE_LOGIN_PASS);
+		ConnectionFactory conFactory = new DriverManagerConnectionFactory(DatabaseConfig.DATABASE_URL,
+			DatabaseConfig.DATABASE_USER, DatabaseConfig.DATABASE_PASSWORD);
 
 		// Makes Connection Factory Pool-able (Wrapper for two objects)
-		new PoolableConnectionFactory(conFactory, conPool, null, null, false, true);
+		new PoolableConnectionFactory(conFactory, connectionPool, null, null, false, true);
 
 		// Create data source to utilize Factory and Pool
-		return new PoolingDataSource(conPool);
+		return new PoolingDataSource(connectionPool);
 	}
 
 	/**
@@ -194,9 +139,11 @@ public final class DatabaseFactory
 	 * returned as null, thus a null check is not needed. Throws SQLException in
 	 * case of a Failed Connection
 	 * 
-	 * @return Connection
+	 * @return Connection pooled connection
+	 * @throws java.sql.SQLException
+	 *             if can't get connection
 	 */
-	Connection getConnection() throws SQLException
+	static Connection getConnection() throws SQLException
 	{
 		return dataSource.getConnection();
 	}
@@ -208,7 +155,7 @@ public final class DatabaseFactory
 	 */
 	public int getActiveConnections()
 	{
-		return conPool.getNumActive();
+		return connectionPool.getNumActive();
 	}
 
 	/**
@@ -221,21 +168,24 @@ public final class DatabaseFactory
 	 */
 	public int getIdleConnections()
 	{
-		return conPool.getNumIdle();
+		return connectionPool.getNumIdle();
 	}
 
 	/**
 	 * Shuts down pool and closes connections
 	 */
-	public void shutdown()
+	public synchronized void shutdown()
 	{
 		try
 		{
-			conPool.close();
+			connectionPool.close();
 		}
 		catch (Exception e)
 		{
 			log.warn("Failed to shutdown DatabaseFactory", e);
 		}
+
+		// set datasource to null so we can call init() once more...
+		dataSource = null;
 	}
 }

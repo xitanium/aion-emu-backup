@@ -199,7 +199,7 @@ public final class DB
 
 		try
 		{
-			con = DatabaseFactory.getInstance().getConnection();
+			con = DatabaseFactory.getConnection();
 			stmt = con.prepareStatement(query);
 			if (reader instanceof ParamReadStH)
 				((ParamReadStH) reader).setParams(stmt);
@@ -290,7 +290,7 @@ public final class DB
 
 		try
 		{
-			con = DatabaseFactory.getInstance().getConnection();
+			con = DatabaseFactory.getConnection();
 			stmt = con.prepareStatement(query);
 			if (batch != null)
 				batch.handleInsertUpdate(stmt);
