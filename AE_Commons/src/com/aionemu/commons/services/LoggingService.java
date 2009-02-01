@@ -1,25 +1,39 @@
 package com.aionemu.commons.services;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import org.apache.log4j.Hierarchy;
 import org.apache.log4j.xml.DOMConfigurator;
 
 import com.aionemu.commons.log4j.JuliToLog4JHandler;
+import com.aionemu.commons.log4j.ThrowableAsMessageAwareFactory;
 import com.aionemu.commons.log4j.exceptions.Log4jInitializationError;
 
 /**
  * This class represents simple wrapper for loggers that initializes logging
- * system.
+ * system. <p/> Default {@link org.apache.log4j.spi.LoggerFactory} can by
+ * configured by system property {@value #LOGGER_FACTORY_CLASS_PROPERTY} <p/>
+ * Default logger factory is
+ * {@link com.aionemu.commons.log4j.ThrowableAsMessageAwareFactory}
  * 
  * @author SoulKeeper
  */
 public class LoggingService
 {
 
-	private static boolean	initialized;
+	/**
+	 * Property that represents {@link org.apache.log4j.spi.LoggerFactory} class
+	 */
+	public static final String	LOGGER_FACTORY_CLASS_PROPERTY	= "log4j.loggerfactory";
+
+	/**
+	 * Is Logging initialized or not?
+	 */
+	private static boolean		initialized;
 
 	/**
 	 * Actually initializes logging system.
@@ -58,6 +72,8 @@ public class LoggingService
 			throw new Log4jInitializationError("Can't initialize logging", e);
 		}
 
+		overrideDefaultLoggerFactory();
+
 		// Initialize JULI to Log4J bridge
 		Logger logger = LogManager.getLogManager().getLogger("");
 		for (Handler h : logger.getHandlers())
@@ -65,5 +81,44 @@ public class LoggingService
 			logger.removeHandler(h);
 		}
 		logger.addHandler(new JuliToLog4JHandler());
+	}
+
+	/**
+	 * This method uses some reflection to hack default log4j log facrory.
+	 * Unfortunately Log4J behaves weird with categories/categoryfactories so
+	 * the easiest way is just to overwrite default logger factory.
+	 */
+	private static void overrideDefaultLoggerFactory()
+	{
+		// Hack here, we have to overwrite default logger factory
+		Hierarchy lr = (Hierarchy) org.apache.log4j.LogManager.getLoggerRepository();
+		try
+		{
+			Field field = lr.getClass().getDeclaredField("defaultFactory");
+			field.setAccessible(true);
+			String cn = System.getProperty(LOGGER_FACTORY_CLASS_PROPERTY, ThrowableAsMessageAwareFactory.class
+				.getName());
+			Class c = Class.forName(cn);
+			field.set(lr, c.newInstance());
+			field.setAccessible(false);
+		}
+		catch (NoSuchFieldException e)
+		{
+			// never thrown
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
+		{
+			// never thrown
+			e.printStackTrace();
+		}
+		catch (ClassNotFoundException e)
+		{
+			throw new Log4jInitializationError("Can't found log4j logger factory class", e);
+		}
+		catch (InstantiationException e)
+		{
+			throw new Log4jInitializationError("Can't instantiate log4j logger factory", e);
+		}
 	}
 }
