@@ -19,6 +19,7 @@
 	<property name="jre" location="${java.home}/lib"/>
     <property name="src" location="src"/>
     <property name="lib" location="lib"/>
+    <property name="config" location="config"/>
     <property name="build" location="build"/>
     <property name="build.classes" location="${build}/classes"/>
     <property name="build.dist" location="${build}/dist"/>
@@ -72,6 +73,7 @@
     	<mkdir dir="${build.dist}" />
     	<mkdir dir="${build.dist.commons}" />
     	<mkdir dir="${build.dist.commons}/libs" />
+        <mkdir dir="${build.dist.commons}/config" />
     	
     	<copy todir="${build.dist.commons}/libs">
             <fileset dir="${build}">
@@ -84,6 +86,12 @@
 				<include name="*.jar"/>
 			</fileset>
 		</copy>
+
+        <copy todir="${build.dist.commons}/config">
+            <fileset dir="${config}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
 
         <zip destfile="${build}/ae_commons.zip"
              basedir="${build.dist.commons}" />
