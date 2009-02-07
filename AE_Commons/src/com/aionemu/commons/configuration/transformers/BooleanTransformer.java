@@ -23,9 +23,8 @@ import com.aionemu.commons.configuration.PropertyTransformer;
 import com.aionemu.commons.configuration.TransformationException;
 
 /**
- * This class implements basic boolean transfromer. <p/> Boolean can be
- * represented by "true/false" (case doen't matter) or "1/0". In other cases
- * {@link com.aionemu.commons.configuration.TransformationException} is thrown
+ * This class implements basic boolean transfromer. <p/> Boolean can be represented by "true/false" (case doen't matter)
+ * or "1/0". In other cases {@link com.aionemu.commons.configuration.TransformationException} is thrown
  * 
  * @author SoulKeeper
  */
@@ -33,8 +32,7 @@ public class BooleanTransformer implements PropertyTransformer
 {
 
 	/**
-	 * Shared instance of this transformer, it's thread safe so no need to
-	 * create multiple instances
+	 * Shared instance of this transformer, it's thread safe so no need to create multiple instances
 	 */
 	public static final BooleanTransformer	SHARED_INSTANCE	= new BooleanTransformer();
 

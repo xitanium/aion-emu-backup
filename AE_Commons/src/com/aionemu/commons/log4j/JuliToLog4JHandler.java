@@ -11,28 +11,18 @@ import org.apache.log4j.helpers.LogLog;
  * This class forwards JULI logging requests to Log4j.<br>
  * List of JULI -> Log4J level mappings.
  * <ul>
- * <li>{@link java.util.logging.Level#OFF} ->
- * {@link org.apache.log4j.Level#OFF}</li>
- * <li>{@link java.util.logging.Level#SEVERE} ->
- * {@link org.apache.log4j.Level#ERROR}</li>
- * <li>{@link java.util.logging.Level#WARNING} ->
- * {@link org.apache.log4j.Level#WARN}</li>
- * <li>{@link java.util.logging.Level#INFO} ->
- * {@link org.apache.log4j.Level#INFO}</li>
- * <li>{@link java.util.logging.Level#CONFIG} ->
- * {@link org.apache.log4j.Level#DEBUG}</li>
- * <li>{@link java.util.logging.Level#FINE} ->
- * {@link org.apache.log4j.Level#DEBUG}</li>
- * <li>{@link java.util.logging.Level#FINER} ->
- * {@link org.apache.log4j.Level#TRACE}</li>
- * <li>{@link java.util.logging.Level#FINEST} ->
- * {@link org.apache.log4j.Level#TRACE}</li>
- * <li>{@link java.util.logging.Level#ALL} ->
- * {@link org.apache.log4j.Level#ALL}</li>
+ * <li>{@link java.util.logging.Level#OFF} -> {@link org.apache.log4j.Level#OFF}</li>
+ * <li>{@link java.util.logging.Level#SEVERE} -> {@link org.apache.log4j.Level#ERROR}</li>
+ * <li>{@link java.util.logging.Level#WARNING} -> {@link org.apache.log4j.Level#WARN}</li>
+ * <li>{@link java.util.logging.Level#INFO} -> {@link org.apache.log4j.Level#INFO}</li>
+ * <li>{@link java.util.logging.Level#CONFIG} -> {@link org.apache.log4j.Level#DEBUG}</li>
+ * <li>{@link java.util.logging.Level#FINE} -> {@link org.apache.log4j.Level#DEBUG}</li>
+ * <li>{@link java.util.logging.Level#FINER} -> {@link org.apache.log4j.Level#TRACE}</li>
+ * <li>{@link java.util.logging.Level#FINEST} -> {@link org.apache.log4j.Level#TRACE}</li>
+ * <li>{@link java.util.logging.Level#ALL} -> {@link org.apache.log4j.Level#ALL}</li>
  * </ul>
  * <p/> Custom levels are passed with the same integer priority. <br>
- * TODO: Implement better handling of custom levels, we should convert int
- * values of JULI to Log4j int values.
+ * TODO: Implement better handling of custom levels, we should convert int values of JULI to Log4j int values.
  * 
  * @author SoulKeeper
  */
@@ -40,9 +30,8 @@ public class JuliToLog4JHandler extends Handler
 {
 
 	/**
-	 * Forwards JULI LogRecord to Log4J. This method resolves needed log4j level
-	 * and fixes caller class issue so methods and lines are correctly displayed
-	 * by log4j.
+	 * Forwards JULI LogRecord to Log4J. This method resolves needed log4j level and fixes caller class issue so methods
+	 * and lines are correctly displayed by log4j.
 	 * 
 	 * @param record
 	 *            LogRecord to forward
@@ -138,8 +127,7 @@ public class JuliToLog4JHandler extends Handler
 	}
 
 	/**
-	 * This class represents cutom level in Log4J. In best case it shouldn't be
-	 * used at all.
+	 * This class represents cutom level in Log4J. In best case it shouldn't be used at all.
 	 */
 	protected static class CustomLog4jLevel extends org.apache.log4j.Level
 	{

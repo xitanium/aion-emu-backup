@@ -18,9 +18,8 @@
 package com.aionemu.commons.log4j.exceptions;
 
 /**
- * This error will be thrown if any of custom appenders won't be able to
- * initialize. We have some logs there, so we shouldn't do any actions with them
- * in case of errors.
+ * This error will be thrown if any of custom appenders won't be able to initialize. We have some logs there, so we
+ * shouldn't do any actions with them in case of errors.
  * 
  * @author SoulKeeper
  */

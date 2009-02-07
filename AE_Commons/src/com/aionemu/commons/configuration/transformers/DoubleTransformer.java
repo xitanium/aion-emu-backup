@@ -31,8 +31,7 @@ public class DoubleTransformer implements PropertyTransformer<Double>
 {
 
 	/**
-	 * Shared instance of this transformer. It's thread-safe so no need of
-	 * multiple instances
+	 * Shared instance of this transformer. It's thread-safe so no need of multiple instances
 	 */
 	public static final DoubleTransformer	SHARED_INSTANCE	= new DoubleTransformer();
 

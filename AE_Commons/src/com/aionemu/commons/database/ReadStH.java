@@ -28,8 +28,7 @@ import java.sql.SQLException;
 public interface ReadStH
 {
 	/**
-	 * Allows coder to read data after query execution. Automatically recycles
-	 * connection and closes ResultSet.
+	 * Allows coder to read data after query execution. Automatically recycles connection and closes ResultSet.
 	 * 
 	 * @param rset
 	 * @throws SQLException

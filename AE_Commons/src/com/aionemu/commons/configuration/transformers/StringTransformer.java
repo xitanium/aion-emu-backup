@@ -31,8 +31,7 @@ public class StringTransformer implements PropertyTransformer<String>
 {
 
 	/**
-	 * Shared instance of this transformer. It's thread-safe so no need of
-	 * multiple instances
+	 * Shared instance of this transformer. It's thread-safe so no need of multiple instances
 	 */
 	public static final StringTransformer	SHARED_INSTANCE	= new StringTransformer();
 

@@ -24,8 +24,7 @@ import com.aionemu.commons.configuration.PropertyTransformer;
 import com.aionemu.commons.configuration.TransformationException;
 
 /**
- * Transforms string to file by creating new file instance. It's not checked if
- * file exists.
+ * Transforms string to file by creating new file instance. It's not checked if file exists.
  * 
  * @author SoulKeeper
  */
@@ -33,8 +32,7 @@ public class FileTransformer implements PropertyTransformer<File>
 {
 
 	/**
-	 * Shared instance of this transformer. It's thread-safe so no need of
-	 * multiple instances
+	 * Shared instance of this transformer. It's thread-safe so no need of multiple instances
 	 */
 	public static final FileTransformer	SHARED_INSTANCE	= new FileTransformer();
 

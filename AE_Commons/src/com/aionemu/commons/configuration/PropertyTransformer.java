@@ -20,8 +20,7 @@ package com.aionemu.commons.configuration;
 import java.lang.reflect.Field;
 
 /**
- * This insterface represents property transformer, each transformer should
- * implement it.
+ * This insterface represents property transformer, each transformer should implement it.
  * 
  * @author SoulKeeper
  * @param <T>

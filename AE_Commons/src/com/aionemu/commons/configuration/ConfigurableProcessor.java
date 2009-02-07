@@ -24,8 +24,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 /**
- * This class is designed to process classes and interfaces that have fields
- * marked with {@link Property} annotation
+ * This class is designed to process classes and interfaces that have fields marked with {@link Property} annotation
  * 
  * @author SoulKeeper
  */
@@ -36,19 +35,17 @@ public class ConfigurableProcessor
 
 	/**
 	 * This method is an entry point to the parser logic.<br>
-	 * Any object or class that have {@link Property} annotation in it or it's
-	 * parent class/interface can be submitted here.<br>
-	 * If object(new Something()) is submitted, object fields are parsed.
-	 * (non-static)<br>
+	 * Any object or class that have {@link Property} annotation in it or it's parent class/interface can be submitted
+	 * here.<br>
+	 * If object(new Something()) is submitted, object fields are parsed. (non-static)<br>
 	 * If class is submitted(Sotmething.class), static fields are parsed.<br>
-	 * <p/> This method is not designed to throw any exceptions, however there
-	 * will be a log record if something goes wrong.
+	 * <p/> This method is not designed to throw any exceptions, however there will be a log record if something goes
+	 * wrong.
 	 * 
 	 * @param object
 	 *            Class or Object that has {@link Property} annotations.
 	 * @param properties
-	 *            Properties that should be used while seraching for a
-	 *            {@link Property#key()}
+	 *            Properties that should be used while seraching for a {@link Property#key()}
 	 */
 	public static void process(Object object, Properties... properties)
 	{
@@ -68,8 +65,8 @@ public class ConfigurableProcessor
 	}
 
 	/**
-	 * This method uses recurcieve calls to launch search for {@link Property}
-	 * annotation on itself and parents\interfaces.
+	 * This method uses recurcieve calls to launch search for {@link Property} annotation on itself and
+	 * parents\interfaces.
 	 * 
 	 * @param clazz
 	 *            Class of object
@@ -101,10 +98,8 @@ public class ConfigurableProcessor
 	}
 
 	/**
-	 * This method runs throught the declared fields watching for the
-	 * {@link Property} annotation. It also watches for the field modifiers like
-	 * {@link java.lang.reflect.Modifier#STATIC} and
-	 * {@link java.lang.reflect.Modifier#FINAL}
+	 * This method runs throught the declared fields watching for the {@link Property} annotation. It also watches for
+	 * the field modifiers like {@link java.lang.reflect.Modifier#STATIC} and {@link java.lang.reflect.Modifier#FINAL}
 	 * 
 	 * @param clazz
 	 *            Class of object
@@ -146,11 +141,9 @@ public class ConfigurableProcessor
 	}
 
 	/**
-	 * This method takes {@link Property} annotation and does sets value
-	 * according to annotation property. For this reason
-	 * {@link #getFieldValue(java.lang.reflect.Field, java.util.Properties[])}
-	 * can be called, however if method sees that there is no need - field can
-	 * remain with it's initial value. <p/> Also this method is capturing and
+	 * This method takes {@link Property} annotation and does sets value according to annotation property. For this
+	 * reason {@link #getFieldValue(java.lang.reflect.Field, java.util.Properties[])} can be called, however if method
+	 * sees that there is no need - field can remain with it's initial value. <p/> Also this method is capturing and
 	 * logging all {@link Exception} that are thrown by underlying methods.
 	 * 
 	 * @param f
@@ -186,8 +179,7 @@ public class ConfigurableProcessor
 	/**
 	 * This method is responsible for receiving field value.<br>
 	 * It tries to load property by key, if not found - it uses default value.<br>
-	 * Transformation is done using
-	 * {@link com.aionemu.commons.configuration.PropertyTransformerFactory}
+	 * Transformation is done using {@link com.aionemu.commons.configuration.PropertyTransformerFactory}
 	 * 
 	 * @param field
 	 *            field that has to be transformed

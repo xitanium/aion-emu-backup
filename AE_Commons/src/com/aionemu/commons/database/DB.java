@@ -25,37 +25,29 @@ import org.apache.log4j.Logger;
 /**
  * <b>DB Documentation</b>
  * <p>
- * This class is used for making SQL query's utilizing the database connection
- * defined in database.properties<br>
+ * This class is used for making SQL query's utilizing the database connection defined in database.properties<br>
  * <br>
- * Here are the functions that one may use to utilize this class in creating an
- * ease of access to database information.
+ * Here are the functions that one may use to utilize this class in creating an ease of access to database information.
  * </p>
  * <hr>
  * <b>SELECT (select method)</b>
  * <p>
  * Parameters:
  * <ul>
- * <li><b>Required: String query</b> - Query that will be utilized in select
- * statement.</li>
- * <li><b>Required: ReadStH reader</b> - Interface implementation used to read
- * output ResultSet from select statement.</li>
- * <li><i>Optional: String errMsg</i> - Custom error message that will be
- * logged if query fails.</li>
+ * <li><b>Required: String query</b> - Query that will be utilized in select statement.</li>
+ * <li><b>Required: ReadStH reader</b> - Interface implementation used to read output ResultSet from select statement.</li>
+ * <li><i>Optional: String errMsg</i> - Custom error message that will be logged if query fails.</li>
  * </ul>
  * Returns:(<b>boolean </b>) Returns true if the query ran successfully.<br>
  * <br>
  * Purpose:<br>
- * The select function one to grab data from the database with ease. Utilizing
- * the ReadStT, one may set up query parameters (then use ParamReadStH and set
- * params in <code>setParams()</code>) and read the replied data from the
+ * The select function one to grab data from the database with ease. Utilizing the ReadStT, one may set up query
+ * parameters (then use ParamReadStH and set params in <code>setParams()</code>) and read the replied data from the
  * query easily.<br>
  * <br>
- * Best practices is to create custom classes that implement ReadStT in order to
- * throw the data around.<br>
+ * Best practices is to create custom classes that implement ReadStT in order to throw the data around.<br>
  * <br>
- * After the function is called, it automatically closes and recycles the SQL
- * Connection.<br>
+ * After the function is called, it automatically closes and recycles the SQL Connection.<br>
  * <br>
  * Example:
  * 
@@ -83,31 +75,24 @@ import org.apache.log4j.Logger;
  * <p>
  * Parameters:
  * <ul>
- * <li><b>Required: String query</b> - Query that will be executed in
- * insert/update statement.</li>
- * <li><b>Required: IUStT batch</b> - Util used to modify query parameters OR
- * add add batches.</li>
- * <li><i>Optional: String errMsg</i> - Custom error message that will be
- * logged if query fails.</li>
+ * <li><b>Required: String query</b> - Query that will be executed in insert/update statement.</li>
+ * <li><b>Required: IUStT batch</b> - Util used to modify query parameters OR add add batches.</li>
+ * <li><i>Optional: String errMsg</i> - Custom error message that will be logged if query fails.</li>
  * </ul>
  * Returns:(<b>boolean</b>) Returns true if the query ran successfully.<br>
  * <br>
  * Purpose:<br>
- * The insertUpdate function allows one to insert and update database entries.
- * One may utilize it without needing to modify the query at all or provide a
- * IUStH interface implementation to add parameters to statement and/or gather
- * them in batch.<br>
+ * The insertUpdate function allows one to insert and update database entries. One may utilize it without needing to
+ * modify the query at all or provide a IUStH interface implementation to add parameters to statement and/or gather them
+ * in batch.<br>
  * <br>
- * <b> If the IUStH util IS provided in the function's parameters - The coder
- * MUST call the functions stmt.executeBatch() OR stmt.executeUpdate() in order
- * to successfully run the query.<br>
+ * <b> If the IUStH util IS provided in the function's parameters - The coder MUST call the functions
+ * stmt.executeBatch() OR stmt.executeUpdate() in order to successfully run the query.<br>
  * If IUSth util is NOT provided, the query will execute as it is. </b><br>
  * <br>
- * Best practices is to create custom classes that implement IUStT in order to
- * modify the query in proficient manners.<br>
+ * Best practices is to create custom classes that implement IUStT in order to modify the query in proficient manners.<br>
  * <br>
- * After the function is called, it automatically closes and recycles the SQL
- * Connection.<br>
+ * After the function is called, it automatically closes and recycles the SQL Connection.<br>
  * <br>
  * Example:<br>
  * 
@@ -169,8 +154,7 @@ public final class DB
 	}
 
 	/**
-	 * Executes Select Query. Uses ReadSth to utilize params and return data.
-	 * Recycles connection after competion.
+	 * Executes Select Query. Uses ReadSth to utilize params and return data. Recycles connection after competion.
 	 * 
 	 * @param query
 	 * @param reader
@@ -182,8 +166,7 @@ public final class DB
 	}
 
 	/**
-	 * Executes Select Query. Uses ReadSth to utilize params and return data.
-	 * Recycles connection after completion.
+	 * Executes Select Query. Uses ReadSth to utilize params and return data. Recycles connection after completion.
 	 * 
 	 * @param query
 	 * @param reader
@@ -233,8 +216,8 @@ public final class DB
 	}
 
 	/**
-	 * Executes Insert or Update Query not needing any further modification or
-	 * batching. Recycles connection after completion.
+	 * Executes Insert or Update Query not needing any further modification or batching. Recycles connection after
+	 * completion.
 	 * 
 	 * @param query
 	 * @return boolean Success
@@ -245,8 +228,8 @@ public final class DB
 	}
 
 	/**
-	 * Executes Insert or Update Query not needing any further modification or
-	 * batching. Recycles connection after completion.
+	 * Executes Insert or Update Query not needing any further modification or batching. Recycles connection after
+	 * completion.
 	 * 
 	 * @param query
 	 * @param errMsg
@@ -258,9 +241,8 @@ public final class DB
 	}
 
 	/**
-	 * Executes Insert / Update Query. Utilizes IUSth for Batching and Query
-	 * Editing. MUST MANUALLY EXECUTE QUERY / BATACH IN IUSth (No need to close
-	 * Statement after execution)
+	 * Executes Insert / Update Query. Utilizes IUSth for Batching and Query Editing. MUST MANUALLY EXECUTE QUERY /
+	 * BATACH IN IUSth (No need to close Statement after execution)
 	 * 
 	 * @param query
 	 * @param batch
@@ -272,10 +254,9 @@ public final class DB
 	}
 
 	/**
-	 * Executes Insert or Update Query. Utilizes IUSth for Batching and Query
-	 * Editing. Defines custom error message if error occurs. MUST MANUALLY
-	 * EXECUTE QUERY / BATACH IN IUSth (No need to Statement after execution)
-	 * Recycles connection after completion
+	 * Executes Insert or Update Query. Utilizes IUSth for Batching and Query Editing. Defines custom error message if
+	 * error occurs. MUST MANUALLY EXECUTE QUERY / BATACH IN IUSth (No need to Statement after execution) Recycles
+	 * connection after completion
 	 * 
 	 * @param query
 	 * @param batch

@@ -34,13 +34,11 @@ import org.apache.log4j.Logger;
  * <b>Database Factory</b><br>
  * <br>
  * This file is used for creating a pool of connections for the server.<br>
- * It utilizes database.properties and creates a pool of connections and
- * automatically recycles them when closed.<br>
+ * It utilizes database.properties and creates a pool of connections and automatically recycles them when closed.<br>
  * <br>
  * DB.java utilizes the class.<br>
  * <br>
- * <p/> This class depends on file
- * {@value com.aionemu.commons.database.DatabaseConfig#CONFIG_FILE}.
+ * <p/> This class depends on file {@value com.aionemu.commons.database.DatabaseConfig#CONFIG_FILE}.
  * 
  * @author Disturbing
  * @author SoulKeeper
@@ -54,8 +52,8 @@ public class DatabaseFactory
 	private static final Logger			log	= Logger.getLogger(DatabaseFactory.class);
 
 	/**
-	 * Data Source Generates all Connections This vaiable is also used as
-	 * indicator for "initalized" state of DatabaseFactory
+	 * Data Source Generates all Connections This vaiable is also used as indicator for "initalized" state of
+	 * DatabaseFactory
 	 */
 	private static DataSource			dataSource;
 
@@ -132,12 +130,10 @@ public class DatabaseFactory
 	}
 
 	/**
-	 * Returns an active connection from pool. This function utilizes the
-	 * dataSource which grabs an object from the ObjectPool within its limits.
-	 * The GenericObjectPool.borrowObject()' function utilized in
-	 * 'DataSource.getConnection()' does not allow any connections to be
-	 * returned as null, thus a null check is not needed. Throws SQLException in
-	 * case of a Failed Connection
+	 * Returns an active connection from pool. This function utilizes the dataSource which grabs an object from the
+	 * ObjectPool within its limits. The GenericObjectPool.borrowObject()' function utilized in
+	 * 'DataSource.getConnection()' does not allow any connections to be returned as null, thus a null check is not
+	 * needed. Throws SQLException in case of a Failed Connection
 	 * 
 	 * @return Connection pooled connection
 	 * @throws java.sql.SQLException
@@ -159,10 +155,9 @@ public class DatabaseFactory
 	}
 
 	/**
-	 * Returns number of Idle connections. Idle connections represent the number
-	 * of instances in Database Connections that have once been connected and
-	 * now are closed and ready for re-use. The 'getConnection' function will
-	 * grab idle connections before creating new ones.
+	 * Returns number of Idle connections. Idle connections represent the number of instances in Database Connections
+	 * that have once been connected and now are closed and ready for re-use. The 'getConnection' function will grab
+	 * idle connections before creating new ones.
 	 * 
 	 * @return int Idle DB Connections
 	 */

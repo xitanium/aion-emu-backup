@@ -35,9 +35,8 @@ import com.aionemu.commons.configuration.transformers.StringTransformer;
 import com.aionemu.commons.utils.ClassUtils;
 
 /**
- * This class is responsible for creating property transformers. Each time it
- * creates new instance of custom property transformer, but for build-in it uses
- * shared instances to avoid overhead
+ * This class is responsible for creating property transformers. Each time it creates new instance of custom property
+ * transformer, but for build-in it uses shared instances to avoid overhead
  * 
  * @author SoulKeeper
  */
@@ -45,19 +44,16 @@ public class PropertyTransformerFactory
 {
 
 	/**
-	 * Returns property transformer or throws
-	 * {@link com.aionemu.commons.configuration.TransformationException} if
-	 * can't create new one.
+	 * Returns property transformer or throws {@link com.aionemu.commons.configuration.TransformationException} if can't
+	 * create new one.
 	 * 
 	 * @param clazzToTransform
 	 *            Class that will is going to be transformed
 	 * @param tc
-	 *            {@link com.aionemu.commons.configuration.PropertyTransformer}
-	 *            class that will be instantiated
+	 *            {@link com.aionemu.commons.configuration.PropertyTransformer} class that will be instantiated
 	 * @return instance of PropertyTransformer
 	 * @throws TransformationException
-	 *             if can't instantiate
-	 *             {@link com.aionemu.commons.configuration.PropertyTransformer}
+	 *             if can't instantiate {@link com.aionemu.commons.configuration.PropertyTransformer}
 	 */
 	public static PropertyTransformer newTransformer(Class clazzToTransform, Class<? extends PropertyTransformer> tc)
 		throws TransformationException

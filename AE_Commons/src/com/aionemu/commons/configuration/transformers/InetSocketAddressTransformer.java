@@ -25,8 +25,7 @@ import com.aionemu.commons.configuration.PropertyTransformer;
 import com.aionemu.commons.configuration.TransformationException;
 
 /**
- * Thransforms string to InetSocketAddress. InetSocketAddress can be represented
- * in following ways:
+ * Thransforms string to InetSocketAddress. InetSocketAddress can be represented in following ways:
  * <ul>
  * <li>address:port</li>
  * <li>*:port - will use all avaiable network interfaces</li>
@@ -38,8 +37,7 @@ public class InetSocketAddressTransformer implements PropertyTransformer<InetSoc
 {
 
 	/**
-	 * Shared instance of this transformer. It's thread-safe so no need of
-	 * multiple instances
+	 * Shared instance of this transformer. It's thread-safe so no need of multiple instances
 	 */
 	public static final InetSocketAddressTransformer	SHARED_INSTANCE	= new InetSocketAddressTransformer();
 

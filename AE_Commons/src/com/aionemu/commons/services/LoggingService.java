@@ -14,11 +14,12 @@ import com.aionemu.commons.log4j.ThrowableAsMessageAwareFactory;
 import com.aionemu.commons.log4j.exceptions.Log4jInitializationError;
 
 /**
- * This class represents simple wrapper for loggers that initializes logging
- * system. <p/> Default {@link org.apache.log4j.spi.LoggerFactory} can by
- * configured by system property {@value #LOGGER_FACTORY_CLASS_PROPERTY} <p/>
- * Default logger factory is
- * {@link com.aionemu.commons.log4j.ThrowableAsMessageAwareFactory}
+ * This class represents simple wrapper for loggers that initializes logging system. <p/>
+ * 
+ * Default {@link org.apache.log4j.spi.LoggerFactory} can by configured by system property
+ * {@value #LOGGER_FACTORY_CLASS_PROPERTY} <p/>
+ * 
+ * Default logger factory is {@link com.aionemu.commons.log4j.ThrowableAsMessageAwareFactory}
  * 
  * @author SoulKeeper
  */
@@ -84,9 +85,9 @@ public class LoggingService
 	}
 
 	/**
-	 * This method uses some reflection to hack default log4j log facrory.
-	 * Unfortunately Log4J behaves weird with categories/categoryfactories so
-	 * the easiest way is just to overwrite default logger factory.
+	 * This method uses some reflection to hack default log4j log facrory. <br>
+	 * Unfortunately Log4J behaves weird with categories/categoryfactories so the easiest way is just to overwrite
+	 * default logger factory.
 	 */
 	private static void overrideDefaultLoggerFactory()
 	{
@@ -98,7 +99,7 @@ public class LoggingService
 			field.setAccessible(true);
 			String cn = System.getProperty(LOGGER_FACTORY_CLASS_PROPERTY, ThrowableAsMessageAwareFactory.class
 				.getName());
-			Class c = Class.forName(cn);
+			Class<?> c = Class.forName(cn);
 			field.set(lr, c.newInstance());
 			field.setAccessible(false);
 		}

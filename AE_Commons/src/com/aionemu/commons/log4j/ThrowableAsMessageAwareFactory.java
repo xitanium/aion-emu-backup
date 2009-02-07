@@ -4,9 +4,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggerFactory;
 
 /**
- * Just a factory to create
- * {@link com.aionemu.commons.log4j.ThrowableAsMessageLogger} loggers as default
- * loggers.
+ * Just a factory to create {@link com.aionemu.commons.log4j.ThrowableAsMessageLogger} loggers as default loggers.
  * 
  * @author SoulKeeper
  */

@@ -27,8 +27,7 @@ public abstract class BasePacket<T extends AConnection> implements Cloneable
 	T						connection;
 
 	/**
-	 * Messages are organized into Double-linked lists, maintained by network
-	 * and thread scheduler threads
+	 * Messages are organized into Double-linked lists, maintained by network and thread scheduler threads
 	 */
 	BasePacket<?>			_prev, _next;
 	BasePacketQueue			_queue;

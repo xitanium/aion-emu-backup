@@ -23,15 +23,13 @@ import com.aionemu.commons.configuration.PropertyTransformer;
 import com.aionemu.commons.configuration.TransformationException;
 
 /**
- * Transformes string representation of character to character. Character may be
- * represented only by string.
+ * Transformes string representation of character to character. Character may be represented only by string.
  */
 public class CharTransformer implements PropertyTransformer<Character>
 {
 
 	/**
-	 * Shared instance of this transformer. It's thread-safe so no need of
-	 * multiple instances
+	 * Shared instance of this transformer. It's thread-safe so no need of multiple instances
 	 */
 	public static final CharTransformer	SHARED_INSTANCE	= new CharTransformer();
 

@@ -31,8 +31,7 @@ public class FloatTransformer implements PropertyTransformer<Float>
 {
 
 	/**
-	 * Shared instance of this transformer. It's thread-safe so no need of
-	 * multiple instances
+	 * Shared instance of this transformer. It's thread-safe so no need of multiple instances
 	 */
 	public static final FloatTransformer	SHARED_INSTANCE	= new FloatTransformer();
 

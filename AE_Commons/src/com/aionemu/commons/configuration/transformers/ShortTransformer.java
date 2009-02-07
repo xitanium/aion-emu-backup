@@ -23,8 +23,7 @@ import com.aionemu.commons.configuration.PropertyTransformer;
 import com.aionemu.commons.configuration.TransformationException;
 
 /**
- * Thransforms string that represents short to the short value. Short value can
- * be represented as decimal or hex
+ * Thransforms string that represents short to the short value. Short value can be represented as decimal or hex
  * 
  * @author SoulKeeper
  */
@@ -32,8 +31,7 @@ public class ShortTransformer implements PropertyTransformer<Short>
 {
 
 	/**
-	 * Shared instance of this transformer. It's thread-safe so no need of
-	 * multiple instances
+	 * Shared instance of this transformer. It's thread-safe so no need of multiple instances
 	 */
 	public static final ShortTransformer	SHARED_INSTANCE	= new ShortTransformer();
 

@@ -23,8 +23,7 @@ import com.aionemu.commons.configuration.PropertyTransformer;
 import com.aionemu.commons.configuration.TransformationException;
 
 /**
- * Transfomrs string to integer. Integer can be represented both as decimal or
- * hex value.
+ * Transfomrs string to integer. Integer can be represented both as decimal or hex value.
  * 
  * @author SoulKeeper
  */
@@ -32,8 +31,7 @@ public class IntegerTransformer implements PropertyTransformer<Integer>
 {
 
 	/**
-	 * Shared instance of this transformer. It's thread-safe so no need of
-	 * multiple instances
+	 * Shared instance of this transformer. It's thread-safe so no need of multiple instances
 	 */
 	public static final IntegerTransformer	SHARED_INSTANCE	= new IntegerTransformer();
 

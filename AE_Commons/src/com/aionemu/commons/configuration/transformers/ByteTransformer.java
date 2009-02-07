@@ -24,8 +24,7 @@ import com.aionemu.commons.configuration.TransformationException;
 
 /**
  * Transforms String to Byte. String can be in decimal or hex format.
- * {@link com.aionemu.commons.configuration.TransformationException} will be
- * thrown if something goes wrong
+ * {@link com.aionemu.commons.configuration.TransformationException} will be thrown if something goes wrong
  * 
  * @author SoulKeeper
  */
@@ -33,8 +32,7 @@ public class ByteTransformer implements PropertyTransformer<Byte>
 {
 
 	/**
-	 * Shared instance of this transformer. It's thread-safe so no need of
-	 * multiple instances
+	 * Shared instance of this transformer. It's thread-safe so no need of multiple instances
 	 */
 	public static final ByteTransformer	SHARED_INSTANCE	= new ByteTransformer();
 

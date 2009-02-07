@@ -9,9 +9,8 @@ public class ClassUtils
 {
 
 	/**
-	 * Return true if class a is either equivalent to class b, or if class a is
-	 * a subclass of class b, i.e. if a either "extends" or "implements" b. Note
-	 * tht either or both "Class" objects may represent interfaces.
+	 * Return true if class a is either equivalent to class b, or if class a is a subclass of class b, i.e. if a either
+	 * "extends" or "implements" b. Note tht either or both "Class" objects may represent interfaces.
 	 * 
 	 * @param a
 	 *            class

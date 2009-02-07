@@ -10,9 +10,8 @@ import org.apache.log4j.Priority;
  * org.apache.log4j.Logger#log(Throwable)
  * </pre>
  * 
- * <p/> In such cases this logger will take message from throwable and set it as
- * message. Throwable will be threated as real throwable, so no stacktraces
- * would be lost.
+ * <p/> In such cases this logger will take message from throwable and set it as message. Throwable will be threated as
+ * real throwable, so no stacktraces would be lost.
  * 
  * @author SoulKeeper
  */
@@ -31,13 +30,11 @@ public class ThrowableAsMessageLogger extends Logger
 	}
 
 	/**
-	 * This method checks if message is instance of throwbale and throwable is
-	 * null. If it is so it will move message to throwable and set localized
-	 * message of throwable as message of the log record
+	 * This method checks if message is instance of throwbale and throwable is null. If it is so it will move message to
+	 * throwable and set localized message of throwable as message of the log record
 	 * 
 	 * @param fqcn
-	 *            fully qualified class name, it would be used to get the line
-	 *            of call
+	 *            fully qualified class name, it would be used to get the line of call
 	 * @param level
 	 *            level of log record
 	 * @param message

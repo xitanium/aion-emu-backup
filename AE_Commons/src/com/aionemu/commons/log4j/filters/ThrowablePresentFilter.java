@@ -5,8 +5,8 @@ import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 
 /**
- * Log4J filter that looks if there is exception present in the logging event
- * and accepts event if present. Otherwise it blocks filtring.
+ * Log4J filter that looks if there is exception present in the logging event and accepts event if present. Otherwise it
+ * blocks filtring.
  * 
  * @author SoulKeeper
  */
@@ -19,8 +19,8 @@ public class ThrowablePresentFilter extends Filter
 	 * 
 	 * @param loggingEvent
 	 *            log event that is going to be filtred.
-	 * @return {@link org.apache.log4j.spi.Filter#ACCEPT} if throwable present,
-	 *         {@link org.apache.log4j.spi.Filter#DENY} otherwise
+	 * @return {@link org.apache.log4j.spi.Filter#ACCEPT} if throwable present, {@link org.apache.log4j.spi.Filter#DENY}
+	 *         otherwise
 	 */
 	@Override
 	public int decide(LoggingEvent loggingEvent)

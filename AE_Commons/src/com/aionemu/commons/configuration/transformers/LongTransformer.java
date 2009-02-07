@@ -23,15 +23,13 @@ import com.aionemu.commons.configuration.PropertyTransformer;
 import com.aionemu.commons.configuration.TransformationException;
 
 /**
- * Transforms value that represents long to long. Value can be in decimal or hex
- * format.
+ * Transforms value that represents long to long. Value can be in decimal or hex format.
  */
 public class LongTransformer implements PropertyTransformer<Long>
 {
 
 	/**
-	 * Shared instance of this transformer. It's thread-safe so no need of
-	 * multiple instances
+	 * Shared instance of this transformer. It's thread-safe so no need of multiple instances
 	 */
 	public static final LongTransformer	SHARED_INSTANCE	= new LongTransformer();
 

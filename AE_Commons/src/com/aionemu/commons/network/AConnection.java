@@ -68,8 +68,7 @@ public abstract class AConnection
 	}
 
 	/**
-	 * This will only close the connection without taking care of the active
-	 * char
+	 * This will only close the connection without taking care of the active char
 	 */
 	public void onlyClose()
 	{
