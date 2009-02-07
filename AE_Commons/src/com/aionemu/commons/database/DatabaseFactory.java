@@ -169,7 +169,7 @@ public class DatabaseFactory
 	/**
 	 * Shuts down pool and closes connections
 	 */
-	public synchronized void shutdown()
+	public static synchronized void shutdown()
 	{
 		try
 		{
