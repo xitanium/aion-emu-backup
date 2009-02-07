@@ -52,7 +52,7 @@ public class LoginServer
 		}
 		catch (GeneralSecurityException e)
 		{
-			log.warn("ERROR: Failed initializing LoginController. Reason: " + e.getMessage(), e);
+			log.fatal("Failed initializing LoginController. Reason: " + e.getMessage(), e);
 			System.exit(1);
 		}
 
