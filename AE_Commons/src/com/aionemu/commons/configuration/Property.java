@@ -25,8 +25,9 @@ import java.lang.annotation.Documented;
 
 /**
  * This annotation is used to mark field that should be processed by
- * {@link com.aionemu.commons.configuration.ConfigurableProcessor}<br><br>
- *
+ * {@link com.aionemu.commons.configuration.ConfigurableProcessor}<br>
+ * <br>
+ * 
  * This annotation is Documented, all definitions with it will appear in javadoc
  */
 @Documented

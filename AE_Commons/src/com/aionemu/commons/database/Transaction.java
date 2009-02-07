@@ -35,12 +35,15 @@ import org.apache.log4j.Logger;
 public class Transaction
 {
 
-    private static final Logger log = Logger.getLogger(Transaction.class);
+	/**
+	 * Logger for transactions
+	 */
+	private static final Logger	log	= Logger.getLogger(Transaction.class);
 
 	/**
 	 * Connection that is allocated for this transaction
 	 */
-	private Connection	connection;
+	private Connection			connection;
 
 	/**
 	 * Package private constructor, should be instantiated via
@@ -140,25 +143,35 @@ public class Transaction
 	 * @throws SQLException
 	 *             if something went wrongF
 	 */
-	public void commit(Savepoint rollBackToOnError) throws SQLException {
+	public void commit(Savepoint rollBackToOnError) throws SQLException
+	{
 
-        try{
-            connection.commit();
-        } catch(SQLException e){
-            log.warn("Error while commiting transaction", e);
+		try
+		{
+			connection.commit();
+		}
+		catch (SQLException e)
+		{
+			log.warn("Error while commiting transaction", e);
 
-            try{
-                if (rollBackToOnError != null) {
-                    connection.rollback(rollBackToOnError);
-                } else {
-                    connection.rollback();
-                }
-            } catch(SQLException e1){
-                log.error("Can't rollback transaction", e1);
-            }
-        }
+			try
+			{
+				if (rollBackToOnError != null)
+				{
+					connection.rollback(rollBackToOnError);
+				}
+				else
+				{
+					connection.rollback();
+				}
+			}
+			catch (SQLException e1)
+			{
+				log.error("Can't rollback transaction", e1);
+			}
+		}
 
-        connection.setAutoCommit(true);
-        connection.close();
+		connection.setAutoCommit(true);
+		connection.close();
 	}
 }
