@@ -86,7 +86,7 @@ public class DatabaseFactory
 
 		connectionPool = new GenericObjectPool();
 
-		if (DatabaseConfig.DATABASE_CONNECTIONS_MIN < DatabaseConfig.DATABASE_CONNECTIONS_MAX)
+		if (DatabaseConfig.DATABASE_CONNECTIONS_MIN > DatabaseConfig.DATABASE_CONNECTIONS_MAX)
 		{
 			log.error("Please check your database configuration. Minimum amount of connections is > maximum");
 			DatabaseConfig.DATABASE_CONNECTIONS_MAX = DatabaseConfig.DATABASE_CONNECTIONS_MIN;
