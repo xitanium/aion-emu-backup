@@ -57,8 +57,7 @@ public class BanIpList
 
 		_log.info("Banned IP: adding " + address + " address up to " + minutes + " mins.");
 
-		DB.insertUpdate("REPLACE INTO ban_ip(mask, time_end) VALUES (?,?)", new IUStH()
-		{
+		DB.insertUpdate("REPLACE INTO ban_ip(mask, time_end) VALUES (?,?)", new IUStH() {
 			public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
 			{
 				stmt.setString(1, address);
@@ -79,8 +78,7 @@ public class BanIpList
 	public static void load()
 	{
 		restricted = new HashMap<String, Long>();
-		DB.select("SELECT mask, time_end FROM ban_ip", new ReadStH()
-		{
+		DB.select("SELECT mask, time_end FROM ban_ip", new ReadStH() {
 			public void handleRead(ResultSet rset) throws SQLException
 			{
 				while (rset.next())
@@ -103,8 +101,7 @@ public class BanIpList
 	{
 		DB.insertUpdate("DELETE FROM ban_ip"); // clear table
 
-		DB.insertUpdate("INSERT INTO ban_ip(mask, time_end) VALUES (?,?)", new IUStH()
-		{
+		DB.insertUpdate("INSERT INTO ban_ip(mask, time_end) VALUES (?,?)", new IUStH() {
 			public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
 			{
 				for (Map.Entry<String, Long> entry : restricted.entrySet())

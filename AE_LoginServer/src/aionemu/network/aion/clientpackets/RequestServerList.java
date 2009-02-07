@@ -37,7 +37,8 @@ public class RequestServerList extends AionClientPacket
 		loginOk2 = readD();
 	}
 
-	@Override protected void runImpl()
+	@Override
+	protected void runImpl()
 	{
 		if (getConnection().getSessionKey().checkLogin(loginOk1, loginOk2))
 		{
@@ -50,7 +51,8 @@ public class RequestServerList extends AionClientPacket
 
 	}
 
-	@Override public String getType()
+	@Override
+	public String getType()
 	{
 		return "0x05 RequestServerList";
 	}

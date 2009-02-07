@@ -30,7 +30,8 @@ import aionemu_commons.network.nio.Dispatcher;
  */
 public class GsAcceptor implements IAcceptor
 {
-	@Override public void accept(SelectionKey key) throws IOException
+	@Override
+	public void accept(SelectionKey key) throws IOException
 	{
 		// For an accept to be pending the channel must be a server socket
 		// channel.
@@ -53,7 +54,8 @@ public class GsAcceptor implements IAcceptor
 			con.setWriteKey(readKey);
 	}
 
-	@Override public String getName()
+	@Override
+	public String getName()
 	{
 		return "GameServer connections";
 	}

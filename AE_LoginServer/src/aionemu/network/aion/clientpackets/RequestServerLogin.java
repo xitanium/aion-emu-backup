@@ -40,7 +40,8 @@ public class RequestServerLogin extends AionClientPacket
 		servId = readD();
 	}
 
-	@Override protected void runImpl()
+	@Override
+	protected void runImpl()
 	{
 		SessionKey key = getConnection().getSessionKey();
 		if (key.checkLogin(loginOk1, loginOk2))
@@ -52,7 +53,8 @@ public class RequestServerLogin extends AionClientPacket
 		// TODO! dc
 	}
 
-	@Override public String getType()
+	@Override
+	public String getType()
 	{
 		return "0x02 RequestServerLogin";
 	}

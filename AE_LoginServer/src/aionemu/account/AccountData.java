@@ -60,12 +60,14 @@ public class AccountData implements ParamReadStH, IUStH
 		DB.select("SELECT * FROM account_data WHERE name=?", this);
 	}
 
-	@Override public void setParams(PreparedStatement stmt) throws SQLException
+	@Override
+	public void setParams(PreparedStatement stmt) throws SQLException
 	{
 		stmt.setString(1, name);
 	}
 
-	@Override public void handleRead(ResultSet rset) throws SQLException
+	@Override
+	public void handleRead(ResultSet rset) throws SQLException
 	{
 		// acc exist
 		if (rset.next())
@@ -88,7 +90,8 @@ public class AccountData implements ParamReadStH, IUStH
 		}
 	}
 
-	@Override public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
+	@Override
+	public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
 	{
 		stmt.setString(1, name);
 		stmt.setString(2, password);

@@ -30,7 +30,8 @@ public class GGAuth extends AionServerPacket
 		this.sessionId = sessionId;
 	}
 
-	@Override protected void writeImpl()
+	@Override
+	protected void writeImpl()
 	{
 		writeC(0x0b);
 		writeD(sessionId);
@@ -40,7 +41,8 @@ public class GGAuth extends AionServerPacket
 		writeD(0x00);
 	}
 
-	@Override public String getType()
+	@Override
+	public String getType()
 	{
 		return "0x0B GGAuth";
 	}

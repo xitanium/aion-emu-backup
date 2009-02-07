@@ -47,7 +47,8 @@ public class DeadLockDetector extends Thread
 		this.doWhenDL = doWhenDL;
 	}
 
-	@Override public final void run()
+	@Override
+	public final void run()
 	{
 		boolean deadlock = false;
 		while (!deadlock)

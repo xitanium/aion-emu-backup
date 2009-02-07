@@ -34,7 +34,8 @@ public abstract class GsServerPacket extends BasePacket<GsConnection> implements
 
 	}
 
-	@Override public final BasePacket<GsConnection> setConnection(GsConnection con)
+	@Override
+	public final BasePacket<GsConnection> setConnection(GsConnection con)
 	{
 		BasePacket<GsConnection> bp = super.setConnection(con);
 		return bp;
@@ -85,7 +86,8 @@ public abstract class GsServerPacket extends BasePacket<GsConnection> implements
 		_buf.put(data);
 	}
 
-	@Override public boolean write(ByteBuffer buf)
+	@Override
+	public boolean write(ByteBuffer buf)
 	{
 		_buf = buf;
 		try

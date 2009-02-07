@@ -71,7 +71,8 @@ public class AionConnection extends AConnection
 		return usesInternalIP;
 	}
 
-	@Override public boolean processData(ByteBuffer data)
+	@Override
+	public boolean processData(ByteBuffer data)
 	{
 		decrypt(data);
 		AionClientPacket pck = AionPacketHandler.handle(data, this);
@@ -186,22 +187,24 @@ public class AionConnection extends AConnection
 	}
 
 	/**
-	 * This will close the Connection And take care of everything that should be
-	 * done on disconnection (onDisconnect()) if the active char is not nulled
-	 * yet
+	 * This will close the Connection And take care of everything that should be done on disconnection (onDisconnect())
+	 * if the active char is not nulled yet
 	 */
-	@Override public void close()
+	@Override
+	public void close()
 	{
 		onlyClose();
 	}
 
-	@Override public void exception(IOException e, boolean read)
+	@Override
+	public void exception(IOException e, boolean read)
 	{
 		log.info("exception " + e);
 		close();
 	}
 
-	@Override public void terminate()
+	@Override
+	public void terminate()
 	{
 		log.info("terminate!");
 	}

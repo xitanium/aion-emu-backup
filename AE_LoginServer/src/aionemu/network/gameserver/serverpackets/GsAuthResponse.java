@@ -34,13 +34,15 @@ public class GsAuthResponse extends GsServerPacket implements IServerPacket
 		this.response = response;
 	}
 
-	@Override protected void writeImpl()
+	@Override
+	protected void writeImpl()
 	{
 		writeC(0x00);
 		writeC(response);
 	}
 
-	@Override public String getType()
+	@Override
+	public String getType()
 	{
 		return "0x00 GsAuthResponse";
 	}

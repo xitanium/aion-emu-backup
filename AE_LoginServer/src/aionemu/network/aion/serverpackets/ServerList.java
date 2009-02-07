@@ -27,7 +27,8 @@ import aionemu.network.aion.AionServerPacket;
  */
 public class ServerList extends AionServerPacket
 {
-	@Override protected void writeImpl()
+	@Override
+	protected void writeImpl()
 	{
 		// TODO!
 		writeC(0x04);
@@ -65,7 +66,8 @@ public class ServerList extends AionServerPacket
 
 	}
 
-	@Override public String getType()
+	@Override
+	public String getType()
 	{
 		return "0x04 ServerList";
 	}

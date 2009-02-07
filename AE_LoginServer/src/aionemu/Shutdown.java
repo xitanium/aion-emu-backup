@@ -53,8 +53,8 @@ public class Shutdown extends Thread
 	}
 
 	/**
-	 * get the shutdown-hook instance the shutdown-hook instance is created by
-	 * the first call of this function, but it has to be registrered externaly.
+	 * get the shutdown-hook instance the shutdown-hook instance is created by the first call of this function, but it
+	 * has to be registrered externaly.
 	 * 
 	 * @return instance of Shutdown, to be used as shutdown hook
 	 */
@@ -64,16 +64,14 @@ public class Shutdown extends Thread
 	}
 
 	/**
-	 * this function is called, when a new thread starts if this thread is the
-	 * thread of getInstance, then this is the shutdown hook and we save all
-	 * data and disconnect all clients. after this thread ends, the server will
-	 * completely exit if this is not the thread of getInstance, then this is a
-	 * countdown thread. we start the countdown, and when we finished it, and it
-	 * was not aborted, we tell the shutdown-hook why we call exit, and then
-	 * call exit when the exit status of the server is 1, startServer.sh /
-	 * startServer.bat will restart the server.
+	 * this function is called, when a new thread starts if this thread is the thread of getInstance, then this is the
+	 * shutdown hook and we save all data and disconnect all clients. after this thread ends, the server will completely
+	 * exit if this is not the thread of getInstance, then this is a countdown thread. we start the countdown, and when
+	 * we finished it, and it was not aborted, we tell the shutdown-hook why we call exit, and then call exit when the
+	 * exit status of the server is 1, startServer.sh / startServer.bat will restart the server.
 	 */
-	@Override public void run()
+	@Override
+	public void run()
 	{
 		SimpleDateFormat dateFmt = new SimpleDateFormat("dd MMM H:mm:ss");
 		log("[" + dateFmt.format(new Date(System.currentTimeMillis())) + "]");

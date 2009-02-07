@@ -28,7 +28,8 @@ public class ThreadUncaughtExceptionHandler implements Thread.UncaughtExceptionH
 {
 	private static final Logger	_log	= Logger.getLogger(ThreadUncaughtExceptionHandler.class.getName());
 
-	@Override public void uncaughtException(Thread t, Throwable e)
+	@Override
+	public void uncaughtException(Thread t, Throwable e)
 	{
 		_log.log(Level.WARNING, "Critical Error - Thread: " + t.getName() + " terminated abnormaly: " + e, e);
 		if (e instanceof OutOfMemoryError)

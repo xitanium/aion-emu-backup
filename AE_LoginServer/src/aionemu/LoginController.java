@@ -87,10 +87,9 @@ public class LoginController
 	}
 
 	/**
-	 * This is mostly to force the initialization of the Crypto Implementation,
-	 * avoiding it being done on runtime when its first needed.<BR>
-	 * In short it avoids the worst-case execution time on runtime by doing it
-	 * on loading.
+	 * This is mostly to force the initialization of the Crypto Implementation, avoiding it being done on runtime when
+	 * its first needed.<BR>
+	 * In short it avoids the worst-case execution time on runtime by doing it on loading.
 	 * 
 	 * @param key
 	 *            Any private RSA Key just for testing purposes.
@@ -128,8 +127,7 @@ public class LoginController
 
 	/**
 	 * <p>
-	 * This method returns one of the cached
-	 * {@link ScrambledKeyPair ScrambledKeyPairs} for communication with Login
+	 * This method returns one of the cached {@link ScrambledKeyPair ScrambledKeyPairs} for communication with Login
 	 * Clients.
 	 * </p>
 	 * 

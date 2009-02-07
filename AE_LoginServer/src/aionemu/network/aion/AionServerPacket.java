@@ -34,7 +34,8 @@ public abstract class AionServerPacket extends BasePacket<AionConnection> implem
 
 	}
 
-	@Override public final BasePacket<AionConnection> setConnection(AionConnection con)
+	@Override
+	public final BasePacket<AionConnection> setConnection(AionConnection con)
 	{
 		BasePacket<AionConnection> bp = super.setConnection(con);
 		return bp;
@@ -85,7 +86,8 @@ public abstract class AionServerPacket extends BasePacket<AionConnection> implem
 		_buf.put(data);
 	}
 
-	@Override public boolean write(ByteBuffer buf)
+	@Override
+	public boolean write(ByteBuffer buf)
 	{
 		_buf = buf;
 		try

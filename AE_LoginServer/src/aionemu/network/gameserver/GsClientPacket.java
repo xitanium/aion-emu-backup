@@ -48,9 +48,8 @@ public abstract class GsClientPacket extends BasePacket<GsConnection> implements
 	}
 
 	/**
-	 * This is only called once per packet instane ie: when you construct a
-	 * packet and send it to many players, it will only run when the first
-	 * packet is sent
+	 * This is only called once per packet instane ie: when you construct a packet and send it to many players, it will
+	 * only run when the first packet is sent
 	 */
 	protected abstract void runImpl();
 

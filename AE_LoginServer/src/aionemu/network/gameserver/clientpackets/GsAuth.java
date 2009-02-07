@@ -43,7 +43,7 @@ public class GsAuth extends GsClientPacket
 	{
 		super(buf, client);
 		desiredID = readC();
-		hostReserved = (readC() == 0 ? false : true);
+		hostReserved = (readC() != 0);
 		externalHost = readS();
 		internalHost = readS();
 		port = readH();

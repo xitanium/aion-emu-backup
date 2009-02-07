@@ -31,8 +31,7 @@ public class AuthGameGuard extends AionClientPacket
 	private final int	sessionId;
 
 	/*
-	 * private final int data1; private final int data2; private final int
-	 * data3; private final int data4;
+	 * private final int data1; private final int data2; private final int data3; private final int data4;
 	 */
 
 	public AuthGameGuard(ByteBuffer buf, AionConnection client)
@@ -44,7 +43,8 @@ public class AuthGameGuard extends AionClientPacket
 		 */
 	}
 
-	@Override protected void runImpl()
+	@Override
+	protected void runImpl()
 	{
 		AionConnection con = getConnection();
 		if (con.getSessionId() == sessionId)
@@ -59,7 +59,8 @@ public class AuthGameGuard extends AionClientPacket
 
 	}
 
-	@Override public String getType()
+	@Override
+	public String getType()
 	{
 		return "0x07 AuthGameGuard";
 	}

@@ -20,9 +20,8 @@ import aionemu.network.aion.AionConnection;
 import aionemu.network.aion.AionServerPacket;
 
 /**
- * Format: dd b dddd s d: session id d: protocol revision b: 0x90 bytes : 0x80
- * bytes for the scrambled RSA public key 0x10 bytes at 0x00 d: unknow d: unknow
- * d: unknow d: unknow s: blowfish key
+ * Format: dd b dddd s d: session id d: protocol revision b: 0x90 bytes : 0x80 bytes for the scrambled RSA public key
+ * 0x10 bytes at 0x00 d: unknow d: unknow d: unknow d: unknow s: blowfish key
  */
 public final class Init extends AionServerPacket
 {
@@ -46,7 +45,8 @@ public final class Init extends AionServerPacket
 	/**
 	 * @see com.l2jserver.mmocore.network.SendablePacket#write()
 	 */
-	@Override protected void writeImpl()
+	@Override
+	protected void writeImpl()
 	{
 		writeC(0x00); // init packet id
 
@@ -63,7 +63,8 @@ public final class Init extends AionServerPacket
 		writeC(0x00); // null termination ;)
 	}
 
-	@Override public String getType()
+	@Override
+	public String getType()
 	{
 		return "0x00 Init";
 	}

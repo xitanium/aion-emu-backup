@@ -60,7 +60,8 @@ public class ThreadPoolManager
 
 	}
 
-	@SuppressWarnings("unchecked") public <T extends Runnable> ScheduledFuture<T> schedule(T r, long delay)
+	@SuppressWarnings("unchecked")
+	public <T extends Runnable> ScheduledFuture<T> schedule(T r, long delay)
 	{
 		try
 		{
@@ -74,8 +75,8 @@ public class ThreadPoolManager
 		}
 	}
 
-	@SuppressWarnings("unchecked") public <T extends Runnable> ScheduledFuture<T> scheduleAtFixedRate(T r,
-		long initial, long delay)
+	@SuppressWarnings("unchecked")
+	public <T extends Runnable> ScheduledFuture<T> scheduleAtFixedRate(T r, long initial, long delay)
 	{
 		try
 		{

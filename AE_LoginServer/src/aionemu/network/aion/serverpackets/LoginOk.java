@@ -33,7 +33,8 @@ public class LoginOk extends AionServerPacket
 		this.loginOk2 = key.loginOkID2;
 	}
 
-	@Override protected void writeImpl()
+	@Override
+	protected void writeImpl()
 	{
 		writeC(0x03);
 		writeD(loginOk1);
@@ -47,7 +48,8 @@ public class LoginOk extends AionServerPacket
 		writeB(new byte[16]);
 	}
 
-	@Override public String getType()
+	@Override
+	public String getType()
 	{
 		return "0x03 LoginOk";
 	}

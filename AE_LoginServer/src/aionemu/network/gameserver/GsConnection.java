@@ -48,7 +48,8 @@ public class GsConnection extends AConnection
 		log.info("GS connection from: " + ip);
 	}
 
-	@Override public boolean processData(ByteBuffer data)
+	@Override
+	public boolean processData(ByteBuffer data)
 	{
 		GsClientPacket pck = GsPacketHandler.handle(data, this);
 		log.info("recived packet: " + pck);
@@ -75,19 +76,22 @@ public class GsConnection extends AConnection
 		this.state = state;
 	}
 
-	@Override public void close()
+	@Override
+	public void close()
 	{
 		GameServerTable.unregisterGameServer(this);
 		onlyClose();
 	}
 
-	@Override public void exception(IOException e, boolean read)
+	@Override
+	public void exception(IOException e, boolean read)
 	{
 		log.info("exception " + e);
 		close();
 	}
 
-	@Override public void terminate()
+	@Override
+	public void terminate()
 	{
 		log.info("gs terminate!");
 	}

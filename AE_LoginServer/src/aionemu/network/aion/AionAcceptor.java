@@ -32,7 +32,8 @@ import aionemu_commons.network.nio.NioServer;
  */
 public class AionAcceptor implements IAcceptor
 {
-	@Override public void accept(SelectionKey key) throws IOException
+	@Override
+	public void accept(SelectionKey key) throws IOException
 	{
 		// For an accept to be pending the channel must be a server socket
 		// channel.
@@ -57,7 +58,8 @@ public class AionAcceptor implements IAcceptor
 		con.sendPacket(new Init(con));
 	}
 
-	@Override public String getName()
+	@Override
+	public String getName()
 	{
 		return "Aion Connections";
 	}

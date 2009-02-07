@@ -33,14 +33,16 @@ public class PlayOk extends AionServerPacket
 		this.playOk2 = key.playOkID2;
 	}
 
-	@Override protected void writeImpl()
+	@Override
+	protected void writeImpl()
 	{
 		writeC(0x07);
 		writeD(playOk1);
 		writeD(playOk2);
 	}
 
-	@Override public String getType()
+	@Override
+	public String getType()
 	{
 		return "0x07 PlayOk";
 	}
