@@ -76,7 +76,7 @@
         <jar destfile="${build}/ae_login.jar">
             <fileset dir="${build.classes}"/>
             <manifest>
-                <attribute name="Main-Class" value="aionemu.LoginServer"/>
+                <attribute name="Main-Class" value="com.aionemu.loginserver.LoginServer"/>
             </manifest>
         </jar>
 
