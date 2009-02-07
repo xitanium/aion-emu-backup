@@ -22,6 +22,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 
+import org.apache.log4j.Logger;
+
 /**
  * This class allows easy manipulations with transactions, it should be used when critical or synchronized data should
  * be commited to two or more tables. This class allows us to avoid data synchronization problems in db. <p/> Class is
@@ -32,6 +34,8 @@ import java.sql.Savepoint;
  */
 public class Transaction
 {
+
+    private static final Logger log = Logger.getLogger(Transaction.class);
 
 	/**
 	 * Connection that is allocated for this transaction
@@ -136,18 +140,25 @@ public class Transaction
 	 * @throws SQLException
 	 *             if something went wrongF
 	 */
-	public void commit(Savepoint rollBackToOnError) throws SQLException
-	{
-		if (rollBackToOnError != null)
-		{
-			connection.rollback(rollBackToOnError);
-		}
-		else
-		{
-			connection.rollback();
-		}
+	public void commit(Savepoint rollBackToOnError) throws SQLException {
 
-		connection.setAutoCommit(true);
-		connection.close();
+        try{
+            connection.commit();
+        } catch(SQLException e){
+            log.warn("Error while commiting transaction", e);
+
+            try{
+                if (rollBackToOnError != null) {
+                    connection.rollback(rollBackToOnError);
+                } else {
+                    connection.rollback();
+                }
+            } catch(SQLException e1){
+                log.error("Can't rollback transaction", e1);
+            }
+        }
+
+        connection.setAutoCommit(true);
+        connection.close();
 	}
 }
