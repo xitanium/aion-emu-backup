@@ -85,9 +85,12 @@ public class LoggingService
 	}
 
 	/**
-	 * This method uses some reflection to hack default log4j log facrory. <br>
-	 * Unfortunately Log4J behaves weird with categories/categoryfactories so the easiest way is just to overwrite
-	 * default logger factory.
+	 * This method uses some reflection to hack default log4j log facrory. <p/>
+	 * 
+	 * Log4j uses this Hierarchy for loggers that don't have exact name match and element categoryFactory for loggers
+	 * with names that matches specified names in log4j.xml. <p/>
+	 * 
+	 * See log4j.xml for detailed description of Log4j behaviour.
 	 */
 	private static void overrideDefaultLoggerFactory()
 	{
