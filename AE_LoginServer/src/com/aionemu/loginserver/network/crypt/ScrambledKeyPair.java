@@ -19,14 +19,14 @@ package com.aionemu.loginserver.network.crypt;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.interfaces.RSAPublicKey;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * 
  */
 public class ScrambledKeyPair
 {
-	private static Logger	_log	= Logger.getLogger(ScrambledKeyPair.class.getName());
+	private static Logger	log	= Logger.getLogger(ScrambledKeyPair.class);
 	public KeyPair			_pair;
 	public byte[]			_scrambledModulus;
 
@@ -68,7 +68,7 @@ public class ScrambledKeyPair
 		{
 			scrambledMod[0x40 + i] = (byte) (scrambledMod[0x40 + i] ^ scrambledMod[i]);
 		}
-		_log.fine("Modulus was scrambled");
+		log.debug("Modulus was scrambled");
 
 		return scrambledMod;
 	}

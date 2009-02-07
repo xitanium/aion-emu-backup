@@ -19,7 +19,7 @@ package com.aionemu.loginserver.network.gameserver;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.AConnection;
 import com.aionemu.loginserver.GameServerTable;
@@ -30,7 +30,7 @@ import com.aionemu.loginserver.utils.ThreadPoolManager;
  */
 public class GsConnection extends AConnection
 {
-	private static final Logger	log	= Logger.getLogger(GsConnection.class.getName());
+	private static final Logger	log	= Logger.getLogger(GsConnection.class);
 
 	public static enum State
 	{

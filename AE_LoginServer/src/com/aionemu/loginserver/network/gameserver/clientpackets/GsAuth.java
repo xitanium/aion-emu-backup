@@ -18,7 +18,7 @@ package com.aionemu.loginserver.network.gameserver.clientpackets;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.aionemu.loginserver.GameServerTable;
 import com.aionemu.loginserver.network.gameserver.GsClientPacket;
@@ -30,7 +30,7 @@ import com.aionemu.loginserver.network.gameserver.serverpackets.GsAuthResponse;
  */
 public class GsAuth extends GsClientPacket
 {
-	private static final Logger	log	= Logger.getLogger(GsAuth.class.getName());
+	private static final Logger	log	= Logger.getLogger(GsAuth.class);
 	private final byte[]		hexID;
 	private final int			desiredID;
 	private final boolean		hostReserved;

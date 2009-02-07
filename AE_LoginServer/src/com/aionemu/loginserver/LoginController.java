@@ -22,7 +22,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.RSAKeyGenParameterSpec;
 
 import java.util.Random;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.crypto.Cipher;
 
@@ -33,7 +33,7 @@ import com.aionemu.loginserver.network.crypt.ScrambledKeyPair;
  */
 public class LoginController
 {
-	protected static final Logger	log				= Logger.getLogger(LoginController.class.getName());
+	protected static final Logger	log				= Logger.getLogger(LoginController.class);
 
 	private static LoginController	instance;
 

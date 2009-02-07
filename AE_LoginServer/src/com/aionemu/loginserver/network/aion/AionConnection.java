@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.security.interfaces.RSAPrivateKey;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.AConnection;
 import com.aionemu.loginserver.LoginController;
@@ -33,7 +33,7 @@ import com.aionemu.loginserver.utils.ThreadPoolManager;
  */
 public class AionConnection extends AConnection
 {
-	private static final Logger	log	= Logger.getLogger(AionConnection.class.getName());
+	private static final Logger	log	= Logger.getLogger(AionConnection.class);
 
 	public static enum State
 	{
@@ -102,7 +102,7 @@ public class AionConnection extends AConnection
 		{
 			byte[] dump = new byte[size];
 			System.arraycopy(buf.array(), buf.position(), dump, 0, size);
-			log.warning("Wrong checksum from client: " + this.toString());
+			log.warn("Wrong checksum from client: " + this.toString());
 			// TODO!
 			// close();
 			ret = true;

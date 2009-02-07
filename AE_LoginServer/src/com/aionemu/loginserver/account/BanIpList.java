@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DB;
 import com.aionemu.commons.database.IUStH;
@@ -34,7 +34,7 @@ import com.aionemu.loginserver.utils.NetworkUtils;
  */
 public class BanIpList
 {
-	protected static final Logger		log			= Logger.getLogger(BanIpList.class.getName());
+	protected static final Logger		log			= Logger.getLogger(BanIpList.class);
 
 	private static Map<String, Long>	restricted	= new ConcurrentHashMap<String, Long>();
 

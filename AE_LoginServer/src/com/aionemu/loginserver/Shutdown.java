@@ -16,13 +16,7 @@
  */
 package com.aionemu.loginserver;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DatabaseFactory;
 import com.aionemu.loginserver.account.BanIpList;
@@ -34,22 +28,8 @@ import com.aionemu.loginserver.utils.ThreadPoolManager;
  */
 public class Shutdown extends Thread
 {
-	private static final Logger			log			= Logger.getLogger(Shutdown.class.getName());
-	private static Shutdown				instance	= new Shutdown();
-	private static BufferedOutputStream	shutdownLog;
-
-	public Shutdown()
-	{
-		File log = new File("./log/shutdown.log");
-		try
-		{
-			log.createNewFile();
-			shutdownLog = new BufferedOutputStream(new FileOutputStream(log, true));
-		}
-		catch (Exception e)
-		{
-		}
-	}
+	private static final Logger	log			= Logger.getLogger(Shutdown.class);
+	private static Shutdown		instance	= new Shutdown();
 
 	/**
 	 * get the shutdown-hook instance the shutdown-hook instance is created by the first call of this function, but it
@@ -72,88 +52,44 @@ public class Shutdown extends Thread
 	@Override
 	public void run()
 	{
-		SimpleDateFormat dateFmt = new SimpleDateFormat("dd MMM H:mm:ss");
-		log("[" + dateFmt.format(new Date(System.currentTimeMillis())) + "]");
-
 		/* saaving ban ip list */
 		try
 		{
-			logln("saving ban ips...");
 			BanIpList.store();
-			log(" ban ips saved.");
 		}
 		catch (Throwable t)
 		{
+			log.error("Can't store BanIpList", t);
 		}
 
 		/* Disconnecting all the clients */
 		try
 		{
-			logln("Interrupting NioServer:");
 			IOServer.getInstance().shutdown();
 		}
 		catch (Throwable t)
 		{
-			t.printStackTrace();
+			log.error("Can't shutdown IOServer", t);
 		}
 
 		/* Shuting down DB connections */
 		try
 		{
-			logln("Closing SQL connections...");
 			DatabaseFactory.shutdown();
-			log(" SQL connections closed.");
 		}
 		catch (Throwable t)
 		{
+			log.error("Can't shutdown DatabaseFactory", t);
 		}
 
 		/* Shuting down threadpools */
 		try
 		{
-			logln("Shuting down ThreadPoolManager...");
 			ThreadPoolManager.getInstance().shutdown();
 		}
 		catch (Throwable t)
 		{
+			log.error("Can't shutdown ThreadPoolManager", t);
 		}
-		log("\n\n");
-	}
-
-	public static void logln(String msg)
-	{
-		log("\n" + msg, null);
-	}
-
-	public static void log(String msg)
-	{
-		log(msg, null);
-	}
-
-	public static void log(String msg, Throwable t)
-	{
-		try
-		{
-			if (t != null)
-			{
-				shutdownLog.write(("\n" + msg).getBytes());
-				t.printStackTrace(new PrintWriter(shutdownLog));
-				shutdownLog.write("\n".getBytes());
-			}
-			else
-				shutdownLog.write(msg.getBytes());
-			shutdownLog.flush();
-		}
-		catch (Exception e)
-		{
-		}
-		if (t != null)
-		{
-			System.out.print("\n" + msg);
-			t.printStackTrace();
-		}
-		else
-			System.out.print(msg);
-
 	}
 }

@@ -17,7 +17,7 @@
 package com.aionemu.loginserver.network.aion;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.BasePacket;
 import com.aionemu.commons.network.IServerPacket;
@@ -27,7 +27,7 @@ import com.aionemu.commons.network.IServerPacket;
  */
 public abstract class AionServerPacket extends BasePacket<AionConnection> implements IServerPacket
 {
-	private static final Logger	log	= Logger.getLogger(AionServerPacket.class.getName());
+	private static final Logger	log	= Logger.getLogger(AionServerPacket.class);
 
 	protected AionServerPacket()
 	{

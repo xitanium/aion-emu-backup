@@ -16,60 +16,81 @@
  */
 package com.aionemu.loginserver.configs;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
+
+import com.aionemu.commons.configuration.ConfigurableProcessor;
+import com.aionemu.commons.configuration.Property;
+import com.aionemu.commons.utils.PropertiesUtils;
 
 /**
  * @author -Nemesiss-
+ * @author SoulKeeper
  */
 public class Config
 {
-	protected static final Logger	log						= Logger.getLogger(Config.class.getName());
+	protected static final Logger	log	= Logger.getLogger(Config.class);
 
-	/** Login Server port */
+	/**
+	 * Login Server port
+	 */
+	@Property(key = "loginserver.network.client.port", defaultValue = "2106")
 	public static int				LOGIN_PORT;
-	/** Login Server bind ip */
+
+	/**
+	 * Login Server bind ip
+	 */
+	@Property(key = "loginserver.network.client.host", defaultValue = "*")
 	public static String			LOGIN_BIND_ADDRESS;
-	/** Number of trys of login before ban */
+
+	/**
+	 * Number of trys of login before ban
+	 */
+	@Property(key = "loginserver.network.client.logintrybeforeban", defaultValue = "5")
 	public static int				LOGIN_TRY_BEFORE_BAN;
-	/** Ban time */
+
+	/**
+	 * Ban time in minutes
+	 */
+	@Property(key = "loginserver.network.client.bantimeforbruteforcing", defaultValue = "15")
 	public static int				WRONG_LOGIN_BAN_TIME;
-	/** Show NC Licence */
-	public static boolean			SHOW_LICENCE			= true;
-	/** Number of Threads that will handle io read (>= 0) */
+
+	/**
+	 * Show NC Licence
+	 */
+	@Property(key = "loginserver.client.showlicense", defaultValue = "true")
+	public static boolean			SHOW_LICENCE;
+
+	/**
+	 * Number of Threads that will handle io read (>= 0)
+	 */
+	@Property(key = "loginserver.network.nio.threads.read", defaultValue = "0")
 	public static int				NIO_READ_THREADS;
-	/** Number of Threads that will handle io write (>= 0) */
+
+	/**
+	 * Number of Threads that will handle io write (>= 0)
+	 */
+	@Property(key = "loginserver.network.nio.threads.write", defaultValue = "0")
 	public static int				NIO_WRITE_THREADS;
 
-	public static boolean			ACCOUNT_AUTO_CREATION	= true;
+	/**
+	 * Should server automaticly create accounts for users or not?
+	 */
+	@Property(key = "loginserver.accounts.autocreate", defaultValue = "true")
+	public static boolean			ACCOUNT_AUTO_CREATION;
 
 	public static void load()
 	{
-		log.info("Loading loginserver.properties");
 		try
 		{
-			Properties settings = new Properties();
-			InputStream is = new FileInputStream(new File("./config/loginserver.properties"));
-			settings.load(is);
-			is.close();
-
-			LOGIN_PORT = Integer.parseInt(settings.getProperty("LoginPort", "2106"));
-			LOGIN_BIND_ADDRESS = settings.getProperty("LoginserverHostname", "*");
-			LOGIN_TRY_BEFORE_BAN = Integer.parseInt(settings.getProperty("LoginTryBeforeBan", "10"));
-			WRONG_LOGIN_BAN_TIME = Integer.parseInt(settings.getProperty("WrongLoginBanTime", "15"));
-			NIO_READ_THREADS = Integer.parseInt(settings.getProperty("NioReadThreads", "0"));
-			NIO_WRITE_THREADS = Integer.parseInt(settings.getProperty("NioWriteThreads", "0"));
-
-			settings.clear();
+			Properties[] props = PropertiesUtils.loadAllFromDirectory("./config");
+			ConfigurableProcessor.process(Config.class, props);
 		}
 		catch (Exception e)
 		{
-			log.log(Level.SEVERE, "Error while loading loginserver.properties " + e, e);
-			throw new Error("loginserver.cfg not loaded!");
+			log.fatal("Can't load loginserver configuration", e);
+			throw new Error("Can't load loginserver configuration", e);
 		}
 	}
 }

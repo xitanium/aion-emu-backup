@@ -17,7 +17,7 @@
 package com.aionemu.loginserver.network.gameserver;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import com.aionemu.loginserver.network.gameserver.GsConnection.State;
 import com.aionemu.loginserver.network.gameserver.clientpackets.GsAuth;
 
@@ -26,7 +26,7 @@ import com.aionemu.loginserver.network.gameserver.clientpackets.GsAuth;
  */
 public class GsPacketHandler
 {
-	private static final Logger	log	= Logger.getLogger(GsPacketHandler.class.getName());
+	private static final Logger	log	= Logger.getLogger(GsPacketHandler.class);
 
 	public static GsClientPacket handle(ByteBuffer data, GsConnection client)
 	{

@@ -17,8 +17,8 @@
 package com.aionemu.loginserver;
 
 import java.security.GeneralSecurityException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DatabaseFactory;
 import com.aionemu.commons.services.LoggingService;
@@ -33,7 +33,7 @@ import com.aionemu.loginserver.utils.ThreadPoolManager;
  */
 public class LoginServer
 {
-	private static final Logger	log	= Logger.getLogger(LoginServer.class.getName());
+	private static final Logger	log	= Logger.getLogger(LoginServer.class);
 
 	/**
 	 * @param args
@@ -52,7 +52,7 @@ public class LoginServer
 		}
 		catch (GeneralSecurityException e)
 		{
-			log.log(Level.SEVERE, "ERROR: Failed initializing LoginController. Reason: " + e.getMessage(), e);
+			log.warn("ERROR: Failed initializing LoginController. Reason: " + e.getMessage(), e);
 			System.exit(1);
 		}
 

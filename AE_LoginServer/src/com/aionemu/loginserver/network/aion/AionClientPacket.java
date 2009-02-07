@@ -17,8 +17,8 @@
 package com.aionemu.loginserver.network.aion;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.BasePacket;
 
@@ -27,7 +27,7 @@ import com.aionemu.commons.network.BasePacket;
  */
 public abstract class AionClientPacket extends BasePacket<AionConnection> implements Runnable
 {
-	private static Logger	log	= Logger.getLogger(AionClientPacket.class.getName());
+	private static Logger	log	= Logger.getLogger(AionClientPacket.class);
 
 	protected AionClientPacket(ByteBuffer buf, AionConnection client)
 	{
@@ -47,7 +47,7 @@ public abstract class AionClientPacket extends BasePacket<AionConnection> implem
 			if (name == null)
 				name = getConnection().getIP();
 
-			log.log(Level.SEVERE, "error handling client (" + name + ") message " + getType(), e);
+			log.error("error handling client (" + name + ") message " + getType(), e);
 		}
 	}
 

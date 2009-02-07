@@ -17,8 +17,8 @@
 package com.aionemu.loginserver.network.gameserver;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.BasePacket;
 
@@ -27,7 +27,7 @@ import com.aionemu.commons.network.BasePacket;
  */
 public abstract class GsClientPacket extends BasePacket<GsConnection> implements Runnable
 {
-	private static Logger	log	= Logger.getLogger(GsClientPacket.class.getName());
+	private static Logger	log	= Logger.getLogger(GsClientPacket.class);
 
 	protected GsClientPacket(ByteBuffer buf, GsConnection client)
 	{
@@ -43,7 +43,7 @@ public abstract class GsClientPacket extends BasePacket<GsConnection> implements
 		}
 		catch (Throwable e)
 		{
-			log.log(Level.SEVERE, "error handling gs (" + getConnection().getIP() + ") message " + getType(), e);
+			log.warn("error handling gs (" + getConnection().getIP() + ") message " + getType(), e);
 		}
 	}
 

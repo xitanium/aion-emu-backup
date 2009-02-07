@@ -16,7 +16,7 @@
  */
 package com.aionemu.loginserver;
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.serverpackets.GsAuthResponse;
@@ -26,7 +26,7 @@ import com.aionemu.loginserver.network.gameserver.serverpackets.GsAuthResponse;
  */
 public class GameServerTable
 {
-	private static final Logger	log	= Logger.getLogger(GameServerTable.class.getName());
+	private static final Logger	log	= Logger.getLogger(GameServerTable.class);
 
 	private GameServerInfo[]	gameservers;
 
@@ -70,19 +70,19 @@ public class GameServerTable
 		}
 	}
 
-	public static final void load()
+	public static void load()
 	{
 		// TODO! load from sql registred gameservers
 	}
 
-	public static final int registerGameServer(GsConnection gsConnection, int desiredID, boolean hostReserved,
+	public static int registerGameServer(GsConnection gsConnection, int desiredID, boolean hostReserved,
 		String externalHost, String internalHost, int port, int max_palyers, String hexID)
 	{
 		// TODO!
 		return GsAuthResponse.RESPONSE_OK;
 	}
 
-	public static final void unregisterGameServer(GsConnection gsConnection)
+	public static void unregisterGameServer(GsConnection gsConnection)
 	{
 		log.info("GameServer " + gsConnection.getIP() + " unregistered.");
 		// TODO!

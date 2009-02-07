@@ -17,7 +17,7 @@
 package com.aionemu.loginserver.network.aion;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.aionemu.loginserver.network.aion.AionConnection.State;
 import com.aionemu.loginserver.network.aion.clientpackets.AuthGameGuard;
@@ -30,7 +30,7 @@ import com.aionemu.loginserver.network.aion.clientpackets.RequestServerLogin;
  */
 public class AionPacketHandler
 {
-	private static final Logger	log	= Logger.getLogger(AionPacketHandler.class.getName());
+	private static final Logger	log	= Logger.getLogger(AionPacketHandler.class);
 
 	public static AionClientPacket handle(ByteBuffer data, AionConnection client)
 	{

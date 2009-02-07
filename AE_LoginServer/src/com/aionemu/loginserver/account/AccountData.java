@@ -22,8 +22,8 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DB;
 import com.aionemu.commons.database.IUStH;
@@ -38,7 +38,7 @@ import sun.misc.BASE64Encoder;
  */
 public class AccountData implements ParamReadStH, IUStH
 {
-	private static Logger	log				= Logger.getLogger(AccountData.class.getName());
+	private static Logger	log				= Logger.getLogger(AccountData.class);
 
 	private final String	name;
 	private final String	clientPassword;
@@ -146,14 +146,14 @@ public class AccountData implements ParamReadStH, IUStH
 
 	private String encryptPassword(String pass)
 	{
-		MessageDigest md = null;
+		MessageDigest md;
 		try
 		{
 			md = MessageDigest.getInstance("SHA-1");
 		}
 		catch (NoSuchAlgorithmException e)
 		{
-			log.log(Level.WARNING, "Error while obtaining decript algorithm", e);
+			log.warn("Error while obtaining decript algorithm", e);
 			throw new RuntimeException("AccountData.encryptPassword()");
 		}
 		try
@@ -162,7 +162,7 @@ public class AccountData implements ParamReadStH, IUStH
 		}
 		catch (UnsupportedEncodingException e)
 		{
-			log.log(Level.WARNING, "Problem with decript algorithm occured.", e);
+			log.warn("Problem with decript algorithm occured.", e);
 			throw new RuntimeException("AccountData.encryptPassword()");
 		}
 

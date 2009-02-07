@@ -16,8 +16,7 @@
  */
 package com.aionemu.loginserver.utils;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.nio.Dispatcher;
 
@@ -26,19 +25,19 @@ import com.aionemu.commons.network.nio.Dispatcher;
  */
 public class ThreadUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler
 {
-	private static final Logger	_log	= Logger.getLogger(ThreadUncaughtExceptionHandler.class.getName());
+	private static final Logger	log	= Logger.getLogger(ThreadUncaughtExceptionHandler.class);
 
 	@Override
 	public void uncaughtException(Thread t, Throwable e)
 	{
-		_log.log(Level.WARNING, "Critical Error - Thread: " + t.getName() + " terminated abnormaly: " + e, e);
+		log.error("Critical Error - Thread: " + t.getName() + " terminated abnormaly: " + e, e);
 		if (e instanceof OutOfMemoryError)
 		{
 			// TODO try get some memory or restart
 		}
 		if (t instanceof Dispatcher)
 		{
-			_log.info("Restarting Dispatcher...");
+			log.info("Restarting Dispatcher...");
 			// TODO!
 		}
 		// TODO! some threads should be "restarted" on error

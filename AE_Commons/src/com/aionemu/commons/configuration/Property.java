@@ -21,11 +21,15 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.lang.annotation.Documented;
 
 /**
  * This annotation is used to mark field that should be processed by
- * {@link com.aionemu.commons.configuration.ConfigurableProcessor}
+ * {@link com.aionemu.commons.configuration.ConfigurableProcessor}<br><br>
+ *
+ * This annotation is Documented, all definitions with it will appear in javadoc
  */
+@Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Property

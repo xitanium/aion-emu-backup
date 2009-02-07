@@ -21,15 +21,15 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MonitorInfo;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author -Nemesiss-
  */
 public class DeadLockDetector extends Thread
 {
-	private static final Logger	_log	= Logger.getLogger(DeadLockDetector.class.getName());
+	private static final Logger	log		= Logger.getLogger(DeadLockDetector.class);
 	/** What should we do on DeadLock */
 	public static final byte	NOTHING	= 0;
 	public static final byte	RESTART	= 1;
@@ -89,7 +89,7 @@ public class DeadLockDetector extends Thread
 								+ " which is held by " + dl.getLockOwnerName() + "\n";
 						}
 					}
-					_log.warning(info);
+					log.warn(info);
 
 					if (doWhenDL == RESTART)
 					{
@@ -100,7 +100,7 @@ public class DeadLockDetector extends Thread
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "DeadLockDetector: " + e, e);
+				log.warn("DeadLockDetector: " + e, e);
 			}
 		}
 	}

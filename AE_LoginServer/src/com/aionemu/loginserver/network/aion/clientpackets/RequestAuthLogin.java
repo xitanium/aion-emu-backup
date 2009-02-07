@@ -18,18 +18,18 @@ package com.aionemu.loginserver.network.aion.clientpackets;
 
 import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
+
+import org.apache.log4j.Logger;
 
 import com.aionemu.loginserver.account.AccountController;
 import com.aionemu.loginserver.account.AuthResponse;
 import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
-import com.aionemu.loginserver.network.aion.SessionKey;
 import com.aionemu.loginserver.network.aion.AionConnection.State;
+import com.aionemu.loginserver.network.aion.SessionKey;
 import com.aionemu.loginserver.network.aion.serverpackets.LoginFail;
 import com.aionemu.loginserver.network.aion.serverpackets.LoginOk;
 
@@ -38,7 +38,7 @@ import com.aionemu.loginserver.network.aion.serverpackets.LoginOk;
  */
 public class RequestAuthLogin extends AionClientPacket
 {
-	private static final Logger	log	= Logger.getLogger(RequestAuthLogin.class.getName());
+	private static final Logger	log	= Logger.getLogger(RequestAuthLogin.class);
 
 	private byte[]				data;
 
@@ -69,7 +69,7 @@ public class RequestAuthLogin extends AionClientPacket
 		}
 		catch (GeneralSecurityException e)
 		{
-			log.log(Level.WARNING, "Error while decripting data on user auth." + e, e);
+			log.warn("Error while decripting data on user auth." + e, e);
 			sendPacket(new LoginFail(AuthResponse.INVALID_PASSWORD));
 			return;
 		}

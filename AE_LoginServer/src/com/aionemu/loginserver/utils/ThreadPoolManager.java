@@ -25,13 +25,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.aionemu.loginserver.Shutdown;
+import org.apache.log4j.Logger;
 
 /**
  * @author -Nemesiss-
  */
 public class ThreadPoolManager
 {
+	private static final Logger			log			= Logger.getLogger(ThreadPoolManager.class);
+
 	private static ThreadPoolManager	instance	= new ThreadPoolManager();
 
 	private ScheduledThreadPoolExecutor	scheduledThreadPool;
@@ -105,16 +107,16 @@ public class ThreadPoolManager
 
 	private class PriorityThreadFactory implements ThreadFactory
 	{
-		private int				_prio;
-		private String			_name;
-		private AtomicInteger	_threadNumber	= new AtomicInteger(1);
-		private ThreadGroup		_group;
+		private int				prio;
+		private String			name;
+		private AtomicInteger	threadNumber	= new AtomicInteger(1);
+		private ThreadGroup		group;
 
 		public PriorityThreadFactory(String name, int prio)
 		{
-			_prio = prio;
-			_name = name;
-			_group = new ThreadGroup(_name);
+			this.prio = prio;
+			this.name = name;
+			group = new ThreadGroup(this.name);
 		}
 
 		/*
@@ -124,16 +126,16 @@ public class ThreadPoolManager
 		 */
 		public Thread newThread(Runnable r)
 		{
-			Thread t = new Thread(_group, r);
-			t.setName(_name + "-" + _threadNumber.getAndIncrement());
-			t.setPriority(_prio);
+			Thread t = new Thread(group, r);
+			t.setName(name + "-" + threadNumber.getAndIncrement());
+			t.setPriority(prio);
 			t.setUncaughtExceptionHandler(new ThreadUncaughtExceptionHandler());
 			return t;
 		}
 
 		public ThreadGroup getGroup()
 		{
-			return _group;
+			return group;
 		}
 	}
 
@@ -150,12 +152,11 @@ public class ThreadPoolManager
 			scheduledThreadPool.awaitTermination(2, TimeUnit.SECONDS);
 			aionPacketsThreadPool.awaitTermination(2, TimeUnit.SECONDS);
 			gameServerPacketsThreadPool.awaitTermination(2, TimeUnit.SECONDS);
-			Shutdown.log(" All ThreadPools are now stoped.");
+			log.info("All ThreadPools are now stopped");
 		}
 		catch (InterruptedException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Can't shutdown ThreadPoolManager", e);
 		}
 	}
 }
