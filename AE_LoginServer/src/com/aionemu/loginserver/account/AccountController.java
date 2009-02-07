@@ -19,15 +19,15 @@ package com.aionemu.loginserver.account;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import aionemu_commons.database.DB;
-import aionemu_commons.database.IUStH;
+import com.aionemu.commons.database.DB;
+import com.aionemu.commons.database.IUStH;
 
 /**
  * @author -Nemesiss-, KID
  */
 public class AccountController
 {
-	public static final AuthResponse tryAuth(final String login, String pass, final String address)
+	public static AuthResponse tryAuth(final String login, String pass, final String address)
 	{
 		if (BanIpList.isRestricted(address))
 			return AuthResponse.BAN_IP;

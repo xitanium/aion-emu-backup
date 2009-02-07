@@ -24,10 +24,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
 
+import com.aionemu.commons.database.DatabaseFactory;
 import com.aionemu.loginserver.account.BanIpList;
 import com.aionemu.loginserver.network.IOServer;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
-import aionemu_commons.database.DatabaseFactory;
 
 /**
  * @author -Nemesiss-
@@ -48,7 +48,7 @@ public class Shutdown extends Thread
 		}
 		catch (Exception e)
 		{
-		};
+		}
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class Shutdown extends Thread
 		try
 		{
 			logln("Closing SQL connections...");
-			DatabaseFactory.getInstance().shutdown();
+			DatabaseFactory.shutdown();
 			log(" SQL connections closed.");
 		}
 		catch (Throwable t)

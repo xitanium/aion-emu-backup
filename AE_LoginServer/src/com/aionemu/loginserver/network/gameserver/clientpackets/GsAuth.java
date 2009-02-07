@@ -52,14 +52,16 @@ public class GsAuth extends GsClientPacket
 		hexID = readB(size);
 	}
 
-	@Override protected void runImpl()
+	@Override
+	protected void runImpl()
 	{
 		int resp = GameServerTable.registerGameServer(getConnection(), desiredID, hostReserved, externalHost,
 			internalHost, port, max_palyers, new BigInteger(hexID).toString(16));
 		sendPacket(new GsAuthResponse(resp));
 	}
 
-	@Override public String getType()
+	@Override
+	public String getType()
 	{
 		return "0x00 GsAuth";
 	}

@@ -24,17 +24,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import com.aionemu.commons.database.DB;
+import com.aionemu.commons.database.IUStH;
+import com.aionemu.commons.database.ReadStH;
 import com.aionemu.loginserver.utils.NetworkUtils;
-import aionemu_commons.database.DB;
-import aionemu_commons.database.IUStH;
-import aionemu_commons.database.ReadStH;
 
 /**
  * @author KID
  */
 public class BanIpList
 {
-	protected static final Logger		_log		= Logger.getLogger(BanIpList.class.getName());
+	protected static final Logger		log			= Logger.getLogger(BanIpList.class.getName());
 
 	private static Map<String, Long>	restricted	= new ConcurrentHashMap<String, Long>();
 
@@ -55,7 +55,7 @@ public class BanIpList
 
 		restricted.put(address, time);
 
-		_log.info("Banned IP: adding " + address + " address up to " + minutes + " mins.");
+		log.info("Banned IP: adding " + address + " address up to " + minutes + " mins.");
 
 		DB.insertUpdate("REPLACE INTO ban_ip(mask, time_end) VALUES (?,?)", new IUStH() {
 			public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
@@ -71,7 +71,7 @@ public class BanIpList
 	public static void removeBannedIp(String address)
 	{
 		if (restricted.remove(address) != null)
-			_log.info("Banned IP: removed " + address + " address.");
+			log.info("Banned IP: removed " + address + " address.");
 
 	}
 
@@ -94,7 +94,7 @@ public class BanIpList
 			}
 		});
 
-		_log.info("Banned IP: Loaded " + restricted.size() + " masks.");
+		log.info("Banned IP: Loaded " + restricted.size() + " masks.");
 	}
 
 	public static void store()

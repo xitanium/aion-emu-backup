@@ -20,12 +20,13 @@ import java.security.GeneralSecurityException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.aionemu.commons.database.DatabaseFactory;
+import com.aionemu.commons.services.LoggingService;
 import com.aionemu.loginserver.account.BanIpList;
 import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.network.IOServer;
 import com.aionemu.loginserver.utils.DeadLockDetector;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
-import aionemu_commons.database.DatabaseFactory;
 
 /**
  * @author -Nemesiss-
@@ -39,15 +40,11 @@ public class LoginServer
 	 */
 	public static void main(String[] args)
 	{
-		new LoginServer();
-	}
-
-	public LoginServer()
-	{
+		LoggingService.init();
+		DatabaseFactory.init(); // initializing DB Factory
 		Config.load();
 		new DeadLockDetector(60, DeadLockDetector.RESTART).start();
 		ThreadPoolManager.getInstance();
-		DatabaseFactory.getInstance(); // initializing DB Factory
 
 		try
 		{

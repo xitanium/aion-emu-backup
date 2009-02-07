@@ -22,12 +22,11 @@ import java.nio.channels.SocketChannel;
 import java.security.interfaces.RSAPrivateKey;
 import java.util.logging.Logger;
 
+import com.aionemu.commons.network.AConnection;
 import com.aionemu.loginserver.LoginController;
 import com.aionemu.loginserver.network.crypt.LoginCrypt;
 import com.aionemu.loginserver.network.crypt.ScrambledKeyPair;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
-
-import aionemu_commons.network.AConnection;
 
 /**
  * @author -Nemesiss-
@@ -39,7 +38,7 @@ public class AionConnection extends AConnection
 	public static enum State
 	{
 		CONNECTED, AUTHED_GG, AUTHED_LOGIN
-	};
+	}
 
 	private State				state;
 	private LoginCrypt			loginCrypt;

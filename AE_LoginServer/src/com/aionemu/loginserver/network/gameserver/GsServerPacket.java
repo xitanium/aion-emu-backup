@@ -19,8 +19,8 @@ package com.aionemu.loginserver.network.gameserver;
 import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
-import aionemu_commons.network.BasePacket;
-import aionemu_commons.network.IServerPacket;
+import com.aionemu.commons.network.BasePacket;
+import com.aionemu.commons.network.IServerPacket;
 
 /**
  * @author -Nemesiss-
@@ -37,8 +37,7 @@ public abstract class GsServerPacket extends BasePacket<GsConnection> implements
 	@Override
 	public final BasePacket<GsConnection> setConnection(GsConnection con)
 	{
-		BasePacket<GsConnection> bp = super.setConnection(con);
-		return bp;
+		return super.setConnection(con);
 	}
 
 	protected final void writeD(int value)

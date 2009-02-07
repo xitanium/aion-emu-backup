@@ -19,8 +19,8 @@ package com.aionemu.loginserver.network.aion;
 import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
-import aionemu_commons.network.BasePacket;
-import aionemu_commons.network.IServerPacket;
+import com.aionemu.commons.network.BasePacket;
+import com.aionemu.commons.network.IServerPacket;
 
 /**
  * @author -Nemesiss-
@@ -37,8 +37,7 @@ public abstract class AionServerPacket extends BasePacket<AionConnection> implem
 	@Override
 	public final BasePacket<AionConnection> setConnection(AionConnection con)
 	{
-		BasePacket<AionConnection> bp = super.setConnection(con);
-		return bp;
+		return super.setConnection(con);
 	}
 
 	protected final void writeD(int value)

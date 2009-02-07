@@ -21,10 +21,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.logging.Logger;
 
+import com.aionemu.commons.network.AConnection;
 import com.aionemu.loginserver.GameServerTable;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
-
-import aionemu_commons.network.AConnection;
 
 /**
  * @author -Nemesiss-
@@ -36,7 +35,7 @@ public class GsConnection extends AConnection
 	public static enum State
 	{
 		CONNECTED, AUTHED
-	};
+	}
 
 	private State	state;
 

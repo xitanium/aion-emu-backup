@@ -21,9 +21,9 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
+import com.aionemu.commons.network.IAcceptor;
+import com.aionemu.commons.network.nio.Dispatcher;
 import com.aionemu.loginserver.network.IOServer;
-import aionemu_commons.network.IAcceptor;
-import aionemu_commons.network.nio.Dispatcher;
 
 /**
  * @author -Nemesiss-

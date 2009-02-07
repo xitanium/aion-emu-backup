@@ -19,7 +19,7 @@ package com.aionemu.loginserver.utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import aionemu_commons.network.nio.Dispatcher;
+import com.aionemu.commons.network.nio.Dispatcher;
 
 /**
  * @author -Nemesiss-

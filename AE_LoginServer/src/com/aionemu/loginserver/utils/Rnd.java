@@ -23,11 +23,11 @@ package com.aionemu.loginserver.utils;
  */
 public class Rnd
 {
-	private static MTRandom	_rnd	= new MTRandom();
+	private static MTRandom	rnd	= new MTRandom();
 
-	public static final float get() // get random number from 0 to 1
+	public static float get() // get random number from 0 to 1
 	{
-		return _rnd.nextFloat();
+		return rnd.nextFloat();
 	}
 
 	/**
@@ -37,39 +37,39 @@ public class Rnd
 	 *            The superior limit (exclusive)
 	 * @return A number from 0 to n-1
 	 */
-	public static final int get(int n)
+	public static int get(int n)
 	{
-		return (int) Math.floor(_rnd.nextDouble() * n);
+		return (int) Math.floor(rnd.nextDouble() * n);
 	}
 
-	public static final int get(int min, int max) // get random number from
+	public static int get(int min, int max) // get random number from
 	// min to max (not max-1 !)
 	{
-		return min + (int) Math.floor(_rnd.nextDouble() * (max - min + 1));
+		return min + (int) Math.floor(rnd.nextDouble() * (max - min + 1));
 	}
 
-	public static final int nextInt(int n)
+	public static int nextInt(int n)
 	{
-		return (int) Math.floor(_rnd.nextDouble() * n);
+		return (int) Math.floor(rnd.nextDouble() * n);
 	}
 
-	public static final int nextInt()
+	public static int nextInt()
 	{
-		return _rnd.nextInt();
+		return rnd.nextInt();
 	}
 
-	public static final double nextDouble()
+	public static double nextDouble()
 	{
-		return _rnd.nextDouble();
+		return rnd.nextDouble();
 	}
 
-	public static final double nextGaussian()
+	public static double nextGaussian()
 	{
-		return _rnd.nextGaussian();
+		return rnd.nextGaussian();
 	}
 
-	public static final boolean nextBoolean()
+	public static boolean nextBoolean()
 	{
-		return _rnd.nextBoolean();
+		return rnd.nextBoolean();
 	}
 }

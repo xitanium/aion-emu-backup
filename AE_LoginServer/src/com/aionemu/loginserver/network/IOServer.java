@@ -16,11 +16,11 @@
  */
 package com.aionemu.loginserver.network;
 
+import com.aionemu.commons.network.nio.NioServer;
+import com.aionemu.commons.network.nio.ServerCfg;
 import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.network.aion.AionAcceptor;
 import com.aionemu.loginserver.network.gameserver.GsAcceptor;
-import aionemu_commons.network.nio.NioServer;
-import aionemu_commons.network.nio.ServerCfg;
 
 /**
  * @author -Nemesiss-
@@ -32,7 +32,7 @@ public class IOServer
 														new AionAcceptor()), new ServerCfg("127.0.0.1", 9014,
 														new GsAcceptor()));
 
-	public final static NioServer getInstance()
+	public static NioServer getInstance()
 	{
 		return instance;
 	}

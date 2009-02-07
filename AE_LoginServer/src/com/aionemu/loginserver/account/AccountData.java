@@ -25,12 +25,13 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import sun.misc.BASE64Encoder;
+import com.aionemu.commons.database.DB;
+import com.aionemu.commons.database.IUStH;
+import com.aionemu.commons.database.ParamReadStH;
 import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.utils.NetworkUtils;
-import aionemu_commons.database.DB;
-import aionemu_commons.database.IUStH;
-import aionemu_commons.database.ParamReadStH;
+
+import sun.misc.BASE64Encoder;
 
 /**
  * @author KID, -Nemesiss-
@@ -143,7 +144,7 @@ public class AccountData implements ParamReadStH, IUStH
 		return access == 1;
 	}
 
-	private final String encryptPassword(String pass)
+	private String encryptPassword(String pass)
 	{
 		MessageDigest md = null;
 		try
