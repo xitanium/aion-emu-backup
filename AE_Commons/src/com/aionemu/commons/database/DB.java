@@ -19,6 +19,7 @@ package com.aionemu.commons.database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
@@ -304,5 +305,18 @@ public final class DB
 		}
 
 		return success;
+	}
+
+	/**
+	 * Begins new transaction
+	 * 
+	 * @return new Transaction object
+	 * @throws java.sql.SQLException
+	 *             if was unable to create transaction
+	 */
+	public static Transaction beginTransaction() throws SQLException
+	{
+		Connection con = DatabaseFactory.getConnection();
+		return new Transaction(con);
 	}
 }
