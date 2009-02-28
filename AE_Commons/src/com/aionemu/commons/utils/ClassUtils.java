@@ -1,3 +1,20 @@
+/*
+ * This file is part of aion-emu.
+ *
+ * aion-emu is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * aion-emu is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.aionemu.commons.utils;
 
 /**
@@ -51,4 +68,29 @@ public class ClassUtils
 		}
 		return false;
 	}
+
+    /**
+     * Checks if class in member of the package
+     * @param clazz class to check
+     * @param packageName package
+     * @return true if is member
+     */
+    public static boolean isPackageMember(Class<?> clazz, String packageName){
+        return isPackageMember(clazz.getName(), packageName);
+    }
+
+    /**
+     * Checks if classNames belongs to package
+     * @param className class name
+     * @param packageName package
+     * @return true if belongs
+     */
+    public static boolean isPackageMember(String className, String packageName){
+        if(!className.contains(".")){
+            return packageName == null || packageName.isEmpty();
+        } else {
+            String classPackage = className.substring(0, className.lastIndexOf('.'));
+            return packageName.equals(classPackage);
+        }
+    }
 }
