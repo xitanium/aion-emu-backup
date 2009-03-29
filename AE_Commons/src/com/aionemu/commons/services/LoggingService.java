@@ -19,6 +19,8 @@ package com.aionemu.commons.services;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.net.URL;
+import java.net.MalformedURLException;
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -49,19 +51,50 @@ public class LoggingService
 	public static final String	LOGGER_FACTORY_CLASS_PROPERTY	= "log4j.loggerfactory";
 
 	/**
+	 * Default log4j configuration file
+	 */
+	public static final String	LOGGER_CONFIG_FILE				= "config/log4j.xml";
+
+	/**
 	 * Is Logging initialized or not?
 	 */
 	private static boolean		initialized;
 
 	/**
-	 * Actually initializes logging system.
+	 * Initializes logging system with {@link #LOGGER_CONFIG_FILE default} config file
 	 * 
 	 * @throws com.aionemu.commons.log4j.exceptions.Log4jInitializationError
 	 *             if can't initialize logging
 	 */
 	public static void init() throws Log4jInitializationError
 	{
+		File f = new File(LOGGER_CONFIG_FILE);
 
+		if (!f.exists())
+		{
+			throw new Log4jInitializationError("Missing file " + f.getPath());
+		}
+
+		try
+		{
+			init(f.toURI().toURL());
+		}
+		catch (MalformedURLException e)
+		{
+			throw new Log4jInitializationError("Can't initalize logging", e);
+		}
+	}
+
+	/**
+	 * Initializes logging system with config file from URL
+	 * 
+	 * @param url
+	 *            config file location
+	 * @throws com.aionemu.commons.log4j.exceptions.Log4jInitializationError
+	 *             if can't initialize logging
+	 */
+	public static void init(URL url) throws Log4jInitializationError
+	{
 		synchronized (LoggingService.class)
 		{
 			if (initialized)
@@ -74,16 +107,9 @@ public class LoggingService
 			}
 		}
 
-		File f = new File("config/log4j.xml");
-
-		if (!f.exists())
-		{
-			throw new Log4jInitializationError("Missing file " + f.getPath());
-		}
-
 		try
 		{
-			DOMConfigurator.configure(f.getPath());
+			DOMConfigurator.configure(url);
 		}
 		catch (Exception e)
 		{
@@ -98,6 +124,7 @@ public class LoggingService
 		{
 			logger.removeHandler(h);
 		}
+
 		logger.addHandler(new JuliToLog4JHandler());
 	}
 
