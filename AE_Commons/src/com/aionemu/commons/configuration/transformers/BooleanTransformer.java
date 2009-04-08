@@ -28,7 +28,7 @@ import com.aionemu.commons.configuration.TransformationException;
  * 
  * @author SoulKeeper
  */
-public class BooleanTransformer implements PropertyTransformer
+public class BooleanTransformer implements PropertyTransformer<Boolean>
 {
 
 	/**

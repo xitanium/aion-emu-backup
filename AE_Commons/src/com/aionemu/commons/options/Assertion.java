@@ -14,14 +14,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.commons.network;
-
-import java.nio.ByteBuffer;
+package com.aionemu.commons.options;
 
 /**
+ * Class with public static final booleans indicating parts
+ * of this "project" where assertion should be enabled.
+ * If assertion is disabled, assertion code will be removed
+ * at compile time by javac compiler.
  * @author -Nemesiss-
+ *
  */
-public interface IServerPacket
+public final class Assertion
 {
-	public boolean write(ByteBuffer buf);
+	/**
+	 * False if assertion at Network code should be removed at
+	 * compile time. [0 overhead]
+	 */
+	public static final boolean NetworkAssertion = true;
 }

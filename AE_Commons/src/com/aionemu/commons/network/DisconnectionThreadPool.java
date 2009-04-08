@@ -16,15 +16,23 @@
  */
 package com.aionemu.commons.network;
 
-import java.io.IOException;
-import java.nio.channels.SelectionKey;
-
 /**
+ * DisconnectionThreadPool that will be used to execute DisconnectionTask
+ * 
  * @author -Nemesiss-
+ * 
  */
-public interface IAcceptor
+public interface DisconnectionThreadPool
 {
-	public void accept(SelectionKey key) throws IOException;
+	/**
+	 * @param dt
+	 *            <code>DisconnectionTask</code>
+	 * @param delay
+	 */
+	public void scheduleDisconnection(DisconnectionTask dt, long delay);
 
-	public String getName();
+	/**
+	 * Waits till all task end work.
+	 */
+	public void waitForDisconnectionTasks();
 }

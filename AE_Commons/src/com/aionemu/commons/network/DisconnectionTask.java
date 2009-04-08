@@ -14,24 +14,39 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.commons.network.nio;
-
-import com.aionemu.commons.network.IAcceptor;
+package com.aionemu.commons.network;
 
 /**
+ * Disconnection Task that will be execute on <code>DisconnectionThreadPool</code>
+ * 
  * @author -Nemesiss-
+ * @see com.aionemu.commons.network.DisconnectionThreadPool
  */
-public class ServerCfg
+public class DisconnectionTask implements Runnable
 {
-	public final String		hostName;
-	public final int		port;
-	public final IAcceptor	acceptor;
+	/**
+	 * Connection that onDisconnect() method will be executed by <code>DisconnectionThreadPool</code>
+	 * 
+	 * @see com.aionemu.commons.network.DisconnectionThreadPool
+	 */
+	private AConnection	connection;
 
-	public ServerCfg(String hostName, int port, IAcceptor acceptor)
+	/**
+	 * Construct <code>DisconnectionTask</code>
+	 * 
+	 * @param connection
+	 */
+	public DisconnectionTask(AConnection connection)
 	{
-		this.hostName = hostName;
-		this.port = port;
-		this.acceptor = acceptor;
+		this.connection = connection;
 	}
 
+	/**
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run()
+	{
+		connection.onDisconnect();
+	}
 }

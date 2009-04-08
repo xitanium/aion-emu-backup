@@ -22,81 +22,207 @@ import java.nio.ByteOrder;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
+import com.aionemu.commons.options.Assertion;
+
 /**
+ * Class that represent Connection with server socket. Connection is created by <code>ConnectionFactory</code> and
+ * attached to <code>SelectionKey</code> key. Selection key is registered to one of Dispatchers <code>Selector</code>
+ * to handle io read and write.
+ * 
  * @author -Nemesiss-
  */
 public abstract class AConnection
 {
-	final SocketChannel				socketChannel;
-	private SelectionKey			writeKey;
+	/**
+	 * SocketChannel representing this connection
+	 */
+	private final SocketChannel	socketChannel;
+	/**
+	 * Dispatcher [AcceptReadWriteDispatcherImpl] to witch this connection SelectionKey is registered.
+	 */
+	private final Dispatcher	dispatcher;
+	/**
+	 * SelectionKey representing this connection.
+	 */
+	private SelectionKey		key;
+	/**
+	 * True if this connection should be closed after sending last server packet.
+	 */
+	protected boolean			pendingClose;
+	/**
+	 * True if OnDisconnect() method should be called immediately after this connection was closed.
+	 */
+	protected boolean			isForcedClosing;
+	/**
+	 * True if this connection is already closed.
+	 */
+	protected boolean			closed;
+	/**
+	 * Object on witch some methods are synchronized
+	 */
+	protected final Object		guard	= new Object();
+	/**
+	 * ByteBuffer for io write.
+	 */
+	public final ByteBuffer		writeBuffer;
+	/**
+	 * ByteBuffer for io read.
+	 */
+	public final ByteBuffer		readBuffer;
 
-	/** Queue of messages to be sent, if writeBuffer is not null */
-	public final BasePacketQueue	sendMsgQueue;
-
-	public final ByteBuffer			write_buffer;
-	public final ByteBuffer			read_buffer;
-
-	public AConnection(SocketChannel sc)
+	/**
+	 * Constructor
+	 * 
+	 * @param sc
+	 * @param d
+	 * @throws IOException
+	 */
+	public AConnection(SocketChannel sc, Dispatcher d) throws IOException
 	{
 		socketChannel = sc;
-		sendMsgQueue = new BasePacketQueue();
-		write_buffer = ByteBuffer.allocate(8192 * 2);
-		write_buffer.flip();
-		write_buffer.order(ByteOrder.LITTLE_ENDIAN);
-		read_buffer = ByteBuffer.allocate(8192 * 2);
-		read_buffer.flip();
-		read_buffer.order(ByteOrder.LITTLE_ENDIAN);
+		dispatcher = d;
+		writeBuffer = ByteBuffer.allocate(8192 * 2);
+		writeBuffer.flip();
+		writeBuffer.order(ByteOrder.LITTLE_ENDIAN);
+		readBuffer = ByteBuffer.allocate(8192 * 2);
+		readBuffer.order(ByteOrder.LITTLE_ENDIAN);
+
+		key = dispatcher.register(socketChannel, SelectionKey.OP_READ, this);
 	}
 
-	public final void setWriteKey(SelectionKey writeKey)
+	/**
+	 * Notify Dispatcher Selector that we want write some data here.
+	 */
+	protected final void enableWriteInterest()
 	{
-		this.writeKey = writeKey;
-	}
-
-	public final void enableWriteInterest()
-	{
-		if (this.writeKey.isValid())
+		if (key.isValid())
 		{
-			this.writeKey.interestOps(writeKey.interestOps() | SelectionKey.OP_WRITE);
-			writeKey.selector().wakeup();
+			key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
+			key.selector().wakeup();
 		}
 	}
 
+	/**
+	 * @return Dispatcher to witch this connection is registered.
+	 */
+	final Dispatcher getDispatcher()
+	{
+		return dispatcher;
+	}
+
+	/**
+	 * @return SocketChannel representing this connection.
+	 */
 	public SocketChannel getSocketChannel()
 	{
 		return socketChannel;
 	}
 
 	/**
-	 * This will only close the connection without taking care of the active char
+	 * Connection will be closed at some time [by Dispatcher Thread], after that onDisconnect() method will be called to
+	 * clear all other things.
+	 * 
+	 * @param forced
+	 *            is just hint that getDisconnectionDelay() should return 0 so OnDisconnect() method will be called
+	 *            without any delay.
 	 */
-	public void onlyClose()
+	public final void close(boolean forced)
 	{
-		try
+		synchronized (guard)
 		{
-			if (socketChannel != null && socketChannel.isOpen())
-			{
-				socketChannel.close();
-			}
-		}
-		catch (IOException e)
-		{
+			if (isWriteDisabled())
+				return;
+
+			isForcedClosing = forced;
+			getDispatcher().closeConnection(this);
 		}
 	}
 
 	/**
-	 * Return IP adress of this Client Connection.
+	 * This will only close the connection without taking care of the rest. May be called only by Dispatcher Thread.
 	 */
-	public String getIP()
+	final void onlyClose()
+	{
+		/**
+		 * Test if this build should use assertion. If NetworkAssertion == false javac will remove this code block
+		 */
+		if (Assertion.NetworkAssertion)
+			assert Thread.currentThread() == dispatcher;
+
+		if (closed)
+			return;
+
+		synchronized (guard)
+		{
+			try
+			{
+				if (socketChannel.isOpen())
+				{
+					socketChannel.close();
+					key.attach(null);
+					key.cancel();
+				}
+				closed = true;
+			}
+			catch (IOException e)
+			{
+			}
+		}
+	}
+
+	/**
+	 * @return True if this connection is pendingClose and not closed yet.
+	 */
+	final boolean isPendingClose()
+	{
+		return pendingClose && !closed;
+	}
+
+	/**
+	 * @return True if write to this connection is possible.
+	 */
+	protected final boolean isWriteDisabled()
+	{
+		return pendingClose || closed;
+	}
+
+	/**
+	 * @return IP address of this Connection.
+	 */
+	public final String getIP()
 	{
 		return socketChannel.socket().getInetAddress().getHostAddress();
 	}
 
-	abstract public void exception(IOException e, boolean read);
+	/**
+	 * @param data
+	 * @return True if data was processed correctly, False if some error occurred and connection should be closed NOW.
+	 */
+	abstract protected boolean processData(ByteBuffer data);
 
-	abstract public void terminate();
+	/**
+	 * This method will be called by Dispatcher, and will be repeated till return false.
+	 * 
+	 * @param data
+	 * @return True if data was written to buffer, False indicating that there are not any more data to write.
+	 */
+	abstract protected boolean writeData(ByteBuffer data);
 
-	abstract public boolean processData(ByteBuffer data);
+	/**
+	 * This method is called by Dispatcher when connection is ready to be closed.
+	 * 
+	 * @return time in ms after witch onDisconnect() method will be called.
+	 */
+	abstract protected long getDisconnectionDelay();
 
-	abstract public void close();
+	/**
+	 * This method is called by Dispatcher to inform that this connection was closed and should be cleared. This method
+	 * is called only once.
+	 */
+	abstract protected void onDisconnect();
+
+	/**
+	 * This method is called by NioServer to inform that NioServer is shouting down. This method is called only once.
+	 */
+	abstract protected void onServerClose();
 }
