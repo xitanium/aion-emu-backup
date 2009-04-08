@@ -17,95 +17,139 @@
 package com.aionemu.loginserver.network.aion;
 
 import java.nio.ByteBuffer;
-import org.apache.log4j.Logger;
-
-import com.aionemu.commons.network.BasePacket;
-import com.aionemu.commons.network.IServerPacket;
 
 /**
+ * Base class for every LS -> Aion Server Packet.
+ * 
  * @author -Nemesiss-
  */
-public abstract class AionServerPacket extends BasePacket<AionConnection> implements IServerPacket
+public abstract class AionServerPacket
 {
-	private static final Logger	log	= Logger.getLogger(AionServerPacket.class);
-
-	protected AionServerPacket()
+	/**
+	 * Write int to buffer.
+	 * 
+	 * @param buf
+	 * @param value
+	 */
+	protected final void writeD(ByteBuffer buf, int value)
 	{
-
+		buf.putInt(value);
 	}
 
-	@Override
-	public final BasePacket<AionConnection> setConnection(AionConnection con)
+	/**
+	 * Write short to buffer.
+	 * 
+	 * @param buf
+	 * @param value
+	 */
+	protected final void writeH(ByteBuffer buf, int value)
 	{
-		return super.setConnection(con);
+		buf.putShort((short) value);
 	}
 
-	protected final void writeD(int value)
+	/**
+	 * Write byte to buffer.
+	 * 
+	 * @param buf
+	 * @param value
+	 */
+	protected final void writeC(ByteBuffer buf, int value)
 	{
-		_buf.putInt(value);
+		buf.put((byte) value);
 	}
 
-	protected final void writeH(int value)
+	/**
+	 * Write double to buffer.
+	 * 
+	 * @param buf
+	 * @param value
+	 */
+	protected final void writeF(ByteBuffer buf, double value)
 	{
-		_buf.putShort((short) value);
+		buf.putDouble(value);
 	}
 
-	protected final void writeC(int value)
+	/**
+	 * Write long to buffer.
+	 * 
+	 * @param buf
+	 * @param value
+	 */
+	protected final void writeQ(ByteBuffer buf, long value)
 	{
-		_buf.put((byte) value);
+		buf.putLong(value);
 	}
 
-	protected final void writeF(double value)
-	{
-		_buf.putDouble(value);
-	}
-
-	protected final void writeQ(long value)
-	{
-		_buf.putLong(value);
-	}
-
-	protected final void writeS(String text)
+	/**
+	 * Write String to buffer
+	 * 
+	 * @param buf
+	 * @param text
+	 */
+	protected final void writeS(ByteBuffer buf, String text)
 	{
 		if (text == null)
 		{
-			_buf.putChar('\000');
+			buf.putChar('\000');
 		}
 		else
 		{
 			final int len = text.length();
 			for (int i = 0; i < len; i++)
-				_buf.putChar(text.charAt(i));
-			_buf.putChar('\000');
+				buf.putChar(text.charAt(i));
+			buf.putChar('\000');
 		}
 	}
 
-	protected final void writeB(byte[] data)
+	/**
+	 * Write byte array to buffer.
+	 * 
+	 * @param buf
+	 * @param data
+	 */
+	protected final void writeB(ByteBuffer buf, byte[] data)
 	{
-		_buf.put(data);
+		buf.put(data);
 	}
 
+	/**
+	 * Write and encrypt this packet data for given connection, to given buffer.
+	 * 
+	 * @param con
+	 * @param buf
+	 */
+	public final void write(AionConnection con, ByteBuffer buf)
+	{
+		buf.putShort((short) 0);
+		writeImpl(con, buf);
+		buf.flip();
+		buf.putShort((short) 0);
+		ByteBuffer b = buf.slice();
+
+		short size = (short) (con.encrypt(b) + 2);
+		buf.putShort(0, size);
+		buf.position(0).limit(size);
+	}
+
+	/**
+	 * Write data that this packet represents to given byte buffer.
+	 * 
+	 * @param con
+	 * @param buf
+	 */
+	protected abstract void writeImpl(AionConnection con, ByteBuffer buf);
+
+	/**
+	 * @return String - packet name.
+	 */
 	@Override
-	public boolean write(ByteBuffer buf)
+	public String toString()
 	{
-		_buf = buf;
-		try
-		{
-			_buf.putShort((short) 0);
-			writeImpl();
-			_buf.flip();
-			_buf.putShort((short) 0);
-			ByteBuffer b = _buf.slice();
-			short size = (short) (getConnection().encrypt(b) + 2);
-			_buf.putShort(0, size);
-			_buf.position(0).limit(size);
-		}
-		finally
-		{
-			_buf = null;
-		}
-		return true;
+		return getType();
 	}
 
-	protected abstract void writeImpl();
+	/**
+	 * @return String - packet name.
+	 */
+	public abstract String getType();
 }

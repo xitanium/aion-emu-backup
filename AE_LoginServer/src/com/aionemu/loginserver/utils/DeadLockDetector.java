@@ -29,16 +29,29 @@ import org.apache.log4j.Logger;
  */
 public class DeadLockDetector extends Thread
 {
+	/**
+	 * Logger for this class.
+	 */
 	private static final Logger	log		= Logger.getLogger(DeadLockDetector.class);
 	/** What should we do on DeadLock */
 	public static final byte	NOTHING	= 0;
+	/** What should we do on DeadLock */
 	public static final byte	RESTART	= 1;
 
 	/** how often check for deadlocks */
 	private final int			sleepTime;
+	/**
+	 * ThreadMXBean
+	 */
 	private final ThreadMXBean	tmx;
+	/** What should we do on DeadLock */
 	private final byte			doWhenDL;
 
+	/**
+	 * Create new DeadLockDetector with given values.
+	 * @param sleepTime
+	 * @param doWhenDL
+	 */
 	public DeadLockDetector(int sleepTime, byte doWhenDL)
 	{
 		super("DeadLockDetector");
@@ -47,6 +60,9 @@ public class DeadLockDetector extends Thread
 		this.doWhenDL = doWhenDL;
 	}
 
+	/**
+	 * Check if there is a DeadLock.
+	 */
 	@Override
 	public final void run()
 	{

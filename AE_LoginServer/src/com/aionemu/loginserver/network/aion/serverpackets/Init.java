@@ -16,6 +16,8 @@
  */
 package com.aionemu.loginserver.network.aion.serverpackets;
 
+import java.nio.ByteBuffer;
+
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
 
@@ -25,42 +27,40 @@ import com.aionemu.loginserver.network.aion.AionServerPacket;
  */
 public final class Init extends AionServerPacket
 {
-	private int		_sessionId;
+	private final int		_sessionId;
 
-	private byte[]	_publicKey;
-	private byte[]	_blowfishKey;
+	private final byte[]	_publicKey;
+	private final byte[]	_blowfishKey;
 
 	public Init(AionConnection client)
 	{
 		this(client.getScrambledModulus(), client.getBlowfishKey(), client.getSessionId());
 	}
 
-	public Init(byte[] publickey, byte[] blowfishkey, int sessionId)
+	private Init(byte[] publickey, byte[] blowfishkey, int sessionId)
 	{
 		_sessionId = sessionId;
 		_publicKey = publickey;
 		_blowfishKey = blowfishkey;
 	}
 
-	/**
-	 * @see com.l2jserver.mmocore.network.SendablePacket#write()
-	 */
 	@Override
-	protected void writeImpl()
+	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(0x00); // init packet id
+		writeC(buf, 0x00); // init packet id
 
-		writeD(_sessionId); // session id
-		writeD(0x0000c621); // protocol revision
-		writeB(_publicKey); // RSA Public Key
-		// unk GG related?
-		writeD(0x29DD954E);
-		writeD(0x77C39CFC);
-		writeD(0x97ADB620);
-		writeD(0x07BDE0F7);
+		writeD(buf, _sessionId); // session id
+		writeD(buf, 0x0000c621); // protocol revision
+		writeB(buf, _publicKey); // RSA Public Key
+		//unk
+		writeD(buf, 0x00);
+		writeD(buf, 0x00);
+		writeD(buf, 0x00);
+		writeD(buf, 0x00);
 
-		writeB(_blowfishKey); // BlowFish key
-		writeC(0x00); // null termination ;)
+		writeB(buf, _blowfishKey); // BlowFish key
+		writeD(buf, 197635); //unk
+		writeD(buf, 2097152); //unk
 	}
 
 	@Override

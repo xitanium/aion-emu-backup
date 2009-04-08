@@ -20,40 +20,67 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.security.interfaces.RSAPrivateKey;
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.AConnection;
+import com.aionemu.commons.network.Dispatcher;
 import com.aionemu.loginserver.LoginController;
+import com.aionemu.loginserver.network.aion.serverpackets.Init;
 import com.aionemu.loginserver.network.crypt.LoginCrypt;
 import com.aionemu.loginserver.network.crypt.ScrambledKeyPair;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
 
 /**
+ * Object representing connection between LoginServer and Aion Client.
  * @author -Nemesiss-
  */
 public class AionConnection extends AConnection
 {
+	/**
+	 * Logger for this class.
+	 */
 	private static final Logger	log	= Logger.getLogger(AionConnection.class);
 
+	/**
+	 * Possible states of AionConnection
+	 */
 	public static enum State
 	{
 		CONNECTED, AUTHED_GG, AUTHED_LOGIN
 	}
 
-	private State				state;
-	private LoginCrypt			loginCrypt;
-	private ScrambledKeyPair	scrambledPair;
-	private byte[]				blowfishKey;
+	/**
+	 * Server Packet "to send" Queue
+	 */
+	private final Deque<AionServerPacket>	sendMsgQueue	= new ArrayDeque<AionServerPacket>();
 
-	private String				account;
-	private int					lastServer;
-	private boolean				usesInternalIP;
-	private SessionKey			sessionKey;
-	private int					sessionId	= 1;
+	/**
+	 * Current state of this connection
+	 */
+	private State							state;
+	private LoginCrypt						loginCrypt;
+	private ScrambledKeyPair				scrambledPair;
+	private byte[]							blowfishKey;
 
-	public AionConnection(SocketChannel sc)
+	private String							account;
+	private int								lastServer;
+	private boolean							usesInternalIP;
+	private SessionKey						sessionKey;
+	private int								sessionId		= 1;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param sc
+	 * @param d
+	 * @throws IOException
+	 */
+	public AionConnection(SocketChannel sc, Dispatcher d) throws IOException
 	{
-		super(sc);
+		super(sc, d);
 		state = State.CONNECTED;
 
 		String ip = getIP();
@@ -64,17 +91,23 @@ public class AionConnection extends AConnection
 		blowfishKey = LoginController.getInstance().getBlowfishKey();
 		loginCrypt = new LoginCrypt();
 		loginCrypt.setKey(blowfishKey);
+
+		/** Send Init packet */
+		sendPacket(new Init(this));
 	}
 
-	public boolean usesInternalIP()
-	{
-		return usesInternalIP;
-	}
-
+	/**
+	 * Called by Dispatcher. ByteBuffer data contains one packet that should be processed.
+	 * 
+	 * @param data
+	 * @return True if data was processed correctly, False if some error occurred and connection should be closed NOW.
+	 */
 	@Override
-	public boolean processData(ByteBuffer data)
+	protected final boolean processData(ByteBuffer data)
 	{
-		decrypt(data);
+		if(!decrypt(data))
+			return false;
+
 		AionClientPacket pck = AionPacketHandler.handle(data, this);
 		log.info("recived packet: " + pck);
 		if (pck != null)
@@ -82,7 +115,62 @@ public class AionConnection extends AConnection
 		return true;
 	}
 
-	public boolean decrypt(ByteBuffer buf)
+	/**
+	 * This method will be called by Dispatcher, and will be repeated till return false.
+	 * 
+	 * @param data
+	 * @return True if data was written to buffer, False indicating that there are not any more data to write.
+	 */
+	@Override
+	protected final boolean writeData(ByteBuffer data)
+	{
+		synchronized(guard)
+		{
+			AionServerPacket packet = sendMsgQueue.pollFirst();
+			if(packet == null)
+				return false;
+
+			packet.write(this, data);
+			return true;
+		}
+	}
+
+	/**
+	 * This method is called by Dispatcher when connection is ready to be closed.
+	 * 
+	 * @return time in ms after witch onDisconnect() method will be called. Always return 0.
+	 */
+	@Override
+	protected final long getDisconnectionDelay()
+	{
+		return 0;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected final void onDisconnect()
+	{
+		// TODO
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected final void onServerClose()
+	{
+		// TODO mb some packet should be send to client before closing?
+		close(/*packet,*/ true);
+	}
+
+	/**
+	 * Decrypt packet.
+	 * @param buf
+	 * @return true if success
+	 */
+	private final boolean decrypt(ByteBuffer buf)
 	{
 		int size = buf.remaining();
 		final int offset = buf.arrayOffset() + buf.position();
@@ -94,7 +182,6 @@ public class AionConnection extends AConnection
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			close();
 			return false;
 		}
 
@@ -102,16 +189,17 @@ public class AionConnection extends AConnection
 		{
 			byte[] dump = new byte[size];
 			System.arraycopy(buf.array(), buf.position(), dump, 0, size);
-			log.warn("Wrong checksum from client: " + this.toString());
-			// TODO!
-			// close();
-			ret = true;
+			log.warn("Wrong checksum from client: " + this);
 		}
-
 		return ret;
 	}
 
-	public int encrypt(ByteBuffer buf)
+	/**
+	 * Encrypt packet.
+	 * @param buf
+	 * @return encrypted packet size.
+	 */
+	public final int encrypt(ByteBuffer buf)
 	{
 		int size = buf.limit() - 2;
 		final int offset = buf.arrayOffset() + buf.position();
@@ -127,85 +215,118 @@ public class AionConnection extends AConnection
 		return size;
 	}
 
-	public void sendPacket(AionServerPacket bp)
+	/**
+	 * Sends AionServerPacket to this client.
+	 * 
+	 * @param bp
+	 *            AionServerPacket to be sent.
+	 */
+	public final void sendPacket(AionServerPacket bp)
 	{
-		log.info("sending packet: " + bp);
-		bp = (AionServerPacket) bp.setConnection(this);
-		sendMsgQueue.put(bp);
-		enableWriteInterest();
+		synchronized (guard)
+		{
+			/**
+			 * Connection is already closed or waiting for last (close packet) to be sent
+			 */
+			if (isWriteDisabled())
+				return;
+
+			log.info("sending packet: " + bp);
+
+			sendMsgQueue.addLast(bp);
+			enableWriteInterest();
+		}
 	}
 
-	public byte[] getBlowfishKey()
+	/**
+	 * Its guaranted that closePacket will be sent before closing connection, but all past and future packets wont.
+	 * Connection will be closed [by Dispatcher Thread], and onDisconnect() method will be called to clear all other
+	 * things. forced means that server shouldn't wait with removing this connection.
+	 * 
+	 * @param closePacket
+	 *            Packet that will be send before closing.
+	 * @param forced
+	 *            have no effect in this implementation.
+	 */
+	public final void close(AionServerPacket closePacket, boolean forced)
+	{
+		synchronized (guard)
+		{
+			if (isWriteDisabled())
+				return;
+
+			log.info("sending packet: " + closePacket+ "and closing connection after that.");
+
+			pendingClose = true;
+			isForcedClosing = forced;
+			sendMsgQueue.clear();
+			sendMsgQueue.addLast(closePacket);
+			enableWriteInterest();
+		}
+	}
+
+	public final boolean usesInternalIP()
+	{
+		return usesInternalIP;
+	}
+
+	public final byte[] getBlowfishKey()
 	{
 		return blowfishKey;
 	}
 
-	public byte[] getScrambledModulus()
+	public final byte[] getScrambledModulus()
 	{
 		return scrambledPair._scrambledModulus;
 	}
 
-	public RSAPrivateKey getRSAPrivateKey()
+	public final RSAPrivateKey getRSAPrivateKey()
 	{
 		return (RSAPrivateKey) scrambledPair._pair.getPrivate();
 	}
 
-	public int getSessionId()
+	public final int getSessionId()
 	{
 		return sessionId;
 	}
 
-	public State getState()
+	public final State getState()
 	{
 		return state;
 	}
 
-	public void setState(State state)
+	public final void setState(State state)
 	{
 		this.state = state;
 	}
 
-	public String getAccount()
+	public final String getAccount()
 	{
 		return account;
 	}
 
-	public void setAccount(String account)
+	public final void setAccount(String account)
 	{
 		this.account = account;
 	}
 
-	public SessionKey getSessionKey()
+	public final SessionKey getSessionKey()
 	{
 		return sessionKey;
 	}
 
-	public void setSessionKey(SessionKey sessionKey)
+	public final void setSessionKey(SessionKey sessionKey)
 	{
 		this.sessionKey = sessionKey;
 		// TODO! register etc
 	}
 
 	/**
-	 * This will close the Connection And take care of everything that should be done on disconnection (onDisconnect())
-	 * if the active char is not nulled yet
+	 * @return String info about this connection
 	 */
 	@Override
-	public void close()
+	public String toString()
 	{
-		onlyClose();
-	}
-
-	@Override
-	public void exception(IOException e, boolean read)
-	{
-		log.info("exception " + e);
-		close();
-	}
-
-	@Override
-	public void terminate()
-	{
-		log.info("terminate!");
+		return account != null? account+" "+getIP() : "not loged "+getIP();
 	}
 }

@@ -49,9 +49,10 @@ public class RequestAuthLogin extends AionClientPacket
 	public RequestAuthLogin(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client);
+		readD();
 		if (getRemainingBytes() >= 128)
 		{
-			data = readB(128);
+			data = readB(135);
 		}
 	}
 
@@ -73,28 +74,8 @@ public class RequestAuthLogin extends AionClientPacket
 			sendPacket(new LoginFail(AuthResponse.INVALID_PASSWORD));
 			return;
 		}
-
-		int user_lenght = 0;
-		for (int i = 0x5E; i < 0x5E + 14; i++)
-		{
-			if (decrypted[i] == 0)
-				break;
-			user_lenght++;
-		}
-
-		user = new String(decrypted, 0x5E, user_lenght);
-		user = user.toLowerCase();
-
-		/** trim() nie zadziala... Wiec trzeba to obejsc */
-		int pass_lenght = 0;
-		for (int i = 0x6C; i < 0x6C + 16; i++)
-		{
-			if (decrypted[i] == 0)
-				break;
-			pass_lenght++;
-		}
-
-		password = new String(decrypted, 0x6C, pass_lenght);
+		user = new String(decrypted, 64, 32).trim().toLowerCase();
+		password = new String(decrypted, 96, 32).trim().toLowerCase();
 
 		ncotp = decrypted[0x7c];
 		ncotp |= decrypted[0x7d] << 8;
@@ -104,7 +85,7 @@ public class RequestAuthLogin extends AionClientPacket
 		log.info("AuthLogin: " + user + " pass: " + password + " ncotp: " + ncotp);
 
 		AionConnection client = getConnection();
-		AuthResponse response = AccountController.tryAuth(user, password, client.getIP());
+		AuthResponse response = AuthResponse.AUTHED;//AccountController.tryAuth(user, password, client.getIP());
 		switch (response)
 		{
 			case AUTHED:
@@ -125,6 +106,6 @@ public class RequestAuthLogin extends AionClientPacket
 
 	public String getType()
 	{
-		return "0x00 RequestAuthLogin";
+		return "0x0B RequestAuthLogin";
 	}
 }

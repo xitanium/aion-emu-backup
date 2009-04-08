@@ -16,6 +16,9 @@
  */
 package com.aionemu.loginserver.network.aion.serverpackets;
 
+import java.nio.ByteBuffer;
+
+import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
 
 /**
@@ -31,14 +34,14 @@ public class GGAuth extends AionServerPacket
 	}
 
 	@Override
-	protected void writeImpl()
+	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(0x0b);
-		writeD(sessionId);
-		writeD(0x00);
-		writeD(0x00);
-		writeD(0x00);
-		writeD(0x00);
+		writeC(buf, 0x0b);
+		writeD(buf, sessionId);
+		writeD(buf, 0x00);
+		writeD(buf, 0x00);
+		writeD(buf, 0x00);
+		writeD(buf, 0x00);
 	}
 
 	@Override

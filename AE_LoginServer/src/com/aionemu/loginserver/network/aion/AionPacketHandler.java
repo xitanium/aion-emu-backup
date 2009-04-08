@@ -30,8 +30,17 @@ import com.aionemu.loginserver.network.aion.clientpackets.RequestServerLogin;
  */
 public class AionPacketHandler
 {
+    /**
+     * logger for this class
+     */
 	private static final Logger	log	= Logger.getLogger(AionPacketHandler.class);
 
+	/**
+	 * Reads one packet from given ByteBuffer
+	 * @param data
+	 * @param client
+	 * @return AionClientPacket object from binary data
+	 */
 	public static AionClientPacket handle(ByteBuffer data, AionConnection client)
 	{
 		AionClientPacket msg = null;
@@ -48,7 +57,7 @@ public class AionPacketHandler
 						msg = new AuthGameGuard(data, client);
 						break;
 					default:
-						unkownPacket(state, id);
+						unknownPacket(state, id);
 				}
 				break;
 			}
@@ -56,11 +65,11 @@ public class AionPacketHandler
 			{
 				switch (id)
 				{
-					case 0x00:
+					case 0x0B:
 						msg = new RequestAuthLogin(data, client);
 						break;
 					default:
-						unkownPacket(state, id);
+						unknownPacket(state, id);
 				}
 				break;
 			}
@@ -75,7 +84,7 @@ public class AionPacketHandler
 						msg = new RequestServerLogin(data, client);
 						break;
 					default:
-						unkownPacket(state, id);
+						unknownPacket(state, id);
 				}
 				break;
 			}
@@ -83,8 +92,13 @@ public class AionPacketHandler
 		return msg;
 	}
 
-	private static final void unkownPacket(State state, int id)
+	/**
+	 * Logs unknown packet.
+	 * @param state
+	 * @param id
+	 */
+	private static final void unknownPacket(State state, int id)
 	{
-		log.info("Unkown packet recived from Aion client: " + id + " state=" + state);
+		log.info("Unknown packet recived from Aion client: " + id + " state=" + state);
 	}
 }

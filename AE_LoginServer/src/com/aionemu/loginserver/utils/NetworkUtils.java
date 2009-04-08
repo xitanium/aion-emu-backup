@@ -32,7 +32,7 @@ public class NetworkUtils
 	 *  address = 10.2.88.12  pattern = *   result: true<BR>
 	 *  address = 10.2.88.12  pattern = 10.2.88.12-13   result: true<BR>
 	 *  address = 10.2.88.12  pattern = 10.2.88.13-125   result: false<BR></code>
-	 * @return
+	 * @return true if address match pattern
 	 */
 	public static boolean checkIPMatching(String pattern, String address)
 	{

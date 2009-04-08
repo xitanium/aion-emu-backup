@@ -26,8 +26,17 @@ import com.aionemu.loginserver.network.gameserver.clientpackets.GsAuth;
  */
 public class GsPacketHandler
 {
+    /**
+     * logger for this class
+     */
 	private static final Logger	log	= Logger.getLogger(GsPacketHandler.class);
 
+	/**
+	 * Reads one packet from given ByteBuffer
+	 * @param data
+	 * @param client
+	 * @return GsClientPacket object from binary data
+	 */
 	public static GsClientPacket handle(ByteBuffer data, GsConnection client)
 	{
 		GsClientPacket msg = null;
@@ -44,7 +53,7 @@ public class GsPacketHandler
 						msg = new GsAuth(data, client);
 						break;
 					default:
-						unkownPacket(state, id);
+						unknownPacket(state, id);
 				}
 				break;
 			}
@@ -59,7 +68,7 @@ public class GsPacketHandler
 						// msg = new RequestServerLogin(data, client);
 						break;
 					default:
-						unkownPacket(state, id);
+						unknownPacket(state, id);
 				}
 				break;
 			}
@@ -67,8 +76,13 @@ public class GsPacketHandler
 		return msg;
 	}
 
-	private static final void unkownPacket(State state, int id)
+	/**
+	 * Logs unknown packet.
+	 * @param state
+	 * @param id
+	 */
+	private static final void unknownPacket(State state, int id)
 	{
-		log.info("Unkown packet recived from Game Server: " + id + " state=" + state);
+		log.info("Unknown packet recived from Game Server: " + id + " state=" + state);
 	}
 }

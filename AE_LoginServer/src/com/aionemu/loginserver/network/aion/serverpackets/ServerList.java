@@ -18,8 +18,10 @@ package com.aionemu.loginserver.network.aion.serverpackets;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 
 import com.aionemu.loginserver.configs.Config;
+import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
 
 /**
@@ -28,41 +30,41 @@ import com.aionemu.loginserver.network.aion.AionServerPacket;
 public class ServerList extends AionServerPacket
 {
 	@Override
-	protected void writeImpl()
+	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
 		// TODO!
-		writeC(0x04);
-		writeC(1);// servers
-		writeC(0);// last server
+		writeC(buf, 0x04);
+		writeC(buf, 1);// servers
+		writeC(buf, 0);// last server
 		// for(servers...)
-		writeC(1);// server id
+		writeC(buf, 1);// server id
 
 		try
 		{
 			InetAddress i4 = InetAddress.getByName(Config.LOGIN_BIND_ADDRESS);
 			byte[] raw = i4.getAddress();
-			writeC(raw[0] & 0xff);
-			writeC(raw[1] & 0xff);
-			writeC(raw[2] & 0xff);
-			writeC(raw[3] & 0xff);
+			writeC(buf, raw[0] & 0xff);
+			writeC(buf, raw[1] & 0xff);
+			writeC(buf, raw[2] & 0xff);
+			writeC(buf, raw[3] & 0xff);
 		}
 		catch (UnknownHostException e)
 		{
 			e.printStackTrace();
-			writeC(127);
-			writeC(0);
-			writeC(0);
-			writeC(1);
+			writeC(buf, 127);
+			writeC(buf, 0);
+			writeC(buf, 0);
+			writeC(buf, 1);
 		}
 
-		writeD(7777);// port
-		writeC(0x00); // age limit
-		writeC(0x01);// pvp=1
-		writeH(0);// currentPlayers
-		writeH(1000);// maxPlayers
-		writeC(1);// ServerStatus, up=1
-		writeD(0);// bits);
-		writeC(0);// server.brackets ? 0x01 : 0x00);
+		writeD(buf, 7777);// port
+		writeC(buf, 0x00); // age limit
+		writeC(buf, 0x01);// pvp=1
+		writeH(buf, 0);// currentPlayers
+		writeH(buf, 1000);// maxPlayers
+		writeC(buf, 1);// ServerStatus, up=1
+		writeD(buf, 1);// bits);
+		writeC(buf, 0);// server.brackets ? 0x01 : 0x00);
 
 	}
 

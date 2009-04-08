@@ -52,7 +52,7 @@ public class Shutdown extends Thread
 	@Override
 	public void run()
 	{
-		/* saaving ban ip list */
+		/* saving ban ip list */
 		try
 		{
 			BanIpList.store();

@@ -27,30 +27,47 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
+import com.aionemu.commons.network.DisconnectionTask;
+import com.aionemu.commons.network.DisconnectionThreadPool;
+
 /**
  * @author -Nemesiss-
  */
-public class ThreadPoolManager
+public class ThreadPoolManager implements DisconnectionThreadPool
 {
+	/**
+	 * Logger for this class
+	 */
 	private static final Logger			log			= Logger.getLogger(ThreadPoolManager.class);
 
 	private static ThreadPoolManager	instance	= new ThreadPoolManager();
 
 	private ScheduledThreadPoolExecutor	scheduledThreadPool;
+	private ScheduledThreadPoolExecutor	disconnectionScheduledThreadPool;
 
 	private ThreadPoolExecutor			aionPacketsThreadPool;
 	private ThreadPoolExecutor			gameServerPacketsThreadPool;
 
+	/**
+	 * @return ThreadPoolManager instance.
+	 */
 	public static ThreadPoolManager getInstance()
 	{
 		return instance;
 	}
 
+	/**
+	 * Constructor.
+	 */
 	private ThreadPoolManager()
 	{
 		scheduledThreadPool = new ScheduledThreadPoolExecutor(4, new PriorityThreadFactory("ScheduledThreadPool",
 			Thread.NORM_PRIORITY));
 		scheduledThreadPool.setRemoveOnCancelPolicy(true);
+
+		disconnectionScheduledThreadPool = new ScheduledThreadPoolExecutor(4, new PriorityThreadFactory("ScheduledThreadPool",
+			Thread.NORM_PRIORITY));
+		disconnectionScheduledThreadPool.setRemoveOnCancelPolicy(true);
 
 		aionPacketsThreadPool = new ThreadPoolExecutor(6, 8, 15L, TimeUnit.SECONDS,
 			new LinkedBlockingQueue<Runnable>(),
@@ -105,6 +122,31 @@ public class ThreadPoolManager
 		gameServerPacketsThreadPool.execute(pkt);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final void scheduleDisconnection(DisconnectionTask dt, long delay)
+	{
+		if (delay < 0)
+			delay = 0;
+		scheduledThreadPool.schedule(dt, delay, TimeUnit.MILLISECONDS);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void waitForDisconnectionTasks()
+	{
+		try
+		{
+			disconnectionScheduledThreadPool.shutdown();
+			disconnectionScheduledThreadPool.awaitTermination(6,TimeUnit.MINUTES);
+		}
+		catch(Exception e){}
+	}
+
 	private class PriorityThreadFactory implements ThreadFactory
 	{
 		private int				prio;
@@ -140,7 +182,7 @@ public class ThreadPoolManager
 	}
 
 	/**
-	 * 
+	 * Shutdown all thread pools.
 	 */
 	public void shutdown()
 	{

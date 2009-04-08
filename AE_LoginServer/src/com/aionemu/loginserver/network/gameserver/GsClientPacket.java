@@ -20,21 +20,39 @@ import java.nio.ByteBuffer;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.commons.network.BasePacket;
-
 /**
  * @author -Nemesiss-
  */
-public abstract class GsClientPacket extends BasePacket<GsConnection> implements Runnable
+public abstract class GsClientPacket implements Runnable
 {
-	private static Logger	log	= Logger.getLogger(GsClientPacket.class);
+	/**
+	 * Logger for this class.
+	 */
+	private static final Logger	log	= Logger.getLogger(GsClientPacket.class);
+	/**
+	 * ByteBuffer that contains this packet data
+	 */
+	private final ByteBuffer	buf;
+	/**
+	 * Owner of this packet.
+	 */
+	private final GsConnection	client;
 
+	/**
+	 * COnstructor.
+	 * 
+	 * @param buf
+	 * @param client
+	 */
 	protected GsClientPacket(ByteBuffer buf, GsConnection client)
 	{
-		super(client);
-		_buf = buf;
+		this.buf = buf;
+		this.client = client;
 	}
 
+	/**
+	 * run runImpl catching and logging Throwable.
+	 */
 	public final void run()
 	{
 		try
@@ -48,91 +66,139 @@ public abstract class GsClientPacket extends BasePacket<GsConnection> implements
 	}
 
 	/**
-	 * This is only called once per packet instane ie: when you construct a packet and send it to many players, it will
-	 * only run when the first packet is sent
+	 * @return Connection that is owner of this packet.
+	 */
+	public final GsConnection getConnection()
+	{
+		return client;
+	}
+
+	/**
+	 * Execute this packet action.
 	 */
 	protected abstract void runImpl();
 
+	/**
+	 * Send new GsServerPacket to connection that is owner of this packet. This method is equivalent to:
+	 * getConnection().sendPacket(msg);
+	 * 
+	 * @param msg
+	 */
 	protected void sendPacket(GsServerPacket msg)
 	{
 		getConnection().sendPacket(msg);
 	}
 
+	/**
+	 * @return number of bytes remaining in this packet buffer.
+	 */
 	public final int getRemainingBytes()
 	{
-		return _buf.remaining();
+		return buf.remaining();
 	}
 
+	/**
+	 * Read int from this packet buffer.
+	 * 
+	 * @return int
+	 */
 	public final int readD()
 	{
 		try
 		{
-			return _buf.getInt();
+			return buf.getInt();
 		}
 		catch (Exception e)
 		{
-			System.out.print("Missing D for: " + this);
+			log.info("Missing D for: " + this);
 		}
 		return 0;
 	}
 
+	/**
+	 * Read byte from this packet buffer.
+	 * 
+	 * @return int
+	 */
 	public final int readC()
 	{
 		try
 		{
-			return _buf.get() & 0xFF;
+			return buf.get() & 0xFF;
 		}
 		catch (Exception e)
 		{
+			log.info("Missing C for: " + this);
 		}
 		return 0;
 	}
 
+	/**
+	 * Read short from this packet buffer.
+	 * 
+	 * @return int
+	 */
 	public final int readH()
 	{
 		try
 		{
-			return _buf.getShort() & 0xFFFF;
+			return buf.getShort() & 0xFFFF;
 		}
 		catch (Exception e)
 		{
+			log.info("Missing H for: " + this);
 		}
 		return 0;
 	}
 
+	/**
+	 * Read double from this packet buffer.
+	 * 
+	 * @return double
+	 */
 	public final double readF()
 	{
 		try
 		{
-			return _buf.getDouble();
+			return buf.getDouble();
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			log.info("Missing F for: " + this);
 		}
 		return 0;
 	}
 
+	/**
+	 * Read long from this packet buffer.
+	 * 
+	 * @return long
+	 */
 	public final long readQ()
 	{
 		try
 		{
-			return _buf.getLong();
+			return buf.getLong();
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			log.info("Missing Q for: " + this);
 		}
 		return 0;
 	}
 
+	/**
+	 * Read String from this packet buffer.
+	 * 
+	 * @return String
+	 */
 	public final String readS()
 	{
 		StringBuffer sb = new StringBuffer();
 		char ch;
 		try
 		{
-			while ((ch = _buf.getChar()) != 0)
+			while ((ch = buf.getChar()) != 0)
 				sb.append(ch);
 		}
 		catch (Exception e)
@@ -141,35 +207,37 @@ public abstract class GsClientPacket extends BasePacket<GsConnection> implements
 		return sb.toString();
 	}
 
+	/**
+	 * Read n bytes from this packet buffer, n = length.
+	 * 
+	 * @param length
+	 * @return byte[]
+	 */
 	public final byte[] readB(int length)
 	{
 		byte[] result = new byte[length];
 		try
 		{
-			_buf.get(result);
+			buf.get(result);
 		}
 		catch (Exception e)
 		{
+			log.info("Missing byte[] for: " + this);
 		}
 		return result;
 	}
 
 	/**
-	 * To samo co readB tylko, ze 20%-25% szybsze
-	 * 
-	 * @param length
-	 * @return
+	 * @return String - packet name.
 	 */
-	public final byte[] readBN(int length)
+	@Override
+	public String toString()
 	{
-		byte[] result = new byte[length];
-		try
-		{
-			System.arraycopy(_buf.array(), _buf.arrayOffset(), result, 0, result.length);
-		}
-		catch (Exception e)
-		{
-		}
-		return result;
+		return getType();
 	}
+
+	/**
+	 * @return String - packet name.
+	 */
+	public abstract String getType();
 }

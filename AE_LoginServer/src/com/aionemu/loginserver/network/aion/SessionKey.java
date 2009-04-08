@@ -20,15 +20,31 @@ import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.utils.Rnd;
 
 /**
+ * This class represents unique SessionKey for aion client.
  * @author -Nemesiss-
  */
 public class SessionKey
 {
+	/**
+	 * play1 ok key
+	 */
 	public int	playOkID1;
+	/**
+	 * play2 ok key
+	 */
 	public int	playOkID2;
+	/**
+	 * login1 ok key
+	 */
 	public int	loginOkID1;
+	/**
+	 * login2 ok key
+	 */
 	public int	loginOkID2;
 
+	/**
+	 * Create new SesionKey
+	 */
 	public SessionKey()
 	{
 		this.loginOkID1 = Rnd.nextInt();
@@ -37,6 +53,13 @@ public class SessionKey
 		this.playOkID2 = Rnd.nextInt();
 	}
 
+	/**
+	 * Create new SesionKey with given values.
+	 * @param loginOk1
+	 * @param loginOk2
+	 * @param playOk1
+	 * @param playOk2
+	 */
 	public SessionKey(int loginOk1, int loginOk2, int playOk1, int playOk2)
 	{
 		this.loginOkID1 = loginOk1;
@@ -45,11 +68,22 @@ public class SessionKey
 		this.playOkID2 = playOk2;
 	}
 
+	/**
+	 * Check if given values are ok.
+	 * @param loginOk1
+	 * @param loginOk2
+	 * @return true if loginOk1 and loginOk2 match this SessionKey
+	 */
 	public boolean checkLogin(int loginOk1, int loginOk2)
 	{
 		return loginOkID1 == loginOk1 && loginOkID2 == loginOk2;
 	}
 
+	/**
+	 * Check if this SessionKey have the same values.
+	 * @param key
+	 * @return true if key match this SessionKey.
+	 */
 	public boolean checkSessionKey(SessionKey key)
 	{
 		if (Config.SHOW_LICENCE)

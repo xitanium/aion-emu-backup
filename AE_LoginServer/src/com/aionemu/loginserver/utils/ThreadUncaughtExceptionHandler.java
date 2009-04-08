@@ -18,8 +18,6 @@ package com.aionemu.loginserver.utils;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.commons.network.nio.Dispatcher;
-
 /**
  * @author -Nemesiss-
  */
@@ -34,11 +32,6 @@ public class ThreadUncaughtExceptionHandler implements Thread.UncaughtExceptionH
 		if (e instanceof OutOfMemoryError)
 		{
 			// TODO try get some memory or restart
-		}
-		if (t instanceof Dispatcher)
-		{
-			log.info("Restarting Dispatcher...");
-			// TODO!
 		}
 		// TODO! some threads should be "restarted" on error
 	}

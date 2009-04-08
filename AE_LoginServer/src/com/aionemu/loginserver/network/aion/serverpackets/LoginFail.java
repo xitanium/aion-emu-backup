@@ -16,7 +16,10 @@
  */
 package com.aionemu.loginserver.network.aion.serverpackets;
 
+import java.nio.ByteBuffer;
+
 import com.aionemu.loginserver.account.AuthResponse;
+import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
 
 /**
@@ -31,10 +34,10 @@ public class LoginFail extends AionServerPacket
 		this.response = response;
 	}
 
-	protected void writeImpl()
+	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(0x01);
-		writeD(response.getMessageId());
+		writeC(buf, 0x01);
+		writeD(buf, response.getMessageId());
 	}
 
 	public String getType()

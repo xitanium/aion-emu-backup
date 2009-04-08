@@ -16,13 +16,15 @@
  */
 package com.aionemu.loginserver.network.gameserver.serverpackets;
 
-import com.aionemu.commons.network.IServerPacket;
+import java.nio.ByteBuffer;
+
+import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsServerPacket;
 
 /**
  * @author -Nemesiss-
  */
-public class GsAuthResponse extends GsServerPacket implements IServerPacket
+public class GsAuthResponse extends GsServerPacket
 {
 	public static final int	RESPONSE_OK				= 0;
 	public static final int	RESPONSE_WRONG_HEXID	= 1;
@@ -35,10 +37,10 @@ public class GsAuthResponse extends GsServerPacket implements IServerPacket
 	}
 
 	@Override
-	protected void writeImpl()
+	protected void writeImpl(GsConnection con, ByteBuffer buf)
 	{
-		writeC(0x00);
-		writeC(response);
+		writeC(buf, 0x00);
+		writeC(buf, response);
 	}
 
 	@Override

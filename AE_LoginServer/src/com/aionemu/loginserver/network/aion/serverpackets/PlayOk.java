@@ -16,6 +16,9 @@
  */
 package com.aionemu.loginserver.network.aion.serverpackets;
 
+import java.nio.ByteBuffer;
+
+import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
 import com.aionemu.loginserver.network.aion.SessionKey;
 
@@ -34,11 +37,11 @@ public class PlayOk extends AionServerPacket
 	}
 
 	@Override
-	protected void writeImpl()
+	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(0x07);
-		writeD(playOk1);
-		writeD(playOk2);
+		writeC(buf, 0x07);
+		writeD(buf, playOk1);
+		writeD(buf, playOk2);
 	}
 
 	@Override

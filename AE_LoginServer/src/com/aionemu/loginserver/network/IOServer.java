@@ -16,22 +16,39 @@
  */
 package com.aionemu.loginserver.network;
 
-import com.aionemu.commons.network.nio.NioServer;
-import com.aionemu.commons.network.nio.ServerCfg;
+import com.aionemu.commons.network.NioServer;
+import com.aionemu.commons.network.ServerCfg;
 import com.aionemu.loginserver.configs.Config;
-import com.aionemu.loginserver.network.aion.AionAcceptor;
-import com.aionemu.loginserver.network.gameserver.GsAcceptor;
+import com.aionemu.loginserver.network.aion.AionConnectionFactoryImpl;
+import com.aionemu.loginserver.network.gameserver.GsConnectionFactoryImpl;
+import com.aionemu.loginserver.utils.ThreadPoolManager;
 
 /**
+ * This class create NioServer and store its instance.
+ * 
  * @author -Nemesiss-
  */
 public class IOServer
 {
-	private final static NioServer	instance	= new NioServer(Config.NIO_READ_THREADS, Config.NIO_WRITE_THREADS,
-													new ServerCfg(Config.LOGIN_BIND_ADDRESS, Config.LOGIN_PORT,
-														new AionAcceptor()), new ServerCfg("127.0.0.1", 9014,
-														new GsAcceptor()));
+	/**
+	 * NioServer instance that will handle io.
+	 */
+	private final static NioServer	instance;
 
+	static
+	{
+		ServerCfg aion = new ServerCfg(Config.LOGIN_BIND_ADDRESS, Config.LOGIN_PORT, "Aion Connections",
+			new AionConnectionFactoryImpl());
+
+		ServerCfg gs = new ServerCfg("127.0.0.1", 9014, "Gs Connections", new GsConnectionFactoryImpl());
+
+		instance = new NioServer(Config.NIO_READ_THREADS, ThreadPoolManager
+			.getInstance(), gs, aion);
+	}
+
+	/**
+	 * @return NioServer instance.
+	 */
 	public static NioServer getInstance()
 	{
 		return instance;
