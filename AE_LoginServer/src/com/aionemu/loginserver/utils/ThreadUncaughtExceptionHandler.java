@@ -23,8 +23,14 @@ import org.apache.log4j.Logger;
  */
 public class ThreadUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler
 {
+	/**
+	 * Logger for this class.
+	 */
 	private static final Logger	log	= Logger.getLogger(ThreadUncaughtExceptionHandler.class);
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void uncaughtException(Thread t, Throwable e)
 	{

@@ -255,7 +255,7 @@ public class AionConnection extends AConnection
 			if (isWriteDisabled())
 				return;
 
-			log.info("sending packet: " + closePacket+ "and closing connection after that.");
+			log.info("sending packet: " + closePacket+ " and closing connection after that.");
 
 			pendingClose = true;
 			isForcedClosing = forced;
@@ -290,6 +290,10 @@ public class AionConnection extends AConnection
 		return sessionId;
 	}
 
+	/**
+	 * Current state of this connection
+	 * @return state
+	 */
 	public final State getState()
 	{
 		return state;
