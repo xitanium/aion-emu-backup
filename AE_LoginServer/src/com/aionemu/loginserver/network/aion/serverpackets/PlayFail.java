@@ -14,38 +14,48 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.loginserver.network.gameserver.serverpackets;
+package com.aionemu.loginserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.loginserver.network.gameserver.GsConnection;
-import com.aionemu.loginserver.network.gameserver.GsServerPacket;
+import com.aionemu.loginserver.account.AuthResponse;
+import com.aionemu.loginserver.network.aion.AionConnection;
+import com.aionemu.loginserver.network.aion.AionServerPacket;
 
 /**
  * @author -Nemesiss-
+ *
  */
-public class GsAuthResponse extends GsServerPacket
+public class PlayFail extends AionServerPacket
 {
-	public static final int	RESPONSE_OK				= 0;
-	public static final int	RESPONSE_WRONG_HEXID	= 1;
+	/**
+	 * response - why play fail
+	 */
+	private AuthResponse	response;
 
-	private final int		response;
-
-	public GsAuthResponse(int response)
+	/**
+	 * Constructor
+	 * @param response
+	 */
+	public PlayFail(AuthResponse response)
 	{
 		this.response = response;
 	}
 
-	@Override
-	protected void writeImpl(GsConnection con, ByteBuffer buf)
+	/**
+	 * {@inheritDoc}
+	 */
+	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x00);
-		writeC(buf, response);
+		writeC(buf, 0x06);
+		writeD(buf, response.getMessageId());
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getType()
 	{
-		return "0x00 GsAuthResponse";
+		return "0x01 LoginFail";
 	}
 }

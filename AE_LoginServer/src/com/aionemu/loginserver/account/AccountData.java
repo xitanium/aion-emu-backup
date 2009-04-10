@@ -1,5 +1,5 @@
 /**
- * This file is part of aion-emu.
+ * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -38,6 +38,9 @@ import sun.misc.BASE64Encoder;
  */
 public class AccountData implements ParamReadStH, IUStH
 {
+	/**
+	 * Logger for this class.
+	 */
 	private static Logger	log				= Logger.getLogger(AccountData.class);
 
 	private final String	name;
@@ -52,6 +55,13 @@ public class AccountData implements ParamReadStH, IUStH
 	private int				lastServer		= 0;
 	private boolean			exist			= false;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param name
+	 * @param clientPassword
+	 * @param address
+	 */
 	public AccountData(String name, String clientPassword, String address)
 	{
 		this.name = name;
@@ -61,16 +71,24 @@ public class AccountData implements ParamReadStH, IUStH
 		DB.select("SELECT * FROM account_data WHERE name=?", this);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setParams(PreparedStatement stmt) throws SQLException
 	{
 		stmt.setString(1, name);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * Reads account data from sql.
+	 */
 	@Override
 	public void handleRead(ResultSet rset) throws SQLException
 	{
-		// acc exist
+		/** acc exist */
 		if (rset.next())
 		{
 			this.password = rset.getString("password");
@@ -91,6 +109,11 @@ public class AccountData implements ParamReadStH, IUStH
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * Insert new account into sql.
+	 */
 	@Override
 	public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
 	{
@@ -107,43 +130,77 @@ public class AccountData implements ParamReadStH, IUStH
 		stmt.executeUpdate();
 	}
 
+	/**
+	 * Check if account exist in sql.
+	 * 
+	 * @return true if account exist in sql.
+	 */
 	public final boolean exist()
 	{
 		return exist;
 	}
 
+	/**
+	 * Check if typed password by user match password in sql.
+	 * 
+	 * @param pass
+	 * @return true if pass match password in sql.
+	 */
 	public final boolean validatePassword(String pass)
 	{
 		return password.equals(encryptPassword(clientPassword));
 	}
 
+	/**
+	 * Check if its possible to login from given ip address on this account.
+	 * 
+	 * @param address
+	 * @return true if given ip is allowed to login on this account.
+	 */
 	public final boolean checkIP(String address)
 	{
 		return NetworkUtils.checkIPMatching(ipForce, address);
 	}
 
-	/** Ban for time, example: for 20 hours */
-	public boolean penaltyActive()
+	/**
+	 * Check if this account is banned forever or time banned.
+	 * 
+	 * @return true if this account is banned.
+	 */
+	public boolean isBanned()
 	{
-		if (timePenalty == -1)
+		if (timePenalty == 0)
 			return false;
 		return System.currentTimeMillis() < timePenalty;
 	}
 
-	/** Support for trial accounts */
+	/**
+	 * Check if this account is still valid [for trial acc etc]
+	 * @return true if this account is not valid.
+	 */
 	public boolean timeExpired()
 	{
-		if (timePenalty == -1)
+		if (expirationTime == -1)
 			return false;
-
 		return System.currentTimeMillis() > expirationTime;
 	}
 
+	/**
+	 * Check if this account have gm permissions.
+	 * 
+	 * @return true if this account have gm permissions.
+	 */
 	public boolean isGM()
 	{
 		return access == 1;
 	}
 
+	/**
+	 * Encrypt given password with SHA-1
+	 * 
+	 * @param pass
+	 * @return encrypted password
+	 */
 	private String encryptPassword(String pass)
 	{
 		MessageDigest md;

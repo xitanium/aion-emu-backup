@@ -1,5 +1,5 @@
 /**
- * This file is part of aion-emu.
+ * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,21 +21,43 @@ package com.aionemu.loginserver.account;
  */
 public enum AuthResponse
 {
-	// TODO correct ids, when we know their values
-
-	AUTHED(0), // that one is not being sent to client, it's only for internal
-	// use
-	// Everything is OK
-	SYSTEM_ERROR(1), // System error.
-	INVALID_PASSWORD(2), // Invalid account name or password.
-	INVALID_PASSWORD2(3), // Invalid account name or password.
-	FAILED_ACCOUNT_INFO(4), // Failed to load your account info.
-	FAILED_SOCIAL_NUMBER(5), // Failed to load your social security number.
-	NO_GS_REGISTERED(6), // No game server is registered to the authorizaton
-	// server.
-	ALREADY_LOGGED_IN(7), // You are already logged in.
-
-	SERVER_DOWN(8), // The selected server is down and not accessible.
+	/**
+	 * that one is not being sent to client, it's only for internal use.
+	 * Everything is OK
+	 */
+	AUTHED(0),
+	/**
+	 * System error.
+	 */
+	SYSTEM_ERROR(1),
+	/**
+	 * Invalid account name or password.
+	 */
+	INVALID_PASSWORD(2),
+	/**
+	 * Invalid account name or password.
+	 */
+	INVALID_PASSWORD2(3),
+	/**
+	 * Failed to load your account info.
+	 */
+	FAILED_ACCOUNT_INFO(4),
+	/**
+	 * Failed to load your social security number.
+	 */
+	FAILED_SOCIAL_NUMBER(5),
+	/**
+	 * No game server is registered to the authorization server.
+	 */
+	NO_GS_REGISTERED(6),
+	/**
+	 * You are already logged in.
+	 */
+	ALREADY_LOGGED_IN(7),
+	/**
+	 * The selected server is down and not accessible.
+	 */
+	SERVER_DOWN(8),
 	ERROR_9(9), // The login information does not match the information you
 	// provided.
 	NO_SUCH_ACCOUNT(10), // No Login info available.
@@ -46,7 +68,7 @@ public enum AuthResponse
 	// in.
 	ALREADY_LOGGED_IN3(14), // You are already playing the game.
 	SERVER_DOWN2(15), // The server is not available now.
-	CONNECT_ONLY_GM(16), // Currently onle GMs are allowed to connect to the
+	CONNECT_ONLY_GM(16), // Currently only GMs are allowed to connect to the
 	// server.
 	ERROR_17(17), // Please try to enter the game after changing your password
 	TIME_EXPIRED(18), // You have used all your playing time allowed.

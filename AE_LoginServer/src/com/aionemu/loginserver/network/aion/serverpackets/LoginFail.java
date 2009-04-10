@@ -1,5 +1,5 @@
 /**
- * This file is part of aion-emu.
+ * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,19 +27,32 @@ import com.aionemu.loginserver.network.aion.AionServerPacket;
  */
 public class LoginFail extends AionServerPacket
 {
+	/**
+	 * response - why login fail
+	 */
 	private AuthResponse	response;
 
+	/**
+	 * Constructor
+	 * @param response
+	 */
 	public LoginFail(AuthResponse response)
 	{
 		this.response = response;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
 		writeC(buf, 0x01);
 		writeD(buf, response.getMessageId());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getType()
 	{
 		return "0x01 LoginFail";

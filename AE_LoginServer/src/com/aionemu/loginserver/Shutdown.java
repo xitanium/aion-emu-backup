@@ -1,5 +1,5 @@
 /**
- * This file is part of aion-emu.
+ * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -28,7 +28,13 @@ import com.aionemu.loginserver.utils.ThreadPoolManager;
  */
 public class Shutdown extends Thread
 {
+	/**
+	 * Logger for this class
+	 */
 	private static final Logger	log			= Logger.getLogger(Shutdown.class);
+	/**
+	 * Instance of Shutdown.
+	 */
 	private static Shutdown		instance	= new Shutdown();
 
 	/**

@@ -1,5 +1,5 @@
 /**
- * This file is part of aion-emu.
+ * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,30 +32,42 @@ import com.aionemu.loginserver.network.aion.AionConnection.State;
 import com.aionemu.loginserver.network.aion.SessionKey;
 import com.aionemu.loginserver.network.aion.serverpackets.LoginFail;
 import com.aionemu.loginserver.network.aion.serverpackets.LoginOk;
+import com.aionemu.loginserver.network.aion.serverpackets.ServerList;
 
 /**
  * @author -Nemesiss-, KID
  */
 public class RequestAuthLogin extends AionClientPacket
 {
+	/**
+	 * Logger for this class.
+	 */
 	private static final Logger	log	= Logger.getLogger(RequestAuthLogin.class);
 
+	/**
+	 * byte array contains encrypted login and password.
+	 */
 	private byte[]				data;
 
-	private String				user;
-	private String				password;
-	private int					ncotp;
-
+	/**
+	 * Constructor.
+	 * 
+	 * @param buf
+	 * @param client
+	 */
 	public RequestAuthLogin(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client);
 		readD();
 		if (getRemainingBytes() >= 128)
 		{
-			data = readB(135);
+			data = readB(128);
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	protected void runImpl()
 	{
 		if (data == null)
@@ -74,10 +86,10 @@ public class RequestAuthLogin extends AionClientPacket
 			sendPacket(new LoginFail(AuthResponse.INVALID_PASSWORD));
 			return;
 		}
-		user = new String(decrypted, 64, 32).trim().toLowerCase();
-		password = new String(decrypted, 96, 32).trim().toLowerCase();
+		String user = new String(decrypted, 64, 32).trim().toLowerCase();
+		String password = new String(decrypted, 96, 32).trim().toLowerCase();
 
-		ncotp = decrypted[0x7c];
+		int ncotp = decrypted[0x7c];
 		ncotp |= decrypted[0x7d] << 8;
 		ncotp |= decrypted[0x7e] << 16;
 		ncotp |= decrypted[0x7f] << 24;
@@ -85,7 +97,7 @@ public class RequestAuthLogin extends AionClientPacket
 		log.info("AuthLogin: " + user + " pass: " + password + " ncotp: " + ncotp);
 
 		AionConnection client = getConnection();
-		AuthResponse response = AuthResponse.AUTHED;//AccountController.tryAuth(user, password, client.getIP());
+		AuthResponse response = AccountController.tryAuth(user, password, client.getIP());
 		switch (response)
 		{
 			case AUTHED:
@@ -94,8 +106,8 @@ public class RequestAuthLogin extends AionClientPacket
 				client.setSessionKey(new SessionKey());
 				if (Config.SHOW_LICENCE)
 					client.sendPacket(new LoginOk(client.getSessionKey()));
-				// else
-				// sendPacket(new ServerList());
+				else
+					sendPacket(new ServerList());
 				break;
 
 			default:
@@ -104,6 +116,9 @@ public class RequestAuthLogin extends AionClientPacket
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getType()
 	{
 		return "0x0B RequestAuthLogin";

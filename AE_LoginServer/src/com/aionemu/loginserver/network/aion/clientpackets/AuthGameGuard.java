@@ -1,5 +1,5 @@
 /**
- * This file is part of aion-emu.
+ * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,22 +18,33 @@ package com.aionemu.loginserver.network.aion.clientpackets;
 
 import java.nio.ByteBuffer;
 
+import com.aionemu.loginserver.account.AuthResponse;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionConnection.State;
 import com.aionemu.loginserver.network.aion.serverpackets.GGAuth;
+import com.aionemu.loginserver.network.aion.serverpackets.LoginFail;
 
 /**
  * @author -Nemesiss-
  */
 public class AuthGameGuard extends AionClientPacket
 {
+	/**
+	 * session id - its should match sessionId that was send in Init packet.
+	 */
 	private final int	sessionId;
 
 	/*
 	 * private final int data1; private final int data2; private final int data3; private final int data4;
 	 */
 
+	/**
+	 * Constructor
+	 * 
+	 * @param buf
+	 * @param client
+	 */
 	public AuthGameGuard(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client);
@@ -43,6 +54,9 @@ public class AuthGameGuard extends AionClientPacket
 		 */
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void runImpl()
 	{
@@ -54,11 +68,17 @@ public class AuthGameGuard extends AionClientPacket
 		}
 		else
 		{
-			// TODO! send dc packet!
+			/** Session id is not ok
+			 * - inform client that smth went wrong
+			 * - dc client
+			 */
+			con.close(new LoginFail(AuthResponse.SYSTEM_ERROR), true);
 		}
-
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getType()
 	{

@@ -1,5 +1,5 @@
 /**
- * This file is part of aion-emu.
+ * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,8 +18,10 @@ package com.aionemu.loginserver.network.aion.clientpackets;
 
 import java.nio.ByteBuffer;
 
+import com.aionemu.loginserver.account.AuthResponse;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
+import com.aionemu.loginserver.network.aion.serverpackets.LoginFail;
 import com.aionemu.loginserver.network.aion.serverpackets.ServerList;
 
 /**
@@ -27,9 +29,21 @@ import com.aionemu.loginserver.network.aion.serverpackets.ServerList;
  */
 public class RequestServerList extends AionClientPacket
 {
+	/**
+	 * loginOk1 is part of session key - its used for security purposes
+	 */
 	private final int	loginOk1;
+	/**
+	 * loginOk2 is part of session key - its used for security purposes
+	 */
 	private final int	loginOk2;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param buf
+	 * @param client
+	 */
 	public RequestServerList(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client);
@@ -37,20 +51,33 @@ public class RequestServerList extends AionClientPacket
 		loginOk2 = readD();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void runImpl()
 	{
-		if (getConnection().getSessionKey().checkLogin(loginOk1, loginOk2))
+		AionConnection con = getConnection();
+		if (con.getSessionKey().checkLogin(loginOk1, loginOk2))
 		{
+			//TODO!
+			/*
+			 * if(server list is empty) { con.close(new LoginFail(AuthResponse.NO_GS_REGISTERED), true); }
+			 */
 			sendPacket(new ServerList());
 		}
 		else
 		{
-			// TODO!
+			/**
+			 * Session key is not ok - inform client that smth went wrong - dc client
+			 */
+			con.close(new LoginFail(AuthResponse.SYSTEM_ERROR), true);
 		}
-
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getType()
 	{

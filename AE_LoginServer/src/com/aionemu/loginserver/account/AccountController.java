@@ -1,5 +1,5 @@
 /**
- * This file is part of aion-emu.
+ * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ public class AccountController
 		if (!ad.validatePassword(pass))
 			return AuthResponse.INVALID_PASSWORD;
 
-		if (ad.penaltyActive())
+		if (ad.isBanned())
 			return AuthResponse.KICK_GM_TOOLS;
 
 		if (ad.timeExpired())

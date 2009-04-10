@@ -1,5 +1,5 @@
 /**
- * This file is part of aion-emu.
+ * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,42 +27,70 @@ import com.aionemu.loginserver.network.aion.AionServerPacket;
  */
 public final class Init extends AionServerPacket
 {
-	private final int		_sessionId;
+	/**
+	 * Session Id of this connection
+	 */
+	private final int		sessionId;
 
-	private final byte[]	_publicKey;
-	private final byte[]	_blowfishKey;
+	/**
+	 * public Rsa key that client will use to encrypt login and password that will be send in RequestAuthLogin client
+	 * packet.
+	 */
+	private final byte[]	publicRsaKey;
+	/**
+	 * blowfish key for packet encryption/decryption.
+	 */
+	private final byte[]	blowfishKey;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param client
+	 */
 	public Init(AionConnection client)
 	{
 		this(client.getScrambledModulus(), client.getBlowfishKey(), client.getSessionId());
 	}
 
-	private Init(byte[] publickey, byte[] blowfishkey, int sessionId)
+	/**
+	 * Constructor
+	 * 
+	 * @param publicRsaKey
+	 * @param blowfishKey
+	 * @param sessionId
+	 */
+	private Init(byte[] publicRsaKey, byte[] blowfishKey, int sessionId)
 	{
-		_sessionId = sessionId;
-		_publicKey = publickey;
-		_blowfishKey = blowfishkey;
+		this.sessionId = sessionId;
+		this.publicRsaKey = publicRsaKey;
+		this.blowfishKey = blowfishKey;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
 		writeC(buf, 0x00); // init packet id
 
-		writeD(buf, _sessionId); // session id
+		writeD(buf, sessionId); // session id
 		writeD(buf, 0x0000c621); // protocol revision
-		writeB(buf, _publicKey); // RSA Public Key
-		//unk
+		writeB(buf, publicRsaKey); // RSA Public Key
+		// unk
 		writeD(buf, 0x00);
 		writeD(buf, 0x00);
 		writeD(buf, 0x00);
 		writeD(buf, 0x00);
 
-		writeB(buf, _blowfishKey); // BlowFish key
-		writeD(buf, 197635); //unk
-		writeD(buf, 2097152); //unk
+		writeB(buf, blowfishKey); // BlowFish key
+		writeD(buf, 197635); // unk
+		writeD(buf, 2097152); // unk
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getType()
 	{
