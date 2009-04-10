@@ -1,5 +1,5 @@
 /**
- * This file is part of aion-emu.
+ * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ package com.aionemu.commons.network;
 public interface DisconnectionThreadPool
 {
 	/**
+	 * Schedule Disconnection task.
 	 * @param dt
 	 *            <code>DisconnectionTask</code>
 	 * @param delay

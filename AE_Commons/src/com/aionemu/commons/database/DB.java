@@ -1,5 +1,5 @@
 /**
- * This file is part of aion-emu.
+ * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -179,7 +179,6 @@ public final class DB
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rset;
-		boolean error = false;
 
 		try
 		{
@@ -196,7 +195,7 @@ public final class DB
 				log.warn("Error executing select query " + e, e);
 			else
 				log.warn(errMsg + " " + e, e);
-			error = true;
+			return false;
 		}
 		finally
 		{
@@ -212,8 +211,7 @@ public final class DB
 				log.warn("Failed to close DB connection " + e, e);
 			}
 		}
-
-		return error;
+		return true;
 	}
 
 	/**
@@ -268,7 +266,6 @@ public final class DB
 	{
 		Connection con = null;
 		PreparedStatement stmt = null;
-		boolean success = true;
 
 		try
 		{
@@ -287,7 +284,7 @@ public final class DB
 			else
 				log.warn(errMsg + " " + e, e);
 
-			success = false;
+			return false;
 		}
 		finally
 		{
@@ -303,8 +300,7 @@ public final class DB
 				log.warn("Failed to close DB connection " + e, e);
 			}
 		}
-
-		return success;
+		return true;
 	}
 
 	/**
