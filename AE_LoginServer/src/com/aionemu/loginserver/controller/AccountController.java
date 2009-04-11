@@ -118,7 +118,8 @@ public class AccountController {
         // TODO: Should we kick old account?
         synchronized (AccountController.class)
         {
-            if(accountsOnLS.containsKey(account)){
+            if(accountsOnLS.containsKey(account))
+            {
                 return AuthResponse.ALREADY_LOGGED_IN;
             }
         }
