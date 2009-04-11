@@ -18,12 +18,11 @@ package com.aionemu.loginserver.network.aion.clientpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.loginserver.account.AuthResponse;
+import com.aionemu.loginserver.network.aion.serverpackets.AuthResponse;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.SessionKey;
 import com.aionemu.loginserver.network.aion.serverpackets.LoginFail;
-import com.aionemu.loginserver.network.aion.serverpackets.PlayFail;
 import com.aionemu.loginserver.network.aion.serverpackets.PlayOk;
 
 /**

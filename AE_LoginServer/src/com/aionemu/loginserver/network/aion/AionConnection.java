@@ -28,6 +28,8 @@ import org.apache.log4j.Logger;
 import com.aionemu.commons.network.AConnection;
 import com.aionemu.commons.network.Dispatcher;
 import com.aionemu.loginserver.LoginController;
+import com.aionemu.loginserver.controller.AccountController;
+import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.network.aion.serverpackets.Init;
 import com.aionemu.loginserver.network.crypt.LoginCrypt;
 import com.aionemu.loginserver.network.crypt.ScrambledKeyPair;
@@ -65,7 +67,7 @@ public class AionConnection extends AConnection
 	private ScrambledKeyPair				scrambledPair;
 	private byte[]							blowfishKey;
 
-	private String							account;
+	private Account account;
 	private int								lastServer;
 	private boolean							usesInternalIP;
 	private SessionKey						sessionKey;
@@ -152,7 +154,10 @@ public class AionConnection extends AConnection
 	@Override
 	protected final void onDisconnect()
 	{
-		// TODO
+        // Release account
+        if(account != null){
+            AccountController.removeAccountOnLS(account);
+        }
 	}
 
 	/**
@@ -170,7 +175,7 @@ public class AionConnection extends AConnection
 	 * @param buf
 	 * @return true if success
 	 */
-	private final boolean decrypt(ByteBuffer buf)
+	private boolean decrypt(ByteBuffer buf)
 	{
 		int size = buf.remaining();
 		final int offset = buf.arrayOffset() + buf.position();
@@ -304,12 +309,12 @@ public class AionConnection extends AConnection
 		this.state = state;
 	}
 
-	public final String getAccount()
+	public final Account getAccount()
 	{
 		return account;
 	}
 
-	public final void setAccount(String account)
+	public final void setAccount(Account account)
 	{
 		this.account = account;
 	}

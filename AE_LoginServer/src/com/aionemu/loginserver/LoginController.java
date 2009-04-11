@@ -21,11 +21,11 @@ import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.RSAKeyGenParameterSpec;
 
-import java.util.Random;
-import org.apache.log4j.Logger;
-
 import javax.crypto.Cipher;
 
+import org.apache.log4j.Logger;
+
+import com.aionemu.commons.utils.Rnd;
 import com.aionemu.loginserver.network.crypt.ScrambledKeyPair;
 
 /**
@@ -37,14 +37,12 @@ public class LoginController
 
 	private static LoginController	instance;
 
-	protected ScrambledKeyPair[]	_keyPairs;
+	protected ScrambledKeyPair[]    keyPairs;
 
-	private Random					_rnd			= new Random();
-
-	protected byte[][]				_blowfishKeys;
+	protected byte[][]              blowfishKeys;
 	private static final int		BLOWFISH_KEYS	= 20;
 
-	public static void load() throws GeneralSecurityException
+    public static void load() throws GeneralSecurityException
 	{
 		if (instance == null)
 		{
@@ -65,9 +63,9 @@ public class LoginController
 	{
 		log.info("Loading LoginContoller...");
 
-		_keyPairs = new ScrambledKeyPair[10];
+		keyPairs = new ScrambledKeyPair[10];
 
-		KeyPairGenerator keygen = null;
+		KeyPairGenerator keygen;
 
 		keygen = KeyPairGenerator.getInstance("RSA");
 		RSAKeyGenParameterSpec spec = new RSAKeyGenParameterSpec(1024, RSAKeyGenParameterSpec.F4);
@@ -76,11 +74,11 @@ public class LoginController
 		// generate the initial set of keys
 		for (int i = 0; i < 10; i++)
 		{
-			_keyPairs[i] = new ScrambledKeyPair(keygen.generateKeyPair());
+			keyPairs[i] = new ScrambledKeyPair(keygen.generateKeyPair());
 		}
 		log.info("Cached 10 KeyPairs for RSA communication");
 
-		this.testCipher((RSAPrivateKey) _keyPairs[0]._pair.getPrivate());
+		this.testCipher((RSAPrivateKey) keyPairs[0]._pair.getPrivate());
 
 		// Store keys for blowfish communication
 		this.generateBlowFishKeys();
@@ -105,16 +103,16 @@ public class LoginController
 
 	private void generateBlowFishKeys()
 	{
-		_blowfishKeys = new byte[BLOWFISH_KEYS][16];
+		blowfishKeys = new byte[BLOWFISH_KEYS][16];
 
 		for (int i = 0; i < BLOWFISH_KEYS; i++)
 		{
-			for (int j = 0; j < _blowfishKeys[i].length; j++)
+			for (int j = 0; j < blowfishKeys[i].length; j++)
 			{
-				_blowfishKeys[i][j] = (byte) (_rnd.nextInt(255) + 1);
+				blowfishKeys[i][j] = (byte) (Rnd.nextInt(255) + 1);
 			}
 		}
-		log.info("Stored " + _blowfishKeys.length + " keys for Blowfish communication");
+		log.info("Stored " + blowfishKeys.length + " keys for Blowfish communication");
 	}
 
 	/**
@@ -122,7 +120,7 @@ public class LoginController
 	 */
 	public byte[] getBlowfishKey()
 	{
-		return _blowfishKeys[(int) (Math.random() * BLOWFISH_KEYS)];
+		return blowfishKeys[(int) (Math.random() * BLOWFISH_KEYS)];
 	}
 
 	/**
@@ -135,6 +133,6 @@ public class LoginController
 	 */
 	public ScrambledKeyPair getScrambledRSAKeyPair()
 	{
-		return _keyPairs[_rnd.nextInt(10)];
+		return keyPairs[Rnd.nextInt(10)];
 	}
 }

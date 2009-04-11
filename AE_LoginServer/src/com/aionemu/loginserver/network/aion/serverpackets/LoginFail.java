@@ -18,7 +18,6 @@ package com.aionemu.loginserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.loginserver.account.AuthResponse;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
 

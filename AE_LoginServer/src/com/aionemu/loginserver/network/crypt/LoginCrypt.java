@@ -18,7 +18,7 @@ package com.aionemu.loginserver.network.crypt;
 
 import java.io.IOException;
 
-import com.aionemu.loginserver.utils.Rnd;
+import com.aionemu.commons.utils.Rnd;
 
 /**
  * @author KenM

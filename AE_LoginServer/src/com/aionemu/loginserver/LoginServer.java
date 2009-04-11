@@ -22,11 +22,11 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DatabaseFactory;
 import com.aionemu.commons.services.LoggingService;
-import com.aionemu.loginserver.account.BanIpList;
 import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.network.IOServer;
 import com.aionemu.loginserver.utils.DeadLockDetector;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
+import com.aionemu.loginserver.controller.BannedIpController;
 
 /**
  * @author -Nemesiss-
@@ -61,7 +61,7 @@ public class LoginServer
 		}
 
 		GameServerTable.load();
-		BanIpList.load();
+        BannedIpController.load();
 		// TODO! flood protector
 		// TODO! brute force protector
 

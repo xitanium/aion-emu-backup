@@ -17,10 +17,9 @@
 package com.aionemu.loginserver.network.aion;
 
 import com.aionemu.loginserver.configs.Config;
-import com.aionemu.loginserver.utils.Rnd;
+import com.aionemu.commons.utils.Rnd;
 
 /**
- * This class represents unique SessionKey for aion client.
  * @author -Nemesiss-
  */
 public class SessionKey

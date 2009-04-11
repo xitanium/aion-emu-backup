@@ -23,13 +23,13 @@ import javax.crypto.Cipher;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.loginserver.account.AccountController;
-import com.aionemu.loginserver.account.AuthResponse;
 import com.aionemu.loginserver.configs.Config;
+import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionConnection.State;
 import com.aionemu.loginserver.network.aion.SessionKey;
+import com.aionemu.loginserver.network.aion.serverpackets.AuthResponse;
 import com.aionemu.loginserver.network.aion.serverpackets.LoginFail;
 import com.aionemu.loginserver.network.aion.serverpackets.LoginOk;
 import com.aionemu.loginserver.network.aion.serverpackets.ServerList;
@@ -97,11 +97,10 @@ public class RequestAuthLogin extends AionClientPacket
 		log.info("AuthLogin: " + user + " pass: " + password + " ncotp: " + ncotp);
 
 		AionConnection client = getConnection();
-		AuthResponse response = AccountController.tryAuth(user, password, client.getIP());
+        AuthResponse response = AccountController.login(user, password, client);
 		switch (response)
 		{
 			case AUTHED:
-				client.setAccount(user);
 				client.setState(State.AUTHED_LOGIN);
 				client.setSessionKey(new SessionKey());
 				if (Config.SHOW_LICENCE)

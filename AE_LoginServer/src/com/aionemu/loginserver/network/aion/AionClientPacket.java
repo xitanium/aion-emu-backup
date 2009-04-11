@@ -20,6 +20,8 @@ import java.nio.ByteBuffer;
 
 import org.apache.log4j.Logger;
 
+import com.aionemu.loginserver.model.Account;
+
 /**
  * Base class for every Aion -> LS Client Packet
  * @author -Nemesiss-
@@ -61,9 +63,13 @@ public abstract class AionClientPacket implements Runnable
 		}
 		catch (Throwable e)
 		{
-			String name = getConnection().getAccount();
-			if (name == null)
-				name = getConnection().getIP();
+            String name;
+			Account account = getConnection().getAccount();
+            if(account != null){
+                name = account.getName();
+            } else {
+                name = getConnection().getIP();
+            }
 
 			log.error("error handling client (" + name + ") message " + getType(), e);
 		}

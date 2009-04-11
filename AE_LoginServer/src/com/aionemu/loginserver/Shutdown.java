@@ -19,7 +19,6 @@ package com.aionemu.loginserver;
 import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DatabaseFactory;
-import com.aionemu.loginserver.account.BanIpList;
 import com.aionemu.loginserver.network.IOServer;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
 
@@ -58,16 +57,6 @@ public class Shutdown extends Thread
 	@Override
 	public void run()
 	{
-		/* saving ban ip list */
-		try
-		{
-			BanIpList.store();
-		}
-		catch (Throwable t)
-		{
-			log.error("Can't store BanIpList", t);
-		}
-
 		/* Disconnecting all the clients */
 		try
 		{
