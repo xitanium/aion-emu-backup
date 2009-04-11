@@ -94,7 +94,7 @@ public class RequestAuthLogin extends AionClientPacket
 		ncotp |= decrypted[0x7e] << 16;
 		ncotp |= decrypted[0x7f] << 24;
 
-		log.info("AuthLogin: " + user + " pass: " + password + " ncotp: " + ncotp);
+		log.debug("AuthLogin: " + user + " pass: " + password + " ncotp: " + ncotp);
 
 		AionConnection client = getConnection();
         AuthResponse response = AccountController.login(user, password, client);

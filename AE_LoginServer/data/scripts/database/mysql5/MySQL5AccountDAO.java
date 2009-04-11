@@ -53,11 +53,13 @@ public class MySQL5AccountDAO extends AccountDAO {
             st.setString(1, name);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
+                account = new Account();
                 account.setId(rs.getInt("id"));
                 account.setName(name);
                 account.setPasswordHash(rs.getString("password"));
                 account.setLastActive(rs.getTimestamp("last_active"));
                 account.setExpirationTime(rs.getTimestamp("expiration_time"));
+                account.setPenaltyEnd(rs.getTimestamp("penalty_end"));
                 account.setAccessLevel(rs.getByte("access_level"));
                 account.setLastServer(rs.getByte("last_server"));
                 account.setLastIp(rs.getString("last_ip"));
@@ -149,8 +151,9 @@ public class MySQL5AccountDAO extends AccountDAO {
             st.setTimestamp(5, account.getPenaltyEnd());
             st.setByte(6, account.getAccessLevel());
             st.setByte(7, account.getLastServer());
-            st.setString(8, account.getIpForce());
-            st.setInt(9, account.getId());
+            st.setString(8, account.getLastIp());
+            st.setString(9, account.getIpForce());
+            st.setInt(10, account.getId());
             st.executeUpdate();
         } catch (SQLException e) {
             log.error("Can't update account");
