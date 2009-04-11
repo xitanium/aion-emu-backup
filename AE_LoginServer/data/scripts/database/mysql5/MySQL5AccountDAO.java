@@ -112,7 +112,7 @@ public class MySQL5AccountDAO extends AccountDAO {
     public boolean insertAccount(Account account) {
 
         int result = 0;
-        PreparedStatement st = DB.prepareStatement("INSERT INTO account_data(`name`, `password`, last_active, expiration_time, penalty_end, access_level, last_server, last_ip, ip_force) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement st = DB.prepareStatement("INSERT INTO account_data(`name`, `password`, last_active, expiration_time, penalty_end, access_level, last_server, last_ip, ip_force) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         try {
             st.setString(1, account.getName());
             st.setString(2, account.getPasswordHash());
@@ -121,7 +121,8 @@ public class MySQL5AccountDAO extends AccountDAO {
             st.setTimestamp(5, account.getPenaltyEnd());
             st.setByte(6, account.getAccessLevel());
             st.setByte(7, account.getLastServer());
-            st.setString(8, account.getIpForce());
+            st.setString(8, account.getLastIp());
+            st.setString(9, account.getIpForce());
             result = st.executeUpdate();
         } catch (SQLException e) {
             log.error("Can't inser account", e);
