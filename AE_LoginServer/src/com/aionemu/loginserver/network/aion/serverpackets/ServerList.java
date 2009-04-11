@@ -29,6 +29,11 @@ import com.aionemu.loginserver.network.aion.AionServerPacket;
  */
 public class ServerList extends AionServerPacket
 {
+	//TODO!
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
@@ -65,9 +70,11 @@ public class ServerList extends AionServerPacket
 		writeC(buf, 1);// ServerStatus, up=1
 		writeD(buf, 1);// bits);
 		writeC(buf, 0);// server.brackets ? 0x01 : 0x00);
-
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getType()
 	{

@@ -27,15 +27,30 @@ import com.aionemu.loginserver.network.aion.SessionKey;
  */
 public class PlayOk extends AionServerPacket
 {
+	/**
+	 * playOk1 is part of session key - its used for security purposes
+	 * [checked at game server side]
+	 */
 	private final int	playOk1;
+	/**
+	 * playOk2 is part of session key - its used for security purposes
+	 * [checked at game server side]
+	 */
 	private final int	playOk2;
 
+	/**
+	 * Constructor.
+	 * @param key
+	 */
 	public PlayOk(SessionKey key)
 	{
 		this.playOk1 = key.playOkID1;
 		this.playOk2 = key.playOkID2;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
@@ -44,6 +59,9 @@ public class PlayOk extends AionServerPacket
 		writeD(buf, playOk2);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getType()
 	{

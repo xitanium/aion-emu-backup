@@ -27,28 +27,48 @@ import com.aionemu.commons.database.IUStH;
  */
 public class AccountController
 {
-	public static AuthResponse tryAuth(final String login, String pass, final String address)
+	/**
+	 * Check if login by this user on given account is possible. If its not possible return reason as AuthResponse.
+	 * 
+	 * @param login
+	 * @param pass
+	 * @param address
+	 * @return AuthResponse for this login try
+	 */
+	public static final AuthResponse tryAuth(final String login, String pass, final String address)
 	{
+		/** check if ip is banned */
 		if (BanIpList.isRestricted(address))
 			return AuthResponse.BAN_IP;
 
+		/** load AccountData from sql */
 		AccountData ad = new AccountData(login, pass, address);
 
-		if (!ad.exist())
-			return AuthResponse.NO_SUCH_ACCOUNT;
+		/** check if account was loaded successful from sql */
+		if (ad.exception())
+			return AuthResponse.FAILED_ACCOUNT_INFO;
 
+		/** check if account exist */
+		if (!ad.exist())
+			return AuthResponse.INVALID_PASSWORD;
+
+		/** check if pass is ok */
 		if (!ad.validatePassword(pass))
 			return AuthResponse.INVALID_PASSWORD;
 
+		/** check if acc is banned */
 		if (ad.isBanned())
-			return AuthResponse.KICK_GM_TOOLS;
+			return AuthResponse.BAN_IP;
 
+		/** check if account have reaming playing time */
 		if (ad.timeExpired())
-			return AuthResponse.TIME_EXPIRED3;
+			return AuthResponse.TIME_EXPIRED;
 
+		/** check if this address is allowed to login on this account */
 		if (!ad.checkIP(address))
 			return AuthResponse.BAN_IP;
 
+		/** Update account info in sql like: last login time, last used itp */
 		DB.insertUpdate("UPDATE account_data SET last_active=?,last_ip=? WHERE name=?", new IUStH() {
 			public void handleInsertUpdate(PreparedStatement st) throws SQLException
 			{

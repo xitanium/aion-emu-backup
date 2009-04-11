@@ -18,9 +18,12 @@ package com.aionemu.loginserver.network.aion.clientpackets;
 
 import java.nio.ByteBuffer;
 
+import com.aionemu.loginserver.account.AuthResponse;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.SessionKey;
+import com.aionemu.loginserver.network.aion.serverpackets.LoginFail;
+import com.aionemu.loginserver.network.aion.serverpackets.PlayFail;
 import com.aionemu.loginserver.network.aion.serverpackets.PlayOk;
 
 /**
@@ -28,10 +31,24 @@ import com.aionemu.loginserver.network.aion.serverpackets.PlayOk;
  */
 public class RequestServerLogin extends AionClientPacket
 {
+	/**
+	 * loginOk1 is part of session key - its used for security purposes
+	 */
 	private final int	loginOk1;
+	/**
+	 * loginOk2 is part of session key - its used for security purposes
+	 */
 	private final int	loginOk2;
+	/**
+	 * Id of game server that this client is trying to play on.
+	 */
 	private final int	servId;
 
+	/**
+	 * Constructor.
+	 * @param buf
+	 * @param client
+	 */
 	public RequestServerLogin(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client);
@@ -40,19 +57,31 @@ public class RequestServerLogin extends AionClientPacket
 		servId = readD();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void runImpl()
 	{
-		SessionKey key = getConnection().getSessionKey();
+		AionConnection con = getConnection();
+		SessionKey key = con.getSessionKey();
 		if (key.checkLogin(loginOk1, loginOk2))
 		{
-			// TODO! if ok
+			//TODO!
+			//if(serv down)
+			//	con.sendPacket(new PlayFail(AuthResponse.SERVER_DOWN));
+			//if(serv gm only)
+			//	con.sendPacket(new PlayFail(AuthResponse.GM_ONLY));
+			//if(serv full)
+			//	con.sendPacket(new PlayFail(AuthResponse.SERVER_FULL));
 			sendPacket(new PlayOk(key));
-			// TODO! else dc
 		}
-		// TODO! dc
+		con.close(new LoginFail(AuthResponse.SYSTEM_ERROR), true);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getType()
 	{

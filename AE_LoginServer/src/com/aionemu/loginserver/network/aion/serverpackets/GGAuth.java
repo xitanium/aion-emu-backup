@@ -26,13 +26,23 @@ import com.aionemu.loginserver.network.aion.AionServerPacket;
  */
 public class GGAuth extends AionServerPacket
 {
+	/**
+	 * Session Id of this connection
+	 */
 	private final int	sessionId;
 
+	/**
+	 * Constructor.
+	 * @param sessionId
+	 */
 	public GGAuth(int sessionId)
 	{
 		this.sessionId = sessionId;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
@@ -44,6 +54,9 @@ public class GGAuth extends AionServerPacket
 		writeD(buf, 0x00);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getType()
 	{

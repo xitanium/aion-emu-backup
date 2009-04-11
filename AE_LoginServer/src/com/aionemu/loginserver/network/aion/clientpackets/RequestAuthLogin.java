@@ -111,7 +111,7 @@ public class RequestAuthLogin extends AionClientPacket
 				break;
 
 			default:
-				sendPacket(new LoginFail(response));
+				client.close(new LoginFail(response), true);
 				break;
 		}
 	}

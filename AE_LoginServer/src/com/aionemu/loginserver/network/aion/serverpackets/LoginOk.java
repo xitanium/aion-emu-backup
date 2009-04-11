@@ -27,15 +27,28 @@ import com.aionemu.loginserver.network.aion.SessionKey;
  */
 public class LoginOk extends AionServerPacket
 {
+	/**
+	 * loginOk1 is part of session key - its used for security purposes
+	 */
 	private final int	loginOk1;
+	/**
+	 * loginOk2 is part of session key - its used for security purposes
+	 */
 	private final int	loginOk2;
 
+	/**
+	 * Constructor.
+	 * @param key
+	 */
 	public LoginOk(SessionKey key)
 	{
 		this.loginOk1 = key.loginOkID1;
 		this.loginOk2 = key.loginOkID2;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
@@ -51,6 +64,9 @@ public class LoginOk extends AionServerPacket
 		writeB(buf, new byte[16]);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getType()
 	{
