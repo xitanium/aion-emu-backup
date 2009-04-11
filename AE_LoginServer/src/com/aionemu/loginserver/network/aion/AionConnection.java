@@ -111,7 +111,7 @@ public class AionConnection extends AConnection
 			return false;
 
 		AionClientPacket pck = AionPacketHandler.handle(data, this);
-		log.info("recived packet: " + pck);
+		log.debug("recived packet: " + pck);
 		if (pck != null)
 			ThreadPoolManager.getInstance().executeAionPacket(pck);
 		return true;
@@ -236,7 +236,7 @@ public class AionConnection extends AConnection
 			if (isWriteDisabled())
 				return;
 
-			log.info("sending packet: " + bp);
+			log.debug("sending packet: " + bp);
 
 			sendMsgQueue.addLast(bp);
 			enableWriteInterest();
