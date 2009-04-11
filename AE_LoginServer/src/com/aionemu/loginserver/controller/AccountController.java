@@ -18,8 +18,8 @@
 package com.aionemu.loginserver.controller;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.commons.utils.NetworkUtils;
@@ -41,14 +41,14 @@ public class AccountController {
     /**
      * Map with accounts that are active on LoginServer
      */
-    private static final Map<Account, AionConnection> accountsOnLS = new ConcurrentHashMap<Account, AionConnection>();
+    private static final Map<Account, AionConnection> accountsOnLS = new HashMap<Account, AionConnection>();
 
     /**
      * Adds accoount and connection to the list of active on LS
      * @param account account to add
      * @param con connection to add
      */
-    public static void addAccountOnLs(Account account, AionConnection con){
+    public static synchronized void addAccountOnLs(Account account, AionConnection con){
         accountsOnLS.put(account, con);
     }
 
@@ -56,7 +56,7 @@ public class AccountController {
      * Removes account from list of connections
      * @param account account
      */
-    public static void removeAccountOnLS(Account account){
+    public static synchronized void removeAccountOnLS(Account account){
         accountsOnLS.remove(account);
     }
 
@@ -116,13 +116,16 @@ public class AccountController {
 
         // Do not allow to login two times with same account
         // TODO: Should we kick old account?
-        if(accountsOnLS.containsKey(account)){
-            return AuthResponse.ALREADY_LOGGED_IN;
+        synchronized (AccountController.class)
+        {
+            if(accountsOnLS.containsKey(account)){
+                return AuthResponse.ALREADY_LOGGED_IN;
+            }
         }
 
         // if everything was OK
         getDAO().updateLastActive(account.getId(), new Timestamp(System.currentTimeMillis()));
-        getDAO().updateLastIp(account.getId(), account.getLastIp());
+        getDAO().updateLastIp(account.getId(), connection.getIP());
 
         connection.setAccount(account);
         return AuthResponse.AUTHED;
