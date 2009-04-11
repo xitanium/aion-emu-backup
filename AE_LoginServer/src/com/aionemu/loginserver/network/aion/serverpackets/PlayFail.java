@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
+import com.aionemu.loginserver.network.aion.AuthResponse;
 
 /**
  * @author -Nemesiss-

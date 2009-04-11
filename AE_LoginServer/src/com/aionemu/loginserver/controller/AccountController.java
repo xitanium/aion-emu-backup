@@ -27,7 +27,7 @@ import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.dao.AccountDAO;
 import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.network.aion.AionConnection;
-import com.aionemu.loginserver.network.aion.serverpackets.AuthResponse;
+import com.aionemu.loginserver.network.aion.AuthResponse;
 import com.aionemu.loginserver.utils.AccountUtils;
 
 /**

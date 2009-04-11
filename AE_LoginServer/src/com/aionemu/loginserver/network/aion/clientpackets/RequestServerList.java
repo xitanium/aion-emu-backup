@@ -20,7 +20,7 @@ import java.nio.ByteBuffer;
 
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
-import com.aionemu.loginserver.network.aion.serverpackets.AuthResponse;
+import com.aionemu.loginserver.network.aion.AuthResponse;
 import com.aionemu.loginserver.network.aion.serverpackets.LoginFail;
 import com.aionemu.loginserver.network.aion.serverpackets.ServerList;
 
