@@ -17,13 +17,14 @@
 
 package com.aionemu.commons.database;
 
-import java.util.Properties;
+import java.io.File;
 import java.io.IOException;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.commons.configuration.Property;
 import com.aionemu.commons.configuration.ConfigurableProcessor;
+import com.aionemu.commons.configuration.Property;
 import com.aionemu.commons.utils.PropertiesUtils;
 
 /**
@@ -79,6 +80,12 @@ public class DatabaseConfig
 	 */
 	@Property(key = "database.connections.max", defaultValue = "10")
 	public static int			DATABASE_CONNECTIONS_MAX;
+
+    /**
+     * Location of database script context descriptor
+     */
+    @Property(key = "database.scriptcontext.descriptor", defaultValue = "./data/scripts/database/database.xml")
+    public static File DATABASE_SCRIPTCONTEXT_DESCRIPTOR;
 
 	/**
 	 * Loads database configuration

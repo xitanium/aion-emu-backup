@@ -19,6 +19,7 @@ package com.aionemu.commons.database;
 // Common SQL
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
@@ -29,6 +30,8 @@ import org.apache.commons.dbcp.PoolableConnectionFactory;
 import org.apache.commons.dbcp.PoolingDataSource;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.log4j.Logger;
+
+import com.aionemu.commons.scripting.scriptmanager.ScriptManager;
 
 /**
  * <b>Database Factory</b><br>
@@ -51,6 +54,11 @@ public class DatabaseFactory
 	 */
 	private static final Logger			log	= Logger.getLogger(DatabaseFactory.class);
 
+    /**
+     * This script manager is responsible for loading {@link com.aionemu.commons.database.dao.DAO} implementations
+     */
+    private static final ScriptManager scriptManager = new ScriptManager();
+
 	/**
 	 * Data Source Generates all Connections This vaiable is also used as indicator for "initalized" state of
 	 * DatabaseFactory
@@ -61,6 +69,25 @@ public class DatabaseFactory
 	 * Connection Pool holds all connections - Idle or Active
 	 */
 	private static GenericObjectPool	connectionPool;
+
+    /**
+     * Returns name of the database that is used
+     *
+     * For isntance, MySQL returns "MySQL"
+     */
+    private static String databaseName;
+
+    /**
+     * Retursn major version that is used
+     * For instance, MySQL 5.0.51 community edition returns 5
+     */
+    private static int databaseMajorVersion;
+
+    /**
+     * Retursn minor version that is used
+     * For instance, MySQL 5.0.51 community edition returns 0
+     */
+    private static int databaseMinorVersion;
 
 	/**
 	 * Initializes DatabaseFactory.
@@ -98,7 +125,12 @@ public class DatabaseFactory
 		try
 		{
 			dataSource = setupDataSource();
-			getConnection().close();
+			Connection c = getConnection();
+            DatabaseMetaData dmd = c.getMetaData();
+            databaseName = dmd.getDatabaseProductName();
+            databaseMajorVersion = dmd.getDatabaseMajorVersion();
+            databaseMinorVersion = dmd.getDatabaseMinorVersion();
+            c.close();
 		}
 		catch (Exception e)
 		{
@@ -106,7 +138,15 @@ public class DatabaseFactory
 			throw new Error("DatabaseFactory not initialized!");
 		}
 
-		log.info("Successfully connected to database");
+        try {
+            scriptManager.load(DatabaseConfig.DATABASE_SCRIPTCONTEXT_DESCRIPTOR);
+        } catch (Exception e) {
+            String err = "Can't load database script context: " + DatabaseConfig.DATABASE_SCRIPTCONTEXT_DESCRIPTOR;
+            log.fatal(err);
+            throw new Error(err, e);
+        }
+
+        log.info("Successfully connected to database");
 	}
 
 	/**
@@ -182,5 +222,32 @@ public class DatabaseFactory
 
 		// set datasource to null so we can call init() once more...
 		dataSource = null;
+
+        // init shutdown on loaded scripts
+        scriptManager.shutdown();
 	}
+
+    /**
+     * Returns database name. For instance MySQL 5.0.51 community edition returns MySQL
+     * @return database name that is used.
+     */
+    public static String getDatabaseName() {
+        return databaseName;
+    }
+
+    /**
+     * Returns database version. For instance MySQL 5.0.51 community edition returns 5
+     * @return database major version
+     */
+    public static int getDatabaseMajorVersion() {
+        return databaseMajorVersion;
+    }
+
+    /**
+     * Returns database minor version. For instance MySQL 5.0.51 community edition reutnrs 0
+     * @return database minor version
+     */
+    public static int getDatabaseMinorVersion() {
+        return databaseMinorVersion;
+    }
 }

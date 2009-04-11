@@ -80,7 +80,7 @@ public class ResourceBundleControl extends ResourceBundle.Control
 
 	/**
 	 * This code is just copy-paste with usage {@link java.io.Reader} instead of {@link java.io.InputStream} to read
-	 * properties
+	 * properties.<br><br>
 	 * 
 	 * {@inheritDoc}
 	 */
