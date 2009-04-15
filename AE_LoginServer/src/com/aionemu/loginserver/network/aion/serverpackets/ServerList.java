@@ -20,6 +20,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
@@ -29,6 +31,10 @@ import com.aionemu.loginserver.network.aion.AionServerPacket;
  */
 public class ServerList extends AionServerPacket
 {
+	/**
+	 * Logger for this class.
+	 */
+	protected static Logger	log	= Logger.getLogger(ServerList.class);
 	//TODO!
 
 	/**
@@ -55,7 +61,7 @@ public class ServerList extends AionServerPacket
 		}
 		catch (UnknownHostException e)
 		{
-			e.printStackTrace();
+			log.error("GameServer with unknown host: "+e, e);
 			writeC(buf, 127);
 			writeC(buf, 0);
 			writeC(buf, 0);
