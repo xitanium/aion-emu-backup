@@ -30,13 +30,13 @@ import com.aionemu.loginserver.network.aion.serverpackets.ServerList;
 public class RequestServerList extends AionClientPacket
 {
 	/**
-	 * loginOk1 is part of session key - its used for security purposes
+	 * accountId is part of session key - its used for security purposes
 	 */
-	private final int	loginOk1;
+	private final int	accountId;
 	/**
-	 * loginOk2 is part of session key - its used for security purposes
+	 * loginOk is part of session key - its used for security purposes
 	 */
-	private final int	loginOk2;
+	private final int	loginOk;
 
 	/**
 	 * Constructor.
@@ -47,8 +47,8 @@ public class RequestServerList extends AionClientPacket
 	public RequestServerList(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client);
-		loginOk1 = readD();
-		loginOk2 = readD();
+		accountId = readD();
+		loginOk = readD();
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class RequestServerList extends AionClientPacket
 	protected void runImpl()
 	{
 		AionConnection con = getConnection();
-		if (con.getSessionKey().checkLogin(loginOk1, loginOk2))
+		if (con.getSessionKey().checkLogin(accountId, loginOk))
 		{
 			//TODO!
 			/*

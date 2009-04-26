@@ -42,8 +42,8 @@ public class LoginOk extends AionServerPacket
 	 */
 	public LoginOk(SessionKey key)
 	{
-		this.loginOk1 = key.loginOkID1;
-		this.loginOk2 = key.loginOkID2;
+		this.loginOk1 = key.accountId;
+		this.loginOk2 = key.loginOk;
 	}
 
 	/**

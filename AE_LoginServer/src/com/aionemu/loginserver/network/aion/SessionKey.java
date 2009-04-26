@@ -17,6 +17,7 @@
 package com.aionemu.loginserver.network.aion;
 
 import com.aionemu.loginserver.configs.Config;
+import com.aionemu.loginserver.model.Account;
 import com.aionemu.commons.utils.Rnd;
 
 /**
@@ -25,61 +26,66 @@ import com.aionemu.commons.utils.Rnd;
 public class SessionKey
 {
 	/**
-	 * play1 ok key
+	 * accountId - will be used for authentication on Game Server side.
 	 */
-	public int	playOkID1;
+	public final int	accountId;
 	/**
-	 * play2 ok key
+	 * login ok key
 	 */
-	public int	playOkID2;
+	public final int	loginOk;
 	/**
-	 * login1 ok key
+	 * play ok1 key
 	 */
-	public int	loginOkID1;
+	public final int	playOk1;
 	/**
-	 * login2 ok key
+	 * play ok2 key
 	 */
-	public int	loginOkID2;
+	public final int	playOk2;
 
 	/**
-	 * Create new SesionKey
+	 * Create new SesionKey for this Account
+	 * 
+	 * @param acc
 	 */
-	public SessionKey()
+	public SessionKey(Account acc)
 	{
-		this.loginOkID1 = Rnd.nextInt();
-		this.loginOkID2 = Rnd.nextInt();
-		this.playOkID1 = Rnd.nextInt();
-		this.playOkID2 = Rnd.nextInt();
+		this.accountId = acc.getId();
+		this.loginOk = Rnd.nextInt();
+		this.playOk1 = Rnd.nextInt();
+		this.playOk2 = Rnd.nextInt();
 	}
 
 	/**
 	 * Create new SesionKey with given values.
-	 * @param loginOk1
-	 * @param loginOk2
+	 * 
+	 * @param acc
+	 * @param loginOk
 	 * @param playOk1
 	 * @param playOk2
 	 */
-	public SessionKey(int loginOk1, int loginOk2, int playOk1, int playOk2)
+	public SessionKey(Account acc, int loginOk, int playOk1, int playOk2)
 	{
-		this.loginOkID1 = loginOk1;
-		this.loginOkID2 = loginOk2;
-		this.playOkID1 = playOk1;
-		this.playOkID2 = playOk2;
+		this.accountId = acc.getId();
+		this.loginOk = loginOk;
+		this.playOk1 = playOk1;
+		this.playOk2 = playOk2;
 	}
 
 	/**
 	 * Check if given values are ok.
-	 * @param loginOk1
-	 * @param loginOk2
-	 * @return true if loginOk1 and loginOk2 match this SessionKey
+	 * 
+	 * @param accountId
+	 * @param loginOk
+	 * @return true if accountId and loginOk match this SessionKey
 	 */
-	public boolean checkLogin(int loginOk1, int loginOk2)
+	public boolean checkLogin(int accountId, int loginOk)
 	{
-		return loginOkID1 == loginOk1 && loginOkID2 == loginOk2;
+		return accountId == accountId && loginOk == loginOk;
 	}
 
 	/**
 	 * Check if this SessionKey have the same values.
+	 * 
 	 * @param key
 	 * @return true if key match this SessionKey.
 	 */
@@ -87,11 +93,11 @@ public class SessionKey
 	{
 		if (Config.SHOW_LICENCE)
 		{
-			return (playOkID1 == key.playOkID1 && loginOkID1 == key.loginOkID1 && playOkID2 == key.playOkID2 && loginOkID2 == key.loginOkID2);
+			return (playOk1 == key.playOk1 && accountId == key.accountId && playOk2 == key.playOk2 && loginOk == key.loginOk);
 		}
 		else
 		{
-			return (playOkID1 == key.playOkID1 && playOkID2 == key.playOkID2);
+			return (playOk1 == key.playOk1 && playOk2 == key.playOk2);
 		}
 	}
 }

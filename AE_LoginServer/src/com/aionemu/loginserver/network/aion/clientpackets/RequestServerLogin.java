@@ -31,13 +31,13 @@ import com.aionemu.loginserver.network.aion.serverpackets.PlayOk;
 public class RequestServerLogin extends AionClientPacket
 {
 	/**
-	 * loginOk1 is part of session key - its used for security purposes
+	 * accountId is part of session key - its used for security purposes
 	 */
-	private final int	loginOk1;
+	private final int	accountId;
 	/**
-	 * loginOk2 is part of session key - its used for security purposes
+	 * loginOk is part of session key - its used for security purposes
 	 */
-	private final int	loginOk2;
+	private final int	loginOk;
 	/**
 	 * Id of game server that this client is trying to play on.
 	 */
@@ -51,8 +51,8 @@ public class RequestServerLogin extends AionClientPacket
 	public RequestServerLogin(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client);
-		loginOk1 = readD();
-		loginOk2 = readD();
+		accountId = readD();
+		loginOk = readD();
 		servId = readD();
 	}
 
@@ -64,7 +64,7 @@ public class RequestServerLogin extends AionClientPacket
 	{
 		AionConnection con = getConnection();
 		SessionKey key = con.getSessionKey();
-		if (key.checkLogin(loginOk1, loginOk2))
+		if (key.checkLogin(accountId, loginOk))
 		{
 			//TODO!
 			//if(serv down)

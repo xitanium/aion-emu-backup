@@ -102,7 +102,7 @@ public class RequestAuthLogin extends AionClientPacket
 		{
 			case AUTHED:
 				client.setState(State.AUTHED_LOGIN);
-				client.setSessionKey(new SessionKey());
+				client.setSessionKey(new SessionKey(client.getAccount()));
 				if (Config.SHOW_LICENCE)
 					client.sendPacket(new LoginOk(client.getSessionKey()));
 				else
