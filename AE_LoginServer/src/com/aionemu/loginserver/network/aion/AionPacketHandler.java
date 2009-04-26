@@ -24,6 +24,7 @@ import com.aionemu.loginserver.network.aion.clientpackets.CM_AUTH_GG;
 import com.aionemu.loginserver.network.aion.clientpackets.CM_LOGIN;
 import com.aionemu.loginserver.network.aion.clientpackets.CM_SERVER_LIST;
 import com.aionemu.loginserver.network.aion.clientpackets.CM_PLAY;
+import com.aionemu.loginserver.network.aion.clientpackets.CM_UPDATE_SESSION;
 
 /**
  * @author -Nemesiss-
@@ -55,6 +56,9 @@ public class AionPacketHandler
 				{
 					case 0x07:
 						msg = new CM_AUTH_GG(data, client);
+						break;
+					case 0x08:
+						msg = new CM_UPDATE_SESSION(data, client);
 						break;
 					default:
 						unknownPacket(state, id);
