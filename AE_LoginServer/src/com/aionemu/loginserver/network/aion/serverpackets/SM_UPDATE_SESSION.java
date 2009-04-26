@@ -55,7 +55,7 @@ public class SM_UPDATE_SESSION extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x03);
+		writeC(buf, 0x0C);
 		writeD(buf, accountId);
 		writeD(buf, loginOk);
 	}
