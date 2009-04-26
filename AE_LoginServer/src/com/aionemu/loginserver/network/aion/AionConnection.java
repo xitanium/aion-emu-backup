@@ -72,6 +72,10 @@ public class AionConnection extends AConnection
 	private boolean							usesInternalIP;
 	private SessionKey						sessionKey;
 	private int								sessionId		= 1;
+	/**
+	 * True if this user is connecting to GS.
+	 */
+	private boolean joinedGs;
 
 	/**
 	 * Constructor
@@ -154,8 +158,10 @@ public class AionConnection extends AConnection
 	@Override
 	protected final void onDisconnect()
 	{
-        // Release account
-        if(account != null){
+		/**
+		 * Remove account only if not joined GameServer yet.
+		 */
+        if(account != null && !joinedGs){
             AccountController.removeAccountOnLS(account);
         }
 	}
@@ -328,6 +334,11 @@ public class AionConnection extends AConnection
 	{
 		this.sessionKey = sessionKey;
 		// TODO! register etc
+	}
+
+	public final void setJoinedGs()
+	{
+		joinedGs = true;
 	}
 
 	/**

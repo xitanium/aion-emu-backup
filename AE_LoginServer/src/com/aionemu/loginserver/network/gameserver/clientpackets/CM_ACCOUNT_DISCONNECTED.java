@@ -14,44 +14,47 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.loginserver.network.gameserver.serverpackets;
+package com.aionemu.loginserver.network.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.loginserver.network.gameserver.GsAuthResponse;
+import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
-import com.aionemu.loginserver.network.gameserver.GsServerPacket;
 
 /**
- * This packet is response for CM_GS_AUTH
- * its notify Gameserver if registration was ok
- * or what was wrong.
+ * In this packet GameServer is informing LoginServer
+ * that some account is no longer on GameServer [ie was
+ * disconencted]
  * @author -Nemesiss-
+ *
  */
-public class SM_GS_AUTH_RESPONSE extends GsServerPacket
+public class CM_ACCOUNT_DISCONNECTED extends GsClientPacket
 {
 	/**
-	 * Response for Gameserver authentication
+	 * AccountId of account that was disconnected form
+	 * GameServer.
 	 */
-	private final GsAuthResponse		response;
+	private final int accountId;
 
 	/**
 	 * Constructor.
-	 * @param response
+	 * 
+	 * @param buf
+	 * @param client
 	 */
-	public SM_GS_AUTH_RESPONSE(GsAuthResponse response)
+	public CM_ACCOUNT_DISCONNECTED(ByteBuffer buf, GsConnection client)
 	{
-		this.response = response;
+		super(buf, client);
+		accountId = readD();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void writeImpl(GsConnection con, ByteBuffer buf)
+	protected void runImpl()
 	{
-		writeC(buf, 0x00);
-		writeC(buf, response.getResponseId());
+		//TODO! remove acc from account on gs list.
 	}
 
 	/**
@@ -60,6 +63,6 @@ public class SM_GS_AUTH_RESPONSE extends GsServerPacket
 	@Override
 	public String getType()
 	{
-		return "0x00 SM_GS_AUTH_RESPONSE";
+		return "0x03 CM_ACCOUNT_DISCONNECTED";
 	}
 }

@@ -28,6 +28,7 @@ import com.aionemu.loginserver.dao.AccountDAO;
 import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionAuthResponse;
+import com.aionemu.loginserver.network.aion.SessionKey;
 import com.aionemu.loginserver.utils.AccountUtils;
 
 /**
@@ -39,25 +40,39 @@ import com.aionemu.loginserver.utils.AccountUtils;
 public class AccountController {
 
     /**
-     * Map with accounts that are active on LoginServer
+     * Map with accounts that are active on LoginServer or joined GameServer
+     * and are not authenticated yet.
      */
-    private static final Map<Account, AionConnection> accountsOnLS = new HashMap<Account, AionConnection>();
-
-    /**
-     * Adds accoount and connection to the list of active on LS
-     * @param account account to add
-     * @param con connection to add
-     */
-    public static synchronized void addAccountOnLs(Account account, AionConnection con){
-        accountsOnLS.put(account, con);
-    }
+    private static final Map<Integer, AionConnection> accountsOnLS = new HashMap<Integer, AionConnection>();
 
     /**
      * Removes account from list of connections
      * @param account account
      */
     public static synchronized void removeAccountOnLS(Account account){
-        accountsOnLS.remove(account);
+        accountsOnLS.remove(account.getId());
+    }
+
+    /**
+     * This method is for answering GameServer question about account
+     * authentication on GameServer side.
+     * @param key
+     * @return Account matched to giver SessionKey or null
+     */
+    public static synchronized Account checkAuth(SessionKey key)
+    {
+    	AionConnection con = accountsOnLS.get(key.accountId);
+    	if(con != null)
+    	{
+    		if(con.getSessionKey().checkSessionKey(key))
+    		{
+    			//account is successful loged in on gs
+    			//remove it from here
+    			accountsOnLS.remove(key.accountId);
+    			return con.getAccount();
+    		}
+    	}
+    	return null;
     }
 
     /**
@@ -112,13 +127,23 @@ public class AccountController {
             return AionAuthResponse.BAN_IP;
         }
 
+        //TODO! check if account is on any GS
+        /*if(account on gs)
+        {
+        	//kick from gs: SM_REQUEST_KICK_ACCOUNT(name);
+        	return AionAuthResponse.ALREADY_LOGGED_IN;
+        }*/
+
         // Do not allow to login two times with same account
         // TODO: Should we kick old account?
         synchronized (AccountController.class)
         {
             if(accountsOnLS.containsKey(account))
-            {
                 return AionAuthResponse.ALREADY_LOGGED_IN;
+            else
+            {
+                connection.setAccount(account);
+                accountsOnLS.put(account.getId(), connection);
             }
         }
 
@@ -126,7 +151,6 @@ public class AccountController {
         getDAO().updateLastActive(account.getId(), new Timestamp(System.currentTimeMillis()));
         getDAO().updateLastIp(account.getId(), connection.getIP());
 
-        connection.setAccount(account);
         return AionAuthResponse.AUTHED;
     }
 

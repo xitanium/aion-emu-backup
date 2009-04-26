@@ -18,42 +18,45 @@ package com.aionemu.loginserver.network.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.loginserver.controller.AccountController;
-import com.aionemu.loginserver.model.Account;
-import com.aionemu.loginserver.network.aion.SessionKey;
+import com.aionemu.commons.utils.Rnd;
 import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
-import com.aionemu.loginserver.network.gameserver.serverpackets.SM_ACOUNT_AUTH_RESPONSE;
+import com.aionemu.loginserver.network.gameserver.serverpackets.SM_ACCOUNT_RECONNECT_KEY;
 
 /**
- * In this packet Gameserver is asking if given
- * account sessionKey is valid at Loginserver side.
- * [if user that is authenticating on Gameserver
- * is already authenticated on Loginserver]
+ * This packet is sended by GameServer when player
+ * is requesting fast reconnect to login server.
+ * LoginServer in response will send reconectKey.
  * @author -Nemesiss-
  *
  */
-public class CM_ACCOUNT_AUTH extends GsClientPacket
+public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 {
 	/**
-	 * SessionKey that GameServer needs to check if
-	 * is valid at Loginserver side.
+	 * accountName of account that will be reconnecting.
 	 */
-	private final SessionKey sessionKey;
+	private final String accountName;
+	/**
+	 * accoundId of account that will be reconnecting.
+	 */
+	private final int accountId;
+	/**
+	 * loginOk of account that will be reconnecting.
+	 */
+	private final int loginOk;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param buf
 	 * @param client
 	 */
-	public CM_ACCOUNT_AUTH(ByteBuffer buf, GsConnection client)
+	public CM_ACCOUNT_RECONNECT_KEY(ByteBuffer buf, GsConnection client)
 	{
 		super(buf, client);
-		int accountId = readD();
-		int loginOk = readD();
-		int playOk1 = readD();
-		int playOk2 = readD();
-
-		sessionKey = new SessionKey(accountId, loginOk, playOk1, playOk2);
+		accountName = readS();
+		accountId = readD();
+		loginOk = readD();
 	}
 
 	/**
@@ -62,14 +65,9 @@ public class CM_ACCOUNT_AUTH extends GsClientPacket
 	@Override
 	protected void runImpl()
 	{
-		Account acc = AccountController.checkAuth(sessionKey);
-		if(acc != null)
-		{
-			//TODO! add to account on this gameserver list
-			sendPacket(new SM_ACOUNT_AUTH_RESPONSE(true, acc.getName()));
-		}
-		else
-			sendPacket(new SM_ACOUNT_AUTH_RESPONSE(false, null));
+		int reconectKey = Rnd.nextInt();
+		//TODO! add to account reconnecting list.
+		this.sendPacket(new SM_ACCOUNT_RECONNECT_KEY(accountName, reconectKey));
 	}
 
 	/**
@@ -78,6 +76,6 @@ public class CM_ACCOUNT_AUTH extends GsClientPacket
 	@Override
 	public String getType()
 	{
-		return "0x01 CM_ACCOUNT_AUTH";
+		return "0x02 CM_ACCOUNT_RECONECT_KEY";
 	}
 }

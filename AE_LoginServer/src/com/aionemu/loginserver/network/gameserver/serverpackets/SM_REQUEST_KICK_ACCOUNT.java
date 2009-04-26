@@ -18,30 +18,30 @@ package com.aionemu.loginserver.network.gameserver.serverpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.loginserver.network.gameserver.GsAuthResponse;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsServerPacket;
 
 /**
- * This packet is response for CM_GS_AUTH
- * its notify Gameserver if registration was ok
- * or what was wrong.
+ * In this packet LoginSerer is requesting
+ * kicking account from GameServer.
  * @author -Nemesiss-
+ *
  */
-public class SM_GS_AUTH_RESPONSE extends GsServerPacket
+public class SM_REQUEST_KICK_ACCOUNT extends GsServerPacket
 {
 	/**
-	 * Response for Gameserver authentication
+	 * Account that must be kicked at GameServer side.
 	 */
-	private final GsAuthResponse		response;
+	private final String account;
 
 	/**
 	 * Constructor.
-	 * @param response
+	 * 
+	 * @param account
 	 */
-	public SM_GS_AUTH_RESPONSE(GsAuthResponse response)
+	public SM_REQUEST_KICK_ACCOUNT(String account)
 	{
-		this.response = response;
+		this.account = account;
 	}
 
 	/**
@@ -50,8 +50,8 @@ public class SM_GS_AUTH_RESPONSE extends GsServerPacket
 	@Override
 	protected void writeImpl(GsConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x00);
-		writeC(buf, response.getResponseId());
+		writeC(buf, 0x02);
+		writeS(buf, account);
 	}
 
 	/**
@@ -60,6 +60,6 @@ public class SM_GS_AUTH_RESPONSE extends GsServerPacket
 	@Override
 	public String getType()
 	{
-		return "0x00 SM_GS_AUTH_RESPONSE";
+		return "0x02 SM_REQUEST_KICK_ACCOUNT";
 	}
 }

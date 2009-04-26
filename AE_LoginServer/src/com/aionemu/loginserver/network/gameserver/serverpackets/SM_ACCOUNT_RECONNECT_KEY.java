@@ -18,30 +18,36 @@ package com.aionemu.loginserver.network.gameserver.serverpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.loginserver.network.gameserver.GsAuthResponse;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsServerPacket;
 
 /**
- * This packet is response for CM_GS_AUTH
- * its notify Gameserver if registration was ok
- * or what was wrong.
+ * In this packet LoginServer is sending response for
+ * CM_ACCOUNT_RECONNECT_KEY with account name and reconnectionKey.
  * @author -Nemesiss-
+ *
  */
-public class SM_GS_AUTH_RESPONSE extends GsServerPacket
+public class SM_ACCOUNT_RECONNECT_KEY extends GsServerPacket
 {
 	/**
-	 * Response for Gameserver authentication
+	 * accountName of account that will be reconnecting.
 	 */
-	private final GsAuthResponse		response;
+	private final String accountName;
+	/**
+	 * ReconnectKey that will be used for authentication.
+	 */
+	private final int reconnectKey;
 
 	/**
 	 * Constructor.
-	 * @param response
+	 * 
+	 * @param accountName
+	 * @param reconnectKey
 	 */
-	public SM_GS_AUTH_RESPONSE(GsAuthResponse response)
+	public SM_ACCOUNT_RECONNECT_KEY(String accountName, int reconnectKey)
 	{
-		this.response = response;
+		this.accountName = accountName;
+		this.reconnectKey = reconnectKey;
 	}
 
 	/**
@@ -50,8 +56,9 @@ public class SM_GS_AUTH_RESPONSE extends GsServerPacket
 	@Override
 	protected void writeImpl(GsConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x00);
-		writeC(buf, response.getResponseId());
+		writeC(buf, 0x03);
+		writeS(buf, accountName);
+		writeD(buf, reconnectKey);
 	}
 
 	/**
@@ -60,6 +67,6 @@ public class SM_GS_AUTH_RESPONSE extends GsServerPacket
 	@Override
 	public String getType()
 	{
-		return "0x00 SM_GS_AUTH_RESPONSE";
+		return "0x03 SM_ACOUNT_AUTH_RESPONSE";
 	}
 }

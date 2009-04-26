@@ -19,6 +19,9 @@ package com.aionemu.loginserver.network.gameserver;
 import java.nio.ByteBuffer;
 import org.apache.log4j.Logger;
 import com.aionemu.loginserver.network.gameserver.GsConnection.State;
+import com.aionemu.loginserver.network.gameserver.clientpackets.CM_ACCOUNT_AUTH;
+import com.aionemu.loginserver.network.gameserver.clientpackets.CM_ACCOUNT_DISCONNECTED;
+import com.aionemu.loginserver.network.gameserver.clientpackets.CM_ACCOUNT_RECONNECT_KEY;
 import com.aionemu.loginserver.network.gameserver.clientpackets.CM_GS_AUTH;
 
 /**
@@ -61,11 +64,14 @@ public class GsPacketHandler
 			{
 				switch (id)
 				{
+					case 0x01:
+						msg = new CM_ACCOUNT_AUTH(data, client);
+						break;
 					case 0x02:
-						// msg = new RequestServerList(data, client);
+						msg = new CM_ACCOUNT_RECONNECT_KEY(data, client);
 						break;
 					case 0x03:
-						// msg = new RequestServerLogin(data, client);
+						msg = new CM_ACCOUNT_DISCONNECTED(data, client);
 						break;
 					default:
 						unknownPacket(state, id);
