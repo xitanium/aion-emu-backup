@@ -30,19 +30,19 @@ import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AuthResponse;
 import com.aionemu.loginserver.network.aion.AionConnection.State;
 import com.aionemu.loginserver.network.aion.SessionKey;
-import com.aionemu.loginserver.network.aion.serverpackets.LoginFail;
-import com.aionemu.loginserver.network.aion.serverpackets.LoginOk;
-import com.aionemu.loginserver.network.aion.serverpackets.ServerList;
+import com.aionemu.loginserver.network.aion.serverpackets.SM_LOGIN_FAIL;
+import com.aionemu.loginserver.network.aion.serverpackets.SM_LOGIN_OK;
+import com.aionemu.loginserver.network.aion.serverpackets.SM_SERVER_LIST;
 
 /**
  * @author -Nemesiss-, KID
  */
-public class RequestAuthLogin extends AionClientPacket
+public class CM_LOGIN extends AionClientPacket
 {
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger	log	= Logger.getLogger(RequestAuthLogin.class);
+	private static final Logger	log	= Logger.getLogger(CM_LOGIN.class);
 
 	/**
 	 * byte array contains encrypted login and password.
@@ -55,7 +55,7 @@ public class RequestAuthLogin extends AionClientPacket
 	 * @param buf
 	 * @param client
 	 */
-	public RequestAuthLogin(ByteBuffer buf, AionConnection client)
+	public CM_LOGIN(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client);
 		readD();
@@ -83,7 +83,7 @@ public class RequestAuthLogin extends AionClientPacket
 		catch (GeneralSecurityException e)
 		{
 			log.warn("Error while decripting data on user auth." + e, e);
-			sendPacket(new LoginFail(AuthResponse.INVALID_PASSWORD));
+			sendPacket(new SM_LOGIN_FAIL(AuthResponse.INVALID_PASSWORD));
 			return;
 		}
 		String user = new String(decrypted, 64, 32).trim().toLowerCase();
@@ -104,13 +104,13 @@ public class RequestAuthLogin extends AionClientPacket
 				client.setState(State.AUTHED_LOGIN);
 				client.setSessionKey(new SessionKey(client.getAccount()));
 				if (Config.SHOW_LICENCE)
-					client.sendPacket(new LoginOk(client.getSessionKey()));
+					client.sendPacket(new SM_LOGIN_OK(client.getSessionKey()));
 				else
-					sendPacket(new ServerList());
+					sendPacket(new SM_SERVER_LIST());
 				break;
 
 			default:
-				client.close(new LoginFail(response), true);
+				client.close(new SM_LOGIN_FAIL(response), true);
 				break;
 		}
 	}
@@ -120,6 +120,6 @@ public class RequestAuthLogin extends AionClientPacket
 	 */
 	public String getType()
 	{
-		return "0x0B RequestAuthLogin";
+		return "0x0B CM_LOGIN";
 	}
 }

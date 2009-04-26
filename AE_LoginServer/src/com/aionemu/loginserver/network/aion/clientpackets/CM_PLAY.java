@@ -21,13 +21,14 @@ import java.nio.ByteBuffer;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AuthResponse;
-import com.aionemu.loginserver.network.aion.serverpackets.LoginFail;
-import com.aionemu.loginserver.network.aion.serverpackets.ServerList;
+import com.aionemu.loginserver.network.aion.SessionKey;
+import com.aionemu.loginserver.network.aion.serverpackets.SM_LOGIN_FAIL;
+import com.aionemu.loginserver.network.aion.serverpackets.SM_PLAY_OK;
 
 /**
  * @author -Nemesiss-
  */
-public class RequestServerList extends AionClientPacket
+public class CM_PLAY extends AionClientPacket
 {
 	/**
 	 * accountId is part of session key - its used for security purposes
@@ -37,18 +38,22 @@ public class RequestServerList extends AionClientPacket
 	 * loginOk is part of session key - its used for security purposes
 	 */
 	private final int	loginOk;
+	/**
+	 * Id of game server that this client is trying to play on.
+	 */
+	private final int	servId;
 
 	/**
 	 * Constructor.
-	 * 
 	 * @param buf
 	 * @param client
 	 */
-	public RequestServerList(ByteBuffer buf, AionConnection client)
+	public CM_PLAY(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client);
 		accountId = readD();
 		loginOk = readD();
+		servId = readD();
 	}
 
 	/**
@@ -58,21 +63,19 @@ public class RequestServerList extends AionClientPacket
 	protected void runImpl()
 	{
 		AionConnection con = getConnection();
-		if (con.getSessionKey().checkLogin(accountId, loginOk))
+		SessionKey key = con.getSessionKey();
+		if (key.checkLogin(accountId, loginOk))
 		{
 			//TODO!
-			/*
-			 * if(server list is empty) { con.close(new LoginFail(Response.NO_GS_REGISTERED), true); }
-			 */
-			sendPacket(new ServerList());
+			//if(serv down)
+			//	con.sendPacket(new PlayFail(AuthResponse.SERVER_DOWN));
+			//if(serv gm only)
+			//	con.sendPacket(new PlayFail(AuthResponse.GM_ONLY));
+			//if(serv full)
+			//	con.sendPacket(new PlayFail(AuthResponse.SERVER_FULL));
+			sendPacket(new SM_PLAY_OK(key));
 		}
-		else
-		{
-			/**
-			 * Session key is not ok - inform client that smth went wrong - dc client
-			 */
-			con.close(new LoginFail(AuthResponse.SYSTEM_ERROR), true);
-		}
+		con.close(new SM_LOGIN_FAIL(AuthResponse.SYSTEM_ERROR), true);
 	}
 
 	/**
@@ -81,6 +84,6 @@ public class RequestServerList extends AionClientPacket
 	@Override
 	public String getType()
 	{
-		return "0x05 RequestServerList";
+		return "0x02 CM_PLAY";
 	}
 }

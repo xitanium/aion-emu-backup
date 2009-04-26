@@ -20,10 +20,10 @@ import java.nio.ByteBuffer;
 import org.apache.log4j.Logger;
 
 import com.aionemu.loginserver.network.aion.AionConnection.State;
-import com.aionemu.loginserver.network.aion.clientpackets.AuthGameGuard;
-import com.aionemu.loginserver.network.aion.clientpackets.RequestAuthLogin;
-import com.aionemu.loginserver.network.aion.clientpackets.RequestServerList;
-import com.aionemu.loginserver.network.aion.clientpackets.RequestServerLogin;
+import com.aionemu.loginserver.network.aion.clientpackets.CM_AUTH_GG;
+import com.aionemu.loginserver.network.aion.clientpackets.CM_LOGIN;
+import com.aionemu.loginserver.network.aion.clientpackets.CM_SERVER_LIST;
+import com.aionemu.loginserver.network.aion.clientpackets.CM_PLAY;
 
 /**
  * @author -Nemesiss-
@@ -54,7 +54,7 @@ public class AionPacketHandler
 				switch (id)
 				{
 					case 0x07:
-						msg = new AuthGameGuard(data, client);
+						msg = new CM_AUTH_GG(data, client);
 						break;
 					default:
 						unknownPacket(state, id);
@@ -66,7 +66,7 @@ public class AionPacketHandler
 				switch (id)
 				{
 					case 0x0B:
-						msg = new RequestAuthLogin(data, client);
+						msg = new CM_LOGIN(data, client);
 						break;
 					default:
 						unknownPacket(state, id);
@@ -78,10 +78,10 @@ public class AionPacketHandler
 				switch (id)
 				{
 					case 0x05:
-						msg = new RequestServerList(data, client);
+						msg = new CM_SERVER_LIST(data, client);
 						break;
 					case 0x02:
-						msg = new RequestServerLogin(data, client);
+						msg = new CM_PLAY(data, client);
 						break;
 					default:
 						unknownPacket(state, id);

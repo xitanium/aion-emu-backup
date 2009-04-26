@@ -14,18 +14,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.loginserver.network.aion.serverpackets;
+package com.aionemu.loginserver.network.aion.clientpackets;
 
 import java.nio.ByteBuffer;
 
+import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
-import com.aionemu.loginserver.network.aion.AionServerPacket;
-import com.aionemu.loginserver.network.aion.SessionKey;
+import com.aionemu.loginserver.network.aion.AuthResponse;
+import com.aionemu.loginserver.network.aion.serverpackets.SM_LOGIN_FAIL;
+import com.aionemu.loginserver.network.aion.serverpackets.SM_SERVER_LIST;
 
 /**
  * @author -Nemesiss-
  */
-public class LoginOk extends AionServerPacket
+public class CM_SERVER_LIST extends AionClientPacket
 {
 	/**
 	 * accountId is part of session key - its used for security purposes
@@ -38,30 +40,39 @@ public class LoginOk extends AionServerPacket
 
 	/**
 	 * Constructor.
-	 * @param key
+	 * 
+	 * @param buf
+	 * @param client
 	 */
-	public LoginOk(SessionKey key)
+	public CM_SERVER_LIST(ByteBuffer buf, AionConnection client)
 	{
-		this.accountId = key.accountId;
-		this.loginOk = key.loginOk;
+		super(buf, client);
+		accountId = readD();
+		loginOk = readD();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void writeImpl(AionConnection con, ByteBuffer buf)
+	protected void runImpl()
 	{
-		writeC(buf, 0x03);
-		writeD(buf, accountId);
-		writeD(buf, loginOk);
-		writeD(buf, 0x00);
-		writeD(buf, 0x00);
-		writeD(buf, 0x000003ea);
-		writeD(buf, 0x00);
-		writeD(buf, 0x00);
-		writeD(buf, 0x00);
-		writeB(buf, new byte[16]);
+		AionConnection con = getConnection();
+		if (con.getSessionKey().checkLogin(accountId, loginOk))
+		{
+			//TODO!
+			/*
+			 * if(server list is empty) { con.close(new LoginFail(Response.NO_GS_REGISTERED), true); }
+			 */
+			sendPacket(new SM_SERVER_LIST());
+		}
+		else
+		{
+			/**
+			 * Session key is not ok - inform client that smth went wrong - dc client
+			 */
+			con.close(new SM_LOGIN_FAIL(AuthResponse.SYSTEM_ERROR), true);
+		}
 	}
 
 	/**
@@ -70,6 +81,6 @@ public class LoginOk extends AionServerPacket
 	@Override
 	public String getType()
 	{
-		return "0x03 LoginOk";
+		return "0x05 CM_SERVER_LIST";
 	}
 }

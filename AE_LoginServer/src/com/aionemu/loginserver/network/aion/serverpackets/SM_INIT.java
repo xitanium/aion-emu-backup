@@ -22,22 +22,48 @@ import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
 
 /**
- * @author -Nemesiss-
+ * Format: dd b dddd s d: session id d: protocol revision b: 0x90 bytes : 0x80 bytes for the scrambled RSA public key
+ * 0x10 bytes at 0x00 d: unknow d: unknow d: unknow d: unknow s: blowfish key
  */
-public class GGAuth extends AionServerPacket
+public final class SM_INIT extends AionServerPacket
 {
 	/**
 	 * Session Id of this connection
 	 */
-	private final int	sessionId;
+	private final int		sessionId;
 
 	/**
-	 * Constructor.
+	 * public Rsa key that client will use to encrypt login and password that will be send in RequestAuthLogin client
+	 * packet.
+	 */
+	private final byte[]	publicRsaKey;
+	/**
+	 * blowfish key for packet encryption/decryption.
+	 */
+	private final byte[]	blowfishKey;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param client
+	 */
+	public SM_INIT(AionConnection client)
+	{
+		this(client.getScrambledModulus(), client.getBlowfishKey(), client.getSessionId());
+	}
+
+	/**
+	 * Constructor
+	 * 
+	 * @param publicRsaKey
+	 * @param blowfishKey
 	 * @param sessionId
 	 */
-	public GGAuth(int sessionId)
+	private SM_INIT(byte[] publicRsaKey, byte[] blowfishKey, int sessionId)
 	{
 		this.sessionId = sessionId;
+		this.publicRsaKey = publicRsaKey;
+		this.blowfishKey = blowfishKey;
 	}
 
 	/**
@@ -46,12 +72,20 @@ public class GGAuth extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x0b);
-		writeD(buf, sessionId);
+		writeC(buf, 0x00); // init packet id
+
+		writeD(buf, sessionId); // session id
+		writeD(buf, 0x0000c621); // protocol revision
+		writeB(buf, publicRsaKey); // RSA Public Key
+		// unk
 		writeD(buf, 0x00);
 		writeD(buf, 0x00);
 		writeD(buf, 0x00);
 		writeD(buf, 0x00);
+
+		writeB(buf, blowfishKey); // BlowFish key
+		writeD(buf, 197635); // unk
+		writeD(buf, 2097152); // unk
 	}
 
 	/**
@@ -60,6 +94,6 @@ public class GGAuth extends AionServerPacket
 	@Override
 	public String getType()
 	{
-		return "0x0B GGAuth";
+		return "0x00 SM_INIT";
 	}
 }

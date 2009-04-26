@@ -20,41 +20,51 @@ import java.nio.ByteBuffer;
 
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
-import com.aionemu.loginserver.network.aion.AuthResponse;
+import com.aionemu.loginserver.network.aion.SessionKey;
 
 /**
- * @author KID
+ * @author -Nemesiss-
  */
-public class LoginFail extends AionServerPacket
+public class SM_PLAY_OK extends AionServerPacket
 {
 	/**
-	 * response - why login fail
+	 * playOk1 is part of session key - its used for security purposes
+	 * [checked at game server side]
 	 */
-	private AuthResponse	response;
+	private final int	playOk1;
+	/**
+	 * playOk2 is part of session key - its used for security purposes
+	 * [checked at game server side]
+	 */
+	private final int	playOk2;
 
 	/**
-	 * Constructor
-	 * @param response
+	 * Constructor.
+	 * @param key
 	 */
-	public LoginFail(AuthResponse response)
+	public SM_PLAY_OK(SessionKey key)
 	{
-		this.response = response;
+		this.playOk1 = key.playOk1;
+		this.playOk2 = key.playOk2;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x01);
-		writeD(buf, response.getMessageId());
+		writeC(buf, 0x07);
+		writeD(buf, playOk1);
+		writeD(buf, playOk2);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getType()
 	{
-		return "0x01 LoginFail";
+		return "0x07 SM_PLAY_OK";
 	}
 }

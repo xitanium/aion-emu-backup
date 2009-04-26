@@ -30,7 +30,7 @@ import com.aionemu.commons.network.Dispatcher;
 import com.aionemu.loginserver.LoginController;
 import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.model.Account;
-import com.aionemu.loginserver.network.aion.serverpackets.Init;
+import com.aionemu.loginserver.network.aion.serverpackets.SM_INIT;
 import com.aionemu.loginserver.network.crypt.LoginCrypt;
 import com.aionemu.loginserver.network.crypt.ScrambledKeyPair;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
@@ -95,7 +95,7 @@ public class AionConnection extends AConnection
 		loginCrypt.setKey(blowfishKey);
 
 		/** Send Init packet */
-		sendPacket(new Init(this));
+		sendPacket(new SM_INIT(this));
 	}
 
 	/**

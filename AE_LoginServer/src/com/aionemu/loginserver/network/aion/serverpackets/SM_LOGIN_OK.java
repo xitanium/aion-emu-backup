@@ -14,21 +14,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.loginserver.network.aion.clientpackets;
+package com.aionemu.loginserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
-import com.aionemu.loginserver.network.aion.AuthResponse;
+import com.aionemu.loginserver.network.aion.AionServerPacket;
 import com.aionemu.loginserver.network.aion.SessionKey;
-import com.aionemu.loginserver.network.aion.serverpackets.LoginFail;
-import com.aionemu.loginserver.network.aion.serverpackets.PlayOk;
 
 /**
  * @author -Nemesiss-
  */
-public class RequestServerLogin extends AionClientPacket
+public class SM_LOGIN_OK extends AionServerPacket
 {
 	/**
 	 * accountId is part of session key - its used for security purposes
@@ -38,44 +35,33 @@ public class RequestServerLogin extends AionClientPacket
 	 * loginOk is part of session key - its used for security purposes
 	 */
 	private final int	loginOk;
-	/**
-	 * Id of game server that this client is trying to play on.
-	 */
-	private final int	servId;
 
 	/**
 	 * Constructor.
-	 * @param buf
-	 * @param client
+	 * @param key
 	 */
-	public RequestServerLogin(ByteBuffer buf, AionConnection client)
+	public SM_LOGIN_OK(SessionKey key)
 	{
-		super(buf, client);
-		accountId = readD();
-		loginOk = readD();
-		servId = readD();
+		this.accountId = key.accountId;
+		this.loginOk = key.loginOk;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void runImpl()
+	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		AionConnection con = getConnection();
-		SessionKey key = con.getSessionKey();
-		if (key.checkLogin(accountId, loginOk))
-		{
-			//TODO!
-			//if(serv down)
-			//	con.sendPacket(new PlayFail(AuthResponse.SERVER_DOWN));
-			//if(serv gm only)
-			//	con.sendPacket(new PlayFail(AuthResponse.GM_ONLY));
-			//if(serv full)
-			//	con.sendPacket(new PlayFail(AuthResponse.SERVER_FULL));
-			sendPacket(new PlayOk(key));
-		}
-		con.close(new LoginFail(AuthResponse.SYSTEM_ERROR), true);
+		writeC(buf, 0x03);
+		writeD(buf, accountId);
+		writeD(buf, loginOk);
+		writeD(buf, 0x00);
+		writeD(buf, 0x00);
+		writeD(buf, 0x000003ea);
+		writeD(buf, 0x00);
+		writeD(buf, 0x00);
+		writeD(buf, 0x00);
+		writeB(buf, new byte[16]);
 	}
 
 	/**
@@ -84,6 +70,6 @@ public class RequestServerLogin extends AionClientPacket
 	@Override
 	public String getType()
 	{
-		return "0x02 RequestServerLogin";
+		return "0x03 SM_LOGIN_OK";
 	}
 }

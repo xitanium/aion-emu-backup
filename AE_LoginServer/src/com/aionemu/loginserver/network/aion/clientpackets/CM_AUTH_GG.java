@@ -22,13 +22,13 @@ import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AuthResponse;
 import com.aionemu.loginserver.network.aion.AionConnection.State;
-import com.aionemu.loginserver.network.aion.serverpackets.GGAuth;
-import com.aionemu.loginserver.network.aion.serverpackets.LoginFail;
+import com.aionemu.loginserver.network.aion.serverpackets.SM_AUTH_GG;
+import com.aionemu.loginserver.network.aion.serverpackets.SM_LOGIN_FAIL;
 
 /**
  * @author -Nemesiss-
  */
-public class AuthGameGuard extends AionClientPacket
+public class CM_AUTH_GG extends AionClientPacket
 {
 	/**
 	 * session id - its should match sessionId that was send in Init packet.
@@ -45,7 +45,7 @@ public class AuthGameGuard extends AionClientPacket
 	 * @param buf
 	 * @param client
 	 */
-	public AuthGameGuard(ByteBuffer buf, AionConnection client)
+	public CM_AUTH_GG(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client);
 		sessionId = readD();
@@ -64,7 +64,7 @@ public class AuthGameGuard extends AionClientPacket
 		if (con.getSessionId() == sessionId)
 		{
 			con.setState(State.AUTHED_GG);
-			con.sendPacket(new GGAuth(sessionId));
+			con.sendPacket(new SM_AUTH_GG(sessionId));
 		}
 		else
 		{
@@ -72,7 +72,7 @@ public class AuthGameGuard extends AionClientPacket
 			 * - inform client that smth went wrong
 			 * - dc client
 			 */
-			con.close(new LoginFail(AuthResponse.SYSTEM_ERROR), true);
+			con.close(new SM_LOGIN_FAIL(AuthResponse.SYSTEM_ERROR), true);
 		}
 	}
 
@@ -82,6 +82,6 @@ public class AuthGameGuard extends AionClientPacket
 	@Override
 	public String getType()
 	{
-		return "0x07 AuthGameGuard";
+		return "0x07 CM_AUTH_GG";
 	}
 }

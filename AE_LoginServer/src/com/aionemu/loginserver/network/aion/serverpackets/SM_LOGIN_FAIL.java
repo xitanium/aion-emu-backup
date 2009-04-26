@@ -23,13 +23,12 @@ import com.aionemu.loginserver.network.aion.AionServerPacket;
 import com.aionemu.loginserver.network.aion.AuthResponse;
 
 /**
- * @author -Nemesiss-
- *
+ * @author KID
  */
-public class PlayFail extends AionServerPacket
+public class SM_LOGIN_FAIL extends AionServerPacket
 {
 	/**
-	 * response - why play fail
+	 * response - why login fail
 	 */
 	private AuthResponse	response;
 
@@ -37,7 +36,7 @@ public class PlayFail extends AionServerPacket
 	 * Constructor
 	 * @param response
 	 */
-	public PlayFail(AuthResponse response)
+	public SM_LOGIN_FAIL(AuthResponse response)
 	{
 		this.response = response;
 	}
@@ -47,7 +46,7 @@ public class PlayFail extends AionServerPacket
 	 */
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x06);
+		writeC(buf, 0x01);
 		writeD(buf, response.getMessageId());
 	}
 
@@ -56,6 +55,6 @@ public class PlayFail extends AionServerPacket
 	 */
 	public String getType()
 	{
-		return "0x01 LoginFail";
+		return "0x01 SM_LOGIN_FAIL";
 	}
 }

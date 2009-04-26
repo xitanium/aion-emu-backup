@@ -29,12 +29,12 @@ import com.aionemu.loginserver.network.aion.AionServerPacket;
 /**
  * @author -Nemesiss-
  */
-public class ServerList extends AionServerPacket
+public class SM_SERVER_LIST extends AionServerPacket
 {
 	/**
 	 * Logger for this class.
 	 */
-	protected static Logger	log	= Logger.getLogger(ServerList.class);
+	protected static Logger	log	= Logger.getLogger(SM_SERVER_LIST.class);
 	//TODO!
 
 	/**
@@ -84,6 +84,6 @@ public class ServerList extends AionServerPacket
 	@Override
 	public String getType()
 	{
-		return "0x04 ServerList";
+		return "0x04 SM_SERVER_LIST";
 	}
 }
