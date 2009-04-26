@@ -45,7 +45,7 @@ public class PlayOk extends AionServerPacket
 	public PlayOk(SessionKey key)
 	{
 		this.playOk1 = key.playOk1;
-		this.playOk2 = key.playOkID2;
+		this.playOk2 = key.playOk2;
 	}
 
 	/**
