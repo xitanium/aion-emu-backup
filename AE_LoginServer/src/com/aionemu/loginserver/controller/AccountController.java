@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  * aion-emu is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.dao.AccountDAO;
 import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.network.aion.AionConnection;
-import com.aionemu.loginserver.network.aion.AuthResponse;
+import com.aionemu.loginserver.network.aion.AionAuthResponse;
 import com.aionemu.loginserver.utils.AccountUtils;
 
 /**
@@ -62,7 +62,7 @@ public class AccountController {
 
     /**
      * Tries to authentificate account.<br>
-     * If success returns {@link AuthResponse#AUTHED} and sets
+     * If success returns {@link AionAuthResponse#AUTHED} and sets
      * account object to connection.<br>
      *
      * If {@link com.aionemu.loginserver.configs.Config#ACCOUNT_AUTO_CREATION} is enabled - creates new account.<br>
@@ -72,7 +72,7 @@ public class AccountController {
      * @param connection connection for account
      * @return Response with error code
      */
-    public static AuthResponse login(String name, String password, AionConnection connection) {
+    public static AionAuthResponse login(String name, String password, AionConnection connection) {
         Account account = getDAO().getAccount(name);
 
         // Try to create new account
@@ -82,36 +82,34 @@ public class AccountController {
 
         // If account not found and not created
         if (account == null) {
-            // we should return same message as invalid password, it's a good practice for security
-//            return Response.NO_SUCH_ACCOUNT;
-            return AuthResponse.INVALID_PASSWORD;
+            return AionAuthResponse.INVALID_PASSWORD;
         }
 
         // check for paswords beeing equals
         if(!account.getPasswordHash().equals(AccountUtils.encodePassword(password))){
-            return AuthResponse.INVALID_PASSWORD;
+            return AionAuthResponse.INVALID_PASSWORD;
         }
 
         // If account expired
         if(account.isExpired()){
-            return AuthResponse.TIME_EXPIRED;
+            return AionAuthResponse.TIME_EXPIRED;
         }
 
         // if account is banned
         if(account.isPenaltyActive()){
-            return AuthResponse.BAN_IP;
+            return AionAuthResponse.BAN_IP;
         }
 
         // if account is restricted to some ip or mask
         if(account.getIpForce() != null){
             if(!NetworkUtils.checkIPMatching(account.getIpForce(), connection.getIP())){
-                return AuthResponse.BAN_IP;
+                return AionAuthResponse.BAN_IP;
             }
         }
 
         // if ip is banned
         if(BannedIpController.isBanned(connection.getIP())){
-            return AuthResponse.BAN_IP;
+            return AionAuthResponse.BAN_IP;
         }
 
         // Do not allow to login two times with same account
@@ -120,7 +118,7 @@ public class AccountController {
         {
             if(accountsOnLS.containsKey(account))
             {
-                return AuthResponse.ALREADY_LOGGED_IN;
+                return AionAuthResponse.ALREADY_LOGGED_IN;
             }
         }
 
@@ -129,7 +127,7 @@ public class AccountController {
         getDAO().updateLastIp(account.getId(), connection.getIP());
 
         connection.setAccount(account);
-        return AuthResponse.AUTHED;
+        return AionAuthResponse.AUTHED;
     }
 
     /**

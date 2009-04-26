@@ -18,8 +18,9 @@ package com.aionemu.loginserver;
 
 import org.apache.log4j.Logger;
 
+import com.aionemu.loginserver.network.gameserver.GsAuthResponse;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
-import com.aionemu.loginserver.network.gameserver.serverpackets.GsAuthResponse;
+import com.aionemu.loginserver.network.gameserver.serverpackets.SM_GS_AUTH_RESPONSE;
 
 /**
  * @author -Nemesiss-
@@ -75,11 +76,11 @@ public class GameServerTable
 		// TODO! load from sql registred gameservers
 	}
 
-	public static int registerGameServer(GsConnection gsConnection, int desiredID, boolean hostReserved,
-		String externalHost, String internalHost, int port, int max_palyers, String hexID)
+	public static GsAuthResponse registerGameServer(GsConnection gsConnection, int requestedId,
+		String externalHost, String internalHost, int port, int max_palyers, String password)
 	{
 		// TODO!
-		return GsAuthResponse.RESPONSE_OK;
+		return GsAuthResponse.AUTHED;
 	}
 
 	public static void unregisterGameServer(GsConnection gsConnection)

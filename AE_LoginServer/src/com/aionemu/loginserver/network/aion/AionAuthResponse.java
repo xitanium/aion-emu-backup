@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  * aion-emu is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@ package com.aionemu.loginserver.network.aion;
  * if login fail etc.
  * @author KID
  */
-public enum AuthResponse
+public enum AionAuthResponse
 {
 	/**
 	 * that one is not being sent to client, it's only for internal use.
@@ -126,7 +126,7 @@ public enum AuthResponse
 	 * Constructor.
 	 * @param msgId id of the message
 	 */
-	private AuthResponse(int msgId)
+	private AionAuthResponse(int msgId)
 	{
 		messageId = msgId;
 	}

@@ -16,36 +16,14 @@
  */
 package com.aionemu.loginserver.network.gameserver.serverpackets;
 
-import java.nio.ByteBuffer;
-
-import com.aionemu.loginserver.network.gameserver.GsConnection;
-import com.aionemu.loginserver.network.gameserver.GsServerPacket;
-
 /**
+ * In this packet Loginserver is answering on Gameserver
+ * request about valid authentication data and also sends
+ * account name of user that is authenticating on Gameserver.
  * @author -Nemesiss-
+ *
  */
-public class GsAuthResponse extends GsServerPacket
+public class SM_ACOUNT_AUTH_RESPONSE
 {
-	public static final int	RESPONSE_OK				= 0;
-	public static final int	RESPONSE_WRONG_HEXID	= 1;
 
-	private final int		response;
-
-	public GsAuthResponse(int response)
-	{
-		this.response = response;
-	}
-
-	@Override
-	protected void writeImpl(GsConnection con, ByteBuffer buf)
-	{
-		writeC(buf, 0x00);
-		writeC(buf, response);
-	}
-
-	@Override
-	public String getType()
-	{
-		return "0x00 GsAuthResponse";
-	}
 }

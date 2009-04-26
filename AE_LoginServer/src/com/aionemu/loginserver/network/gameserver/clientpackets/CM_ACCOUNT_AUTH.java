@@ -16,53 +16,58 @@
  */
 package com.aionemu.loginserver.network.gameserver.clientpackets;
 
-import java.math.BigInteger;
 import java.nio.ByteBuffer;
-import org.apache.log4j.Logger;
 
-import com.aionemu.loginserver.GameServerTable;
+import com.aionemu.loginserver.network.aion.SessionKey;
 import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
-import com.aionemu.loginserver.network.gameserver.serverpackets.GsAuthResponse;
 
 /**
+ * In this packet Gameserver is asking if given
+ * account sessionKey is valid at Loginserver side.
+ * [if user that is authenticating on Gameserver
+ * is already authenticated on Loginserver]
  * @author -Nemesiss-
+ *
  */
-public class GsAuth extends GsClientPacket
+public class CM_ACCOUNT_AUTH extends GsClientPacket
 {
-	private static final Logger	log	= Logger.getLogger(GsAuth.class);
-	private final byte[]		hexID;
-	private final int			desiredID;
-	private final boolean		hostReserved;
-	private final int			max_palyers;
-	private final int			port;
-	private final String		externalHost;
-	private final String		internalHost;
-
-	public GsAuth(ByteBuffer buf, GsConnection client)
+	/**
+	 * SessionKey that GameServer needs to check if
+	 * is valid at Loginserver side.
+	 */
+	private final SessionKey sessionKey;
+	/**
+	 * Constructor.
+	 * @param buf
+	 * @param client
+	 */
+	public CM_ACCOUNT_AUTH(ByteBuffer buf, GsConnection client)
 	{
 		super(buf, client);
-		desiredID = readC();
-		hostReserved = (readC() != 0);
-		externalHost = readS();
-		internalHost = readS();
-		port = readH();
-		max_palyers = readD();
-		int size = readD();
-		hexID = readB(size);
+		int accountId = readD();
+		int loginOk = readD();
+		int playOk1 = readD();
+		int playOk2 = readD();
+
+		sessionKey = new SessionKey(accountId, loginOk, playOk1, playOk2);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void runImpl()
 	{
-		int resp = GameServerTable.registerGameServer(getConnection(), desiredID, hostReserved, externalHost,
-			internalHost, port, max_palyers, new BigInteger(hexID).toString(16));
-		sendPacket(new GsAuthResponse(resp));
+		
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getType()
 	{
-		return "0x00 GsAuth";
+		return "0x01 CM_ACCOUNT_AUTH";
 	}
 }

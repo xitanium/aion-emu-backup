@@ -20,7 +20,7 @@ import java.nio.ByteBuffer;
 
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
-import com.aionemu.loginserver.network.aion.AuthResponse;
+import com.aionemu.loginserver.network.aion.AionAuthResponse;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_LOGIN_FAIL;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_SERVER_LIST;
 
@@ -71,7 +71,7 @@ public class CM_SERVER_LIST extends AionClientPacket
 			/**
 			 * Session key is not ok - inform client that smth went wrong - dc client
 			 */
-			con.close(new SM_LOGIN_FAIL(AuthResponse.SYSTEM_ERROR), true);
+			con.close(new SM_LOGIN_FAIL(AionAuthResponse.SYSTEM_ERROR), true);
 		}
 	}
 

@@ -20,7 +20,7 @@ import java.nio.ByteBuffer;
 
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
-import com.aionemu.loginserver.network.aion.AuthResponse;
+import com.aionemu.loginserver.network.aion.AionAuthResponse;
 
 /**
  * @author -Nemesiss-
@@ -31,13 +31,13 @@ public class SM_PLAY_FAIL extends AionServerPacket
 	/**
 	 * response - why play fail
 	 */
-	private AuthResponse	response;
+	private AionAuthResponse	response;
 
 	/**
 	 * Constructor
 	 * @param response
 	 */
-	public SM_PLAY_FAIL(AuthResponse response)
+	public SM_PLAY_FAIL(AionAuthResponse response)
 	{
 		this.response = response;
 	}

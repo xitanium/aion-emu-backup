@@ -14,29 +14,32 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.loginserver.network.aion.serverpackets;
+package com.aionemu.loginserver.network.gameserver.serverpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.loginserver.network.aion.AionConnection;
-import com.aionemu.loginserver.network.aion.AionServerPacket;
-import com.aionemu.loginserver.network.aion.AionAuthResponse;
+import com.aionemu.loginserver.network.gameserver.GsAuthResponse;
+import com.aionemu.loginserver.network.gameserver.GsConnection;
+import com.aionemu.loginserver.network.gameserver.GsServerPacket;
 
 /**
- * @author KID
+ * This packet is response for CM_GS_AUTH
+ * its notify Gameserver if registration was ok
+ * or what was wrong.
+ * @author -Nemesiss-
  */
-public class SM_LOGIN_FAIL extends AionServerPacket
+public class SM_GS_AUTH_RESPONSE extends GsServerPacket
 {
 	/**
-	 * response - why login fail
+	 * Response for Gameserver authentication
 	 */
-	private AionAuthResponse	response;
+	private final GsAuthResponse		response;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * @param response
 	 */
-	public SM_LOGIN_FAIL(AionAuthResponse response)
+	public SM_GS_AUTH_RESPONSE(GsAuthResponse response)
 	{
 		this.response = response;
 	}
@@ -44,17 +47,19 @@ public class SM_LOGIN_FAIL extends AionServerPacket
 	/**
 	 * {@inheritDoc}
 	 */
-	protected void writeImpl(AionConnection con, ByteBuffer buf)
+	@Override
+	protected void writeImpl(GsConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x01);
-		writeD(buf, response.getMessageId());
+		writeC(buf, 0x00);
+		writeC(buf, response.getResponseId());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getType()
 	{
-		return "0x01 SM_LOGIN_FAIL";
+		return "0x00 GsAuthResponse";
 	}
 }

@@ -27,7 +27,7 @@ import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
-import com.aionemu.loginserver.network.aion.AuthResponse;
+import com.aionemu.loginserver.network.aion.AionAuthResponse;
 import com.aionemu.loginserver.network.aion.AionConnection.State;
 import com.aionemu.loginserver.network.aion.SessionKey;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_LOGIN_FAIL;
@@ -83,7 +83,7 @@ public class CM_LOGIN extends AionClientPacket
 		catch (GeneralSecurityException e)
 		{
 			log.warn("Error while decripting data on user auth." + e, e);
-			sendPacket(new SM_LOGIN_FAIL(AuthResponse.INVALID_PASSWORD));
+			sendPacket(new SM_LOGIN_FAIL(AionAuthResponse.INVALID_PASSWORD));
 			return;
 		}
 		String user = new String(decrypted, 64, 32).trim().toLowerCase();
@@ -97,7 +97,7 @@ public class CM_LOGIN extends AionClientPacket
 		log.debug("AuthLogin: " + user + " pass: " + password + " ncotp: " + ncotp);
 
 		AionConnection client = getConnection();
-        AuthResponse response = AccountController.login(user, password, client);
+        AionAuthResponse response = AccountController.login(user, password, client);
 		switch (response)
 		{
 			case AUTHED:

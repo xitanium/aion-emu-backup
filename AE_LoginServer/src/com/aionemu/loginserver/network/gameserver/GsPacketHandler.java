@@ -19,7 +19,7 @@ package com.aionemu.loginserver.network.gameserver;
 import java.nio.ByteBuffer;
 import org.apache.log4j.Logger;
 import com.aionemu.loginserver.network.gameserver.GsConnection.State;
-import com.aionemu.loginserver.network.gameserver.clientpackets.GsAuth;
+import com.aionemu.loginserver.network.gameserver.clientpackets.CM_GS_AUTH;
 
 /**
  * @author -Nemesiss-
@@ -50,7 +50,7 @@ public class GsPacketHandler
 				switch (id)
 				{
 					case 0x00:
-						msg = new GsAuth(data, client);
+						msg = new CM_GS_AUTH(data, client);
 						break;
 					default:
 						unknownPacket(state, id);

@@ -58,14 +58,14 @@ public class SessionKey
 	/**
 	 * Create new SesionKey with given values.
 	 * 
-	 * @param acc
+	 * @param accountId
 	 * @param loginOk
 	 * @param playOk1
 	 * @param playOk2
 	 */
-	public SessionKey(Account acc, int loginOk, int playOk1, int playOk2)
+	public SessionKey(int accountId, int loginOk, int playOk1, int playOk2)
 	{
-		this.accountId = acc.getId();
+		this.accountId = accountId;
 		this.loginOk = loginOk;
 		this.playOk1 = playOk1;
 		this.playOk2 = playOk2;
