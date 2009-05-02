@@ -26,7 +26,7 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * This class is simple wrapper for SimpleJavaFileObject that load class source from file sytem
- *
+ * 
  * @author SoulKeeper
  */
 public class JavaSourceFromFile extends SimpleJavaFileObject
@@ -45,12 +45,15 @@ public class JavaSourceFromFile extends SimpleJavaFileObject
 		super(file.toURI(), kind);
 	}
 
-    /**
-     * Returns class source represented as string.
-     * @param ignoreEncodingErrors not used
-     * @return class source
-     * @throws IOException if something goes wrong
-     */
+	/**
+	 * Returns class source represented as string.
+	 * 
+	 * @param ignoreEncodingErrors
+	 *            not used
+	 * @return class source
+	 * @throws IOException
+	 *             if something goes wrong
+	 */
 	@Override
 	public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException
 	{

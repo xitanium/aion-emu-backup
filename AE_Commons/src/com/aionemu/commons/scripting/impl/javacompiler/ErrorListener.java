@@ -25,21 +25,23 @@ import org.apache.log4j.Logger;
 
 /**
  * This class is simple compiler error listener that forwards errors to log4j logger
- *
+ * 
  * @author SoulKeeper
  */
 public class ErrorListener implements DiagnosticListener<JavaFileObject>
 {
 
-    /**
-     * Logger for this class
-     */
+	/**
+	 * Logger for this class
+	 */
 	private static final Logger	log	= Logger.getLogger(ErrorListener.class);
 
-    /**
-     * Reports compilation errors to log4j
-     * @param diagnostic compiler errors
-     */
+	/**
+	 * Reports compilation errors to log4j
+	 * 
+	 * @param diagnostic
+	 *            compiler errors
+	 */
 	public void report(Diagnostic<? extends JavaFileObject> diagnostic)
 	{
 		log.error("Compier Error Report Start");
