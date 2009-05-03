@@ -168,7 +168,7 @@ public class ObjectEnhancer
 			generateMethods(newClass);
 			generateConstructors(newClass);
 
-			newClass.writeFile("D:/");
+			//newClass.writeFile("D:/");
 			return newClass.toBytecode();
 		}
 		catch (Exception e)
