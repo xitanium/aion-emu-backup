@@ -168,7 +168,7 @@ public class ObjectEnhancer
 			generateMethods(newClass);
 			generateConstructors(newClass);
 
-			//newClass.writeFile("D:/");
+			// newClass.writeFile("D:/");
 			return newClass.toBytecode();
 		}
 		catch (Exception e)
@@ -313,18 +313,7 @@ public class ObjectEnhancer
 			}
 			else if (dc.equals(clazz))
 			{
-				StringBuilder paramBuilder = new StringBuilder();
-				CtClass[] parameterTypes = m.getParameterTypes();
-				for (int i = 1; i <= parameterTypes.length; i++)
-				{
-					paramBuilder.append("$").append(i);
-					if (i < parameterTypes.length)
-					{
-						paramBuilder.append(',');
-					}
-				}
-				String paramString = paramBuilder.toString();
-
+				int paramLength = m.getParameterTypes().length;
 				StringBuilder sb = new StringBuilder();
 				sb.append('{');
 				sb.append('\n');
@@ -346,15 +335,25 @@ public class ObjectEnhancer
 				sb.append(CallbackResult.class.getName()).append(" cbr = ");
 				sb.append(CallbackHelper.class.getName()).append(".beforeCall(this, Class.forName(\"");
 				sb.append(listenerClassName).append("\", true, getClass().getClassLoader()), ");
-				if (paramString.length() > 0)
+				if (paramLength > 0)
 				{
-					sb.append(paramString);
+					sb.append("new Object[]{");
+					for (int i = 1; i <= paramLength; i++)
+					{
+						sb.append("($w)$").append(i);
+
+						if (i < paramLength)
+						{
+							sb.append(',');
+						}
+					}
+					sb.append("}");
 				}
 				else
 				{
 					sb.append("null");
 				}
-				sb.append(paramString).append(");");
+				sb.append(");");
 				sb.append('\n');
 				sb.append("Object result = null;\n");
 				sb.append("if(!cbr.isBlockingCaller()){\n");
@@ -362,21 +361,40 @@ public class ObjectEnhancer
 				{
 					sb.append("\tresult = ($w)");
 				}
-				sb.append("\tsuper.").append(m.getName()).append("(").append(paramString).append(");\n");
+				sb.append("\tsuper.").append(m.getName()).append("(");
+				for (int i = 1; i <= paramLength; i++)
+				{
+					sb.append('$').append(i);
+					if (i < paramLength)
+					{
+						sb.append(',');
+					}
+				}
+				sb.append(");\n");
 				sb.append("} else {\n");
 				sb.append("\tresult = cbr.getResult();\n}\n");
 				sb.append("cbr = ");
 				sb.append(CallbackHelper.class.getName()).append(".afterCall(this, Class.forName(\"");
 				sb.append(listenerClassName).append("\", true, getClass().getClassLoader()), ");
-				if (paramString.length() > 0)
+				if (paramLength > 0)
 				{
-					sb.append(paramString);
+					sb.append("new Object[]{");
+					for (int i = 1; i <= paramLength; i++)
+					{
+						sb.append("($w)$").append(i);
+
+						if (i < paramLength)
+						{
+							sb.append(',');
+						}
+					}
+					sb.append("}");
 				}
 				else
 				{
 					sb.append("null");
 				}
-				sb.append(paramString).append(", result);");
+				sb.append(", result);");
 				sb.append('\n');
 				if (!m.getReturnType().equals(CtClass.voidType))
 				{
