@@ -19,7 +19,8 @@ package com.aionemu.commons.callbacks;
 
 /**
  * Interface that is used to mark callback priority when it's not default.<br>
- * Callback doen't have to implement this interface if priority is default.
+ * Callback doen't have to implement this interface if priority is default.<br>
+ * Listeners with bigger priority are executed earlier.
  * 
  * @author SoulKeeper
  */

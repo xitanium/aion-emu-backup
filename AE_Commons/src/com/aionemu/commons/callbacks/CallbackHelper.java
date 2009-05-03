@@ -259,7 +259,7 @@ public class CallbackHelper
 		if (callback instanceof CallbackPriority)
 		{
 			CallbackPriority instancePriority = (CallbackPriority) callback;
-			return instancePriority.getPriority();
+			return CallbackPriority.DEFAULT_PRIORITY - instancePriority.getPriority();
 		}
 		else
 		{
