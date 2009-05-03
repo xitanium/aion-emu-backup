@@ -247,8 +247,11 @@ public class CallbackHelper
 	/**
 	 * Returns priority of callback.<br>
 	 * Method checks if callback is instance of {@link CallbackPriority}, and returns
-	 * {@link CallbackPriority#getPriority()}, if callback is not instance of CallbackPriority then it returns
-	 * {@link CallbackPriority#DEFAULT_PRIORITY}
+	 * 
+	 * <pre>
+	 * {@link CallbackPriority#DEFAULT_PRIORITY} - {@link CallbackPriority#getPriority()}
+	 * </pre>.<br>
+	 * If callback is not instance of CallbackPriority then it returns {@link CallbackPriority#DEFAULT_PRIORITY}
 	 * 
 	 * @param callback
 	 *            priority to get from
