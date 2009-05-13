@@ -44,7 +44,8 @@ public class LoginServer
 	public static void main(String[] args)
 	{
 		LoggingService.init();
-		DatabaseFactory.init(); // initializing DB Factory
+		/** initializing DB Factory */
+		DatabaseFactory.init();
 		Config.load();
 		/** Start deadlock detector that will restart server if deadlock happened */
 		new DeadLockDetector(60, DeadLockDetector.RESTART).start();
@@ -69,8 +70,8 @@ public class LoginServer
 		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
 
 		long freeMem = (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() + Runtime.getRuntime()
-			.freeMemory()) / 1048576; // 1024 * 1024 = 1048576;
-		long totalMem = Runtime.getRuntime().maxMemory() / 1048576;
+			.freeMemory()) / (1024 * 1024);
+		long totalMem = Runtime.getRuntime().maxMemory() / (1024 * 1024);
 		log.info("LoginServer Started, used memory " + (totalMem - freeMem) + " MB");
 	}
 }

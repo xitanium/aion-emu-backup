@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.AConnection;
 import com.aionemu.commons.network.Dispatcher;
-import com.aionemu.loginserver.GameServerTable;
+import com.aionemu.loginserver.GameServerTable.GameServerInfo;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
 
 /**
@@ -57,6 +57,11 @@ public class GsConnection extends AConnection
 	 * Current state of this connection
 	 */
 	private State						state;
+
+	/**
+	 * GameServerInfo for this GsConnection.
+	 */
+	private GameServerInfo gameServerInfo = null;
 
 	/**
 	 * Constructor.
@@ -127,7 +132,11 @@ public class GsConnection extends AConnection
 	@Override
 	protected final void onDisconnect()
 	{
-		GameServerTable.unregisterGameServer(this);
+		if(gameServerInfo != null)
+		{
+			gameServerInfo.setGsConnection(null);
+			gameServerInfo = null;
+		}
 	}
 
 	/**
@@ -180,7 +189,7 @@ public class GsConnection extends AConnection
 			if (isWriteDisabled())
 				return;
 
-			log.info("sending packet: " + closePacket + "and closing connection after that.");
+			log.info("sending packet: " + closePacket + " and closing connection after that.");
 
 			pendingClose = true;
 			isForcedClosing = forced;
@@ -205,6 +214,24 @@ public class GsConnection extends AConnection
 	public void setState(State state)
 	{
 		this.state = state;
+	}
+
+	/**
+	 * @return GameServerInfo for this GsConnection
+	 * or null if this GsConnection is not authenticated yet.
+	 */
+	public GameServerInfo getGameServerInfo()
+	{
+		return gameServerInfo;
+	}
+
+	/**
+	 * @param gameServerInfo
+	 * 			Set GameServerInfo for this GsConnection.
+	 */
+	public void setGameServerInfo(GameServerInfo gameServerInfo)
+	{
+		this.gameServerInfo = gameServerInfo;
 	}
 
 	/**

@@ -35,7 +35,7 @@ public enum GsAuthResponse
 	/**
 	 * Requested id is not free
 	 */
-	ALLREADY_REGISTERED(2);
+	ALREADY_REGISTERED(2);
 
 	/**
 	 * id of this enum that may be sent to client

@@ -16,76 +16,303 @@
  */
 package com.aionemu.loginserver;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
+import com.aionemu.commons.database.dao.DAOManager;
+import com.aionemu.commons.utils.NetworkUtils;
+import com.aionemu.loginserver.dao.GameServersDAO;
 import com.aionemu.loginserver.network.gameserver.GsAuthResponse;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
-import com.aionemu.loginserver.network.gameserver.serverpackets.SM_GS_AUTH_RESPONSE;
 
 /**
+ * GameServerTable contains list of GameServers registered on this
+ * LoginServer. GameServer may by online or down.
  * @author -Nemesiss-
  */
 public class GameServerTable
 {
-	private static final Logger	log	= Logger.getLogger(GameServerTable.class);
+	/**
+	 * Logger for this class.
+	 */
+	private static final Logger							log			= Logger.getLogger(GameServerTable.class);
 
-	private GameServerInfo[]	gameservers;
+	/**
+	 * Map<Id,GameServer>
+	 */
+	private static Map<Integer, GameServerInfo>	gameservers;
 
+	/**
+	 * Return collection contains all registered [up/down]
+	 * GameServers.
+	 * @return collection of GameServers.
+	 */
+	public static final Collection<GameServerInfo> getGameServers()
+	{
+		return Collections.unmodifiableCollection(gameservers.values());
+	}
+
+	/**
+	 * This class represents GameServer at LoginServer side.
+	 * It contain info about id, ip etc.
+	 * @author -Nemesiss-
+	 *
+	 */
 	public class GameServerInfo
 	{
+		/**
+		 * Id of this GameServer
+		 */
 		private final int		id;
+		/**
+		 * Allowed IP for this GameServer
+		 * if gs will connect from another ip
+		 * wont be registered.
+		 */
 		private final String	ip;
-		private final String	hex_id;
-		private GsConnection	gs_conn;
+		/**
+		 * Password
+		 */
+		private final String	password;
+		/**
+		 * Host on with this GameServer is accepting external
+		 * connections.
+		 */
+		private String externalHost;
+		/**
+		 * Host on with this GameServer is accepting internal
+		 * connections.
+		 */
+		private String internalHost;
+		/**
+		 * Port on with this GameServer
+		 * is accepting clients.
+		 */
+		private int port;
+		/**
+		 * gsConnection - if GameServer is connected
+		 * to LoginServer.
+		 */
+		private GsConnection	gsConnection;
+		/**
+		 * Max players count that may play on this GameServer.
+		 */
+		private int				maxPlayers;
 
-		public GameServerInfo(int id, String ip, String hex_id)
+		/**
+		 * Constructor.
+		 * 
+		 * @param id
+		 * @param ip
+		 * @param password
+		 */
+		public GameServerInfo(int id, String ip, String password)
 		{
 			this.id = id;
 			this.ip = ip;
-			this.hex_id = hex_id;
+			this.password = password;
 		}
 
-		public GsConnection getGsConnection()
-		{
-			return gs_conn;
-		}
-
-		public void setGsConnection(GsConnection gs_conn)
-		{
-			this.gs_conn = gs_conn;
-		}
-
+		/**
+		 * Returns id of this GameServer.
+		 * @return int id
+		 */
 		public int getId()
 		{
 			return id;
 		}
 
+		/**
+		 * Returns Password of this GameServer.
+		 * @return String password
+		 */
+		public String getPassword()
+		{
+			return password;
+		}
+
+		/**
+		 * Returns allowed IP for this GameServer.
+		 * @return String ip
+		 */
 		public String getIp()
 		{
 			return ip;
 		}
 
-		public String getHex_id()
+		/**
+		 * Returns port of this GameServer.
+		 * @return in port
+		 */
+		public int getPort()
 		{
-			return hex_id;
+			return port;
+		}
+
+		/**
+		 * Set port for this GameServer.
+		 * @param port
+		 */
+		public void setPort(int port)
+		{
+			this.port = port;
+		}
+
+		/**
+		 * Returns host on with this GameServer
+		 * is accepting external connections.
+		 * 
+		 * @return String externalHost
+		 */
+		public String getExternalHost()
+		{
+			return externalHost;
+		}
+
+		/**
+		 * Set host on with this GameServer will be accepting
+		 * external connections.
+		 * 
+		 * @param externalHost
+		 */
+		public void setExternalHost(String externalHost)
+		{
+			this.externalHost = externalHost;
+		}
+
+		/**
+		 * Returns host on with this GameServer
+		 * is accepting internal connections.
+		 * 
+		 * @return String internalHost
+		 */
+		public String getInternalHost()
+		{
+			return internalHost;
+		}
+
+		/**
+		 * Set host on with this GameServer will be accepting
+		 * internal connections.
+		 * 
+		 * @param internalHost
+		 */
+		public void setInternalHost(String internalHost)
+		{
+			this.internalHost = internalHost;
+		}
+
+		/**
+		 * Returns active GsConnection for this GameServer
+		 * or null if this GameServer is down.
+		 * @return GsConnection
+		 */
+		public final GsConnection getGsConnection()
+		{
+			return gsConnection;
+		}
+
+		/**
+		 * Set active GsConnection.
+		 * @param gsConnection
+		 */
+		public final void setGsConnection(GsConnection gsConnection)
+		{
+			if(gsConnection == null)
+				setPort(0);
+
+			this.gsConnection = gsConnection;
+		}
+
+		/**
+		 * Returns number of max allowed players
+		 * for this GameServer.
+		 * @return int maxPlayers
+		 */
+		public final int getMaxPlayers()
+		{
+			return maxPlayers;
+		}
+
+		/**
+		 * Set max allowed players for this GameServer.
+		 * @param maxPlayers
+		 */
+		public final void setMaxPlayers(int maxPlayers)
+		{
+			this.maxPlayers = maxPlayers;
 		}
 	}
 
+	/**
+	 * Load GameServers from database.
+	 */
 	public static void load()
 	{
-		// TODO! load from sql registred gameservers
+		gameservers = getDAO().getAllBans();
 	}
 
-	public static GsAuthResponse registerGameServer(GsConnection gsConnection, int requestedId,
-		String externalHost, String internalHost, int port, int max_palyers, String password)
+	/**
+	 * Register GameServer if its possible.
+	 * 
+	 * @param gsConnection
+	 * @param requestedId
+	 * @param externalHost
+	 * @param internalHost
+	 * @param port
+	 * @param maxPlayers
+	 * @param password
+	 * @return GsAuthResponse
+	 */
+	public static GsAuthResponse registerGameServer(GsConnection gsConnection, int requestedId, String externalHost,
+		String internalHost, int port, int maxPlayers, String password)
 	{
-		// TODO!
+		GameServerInfo gsi = gameservers.get(requestedId);
+
+		/**
+		 * This id is not Registered at LoginServer.
+		 */
+		if(gsi == null)
+		{
+			log.info(gsConnection+" requested not aviable ID!");
+			return GsAuthResponse.NOT_AUTHED;
+		}
+
+		/**
+		 * Check if this GameServer is not already registered.
+		 */
+		if(gsi.getGsConnection() != null)
+			return GsAuthResponse.ALREADY_REGISTERED;
+
+		/**
+		 * Check if password and ip are ok.
+		 */
+		if(!gsi.getPassword().equals(password) || !NetworkUtils.checkIPMatching(gsi.getIp(), gsConnection.getIP()))
+		{
+			log.info(gsConnection+" wrong ip or password!");
+			return GsAuthResponse.NOT_AUTHED;
+		}
+
+		gsi.setExternalHost(externalHost);
+		gsi.setInternalHost(internalHost);
+		gsi.setPort(port);
+		gsi.setMaxPlayers(maxPlayers);
+		gsi.setGsConnection(gsConnection);
+
+		gsConnection.setGameServerInfo(gsi);
 		return GsAuthResponse.AUTHED;
 	}
 
-	public static void unregisterGameServer(GsConnection gsConnection)
-	{
-		log.info("GameServer " + gsConnection.getIP() + " unregistered.");
-		// TODO!
-	}
+    /**
+     * Retuns {@link com.aionemu.loginserver.dao.GameServersDAO} , just a shortcut
+     *
+     * @return {@link com.aionemu.loginserver.dao.GameServersDAO}
+     */
+    private static GameServersDAO getDAO()
+    {
+        return DAOManager.getDAO(GameServersDAO.class);
+    }
 }

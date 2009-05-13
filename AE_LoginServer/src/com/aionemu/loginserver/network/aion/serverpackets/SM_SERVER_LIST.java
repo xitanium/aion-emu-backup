@@ -19,10 +19,12 @@ package com.aionemu.loginserver.network.aion.serverpackets;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.loginserver.configs.Config;
+import com.aionemu.loginserver.GameServerTable;
+import com.aionemu.loginserver.GameServerTable.GameServerInfo;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
 
@@ -35,7 +37,6 @@ public class SM_SERVER_LIST extends AionServerPacket
 	 * Logger for this class.
 	 */
 	protected static Logger	log	= Logger.getLogger(SM_SERVER_LIST.class);
-	//TODO!
 
 	/**
 	 * {@inheritDoc}
@@ -43,39 +44,43 @@ public class SM_SERVER_LIST extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		// TODO!
+		Collection<GameServerInfo> servers = GameServerTable.getGameServers();
+
 		writeC(buf, 0x04);
-		writeC(buf, 1);// servers
-		writeC(buf, 0);// last server
-		// for(servers...)
-		writeC(buf, 1);// server id
-
-		try
+		writeC(buf, servers.size());// servers
+		writeC(buf, con.getAccount().getLastServer());// last server
+		for(GameServerInfo gsi : servers)
 		{
-			InetAddress i4 = InetAddress.getByName(Config.LOGIN_BIND_ADDRESS);
-			byte[] raw = i4.getAddress();
-			writeC(buf, raw[0] & 0xff);
-			writeC(buf, raw[1] & 0xff);
-			writeC(buf, raw[2] & 0xff);
-			writeC(buf, raw[3] & 0xff);
-		}
-		catch (UnknownHostException e)
-		{
-			log.error("GameServer with unknown host: "+e, e);
-			writeC(buf, 127);
-			writeC(buf, 0);
-			writeC(buf, 0);
-			writeC(buf, 1);
-		}
+			writeC(buf, gsi.getId());// server id
 
-		writeD(buf, 7777);// port
-		writeC(buf, 0x00); // age limit
-		writeC(buf, 0x01);// pvp=1
-		writeH(buf, 0);// currentPlayers
-		writeH(buf, 1000);// maxPlayers
-		writeC(buf, 1);// ServerStatus, up=1
-		writeD(buf, 1);// bits);
-		writeC(buf, 0);// server.brackets ? 0x01 : 0x00);
+			String host = con.usesInternalIP()? gsi.getInternalHost() : gsi.getExternalHost();
+			try
+			{
+				InetAddress i4 = InetAddress.getByName(host);
+				byte[] raw = i4.getAddress();
+				writeC(buf, raw[0] & 0xff);
+				writeC(buf, raw[1] & 0xff);
+				writeC(buf, raw[2] & 0xff);
+				writeC(buf, raw[3] & 0xff);
+			}
+			catch (UnknownHostException e)
+			{
+				log.error("GameServer with unknown host: "+e, e);
+				writeC(buf, 127);
+				writeC(buf, 0);
+				writeC(buf, 0);
+				writeC(buf, 1);
+			}
+
+			writeD(buf, gsi.getPort());// port
+			writeC(buf, 0x00); // age limit
+			writeC(buf, 0x01);// pvp=1
+			writeH(buf, 0);// currentPlayers
+			writeH(buf, gsi.getMaxPlayers());// maxPlayers
+			writeC(buf, gsi.getGsConnection() != null? 1 : 0);// ServerStatus, up=1
+			writeD(buf, 1);// bits);
+			writeC(buf, 0);// server.brackets ? 0x01 : 0x00);
+		}
 	}
 
 	/**

@@ -30,6 +30,9 @@ import com.aionemu.commons.utils.PropertiesUtils;
  */
 public class Config
 {
+	/**
+	 * Logger for this class.
+	 */
 	protected static final Logger	log	= Logger.getLogger(Config.class);
 
 	/**

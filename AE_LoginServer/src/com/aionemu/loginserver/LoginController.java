@@ -33,8 +33,14 @@ import com.aionemu.loginserver.network.crypt.ScrambledKeyPair;
  */
 public class LoginController
 {
+	/**
+	 * Logger for this class.
+	 */
 	protected static final Logger	log				= Logger.getLogger(LoginController.class);
 
+	/**
+	 * instance of LoginController
+	 */
 	private static LoginController	instance;
 
 	protected ScrambledKeyPair[]    keyPairs;
@@ -101,6 +107,9 @@ public class LoginController
 		rsaCipher.init(Cipher.DECRYPT_MODE, key);
 	}
 
+	/**
+	 * Generate and cache BlowFish keys.
+	 */
 	private void generateBlowFishKeys()
 	{
 		blowfishKeys = new byte[BLOWFISH_KEYS][16];
