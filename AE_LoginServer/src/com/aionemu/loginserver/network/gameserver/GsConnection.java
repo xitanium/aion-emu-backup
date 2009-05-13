@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.AConnection;
 import com.aionemu.commons.network.Dispatcher;
-import com.aionemu.loginserver.GameServerTable.GameServerInfo;
+import com.aionemu.loginserver.GameServerInfo;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
 
 /**

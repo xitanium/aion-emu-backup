@@ -48,6 +48,18 @@ public class Config
 	public static String			LOGIN_BIND_ADDRESS;
 
 	/**
+	 * Login Server port
+	 */
+	@Property(key = "loginserver.network.gameserver.port", defaultValue = "9014")
+	public static int				GAME_PORT;
+
+	/**
+	 * Login Server bind ip
+	 */
+	@Property(key = "loginserver.network.gameserver.host", defaultValue = "*")
+	public static String			GAME_BIND_ADDRESS;
+
+	/**
 	 * Number of trys of login before ban
 	 */
 	@Property(key = "loginserver.network.client.logintrybeforeban", defaultValue = "5")

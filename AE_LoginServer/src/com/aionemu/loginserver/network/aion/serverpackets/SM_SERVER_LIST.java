@@ -23,8 +23,8 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
+import com.aionemu.loginserver.GameServerInfo;
 import com.aionemu.loginserver.GameServerTable;
-import com.aionemu.loginserver.GameServerTable.GameServerInfo;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
 

@@ -40,7 +40,7 @@ public class IOServer
 		ServerCfg aion = new ServerCfg(Config.LOGIN_BIND_ADDRESS, Config.LOGIN_PORT, "Aion Connections",
 			new AionConnectionFactoryImpl());
 
-		ServerCfg gs = new ServerCfg("127.0.0.1", 9014, "Gs Connections", new GsConnectionFactoryImpl());
+		ServerCfg gs = new ServerCfg(Config.GAME_BIND_ADDRESS, Config.GAME_PORT, "Gs Connections", new GsConnectionFactoryImpl());
 
 		instance = new NioServer(Config.NIO_READ_THREADS, ThreadPoolManager
 			.getInstance(), gs, aion);

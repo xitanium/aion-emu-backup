@@ -21,6 +21,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.commons.utils.NetworkUtils;
 import com.aionemu.loginserver.dao.BannedIpDAO;
@@ -31,7 +33,12 @@ import com.aionemu.loginserver.model.BannedIP;
  *
  * @author SoulKeeper
  */
-public class BannedIpController {
+public class BannedIpController
+{
+	/**
+	 * Logger for this class.
+	 */
+	private static final Logger							log			= Logger.getLogger(BannedIpController.class);
 
     /**
      * List of banned ip adresses
@@ -51,6 +58,7 @@ public class BannedIpController {
     public static void reload() {
         // we are not going to make ip ban every minute, so it's ok to simplify a concurrent code a bit
         banList = new CopyOnWriteArraySet<BannedIP>(getDAO().getAllBans());
+        log.info("BannedIpController loaded "+banList.size()+" IP bans.");
     }
 
     /**

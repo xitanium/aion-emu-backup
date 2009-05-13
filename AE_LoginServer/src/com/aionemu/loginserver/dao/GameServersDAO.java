@@ -19,7 +19,7 @@ package com.aionemu.loginserver.dao;
 import java.util.Map;
 
 import com.aionemu.commons.database.dao.DAO;
-import com.aionemu.loginserver.GameServerTable.GameServerInfo;
+import com.aionemu.loginserver.GameServerInfo;
 
 /**
  * DAO that manages GameServers
@@ -32,7 +32,7 @@ public abstract  class GameServersDAO implements DAO
      * Returns all gameservers from database.
      * @return all gameservers from database.
      */
-    public abstract Map<Integer, GameServerInfo> getAllBans();
+    public abstract Map<Integer, GameServerInfo> getAllGameServers();
 
     /**
      * Returns class name that will be uses as unique identifier for all DAO classes

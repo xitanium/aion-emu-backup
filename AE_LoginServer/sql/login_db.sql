@@ -26,3 +26,13 @@ CREATE TABLE `banned_ip` (
   PRIMARY KEY (`id`),
   UNIQUE (`mask`)
 );
+
+-- ----------------------------
+-- Table structure for gameservers
+-- ----------------------------
+CREATE TABLE `gameservers` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `mask` varchar(45) NOT NULL,
+  `password` varchar(65) NOT NULL,
+  PRIMARY KEY (`id`)
+);
