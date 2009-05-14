@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.AConnection;
 import com.aionemu.commons.network.Dispatcher;
+import com.aionemu.commons.utils.Rnd;
 import com.aionemu.loginserver.LoginController;
 import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.model.Account;
@@ -63,15 +64,38 @@ public class AionConnection extends AConnection
 	 * Current state of this connection
 	 */
 	private State							state;
+	/**
+	 * Crypt to encrypt/decrypt packets
+	 */
 	private LoginCrypt						loginCrypt;
 	private ScrambledKeyPair				scrambledPair;
 	private byte[]							blowfishKey;
 
+	/**
+	 * Account object for this connection.
+	 * if state = AUTHED_LOGIN account cant
+	 * be null.
+	 * 
+	 */
 	private Account account;
+	/**
+	 * Last played server
+	 */
 	private int								lastServer;
+	/**
+	 * If this connection should use internalIp
+	 * for reconnecting to GameServer [ie when GameServer
+	 * is in the same local net as client]
+	 */
 	private boolean							usesInternalIP;
+	/**
+	 * Session Key for this connection.
+	 */
 	private SessionKey						sessionKey;
-	private int								sessionId		= 1;
+	/**
+	 * Unique Session Id of this connection
+	 */
+	private int								sessionId		= Rnd.nextInt();
 	/**
 	 * True if this user is connecting to GS.
 	 */
@@ -276,6 +300,12 @@ public class AionConnection extends AConnection
 		}
 	}
 
+	/**
+	 * True if this connection should use internalIp
+	 * for reconnecting to GameServer [ie when GameServer
+	 * is in the same local net as client]
+	 * @return usesInternalIP
+	 */
 	public final boolean usesInternalIP()
 	{
 		return usesInternalIP;
@@ -296,6 +326,10 @@ public class AionConnection extends AConnection
 		return (RSAPrivateKey) scrambledPair._pair.getPrivate();
 	}
 
+	/**
+	 * Returns unique sessionId of this connection.
+	 * @return SessionId
+	 */
 	public final int getSessionId()
 	{
 		return sessionId;
@@ -310,32 +344,55 @@ public class AionConnection extends AConnection
 		return state;
 	}
 
+	/**
+	 * Set current state of this connection
+	 * @param state
+	 */
 	public final void setState(State state)
 	{
 		this.state = state;
 	}
 
+	/**
+	 * Returns Account object that this
+	 * client logged in or null
+	 * @return Account
+	 */
 	public final Account getAccount()
 	{
 		return account;
 	}
 
+	/**
+	 * Set Account object for this connection.
+	 * @param account
+	 */
 	public final void setAccount(Account account)
 	{
 		this.account = account;
 	}
 
+	/**
+	 * Returns Session Key of this connection
+	 * @return SessionKey
+	 */
 	public final SessionKey getSessionKey()
 	{
 		return sessionKey;
 	}
 
+	/**
+	 * Set Session Key for this connection
+	 * @param sessionKey
+	 */
 	public final void setSessionKey(SessionKey sessionKey)
 	{
 		this.sessionKey = sessionKey;
-		// TODO! register etc
 	}
 
+	/**
+	 * Set joinedGs value to true
+	 */
 	public final void setJoinedGs()
 	{
 		joinedGs = true;

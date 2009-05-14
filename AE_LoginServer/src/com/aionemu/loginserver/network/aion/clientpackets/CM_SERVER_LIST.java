@@ -18,6 +18,7 @@ package com.aionemu.loginserver.network.aion.clientpackets;
 
 import java.nio.ByteBuffer;
 
+import com.aionemu.loginserver.GameServerTable;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionAuthResponse;
@@ -60,11 +61,10 @@ public class CM_SERVER_LIST extends AionClientPacket
 		AionConnection con = getConnection();
 		if (con.getSessionKey().checkLogin(accountId, loginOk))
 		{
-			//TODO!
-			/*
-			 * if(server list is empty) { con.close(new LoginFail(Response.NO_GS_REGISTERED), true); }
-			 */
-			sendPacket(new SM_SERVER_LIST());
+			if(GameServerTable.getGameServers().size() == 0)
+				con.close(new SM_LOGIN_FAIL(AionAuthResponse.NO_GS_REGISTERED), true);
+			else
+				sendPacket(new SM_SERVER_LIST());
 		}
 		else
 		{

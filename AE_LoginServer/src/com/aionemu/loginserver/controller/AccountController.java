@@ -67,7 +67,7 @@ public class AccountController
     	{
     		if(con.getSessionKey().checkSessionKey(key))
     		{
-    			//account is successful loged in on gs
+    			//account is successful logged in on gs
     			//remove it from here
     			accountsOnLS.remove(key.accountId);
     			return con.getAccount();

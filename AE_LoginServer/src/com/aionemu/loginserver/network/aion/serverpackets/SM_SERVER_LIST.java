@@ -77,7 +77,7 @@ public class SM_SERVER_LIST extends AionServerPacket
 			writeC(buf, 0x01);// pvp=1
 			writeH(buf, 0);// currentPlayers
 			writeH(buf, gsi.getMaxPlayers());// maxPlayers
-			writeC(buf, gsi.getGsConnection() != null? 1 : 0);// ServerStatus, up=1
+			writeC(buf, gsi.isOnline()? 1 : 0);// ServerStatus, up=1
 			writeD(buf, 1);// bits);
 			writeC(buf, 0);// server.brackets ? 0x01 : 0x00);
 		}

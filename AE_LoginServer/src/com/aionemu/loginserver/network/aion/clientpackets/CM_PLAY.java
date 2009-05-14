@@ -18,11 +18,14 @@ package com.aionemu.loginserver.network.aion.clientpackets;
 
 import java.nio.ByteBuffer;
 
+import com.aionemu.loginserver.GameServerInfo;
+import com.aionemu.loginserver.GameServerTable;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionAuthResponse;
 import com.aionemu.loginserver.network.aion.SessionKey;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_LOGIN_FAIL;
+import com.aionemu.loginserver.network.aion.serverpackets.SM_PLAY_FAIL;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_PLAY_OK;
 
 /**
@@ -66,16 +69,21 @@ public class CM_PLAY extends AionClientPacket
 		SessionKey key = con.getSessionKey();
 		if (key.checkLogin(accountId, loginOk))
 		{
-			//TODO!
-			//if(serv down)
-			//	con.sendPacket(new PlayFail(AuthResponse.SERVER_DOWN));
-			//if(serv gm only)
-			//	con.sendPacket(new PlayFail(AuthResponse.GM_ONLY));
-			//if(serv full)
-			//	con.sendPacket(new PlayFail(AuthResponse.SERVER_FULL));
-			sendPacket(new SM_PLAY_OK(key));
+			GameServerInfo gsi = GameServerTable.getGameServerInfo(servId);
+			if(gsi == null || !gsi.isOnline())
+				con.sendPacket(new SM_PLAY_FAIL(AionAuthResponse.SERVER_DOWN));
+			//else if(serv gm only)
+			//	con.sendPacket(new SM_PLAY_FAIL(AionAuthResponse.GM_ONLY));
+			//else if(serv full)
+			//	con.sendPacket(new SM_PLAY_FAIL(AionAuthResponse.SERVER_FULL));
+			else
+			{
+				con.setJoinedGs();
+				sendPacket(new SM_PLAY_OK(key));
+			}
 		}
-		con.close(new SM_LOGIN_FAIL(AionAuthResponse.SYSTEM_ERROR), true);
+		else
+			con.close(new SM_LOGIN_FAIL(AionAuthResponse.SYSTEM_ERROR), true);
 	}
 
 	/**

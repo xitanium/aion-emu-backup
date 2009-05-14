@@ -132,6 +132,7 @@ public class GsConnection extends AConnection
 	@Override
 	protected final void onDisconnect()
 	{
+		log.info(this+" disconnected");
 		if(gameServerInfo != null)
 		{
 			gameServerInfo.setGsConnection(null);
@@ -240,6 +241,6 @@ public class GsConnection extends AConnection
 	@Override
 	public String toString()
 	{
-		return "GameServer "+getIP();
+		return "GameServer["+gameServerInfo.getId()+"] "+getIP();
 	}
 }

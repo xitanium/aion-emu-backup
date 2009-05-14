@@ -21,6 +21,7 @@ import java.util.Map;
 
 import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
+import com.aionemu.loginserver.network.gameserver.GsConnection.State;
 
 /**
  * This class represents GameServer at LoginServer side.
@@ -216,6 +217,15 @@ public class GameServerInfo
 	public final void setMaxPlayers(int maxPlayers)
 	{
 		this.maxPlayers = maxPlayers;
+	}
+
+	/**
+	 * Check if GameServer is Online
+	 * @return true if GameServer is Online.
+	 */
+	public final boolean isOnline()
+	{
+		return gsConnection != null && gsConnection.getState() == State.AUTHED;
 	}
 
 	/**

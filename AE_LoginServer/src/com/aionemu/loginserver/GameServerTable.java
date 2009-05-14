@@ -117,6 +117,16 @@ public class GameServerTable
 		return GsAuthResponse.AUTHED;
 	}
 
+	/**
+	 * Returns GameSererInfo object for given gameserverId.
+	 * @param gameServerId
+	 * @return GameSererInfo object for given gameserverId.
+	 */
+	public static final GameServerInfo getGameServerInfo(int gameServerId)
+	{
+		return gameservers.get(gameServerId);
+	}
+
     /**
      * Check if account is already in use on any
      * GameServer. If so - kick account from GameServer.
