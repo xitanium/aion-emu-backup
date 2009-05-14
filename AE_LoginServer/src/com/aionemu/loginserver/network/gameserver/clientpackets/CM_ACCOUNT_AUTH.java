@@ -65,11 +65,11 @@ public class CM_ACCOUNT_AUTH extends GsClientPacket
 		Account acc = AccountController.checkAuth(sessionKey);
 		if(acc != null)
 		{
-			//TODO! add to account on this gameserver list
-			sendPacket(new SM_ACOUNT_AUTH_RESPONSE(true, acc.getName()));
+			getConnection().getGameServerInfo().addAccountToGameServer(acc);
+			sendPacket(new SM_ACOUNT_AUTH_RESPONSE(sessionKey.accountId, true, acc.getName()));
 		}
 		else
-			sendPacket(new SM_ACOUNT_AUTH_RESPONSE(false, null));
+			sendPacket(new SM_ACOUNT_AUTH_RESPONSE(sessionKey.accountId, false, null));
 	}
 
 	/**

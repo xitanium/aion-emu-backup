@@ -23,6 +23,7 @@ import java.util.Map;
 
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.commons.utils.NetworkUtils;
+import com.aionemu.loginserver.GameServerTable;
 import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.dao.AccountDAO;
 import com.aionemu.loginserver.model.Account;
@@ -37,8 +38,8 @@ import com.aionemu.loginserver.utils.AccountUtils;
  * @author KID
  * @author SoulKeeper
  */
-public class AccountController {
-
+public class AccountController
+{
     /**
      * Map with accounts that are active on LoginServer or joined GameServer
      * and are not authenticated yet.
@@ -127,17 +128,13 @@ public class AccountController {
             return AionAuthResponse.BAN_IP;
         }
 
-        //TODO! check if account is on any GS
-        /*if(account on gs)
-        {
-        	//kick from gs: SM_REQUEST_KICK_ACCOUNT(name);
-        	return AionAuthResponse.ALREADY_LOGGED_IN;
-        }*/
-
         // Do not allow to login two times with same account
         // TODO: Should we kick old account?
         synchronized (AccountController.class)
         {
+            if(GameServerTable.isAccountOnAnyGameServerAndKick(account))
+            	return AionAuthResponse.ALREADY_LOGGED_IN;
+
             if(accountsOnLS.containsKey(account))
                 return AionAuthResponse.ALREADY_LOGGED_IN;
             else

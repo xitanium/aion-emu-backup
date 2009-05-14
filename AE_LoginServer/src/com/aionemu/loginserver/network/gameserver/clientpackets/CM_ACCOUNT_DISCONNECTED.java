@@ -54,7 +54,7 @@ public class CM_ACCOUNT_DISCONNECTED extends GsClientPacket
 	@Override
 	protected void runImpl()
 	{
-		//TODO! remove acc from account on gs list.
+		getConnection().getGameServerInfo().removeAccountFromGameServer(accountId);
 	}
 
 	/**

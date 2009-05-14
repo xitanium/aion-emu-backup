@@ -16,6 +16,10 @@
  */
 package com.aionemu.loginserver;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 
 /**
@@ -64,6 +68,11 @@ public class GameServerInfo
 	 * Max players count that may play on this GameServer.
 	 */
 	private int				maxPlayers;
+	/**
+	 * Map<AccId,Account> of accounts logged in on this
+	 * GameServer.
+	 */
+	private final Map<Integer, Account> accountsOnGameServer = new HashMap<Integer, Account>();
 
 	/**
 	 * Constructor.
@@ -207,5 +216,33 @@ public class GameServerInfo
 	public final void setMaxPlayers(int maxPlayers)
 	{
 		this.maxPlayers = maxPlayers;
+	}
+
+	/**
+	 * Check if given account is already on This GameServer
+	 * @param accountId
+	 * @return true if account is on this GameServer
+	 */
+	public final boolean isAccountOnGameServer(int accountId)
+	{
+		return accountsOnGameServer.containsKey(accountId);
+	}
+
+	/**
+	 * Remove account from this GameServer
+	 * @param accountId
+	 */
+	public final void removeAccountFromGameServer(int accountId)
+	{
+		accountsOnGameServer.remove(accountId);
+	}
+
+	/**
+	 * Add account to this GameServer
+	 * @param acc 
+	 */
+	public final void addAccountToGameServer(Account acc)
+	{
+		accountsOnGameServer.put(acc.getId(), acc);
 	}
 }

@@ -25,8 +25,10 @@ import org.apache.log4j.Logger;
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.commons.utils.NetworkUtils;
 import com.aionemu.loginserver.dao.GameServersDAO;
+import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.network.gameserver.GsAuthResponse;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
+import com.aionemu.loginserver.network.gameserver.serverpackets.SM_REQUEST_KICK_ACCOUNT;
 
 /**
  * GameServerTable contains list of GameServers registered on this
@@ -114,6 +116,25 @@ public class GameServerTable
 		gsConnection.setGameServerInfo(gsi);
 		return GsAuthResponse.AUTHED;
 	}
+
+    /**
+     * Check if account is already in use on any
+     * GameServer. If so - kick account from GameServer.
+     * @param acc
+     * @return true is account is logged in on one of GameServers
+     */
+    public static final boolean isAccountOnAnyGameServerAndKick(Account acc)
+    {
+    	for(GameServerInfo gsi : getGameServers())
+    	{
+    		if(gsi.isAccountOnGameServer(acc.getId()))
+    		{
+    			gsi.getGsConnection().sendPacket(new SM_REQUEST_KICK_ACCOUNT(acc.getId()));
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 
     /**
      * Retuns {@link com.aionemu.loginserver.dao.GameServersDAO} , just a shortcut

@@ -30,6 +30,7 @@ import com.aionemu.loginserver.network.gameserver.GsServerPacket;
  */
 public class SM_ACOUNT_AUTH_RESPONSE extends GsServerPacket
 {
+	private final int accountId;
 	/**
 	 * True if account is authenticated.
 	 */
@@ -42,11 +43,13 @@ public class SM_ACOUNT_AUTH_RESPONSE extends GsServerPacket
 	/**
 	 * Constructor.
 	 * 
+	 * @param accountId 
 	 * @param ok
 	 * @param accountName
 	 */
-	public SM_ACOUNT_AUTH_RESPONSE(boolean ok, String accountName)
+	public SM_ACOUNT_AUTH_RESPONSE(int accountId, boolean ok, String accountName)
 	{
+		this.accountId = accountId;
 		this.ok = ok;
 		this.accountName = accountName;
 	}
@@ -58,6 +61,7 @@ public class SM_ACOUNT_AUTH_RESPONSE extends GsServerPacket
 	protected void writeImpl(GsConnection con, ByteBuffer buf)
 	{
 		writeC(buf, 0x01);
+		writeD(buf, accountId);
 		writeC(buf, ok? 1 : 0);
 		if(ok)
 			writeS(buf, accountName);
