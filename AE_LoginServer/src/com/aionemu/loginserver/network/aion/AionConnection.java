@@ -38,6 +38,7 @@ import com.aionemu.loginserver.utils.ThreadPoolManager;
 
 /**
  * Object representing connection between LoginServer and Aion Client.
+ * 
  * @author -Nemesiss-
  */
 public class AionConnection extends AConnection
@@ -72,20 +73,17 @@ public class AionConnection extends AConnection
 	private byte[]							blowfishKey;
 
 	/**
-	 * Account object for this connection.
-	 * if state = AUTHED_LOGIN account cant
-	 * be null.
+	 * Account object for this connection. if state = AUTHED_LOGIN account cant be null.
 	 * 
 	 */
-	private Account account;
+	private Account							account;
 	/**
 	 * Last played server
 	 */
 	private int								lastServer;
 	/**
-	 * If this connection should use internalIp
-	 * for reconnecting to GameServer [ie when GameServer
-	 * is in the same local net as client]
+	 * If this connection should use internalIp for reconnecting to GameServer [ie when GameServer is in the same local
+	 * net as client]
 	 */
 	private boolean							usesInternalIP;
 	/**
@@ -95,11 +93,11 @@ public class AionConnection extends AConnection
 	/**
 	 * Unique Session Id of this connection
 	 */
-	private int								sessionId		= Rnd.nextInt();
+	private int								sessionId		= hashCode();
 	/**
 	 * True if this user is connecting to GS.
 	 */
-	private boolean joinedGs;
+	private boolean							joinedGs;
 
 	/**
 	 * Constructor
@@ -135,7 +133,7 @@ public class AionConnection extends AConnection
 	@Override
 	protected final boolean processData(ByteBuffer data)
 	{
-		if(!decrypt(data))
+		if (!decrypt(data))
 			return false;
 
 		AionClientPacket pck = AionPacketHandler.handle(data, this);
@@ -154,10 +152,10 @@ public class AionConnection extends AConnection
 	@Override
 	protected final boolean writeData(ByteBuffer data)
 	{
-		synchronized(guard)
+		synchronized (guard)
 		{
 			AionServerPacket packet = sendMsgQueue.pollFirst();
-			if(packet == null)
+			if (packet == null)
 				return false;
 
 			packet.write(this, data);
@@ -185,9 +183,10 @@ public class AionConnection extends AConnection
 		/**
 		 * Remove account only if not joined GameServer yet.
 		 */
-        if(account != null && !joinedGs){
-            AccountController.removeAccountOnLS(account);
-        }
+		if (account != null && !joinedGs)
+		{
+			AccountController.removeAccountOnLS(account);
+		}
 	}
 
 	/**
@@ -197,11 +196,12 @@ public class AionConnection extends AConnection
 	protected final void onServerClose()
 	{
 		// TODO mb some packet should be send to client before closing?
-		close(/*packet,*/ true);
+		close(/* packet, */true);
 	}
 
 	/**
 	 * Decrypt packet.
+	 * 
 	 * @param buf
 	 * @return true if success
 	 */
@@ -231,6 +231,7 @@ public class AionConnection extends AConnection
 
 	/**
 	 * Encrypt packet.
+	 * 
 	 * @param buf
 	 * @return encrypted packet size.
 	 */
@@ -290,7 +291,7 @@ public class AionConnection extends AConnection
 			if (isWriteDisabled())
 				return;
 
-			log.info("sending packet: " + closePacket+ " and closing connection after that.");
+			log.info("sending packet: " + closePacket + " and closing connection after that.");
 
 			pendingClose = true;
 			isForcedClosing = forced;
@@ -301,9 +302,9 @@ public class AionConnection extends AConnection
 	}
 
 	/**
-	 * True if this connection should use internalIp
-	 * for reconnecting to GameServer [ie when GameServer
-	 * is in the same local net as client]
+	 * True if this connection should use internalIp for reconnecting to GameServer [ie when GameServer is in the same
+	 * local net as client]
+	 * 
 	 * @return usesInternalIP
 	 */
 	public final boolean usesInternalIP()
@@ -328,6 +329,7 @@ public class AionConnection extends AConnection
 
 	/**
 	 * Returns unique sessionId of this connection.
+	 * 
 	 * @return SessionId
 	 */
 	public final int getSessionId()
@@ -337,6 +339,7 @@ public class AionConnection extends AConnection
 
 	/**
 	 * Current state of this connection
+	 * 
 	 * @return state
 	 */
 	public final State getState()
@@ -346,6 +349,7 @@ public class AionConnection extends AConnection
 
 	/**
 	 * Set current state of this connection
+	 * 
 	 * @param state
 	 */
 	public final void setState(State state)
@@ -354,8 +358,8 @@ public class AionConnection extends AConnection
 	}
 
 	/**
-	 * Returns Account object that this
-	 * client logged in or null
+	 * Returns Account object that this client logged in or null
+	 * 
 	 * @return Account
 	 */
 	public final Account getAccount()
@@ -365,6 +369,7 @@ public class AionConnection extends AConnection
 
 	/**
 	 * Set Account object for this connection.
+	 * 
 	 * @param account
 	 */
 	public final void setAccount(Account account)
@@ -374,6 +379,7 @@ public class AionConnection extends AConnection
 
 	/**
 	 * Returns Session Key of this connection
+	 * 
 	 * @return SessionKey
 	 */
 	public final SessionKey getSessionKey()
@@ -383,6 +389,7 @@ public class AionConnection extends AConnection
 
 	/**
 	 * Set Session Key for this connection
+	 * 
 	 * @param sessionKey
 	 */
 	public final void setSessionKey(SessionKey sessionKey)
@@ -404,6 +411,17 @@ public class AionConnection extends AConnection
 	@Override
 	public String toString()
 	{
-		return account != null? account+" "+getIP() : "not loged "+getIP();
+		return account != null ? account + " " + getIP() : "not loged " + getIP();
+	}
+
+	/**
+	 * This method should no be modified, hashcode in this class is used to ensure that each connection hash unique id
+	 * 
+	 * @return unique identifier
+	 */
+	@Override
+	public int hashCode()
+	{
+		return super.hashCode();
 	}
 }
