@@ -80,7 +80,7 @@ public class SessionKey
 	 */
 	public boolean checkLogin(int accountId, int loginOk)
 	{
-		return accountId == accountId && loginOk == loginOk;
+		return this.accountId == accountId && this.loginOk == loginOk;
 	}
 
 	/**
