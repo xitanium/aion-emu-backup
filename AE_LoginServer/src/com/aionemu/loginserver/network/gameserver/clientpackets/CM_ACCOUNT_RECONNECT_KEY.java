@@ -33,17 +33,9 @@ import com.aionemu.loginserver.network.gameserver.serverpackets.SM_ACCOUNT_RECON
 public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 {
 	/**
-	 * accountName of account that will be reconnecting.
-	 */
-	private final String accountName;
-	/**
 	 * accoundId of account that will be reconnecting.
 	 */
 	private final int accountId;
-	/**
-	 * loginOk of account that will be reconnecting.
-	 */
-	private final int loginOk;
 
 	/**
 	 * Constructor.
@@ -54,9 +46,7 @@ public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 	public CM_ACCOUNT_RECONNECT_KEY(ByteBuffer buf, GsConnection client)
 	{
 		super(buf, client);
-		accountName = readS();
 		accountId = readD();
-		loginOk = readD();
 	}
 
 	/**
@@ -67,7 +57,7 @@ public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 	{
 		int reconectKey = Rnd.nextInt();
 		//TODO! add to account reconnecting list.
-		this.sendPacket(new SM_ACCOUNT_RECONNECT_KEY(accountName, reconectKey));
+		this.sendPacket(new SM_ACCOUNT_RECONNECT_KEY(accountId, reconectKey));
 	}
 
 	/**

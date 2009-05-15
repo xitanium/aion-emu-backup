@@ -30,9 +30,9 @@ import com.aionemu.loginserver.network.gameserver.GsServerPacket;
 public class SM_ACCOUNT_RECONNECT_KEY extends GsServerPacket
 {
 	/**
-	 * accountName of account that will be reconnecting.
+	 * accountId of account that will be reconnecting.
 	 */
-	private final String accountName;
+	private final int accountId;
 	/**
 	 * ReconnectKey that will be used for authentication.
 	 */
@@ -41,12 +41,12 @@ public class SM_ACCOUNT_RECONNECT_KEY extends GsServerPacket
 	/**
 	 * Constructor.
 	 * 
-	 * @param accountName
+	 * @param accountId
 	 * @param reconnectKey
 	 */
-	public SM_ACCOUNT_RECONNECT_KEY(String accountName, int reconnectKey)
+	public SM_ACCOUNT_RECONNECT_KEY(int accountId, int reconnectKey)
 	{
-		this.accountName = accountName;
+		this.accountId = accountId;
 		this.reconnectKey = reconnectKey;
 	}
 
@@ -57,7 +57,7 @@ public class SM_ACCOUNT_RECONNECT_KEY extends GsServerPacket
 	protected void writeImpl(GsConnection con, ByteBuffer buf)
 	{
 		writeC(buf, 0x03);
-		writeS(buf, accountName);
+		writeD(buf, accountId);
 		writeD(buf, reconnectKey);
 	}
 
@@ -67,6 +67,6 @@ public class SM_ACCOUNT_RECONNECT_KEY extends GsServerPacket
 	@Override
 	public String getType()
 	{
-		return "0x03 SM_ACOUNT_AUTH_RESPONSE";
+		return "0x03 SM_ACCOUNT_RECONNECT_KEY";
 	}
 }
