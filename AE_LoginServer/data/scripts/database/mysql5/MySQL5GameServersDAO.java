@@ -35,7 +35,7 @@ import com.aionemu.loginserver.dao.GameServersDAO;
  * GameServers DAO implementation for MySQL5
  * 
  * @author -Nemesiss-
- *
+ * 
  */
 public class MySQL5GameServersDAO extends GameServersDAO
 {
@@ -77,18 +77,17 @@ public class MySQL5GameServersDAO extends GameServersDAO
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Map<Integer, GameServerInfo> getAllGameServers()
+	public Map<Byte, GameServerInfo> getAllGameServers()
 	{
 
-		final Map<Integer, GameServerInfo> result = new HashMap<Integer, GameServerInfo>();
-		DB.select("SELECT * FROM gameservers", new ReadStH()
-		{
+		final Map<Byte, GameServerInfo> result = new HashMap<Byte, GameServerInfo>();
+		DB.select("SELECT * FROM gameservers", new ReadStH() {
 			@Override
 			public void handleRead(ResultSet resultSet) throws SQLException
 			{
 				while (resultSet.next())
 				{
-					int id = resultSet.getInt("id");
+					byte id = resultSet.getByte("id");
 					String ipMask = resultSet.getString("mask");
 					String password = resultSet.getString("password");
 					GameServerInfo gsi = new GameServerInfo(id, ipMask, password);

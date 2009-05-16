@@ -19,11 +19,9 @@ package com.aionemu.loginserver.network.gameserver.clientpackets;
 import java.nio.ByteBuffer;
 
 import com.aionemu.loginserver.controller.AccountController;
-import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.network.aion.SessionKey;
 import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
-import com.aionemu.loginserver.network.gameserver.serverpackets.SM_ACOUNT_AUTH_RESPONSE;
 
 /**
  * In this packet Gameserver is asking if given
@@ -62,14 +60,7 @@ public class CM_ACCOUNT_AUTH extends GsClientPacket
 	@Override
 	protected void runImpl()
 	{
-		Account acc = AccountController.checkAuth(sessionKey);
-		if(acc != null)
-		{
-			getConnection().getGameServerInfo().addAccountToGameServer(acc);
-			sendPacket(new SM_ACOUNT_AUTH_RESPONSE(sessionKey.accountId, true, acc.getName()));
-		}
-		else
-			sendPacket(new SM_ACOUNT_AUTH_RESPONSE(sessionKey.accountId, false, null));
+		AccountController.checkAuth(sessionKey, getConnection());
 	}
 
 	/**

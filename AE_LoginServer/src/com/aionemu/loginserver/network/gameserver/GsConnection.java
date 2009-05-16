@@ -45,7 +45,14 @@ public class GsConnection extends AConnection
 	 */
 	public static enum State
 	{
-		CONNECTED, AUTHED
+		/**
+		 * Means that GameServer just connect, but is not authenticated yet
+		 */
+		CONNECTED,
+		/**
+		 * GameServer is authenticated
+		 */
+		AUTHED
 	}
 
 	/**

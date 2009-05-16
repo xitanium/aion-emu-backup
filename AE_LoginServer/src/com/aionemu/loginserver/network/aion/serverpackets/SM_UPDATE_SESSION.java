@@ -58,6 +58,7 @@ public class SM_UPDATE_SESSION extends AionServerPacket
 		writeC(buf, 0x0C);
 		writeD(buf, accountId);
 		writeD(buf, loginOk);
+		writeC(buf, 0x00);//sysmsg if smth is wrong
 	}
 
 	/**

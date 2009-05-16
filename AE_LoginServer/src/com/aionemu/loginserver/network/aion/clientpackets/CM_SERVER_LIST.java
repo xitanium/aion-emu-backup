@@ -50,6 +50,7 @@ public class CM_SERVER_LIST extends AionClientPacket
 		super(buf, client);
 		accountId = readD();
 		loginOk = readD();
+		readD();//unk
 	}
 
 	/**

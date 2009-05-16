@@ -31,13 +31,14 @@ import com.aionemu.loginserver.network.aion.clientpackets.CM_UPDATE_SESSION;
  */
 public class AionPacketHandler
 {
-    /**
-     * logger for this class
-     */
+	/**
+	 * logger for this class
+	 */
 	private static final Logger	log	= Logger.getLogger(AionPacketHandler.class);
 
 	/**
 	 * Reads one packet from given ByteBuffer
+	 * 
 	 * @param data
 	 * @param client
 	 * @return AionClientPacket object from binary data
@@ -98,6 +99,7 @@ public class AionPacketHandler
 
 	/**
 	 * Logs unknown packet.
+	 * 
 	 * @param state
 	 * @param id
 	 */

@@ -24,6 +24,7 @@ import com.aionemu.loginserver.model.Account;
 
 /**
  * Base class for every Aion -> LS Client Packet
+ * 
  * @author -Nemesiss-
  */
 public abstract class AionClientPacket implements Runnable
@@ -31,18 +32,19 @@ public abstract class AionClientPacket implements Runnable
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger log	= Logger.getLogger(AionClientPacket.class);
+	private static final Logger		log	= Logger.getLogger(AionClientPacket.class);
 	/**
 	 * ByteBuffer that contains this packet data
 	 */
-	private final ByteBuffer buf;
+	private final ByteBuffer		buf;
 	/**
 	 * Owner of this packet.
 	 */
-	private final AionConnection client;
+	private final AionConnection	client;
 
 	/**
 	 * Constructor.
+	 * 
 	 * @param buf
 	 * @param client
 	 */
@@ -63,13 +65,16 @@ public abstract class AionClientPacket implements Runnable
 		}
 		catch (Throwable e)
 		{
-            String name;
+			String name;
 			Account account = getConnection().getAccount();
-            if(account != null){
-                name = account.getName();
-            } else {
-                name = getConnection().getIP();
-            }
+			if (account != null)
+			{
+				name = account.getName();
+			}
+			else
+			{
+				name = getConnection().getIP();
+			}
 
 			log.error("error handling client (" + name + ") message " + getType(), e);
 		}
@@ -89,8 +94,9 @@ public abstract class AionClientPacket implements Runnable
 	protected abstract void runImpl();
 
 	/**
-	 * Send new AionServerPacket to connection that is owner of this packet.
-	 * This method is equvalent to: getConnection().sendPacket(msg);
+	 * Send new AionServerPacket to connection that is owner of this packet. This method is equvalent to:
+	 * getConnection().sendPacket(msg);
+	 * 
 	 * @param msg
 	 */
 	protected void sendPacket(AionServerPacket msg)
@@ -108,6 +114,7 @@ public abstract class AionClientPacket implements Runnable
 
 	/**
 	 * Read int from this packet buffer.
+	 * 
 	 * @return int
 	 */
 	public final int readD()
@@ -125,6 +132,7 @@ public abstract class AionClientPacket implements Runnable
 
 	/**
 	 * Read byte from this packet buffer.
+	 * 
 	 * @return int
 	 */
 	public final int readC()
@@ -142,6 +150,7 @@ public abstract class AionClientPacket implements Runnable
 
 	/**
 	 * Read short from this packet buffer.
+	 * 
 	 * @return int
 	 */
 	public final int readH()
@@ -159,6 +168,7 @@ public abstract class AionClientPacket implements Runnable
 
 	/**
 	 * Read double from this packet buffer.
+	 * 
 	 * @return double
 	 */
 	public final double readF()
@@ -176,6 +186,7 @@ public abstract class AionClientPacket implements Runnable
 
 	/**
 	 * Read long from this packet buffer.
+	 * 
 	 * @return long
 	 */
 	public final long readQ()
@@ -193,6 +204,7 @@ public abstract class AionClientPacket implements Runnable
 
 	/**
 	 * Read String from this packet buffer.
+	 * 
 	 * @return String
 	 */
 	public final String readS()
@@ -212,6 +224,7 @@ public abstract class AionClientPacket implements Runnable
 
 	/**
 	 * Read n bytes from this packet buffer, n = length.
+	 * 
 	 * @param length
 	 * @return byte[]
 	 */

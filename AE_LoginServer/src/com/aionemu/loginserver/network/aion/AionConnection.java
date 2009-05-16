@@ -27,7 +27,6 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.AConnection;
 import com.aionemu.commons.network.Dispatcher;
-import com.aionemu.commons.utils.Rnd;
 import com.aionemu.loginserver.LoginController;
 import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.model.Account;
@@ -53,7 +52,18 @@ public class AionConnection extends AConnection
 	 */
 	public static enum State
 	{
-		CONNECTED, AUTHED_GG, AUTHED_LOGIN
+		/**
+		 * Means that client just connects
+		 */
+		CONNECTED,
+		/**
+		 * Means that clients GameGuard is authenticated
+		 */
+		AUTHED_GG,
+		/**
+		 * Means that client is logged in.
+		 */
+		AUTHED_LOGIN
 	}
 
 	/**
@@ -77,10 +87,6 @@ public class AionConnection extends AConnection
 	 * 
 	 */
 	private Account							account;
-	/**
-	 * Last played server
-	 */
-	private int								lastServer;
 	/**
 	 * If this connection should use internalIp for reconnecting to GameServer [ie when GameServer is in the same local
 	 * net as client]

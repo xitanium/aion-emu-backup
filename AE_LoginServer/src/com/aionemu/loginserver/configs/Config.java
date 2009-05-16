@@ -95,6 +95,9 @@ public class Config
 	@Property(key = "loginserver.accounts.autocreate", defaultValue = "true")
 	public static boolean			ACCOUNT_AUTO_CREATION;
 
+	/**
+	 * Load configs from files.
+	 */
 	public static void load()
 	{
 		try

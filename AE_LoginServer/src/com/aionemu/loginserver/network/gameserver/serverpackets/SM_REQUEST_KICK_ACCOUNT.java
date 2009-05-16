@@ -22,17 +22,17 @@ import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsServerPacket;
 
 /**
- * In this packet LoginSerer is requesting
- * kicking account from GameServer.
+ * In this packet LoginSerer is requesting kicking account from GameServer.
+ * 
  * @author -Nemesiss-
- *
+ * 
  */
 public class SM_REQUEST_KICK_ACCOUNT extends GsServerPacket
 {
 	/**
 	 * Account that must be kicked at GameServer side.
 	 */
-	private final int accountId;
+	private final int	accountId;
 
 	/**
 	 * Constructor.

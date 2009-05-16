@@ -18,7 +18,12 @@ package com.aionemu.loginserver.network.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.commons.utils.Rnd;
+import com.aionemu.loginserver.controller.AccountController;
+import com.aionemu.loginserver.model.Account;
+import com.aionemu.loginserver.model.ReconnectingAccount;
 import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.serverpackets.SM_ACCOUNT_RECONNECT_KEY;
@@ -32,6 +37,10 @@ import com.aionemu.loginserver.network.gameserver.serverpackets.SM_ACCOUNT_RECON
  */
 public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 {
+	/**
+	 * Logger for this class.
+	 */
+	private static final Logger	log	= Logger.getLogger(CM_ACCOUNT_RECONNECT_KEY.class);
 	/**
 	 * accoundId of account that will be reconnecting.
 	 */
@@ -56,8 +65,12 @@ public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 	protected void runImpl()
 	{
 		int reconectKey = Rnd.nextInt();
-		//TODO! add to account reconnecting list.
-		this.sendPacket(new SM_ACCOUNT_RECONNECT_KEY(accountId, reconectKey));
+		Account acc = getConnection().getGameServerInfo().removeAccountFromGameServer(accountId);
+		if(acc == null)
+			log.info("This shouldnt happend! [Error]");
+		else
+			AccountController.addReconnectingAccount(new ReconnectingAccount(acc, reconectKey));
+		sendPacket(new SM_ACCOUNT_RECONNECT_KEY(accountId, reconectKey));
 	}
 
 	/**

@@ -17,15 +17,14 @@
 package com.aionemu.loginserver.network.aion;
 
 /**
- * This class contains possible response that LoginServer may send to client
- * if login fail etc.
+ * This class contains possible response that LoginServer may send to client if login fail etc.
+ * 
  * @author KID
  */
 public enum AionAuthResponse
 {
 	/**
-	 * that one is not being sent to client, it's only for internal use.
-	 * Everything is OK
+	 * that one is not being sent to client, it's only for internal use. Everything is OK
 	 */
 	AUTHED(0),
 	/**
@@ -124,7 +123,9 @@ public enum AionAuthResponse
 
 	/**
 	 * Constructor.
-	 * @param msgId id of the message
+	 * 
+	 * @param msgId
+	 *            id of the message
 	 */
 	private AionAuthResponse(int msgId)
 	{
@@ -133,6 +134,7 @@ public enum AionAuthResponse
 
 	/**
 	 * Message Id that may be sent to client.
+	 * 
 	 * @return message id
 	 */
 	public int getMessageId()

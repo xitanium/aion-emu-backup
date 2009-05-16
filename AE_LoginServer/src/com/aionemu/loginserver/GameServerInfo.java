@@ -34,7 +34,7 @@ public class GameServerInfo
 	/**
 	 * Id of this GameServer
 	 */
-	private final int		id;
+	private final byte		id;
 	/**
 	 * Allowed IP for this GameServer
 	 * if gs will connect from another ip
@@ -82,7 +82,7 @@ public class GameServerInfo
 	 * @param ip
 	 * @param password
 	 */
-	public GameServerInfo(int id, String ip, String password)
+	public GameServerInfo(byte id, String ip, String password)
 	{
 		this.id = id;
 		this.ip = ip;
@@ -91,9 +91,9 @@ public class GameServerInfo
 
 	/**
 	 * Returns id of this GameServer.
-	 * @return int id
+	 * @return byte id
 	 */
-	public int getId()
+	public byte getId()
 	{
 		return id;
 	}
@@ -241,10 +241,11 @@ public class GameServerInfo
 	/**
 	 * Remove account from this GameServer
 	 * @param accountId
+	 * @return removed account.
 	 */
-	public final void removeAccountFromGameServer(int accountId)
+	public final Account removeAccountFromGameServer(int accountId)
 	{
-		accountsOnGameServer.remove(accountId);
+		return accountsOnGameServer.remove(accountId);
 	}
 
 	/**

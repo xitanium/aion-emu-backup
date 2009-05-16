@@ -38,7 +38,6 @@ import com.aionemu.loginserver.model.Account;
  */
 public class MySQL5AccountDAO extends AccountDAO
 {
-
 	/**
 	 * Logger
 	 */
@@ -108,7 +107,6 @@ public class MySQL5AccountDAO extends AccountDAO
 		{
 			DB.close(st);
 		}
-
 		return account;
 	}
 
@@ -135,7 +133,6 @@ public class MySQL5AccountDAO extends AccountDAO
 		{
 			DB.close(st);
 		}
-
 		return id;
 	}
 
@@ -160,7 +157,6 @@ public class MySQL5AccountDAO extends AccountDAO
 		{
 			DB.close(st);
 		}
-
 		return -1;
 	}
 
@@ -197,10 +193,7 @@ public class MySQL5AccountDAO extends AccountDAO
 		}
 
 		if (result > 0)
-		{
 			account.setId(getAccountId(account.getName()));
-		}
-
 		return result > 0;
 	}
 
@@ -235,7 +228,6 @@ public class MySQL5AccountDAO extends AccountDAO
 		{
 			DB.close(st);
 		}
-
 		return result > 0;
 	}
 
@@ -245,7 +237,6 @@ public class MySQL5AccountDAO extends AccountDAO
 	@Override
 	public boolean updateLastActive(final int accountId, final Timestamp time)
 	{
-
 		return DB.insertUpdate("UPDATE account_data SET last_active = ? WHERE id = ?", new IUStH() {
 
 			@Override

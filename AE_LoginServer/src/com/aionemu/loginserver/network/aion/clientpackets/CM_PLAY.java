@@ -44,10 +44,11 @@ public class CM_PLAY extends AionClientPacket
 	/**
 	 * Id of game server that this client is trying to play on.
 	 */
-	private final int	servId;
+	private final byte	servId;
 
 	/**
 	 * Constructor.
+	 * 
 	 * @param buf
 	 * @param client
 	 */
@@ -56,7 +57,7 @@ public class CM_PLAY extends AionClientPacket
 		super(buf, client);
 		accountId = readD();
 		loginOk = readD();
-		servId = readD();
+		servId = (byte)readC();
 	}
 
 	/**
@@ -70,12 +71,12 @@ public class CM_PLAY extends AionClientPacket
 		if (key.checkLogin(accountId, loginOk))
 		{
 			GameServerInfo gsi = GameServerTable.getGameServerInfo(servId);
-			if(gsi == null || !gsi.isOnline())
+			if (gsi == null || !gsi.isOnline())
 				con.sendPacket(new SM_PLAY_FAIL(AionAuthResponse.SERVER_DOWN));
-			//else if(serv gm only)
-			//	con.sendPacket(new SM_PLAY_FAIL(AionAuthResponse.GM_ONLY));
-			//else if(serv full)
-			//	con.sendPacket(new SM_PLAY_FAIL(AionAuthResponse.SERVER_FULL));
+			// else if(serv gm only)
+			// con.sendPacket(new SM_PLAY_FAIL(AionAuthResponse.GM_ONLY));
+			// else if(serv full)
+			// con.sendPacket(new SM_PLAY_FAIL(AionAuthResponse.SERVER_FULL));
 			else
 			{
 				con.setJoinedGs();

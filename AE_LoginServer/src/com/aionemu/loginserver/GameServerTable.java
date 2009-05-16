@@ -31,8 +31,8 @@ import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.serverpackets.SM_REQUEST_KICK_ACCOUNT;
 
 /**
- * GameServerTable contains list of GameServers registered on this
- * LoginServer. GameServer may by online or down.
+ * GameServerTable contains list of GameServers registered on this LoginServer. GameServer may by online or down.
+ * 
  * @author -Nemesiss-
  */
 public class GameServerTable
@@ -40,16 +40,16 @@ public class GameServerTable
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger							log			= Logger.getLogger(GameServerTable.class);
+	private static final Logger					log	= Logger.getLogger(GameServerTable.class);
 
 	/**
 	 * Map<Id,GameServer>
 	 */
-	private static Map<Integer, GameServerInfo>	gameservers;
+	private static Map<Byte, GameServerInfo>	gameservers;
 
 	/**
-	 * Return collection contains all registered [up/down]
-	 * GameServers.
+	 * Return collection contains all registered [up/down] GameServers.
+	 * 
 	 * @return collection of GameServers.
 	 */
 	public static final Collection<GameServerInfo> getGameServers()
@@ -63,7 +63,7 @@ public class GameServerTable
 	public static void load()
 	{
 		gameservers = getDAO().getAllGameServers();
-		log.info("GameServerTable loaded "+gameservers.size()+" registered GameServers.");
+		log.info("GameServerTable loaded " + gameservers.size() + " registered GameServers.");
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class GameServerTable
 	 * @param password
 	 * @return GsAuthResponse
 	 */
-	public static GsAuthResponse registerGameServer(GsConnection gsConnection, int requestedId, String externalHost,
+	public static GsAuthResponse registerGameServer(GsConnection gsConnection, byte requestedId, String externalHost,
 		String internalHost, int port, int maxPlayers, String password)
 	{
 		GameServerInfo gsi = gameservers.get(requestedId);
@@ -86,24 +86,24 @@ public class GameServerTable
 		/**
 		 * This id is not Registered at LoginServer.
 		 */
-		if(gsi == null)
+		if (gsi == null)
 		{
-			log.info(gsConnection+" requestedID="+requestedId+" not aviable!");
+			log.info(gsConnection + " requestedID=" + requestedId + " not aviable!");
 			return GsAuthResponse.NOT_AUTHED;
 		}
 
 		/**
 		 * Check if this GameServer is not already registered.
 		 */
-		if(gsi.getGsConnection() != null)
+		if (gsi.getGsConnection() != null)
 			return GsAuthResponse.ALREADY_REGISTERED;
 
 		/**
 		 * Check if password and ip are ok.
 		 */
-		if(!gsi.getPassword().equals(password) || !NetworkUtils.checkIPMatching(gsi.getIp(), gsConnection.getIP()))
+		if (!gsi.getPassword().equals(password) || !NetworkUtils.checkIPMatching(gsi.getIp(), gsConnection.getIP()))
 		{
-			log.info(gsConnection+" wrong ip or password!");
+			log.info(gsConnection + " wrong ip or password!");
 			return GsAuthResponse.NOT_AUTHED;
 		}
 
@@ -119,40 +119,41 @@ public class GameServerTable
 
 	/**
 	 * Returns GameSererInfo object for given gameserverId.
+	 * 
 	 * @param gameServerId
 	 * @return GameSererInfo object for given gameserverId.
 	 */
-	public static final GameServerInfo getGameServerInfo(int gameServerId)
+	public static final GameServerInfo getGameServerInfo(byte gameServerId)
 	{
 		return gameservers.get(gameServerId);
 	}
 
-    /**
-     * Check if account is already in use on any
-     * GameServer. If so - kick account from GameServer.
-     * @param acc
-     * @return true is account is logged in on one of GameServers
-     */
-    public static final boolean isAccountOnAnyGameServerAndKick(Account acc)
-    {
-    	for(GameServerInfo gsi : getGameServers())
-    	{
-    		if(gsi.isAccountOnGameServer(acc.getId()))
-    		{
-    			gsi.getGsConnection().sendPacket(new SM_REQUEST_KICK_ACCOUNT(acc.getId()));
-    			return true;
-    		}
-    	}
-    	return false;
-    }
+	/**
+	 * Check if account is already in use on any GameServer. If so - kick account from GameServer.
+	 * 
+	 * @param acc
+	 * @return true is account is logged in on one of GameServers
+	 */
+	public static final boolean isAccountOnAnyGameServerAndKick(Account acc)
+	{
+		for (GameServerInfo gsi : getGameServers())
+		{
+			if (gsi.isAccountOnGameServer(acc.getId()))
+			{
+				gsi.getGsConnection().sendPacket(new SM_REQUEST_KICK_ACCOUNT(acc.getId()));
+				return true;
+			}
+		}
+		return false;
+	}
 
-    /**
-     * Retuns {@link com.aionemu.loginserver.dao.GameServersDAO} , just a shortcut
-     *
-     * @return {@link com.aionemu.loginserver.dao.GameServersDAO}
-     */
-    private static GameServersDAO getDAO()
-    {
-        return DAOManager.getDAO(GameServersDAO.class);
-    }
+	/**
+	 * Retuns {@link com.aionemu.loginserver.dao.GameServersDAO} , just a shortcut
+	 * 
+	 * @return {@link com.aionemu.loginserver.dao.GameServersDAO}
+	 */
+	private static GameServersDAO getDAO()
+	{
+		return DAOManager.getDAO(GameServersDAO.class);
+	}
 }

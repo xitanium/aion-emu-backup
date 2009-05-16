@@ -43,7 +43,6 @@ import com.aionemu.loginserver.model.BannedIP;
  */
 public class MySQL5BannedIpDAO extends BannedIpDAO
 {
-
 	/**
 	 * Logger
 	 */
@@ -98,13 +97,9 @@ public class MySQL5BannedIpDAO extends BannedIpDAO
 		result.setTimeEnd(expireTime);
 
 		if (insert(result))
-		{
 			return result;
-		}
 		else
-		{
 			return null;
-		}
 	}
 
 	/**
@@ -120,21 +115,15 @@ public class MySQL5BannedIpDAO extends BannedIpDAO
 			{
 				preparedStatement.setString(1, bannedIP.getMask());
 				if (bannedIP.getTimeEnd() == null)
-				{
 					preparedStatement.setNull(2, Types.TIMESTAMP);
-				}
 				else
-				{
 					preparedStatement.setTimestamp(2, bannedIP.getTimeEnd());
-				}
 				preparedStatement.execute();
 			}
 		});
 
 		if (!insert)
-		{
 			return false;
-		}
 
 		final BannedIP result = new BannedIP();
 		DB.select("SELECT * FROM ban_ip WHERE mask = ?", new ParamReadStH() {
@@ -154,7 +143,6 @@ public class MySQL5BannedIpDAO extends BannedIpDAO
 				result.setTimeEnd(resultSet.getTimestamp("time_end"));
 			}
 		});
-
 		return true;
 	}
 
@@ -170,13 +158,9 @@ public class MySQL5BannedIpDAO extends BannedIpDAO
 			{
 				preparedStatement.setString(1, bannedIP.getMask());
 				if (bannedIP.getTimeEnd() == null)
-				{
 					preparedStatement.setNull(2, Types.TIMESTAMP);
-				}
 				else
-				{
 					preparedStatement.setTimestamp(2, bannedIP.getTimeEnd());
-				}
 				preparedStatement.setInt(3, bannedIP.getId());
 				preparedStatement.execute();
 			}

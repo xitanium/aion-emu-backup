@@ -97,7 +97,7 @@ public class CM_LOGIN extends AionClientPacket
 		log.debug("AuthLogin: " + user + " pass: " + password + " ncotp: " + ncotp);
 
 		AionConnection client = getConnection();
-        AionAuthResponse response = AccountController.login(user, password, client);
+		AionAuthResponse response = AccountController.login(user, password, client);
 		switch (response)
 		{
 			case AUTHED:

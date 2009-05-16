@@ -62,7 +62,7 @@ public class LoginServer
 		}
 
 		GameServerTable.load();
-        BannedIpController.load();
+		BannedIpController.load();
 		// TODO! flood protector
 		// TODO! brute force protector
 

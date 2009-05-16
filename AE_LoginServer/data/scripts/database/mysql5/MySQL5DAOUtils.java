@@ -23,7 +23,6 @@ package mysql5;
  */
 public class MySQL5DAOUtils
 {
-
 	/**
 	 * Constant for MySQL name ;)
 	 */

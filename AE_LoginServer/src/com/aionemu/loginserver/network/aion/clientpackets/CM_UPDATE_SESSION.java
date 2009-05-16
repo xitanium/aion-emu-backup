@@ -18,6 +18,7 @@ package com.aionemu.loginserver.network.aion.clientpackets;
 
 import java.nio.ByteBuffer;
 
+import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
 
@@ -40,7 +41,7 @@ public class CM_UPDATE_SESSION extends AionClientPacket
 	 * reconectKey is key that server sends to client for fast reconnection
 	 * to login server - we will check if this key is valid.
 	 */
-	private final int reconectKey;
+	private final int reconnectKey;
 
 	/**
 	 * Constructor.
@@ -53,7 +54,7 @@ public class CM_UPDATE_SESSION extends AionClientPacket
 		super(buf, client);
 		accountId = readD();
 		loginOk = readD();
-		reconectKey = readD();
+		reconnectKey = readD();
 	}
 
 	/**
@@ -62,13 +63,7 @@ public class CM_UPDATE_SESSION extends AionClientPacket
 	@Override
 	protected void runImpl()
 	{
-		//TODO check if loginOk and reconnect
-		//keys are valid for this account
-		//if ok: generate new sessionKey and
-		//	get account for this accountId and set
-		//  it to this connection
-		//	send SM_UPDATE_SESSION
-		//else: dc
+		AccountController.authReconnectingAccount(accountId, loginOk, reconnectKey, getConnection());
 	}
 
 	/**

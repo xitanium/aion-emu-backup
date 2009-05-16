@@ -68,9 +68,8 @@ public class CM_AUTH_GG extends AionClientPacket
 		}
 		else
 		{
-			/** Session id is not ok
-			 * - inform client that smth went wrong
-			 * - dc client
+			/**
+			 * Session id is not ok - inform client that smth went wrong - dc client
 			 */
 			con.close(new SM_LOGIN_FAIL(AionAuthResponse.SYSTEM_ERROR), true);
 		}

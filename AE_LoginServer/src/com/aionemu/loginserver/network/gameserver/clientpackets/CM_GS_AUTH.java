@@ -17,7 +17,6 @@
 package com.aionemu.loginserver.network.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
-import org.apache.log4j.Logger;
 
 import com.aionemu.loginserver.GameServerTable;
 import com.aionemu.loginserver.network.gameserver.GsAuthResponse;
@@ -34,33 +33,29 @@ import com.aionemu.loginserver.network.gameserver.serverpackets.SM_GS_AUTH_RESPO
 public class CM_GS_AUTH extends GsClientPacket
 {
 	/**
-	 * Logger for this class.
-	 */
-	private static final Logger	log	= Logger.getLogger(CM_GS_AUTH.class);
-	/**
 	 * Password for authentication
 	 */
-	private final String		password;
+	private final String	password;
 	/**
 	 * Id of GameServer
 	 */
-	private final int			gameServerId;
+	private final byte		gameServerId;
 	/**
 	 * Maximum number of players that this Gameserver can accept.
 	 */
-	private final int			maxPalyers;
+	private final int		maxPalyers;
 	/**
 	 * Port of this Gameserver.
 	 */
-	private final int			port;
+	private final int		port;
 	/**
 	 * External hostname of this Gameserver.
 	 */
-	private final String		externalHost;
+	private final String	externalHost;
 	/**
 	 * Internal hostname of this Gameserver.
 	 */
-	private final String		internalHost;
+	private final String	internalHost;
 
 	/**
 	 * Constructor.
@@ -71,7 +66,7 @@ public class CM_GS_AUTH extends GsClientPacket
 	public CM_GS_AUTH(ByteBuffer buf, GsConnection client)
 	{
 		super(buf, client);
-		gameServerId = readC();
+		gameServerId = (byte) readC();
 		externalHost = readS();
 		internalHost = readS();
 		port = readH();

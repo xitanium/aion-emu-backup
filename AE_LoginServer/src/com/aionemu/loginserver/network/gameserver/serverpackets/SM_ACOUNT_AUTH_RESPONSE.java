@@ -22,28 +22,31 @@ import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsServerPacket;
 
 /**
- * In this packet LoginServer is answering on GameServer
- * request about valid authentication data and also sends
- * account name of user that is authenticating on GameServer.
+ * In this packet LoginServer is answering on GameServer request about valid authentication data and also sends account
+ * name of user that is authenticating on GameServer.
+ * 
  * @author -Nemesiss-
- *
+ * 
  */
 public class SM_ACOUNT_AUTH_RESPONSE extends GsServerPacket
 {
-	private final int accountId;
+	/**
+	 * Account id
+	 */
+	private final int		accountId;
 	/**
 	 * True if account is authenticated.
 	 */
-	private final boolean ok;
+	private final boolean	ok;
 	/**
 	 * account name
 	 */
-	private final String accountName;
+	private final String	accountName;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param accountId 
+	 * @param accountId
 	 * @param ok
 	 * @param accountName
 	 */
@@ -62,8 +65,8 @@ public class SM_ACOUNT_AUTH_RESPONSE extends GsServerPacket
 	{
 		writeC(buf, 0x01);
 		writeD(buf, accountId);
-		writeC(buf, ok? 1 : 0);
-		if(ok)
+		writeC(buf, ok ? 1 : 0);
+		if (ok)
 			writeS(buf, accountName);
 	}
 

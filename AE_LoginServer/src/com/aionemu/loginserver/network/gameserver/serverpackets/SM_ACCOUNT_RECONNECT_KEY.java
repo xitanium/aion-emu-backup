@@ -22,21 +22,21 @@ import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsServerPacket;
 
 /**
- * In this packet LoginServer is sending response for
- * CM_ACCOUNT_RECONNECT_KEY with account name and reconnectionKey.
+ * In this packet LoginServer is sending response for CM_ACCOUNT_RECONNECT_KEY with account name and reconnectionKey.
+ * 
  * @author -Nemesiss-
- *
+ * 
  */
 public class SM_ACCOUNT_RECONNECT_KEY extends GsServerPacket
 {
 	/**
 	 * accountId of account that will be reconnecting.
 	 */
-	private final int accountId;
+	private final int	accountId;
 	/**
 	 * ReconnectKey that will be used for authentication.
 	 */
-	private final int reconnectKey;
+	private final int	reconnectKey;
 
 	/**
 	 * Constructor.

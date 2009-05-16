@@ -49,6 +49,7 @@ public class DeadLockDetector extends Thread
 
 	/**
 	 * Create new DeadLockDetector with given values.
+	 * 
 	 * @param sleepTime
 	 * @param doWhenDL
 	 */
