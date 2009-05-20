@@ -363,7 +363,7 @@ public abstract class Dispatcher extends Thread
 		if (Assertion.NetworkAssertion)
 			assert Thread.currentThread() == this;
 
-		con.onlyClose();
-		dcPool.scheduleDisconnection(new DisconnectionTask(con), con.getDisconnectionDelay());
+		if(con.onlyClose())
+			dcPool.scheduleDisconnection(new DisconnectionTask(con), con.getDisconnectionDelay());
 	}
 }

@@ -140,8 +140,11 @@ public abstract class AConnection
 
 	/**
 	 * This will only close the connection without taking care of the rest. May be called only by Dispatcher Thread.
+	 * Returns true if connection was not closed before.
+	 * 
+	 * @return true if connection was not closed before.
 	 */
-	final void onlyClose()
+	final boolean onlyClose()
 	{
 		/**
 		 * Test if this build should use assertion. If NetworkAssertion == false javac will remove this code block
@@ -149,11 +152,10 @@ public abstract class AConnection
 		if (Assertion.NetworkAssertion)
 			assert Thread.currentThread() == dispatcher;
 
-		if (closed)
-			return;
-
 		synchronized (guard)
 		{
+			if (closed)
+				return false;
 			try
 			{
 				if (socketChannel.isOpen())
@@ -168,6 +170,7 @@ public abstract class AConnection
 			{
 			}
 		}
+		return true;
 	}
 
 	/**
