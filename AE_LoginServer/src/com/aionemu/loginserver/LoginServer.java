@@ -16,6 +16,8 @@
  */
 package com.aionemu.loginserver;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryUsage;
 import java.security.GeneralSecurityException;
 
 import org.apache.log4j.Logger;
@@ -23,10 +25,10 @@ import org.apache.log4j.Logger;
 import com.aionemu.commons.database.DatabaseFactory;
 import com.aionemu.commons.services.LoggingService;
 import com.aionemu.loginserver.configs.Config;
+import com.aionemu.loginserver.controller.BannedIpController;
 import com.aionemu.loginserver.network.IOServer;
 import com.aionemu.loginserver.utils.DeadLockDetector;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
-import com.aionemu.loginserver.controller.BannedIpController;
 
 /**
  * @author -Nemesiss-
@@ -69,9 +71,9 @@ public class LoginServer
 		IOServer.getInstance();
 		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
 
-		long freeMem = (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() + Runtime.getRuntime()
-			.freeMemory()) / (1024 * 1024);
-		long totalMem = Runtime.getRuntime().maxMemory() / (1024 * 1024);
-		log.info("LoginServer Started, used memory " + (totalMem - freeMem) + " MB");
+        MemoryUsage hm = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
+        MemoryUsage nhm = ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage();
+        log.info("Heap Memory Usage: " + (hm.getUsed() / 1048576) + "/" + (hm.getMax() / 1048576) + " MB");
+        log.info("NonHeap Memory Usage: " + (nhm.getUsed() / 1048576) + "/" + (nhm.getMax() / 1048576) + " MB");
 	}
 }
