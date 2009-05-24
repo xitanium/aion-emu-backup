@@ -71,6 +71,11 @@ public abstract class AConnection
 	public final ByteBuffer		readBuffer;
 
 	/**
+	 * Caching ip address to make sure that {@link #getIP()} method works even after disconnection
+	 */
+	private final String ip;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param sc
@@ -88,6 +93,8 @@ public abstract class AConnection
 		readBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
 		key = dispatcher.register(socketChannel, SelectionKey.OP_READ, this);
+
+		this.ip = socketChannel.socket().getInetAddress().getHostAddress();
 	}
 
 	/**
@@ -194,7 +201,7 @@ public abstract class AConnection
 	 */
 	public final String getIP()
 	{
-		return socketChannel.socket().getInetAddress().getHostAddress();
+		return ip;
 	}
 
 	/**
