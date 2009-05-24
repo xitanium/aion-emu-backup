@@ -248,6 +248,16 @@ public class GsConnection extends AConnection
 	@Override
 	public String toString()
 	{
-		return "GameServer["+gameServerInfo.getId()+"] "+getIP();
+        StringBuilder sb = new StringBuilder();
+        sb.append("GameServer [ID:");
+        if(gameServerInfo != null)
+        {
+            sb.append(gameServerInfo.getId());
+        } else
+        {
+            sb.append("null");
+        }
+        sb.append("] ").append(getIP());
+        return sb.toString();
 	}
 }
