@@ -316,88 +316,143 @@ public final class DB
 		return new Transaction(con);
 	}
 
-    /**
-     * Creates PreparedStatement with given sql string
-     * @param sql SQL querry
-     * @return Prepared statement if ok or null if error happend while creating
-     */
-    public static PreparedStatement prepareStatement(String sql) {
-        Connection c = null;
-        PreparedStatement ps = null;
-        try {
-            c = DatabaseFactory.getConnection();
-            ps = c.prepareStatement(sql);
-        } catch (Exception e) {
-            log.error("Can't create PreparedStatement for querry: " + sql, e);
-            if (c != null) {
-                try {
-                    c.close();
-                } catch (SQLException e1) {
-                    log.error("Can't close connection after exception", e1);
-                }
-            }
-        }
+	/**
+	 * Creates PreparedStatement with given sql string.<br>
+	 * Statemens are created with {@link java.sql.ResultSet#TYPE_FORWARD_ONLY} and
+	 * {@link java.sql.ResultSet#CONCUR_READ_ONLY}
+	 * 
+	 * @param sql
+	 *            SQL querry
+	 * @return Prepared statement if ok or null if error happend while creating
+	 */
+	public static PreparedStatement prepareStatement(String sql)
+	{
+		return prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+	}
 
-        return ps;
-    }
+	/**
+	 * Creates {@link java.sql.PreparedStatement} with given sql<br>
+	 * 
+	 * @param sql
+	 *            SQL querry
+	 * @param resultSetType
+	 *            a result set type; one of <br>
+	 *            <code>ResultSet.TYPE_FORWARD_ONLY</code>,<br>
+	 *            <code>ResultSet.TYPE_SCROLL_INSENSITIVE</code>, or <br>
+	 *            <code>ResultSet.TYPE_SCROLL_SENSITIVE</code>
+	 * @param resultSetConcurrency
+	 *            a concurrency type; one of <br>
+	 *            <code>ResultSet.CONCUR_READ_ONLY</code> or <br>
+	 *            <code>ResultSet.CONCUR_UPDATABLE</code>
+	 * @return Prepared Statement if ok or null if error happened while creating
+	 */
+	public static PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency)
+	{
+		Connection c = null;
+		PreparedStatement ps = null;
+		try
+		{
+			c = DatabaseFactory.getConnection();
+			ps = c.prepareStatement(sql, resultSetType, resultSetConcurrency);
+		}
+		catch (Exception e)
+		{
+			log.error("Can't create PreparedStatement for querry: " + sql, e);
+			if (c != null)
+			{
+				try
+				{
+					c.close();
+				}
+				catch (SQLException e1)
+				{
+					log.error("Can't close connection after exception", e1);
+				}
+			}
+		}
 
-    /**
-     * Executes PreparedStatement
-     * @param statement PreparedStatement to execute
-     * @return returns result of {@link java.sql.PreparedStatement#executeQuery()} or -1 in case of error
-     */
-    public static int executeUpdate(PreparedStatement statement) {
-        try {
-            return statement.executeUpdate();
-        } catch (Exception e) {
-            log.error("Can't execute update for PreparedStatement", e);
-        }
+		return ps;
+	}
 
-        return -1;
-    }
+	/**
+	 * Executes PreparedStatement
+	 * 
+	 * @param statement
+	 *            PreparedStatement to execute
+	 * @return returns result of {@link java.sql.PreparedStatement#executeQuery()} or -1 in case of error
+	 */
+	public static int executeUpdate(PreparedStatement statement)
+	{
+		try
+		{
+			return statement.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			log.error("Can't execute update for PreparedStatement", e);
+		}
 
-    /**
-     * Executes PreparedStatement and closes it and it's connection
-     * @param statement PreparedStatement to close
-     */
-    public static void executeUpdateAndClose(PreparedStatement statement) {
-        executeUpdate(statement);
-        close(statement);
-    }
+		return -1;
+	}
 
-    /**
-     * Executes Querry and returns ResultSet
-     * @param statement preparedStement to execute
-     * @return ResultSet or null if error
-     */
-    public static ResultSet executeQuerry(PreparedStatement statement) {
-        ResultSet rs = null;
-        try {
-            rs = statement.executeQuery();
-        } catch (Exception e) {
-            log.error("Error while executing querry", e);
-        }
-        return rs;
-    }
+	/**
+	 * Executes PreparedStatement and closes it and it's connection
+	 * 
+	 * @param statement
+	 *            PreparedStatement to close
+	 */
+	public static void executeUpdateAndClose(PreparedStatement statement)
+	{
+		executeUpdate(statement);
+		close(statement);
+	}
 
-    /**
-     * Closes PreparedStatemet, it's connection and last ResultSet
-     * @param statement statement to close
-     */
-    public static void close(PreparedStatement statement) {
+	/**
+	 * Executes Querry and returns ResultSet
+	 * 
+	 * @param statement
+	 *            preparedStement to execute
+	 * @return ResultSet or null if error
+	 */
+	public static ResultSet executeQuerry(PreparedStatement statement)
+	{
+		ResultSet rs = null;
+		try
+		{
+			rs = statement.executeQuery();
+		}
+		catch (Exception e)
+		{
+			log.error("Error while executing querry", e);
+		}
+		return rs;
+	}
 
-        try {
-            if (statement.isClosed()) {
-                // noinspection ThrowableInstanceNeverThrown
-                log.warn("Attempt to close PreparedStatement that is closes already", new Exception());
-                return;
-            }
+	/**
+	 * Closes PreparedStatemet, it's connection and last ResultSet
+	 * 
+	 * @param statement
+	 *            statement to close
+	 */
+	public static void close(PreparedStatement statement)
+	{
 
-            Connection c = statement.getConnection();
-            statement.close();
-            c.close();
-        } catch (Exception e) {
-            log.error("Error while closing PreparedStatement", e);
-        }
-    }
+		try
+		{
+			if (statement.isClosed())
+			{
+				// noinspection ThrowableInstanceNeverThrown
+				log.warn("Attempt to close PreparedStatement that is closes already", new Exception());
+				return;
+			}
+
+			Connection c = statement.getConnection();
+			statement.close();
+			c.close();
+		}
+		catch (Exception e)
+		{
+			log.error("Error while closing PreparedStatement", e);
+		}
+	}
 }
