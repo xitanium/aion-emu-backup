@@ -33,6 +33,7 @@ public class SM_AUTH_GG extends AionServerPacket
 
 	/**
 	 * Constructor.
+	 * 
 	 * @param sessionId
 	 */
 	public SM_AUTH_GG(int sessionId)

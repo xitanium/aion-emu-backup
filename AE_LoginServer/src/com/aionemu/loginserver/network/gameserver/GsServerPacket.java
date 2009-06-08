@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 
 /**
  * Base class for every LS -> GameServer Server Packet.
+ * 
  * @author -Nemesiss-
  */
 public abstract class GsServerPacket
@@ -122,7 +123,7 @@ public abstract class GsServerPacket
 		buf.putShort((short) 0);
 		writeImpl(con, buf);
 		buf.flip();
-		buf.putShort((short)buf.limit());
+		buf.putShort((short) buf.limit());
 		buf.position(0);
 	}
 

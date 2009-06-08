@@ -24,22 +24,22 @@ import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 
 /**
- * In this packet Gameserver is asking if given
- * account sessionKey is valid at Loginserver side.
- * [if user that is authenticating on Gameserver
- * is already authenticated on Loginserver]
+ * In this packet Gameserver is asking if given account sessionKey is valid at Loginserver side. [if user that is
+ * authenticating on Gameserver is already authenticated on Loginserver]
+ * 
  * @author -Nemesiss-
- *
+ * 
  */
 public class CM_ACCOUNT_AUTH extends GsClientPacket
 {
 	/**
-	 * SessionKey that GameServer needs to check if
-	 * is valid at Loginserver side.
+	 * SessionKey that GameServer needs to check if is valid at Loginserver side.
 	 */
-	private final SessionKey sessionKey;
+	private final SessionKey	sessionKey;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param buf
 	 * @param client
 	 */

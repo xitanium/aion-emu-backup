@@ -23,8 +23,8 @@ import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
 
 /**
- * This packet is send when client was connected to game server
- * and now is reconnection to login server.
+ * This packet is send when client was connected to game server and now is reconnection to login server.
+ * 
  * @author -Nemesiss-
  */
 public class CM_UPDATE_SESSION extends AionClientPacket
@@ -32,16 +32,16 @@ public class CM_UPDATE_SESSION extends AionClientPacket
 	/**
 	 * accountId is part of session key - its used for security purposes
 	 */
-	private final int accountId;
+	private final int	accountId;
 	/**
 	 * loginOk is part of session key - its used for security purposes
 	 */
-	private final int loginOk;
+	private final int	loginOk;
 	/**
-	 * reconectKey is key that server sends to client for fast reconnection
-	 * to login server - we will check if this key is valid.
+	 * reconectKey is key that server sends to client for fast reconnection to login server - we will check if this key
+	 * is valid.
 	 */
-	private final int reconnectKey;
+	private final int	reconnectKey;
 
 	/**
 	 * Constructor.

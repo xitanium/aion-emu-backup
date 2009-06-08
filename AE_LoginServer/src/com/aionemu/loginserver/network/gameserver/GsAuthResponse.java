@@ -17,10 +17,10 @@
 package com.aionemu.loginserver.network.gameserver;
 
 /**
- * This class contains possible response that LoginServer may send to gameserver
- * if authentication fail etc.
+ * This class contains possible response that LoginServer may send to gameserver if authentication fail etc.
+ * 
  * @author -Nemesiss-
- *
+ * 
  */
 public enum GsAuthResponse
 {
@@ -44,15 +44,18 @@ public enum GsAuthResponse
 
 	/**
 	 * Constructor.
-	 * @param responseId id of the message
+	 * 
+	 * @param responseId
+	 *            id of the message
 	 */
 	private GsAuthResponse(int responseId)
 	{
-		this.responseId = (byte)responseId;
+		this.responseId = (byte) responseId;
 	}
 
 	/**
 	 * Message Id that may be sent to client.
+	 * 
 	 * @return message id
 	 */
 	public byte getResponseId()

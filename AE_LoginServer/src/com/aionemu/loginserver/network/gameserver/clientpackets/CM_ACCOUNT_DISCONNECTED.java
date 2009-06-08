@@ -22,19 +22,17 @@ import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 
 /**
- * In this packet GameServer is informing LoginServer
- * that some account is no longer on GameServer [ie was
- * disconencted]
+ * In this packet GameServer is informing LoginServer that some account is no longer on GameServer [ie was disconencted]
+ * 
  * @author -Nemesiss-
- *
+ * 
  */
 public class CM_ACCOUNT_DISCONNECTED extends GsClientPacket
 {
 	/**
-	 * AccountId of account that was disconnected form
-	 * GameServer.
+	 * AccountId of account that was disconnected form GameServer.
 	 */
-	private final int accountId;
+	private final int	accountId;
 
 	/**
 	 * Constructor.

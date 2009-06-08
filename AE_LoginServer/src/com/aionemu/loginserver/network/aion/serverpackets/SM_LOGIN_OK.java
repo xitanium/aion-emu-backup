@@ -38,6 +38,7 @@ public class SM_LOGIN_OK extends AionServerPacket
 
 	/**
 	 * Constructor.
+	 * 
 	 * @param key
 	 */
 	public SM_LOGIN_OK(SessionKey key)

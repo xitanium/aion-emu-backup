@@ -50,7 +50,7 @@ public class CM_SERVER_LIST extends AionClientPacket
 		super(buf, client);
 		accountId = readD();
 		loginOk = readD();
-		readD();//unk
+		readD();// unk
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class CM_SERVER_LIST extends AionClientPacket
 		AionConnection con = getConnection();
 		if (con.getSessionKey().checkLogin(accountId, loginOk))
 		{
-			if(GameServerTable.getGameServers().size() == 0)
+			if (GameServerTable.getGameServers().size() == 0)
 				con.close(new SM_LOGIN_FAIL(AionAuthResponse.NO_GS_REGISTERED), true);
 			else
 				sendPacket(new SM_SERVER_LIST());

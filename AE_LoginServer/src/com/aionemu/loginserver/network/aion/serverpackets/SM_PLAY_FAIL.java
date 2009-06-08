@@ -24,7 +24,7 @@ import com.aionemu.loginserver.network.aion.AionAuthResponse;
 
 /**
  * @author -Nemesiss-
- *
+ * 
  */
 public class SM_PLAY_FAIL extends AionServerPacket
 {
@@ -35,6 +35,7 @@ public class SM_PLAY_FAIL extends AionServerPacket
 
 	/**
 	 * Constructor
+	 * 
 	 * @param response
 	 */
 	public SM_PLAY_FAIL(AionAuthResponse response)

@@ -43,12 +43,12 @@ public class LoginController
 	 */
 	private static LoginController	instance;
 
-	protected ScrambledKeyPair[]    keyPairs;
+	protected ScrambledKeyPair[]	keyPairs;
 
-	protected byte[][]              blowfishKeys;
+	protected byte[][]				blowfishKeys;
 	private static final int		BLOWFISH_KEYS	= 20;
 
-    public static void load() throws GeneralSecurityException
+	public static void load() throws GeneralSecurityException
 	{
 		if (instance == null)
 		{

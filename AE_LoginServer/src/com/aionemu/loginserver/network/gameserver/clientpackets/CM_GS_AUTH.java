@@ -17,7 +17,10 @@
 package com.aionemu.loginserver.network.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
+import java.util.List;
+import java.util.ArrayList;
 
+import com.aionemu.commons.network.IPRange;
 import com.aionemu.loginserver.GameServerTable;
 import com.aionemu.loginserver.network.gameserver.GsAuthResponse;
 import com.aionemu.loginserver.network.gameserver.GsClientPacket;
@@ -35,27 +38,32 @@ public class CM_GS_AUTH extends GsClientPacket
 	/**
 	 * Password for authentication
 	 */
-	private final String	password;
+	private final String		password;
+
 	/**
 	 * Id of GameServer
 	 */
-	private final byte		gameServerId;
+	private final byte			gameServerId;
+
 	/**
 	 * Maximum number of players that this Gameserver can accept.
 	 */
-	private final int		maxPalyers;
+	private final int			maxPalyers;
+
 	/**
 	 * Port of this Gameserver.
 	 */
-	private final int		port;
+	private final int			port;
+
 	/**
-	 * External hostname of this Gameserver.
+	 * Default address for server
 	 */
-	private final String	externalHost;
+	private final byte[]		defaultAddress;
+
 	/**
-	 * Internal hostname of this Gameserver.
+	 * List of IPRanges for this gameServer
 	 */
-	private final String	internalHost;
+	private final List<IPRange>	ipRanges;
 
 	/**
 	 * Constructor.
@@ -67,8 +75,15 @@ public class CM_GS_AUTH extends GsClientPacket
 	{
 		super(buf, client);
 		gameServerId = (byte) readC();
-		externalHost = readS();
-		internalHost = readS();
+
+		defaultAddress = readB(readC());
+		int size = readD();
+		ipRanges = new ArrayList<IPRange>(size);
+		for (int i = 0; i < size; i++)
+		{
+			ipRanges.add(new IPRange(readB(readC()), readB(readC()), readB(readC())));
+		}
+
 		port = readH();
 		maxPalyers = readD();
 		password = readS();
@@ -82,8 +97,8 @@ public class CM_GS_AUTH extends GsClientPacket
 	{
 		GsConnection client = getConnection();
 
-		GsAuthResponse resp = GameServerTable.registerGameServer(client, gameServerId, externalHost, internalHost,
-			port, maxPalyers, password);
+		GsAuthResponse resp = GameServerTable.registerGameServer(client, gameServerId, defaultAddress, ipRanges, port,
+			maxPalyers, password);
 
 		switch (resp)
 		{

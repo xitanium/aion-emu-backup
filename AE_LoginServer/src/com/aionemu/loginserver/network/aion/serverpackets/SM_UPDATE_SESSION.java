@@ -23,8 +23,7 @@ import com.aionemu.loginserver.network.aion.AionServerPacket;
 import com.aionemu.loginserver.network.aion.SessionKey;
 
 /**
- * This packet is send to client to update sessionKey
- * [for fast reconnection feature]
+ * This packet is send to client to update sessionKey [for fast reconnection feature]
  * 
  * @author -Nemesiss-
  */
@@ -41,6 +40,7 @@ public class SM_UPDATE_SESSION extends AionServerPacket
 
 	/**
 	 * Constructor.
+	 * 
 	 * @param key
 	 */
 	public SM_UPDATE_SESSION(SessionKey key)
@@ -58,7 +58,7 @@ public class SM_UPDATE_SESSION extends AionServerPacket
 		writeC(buf, 0x0C);
 		writeD(buf, accountId);
 		writeD(buf, loginOk);
-		writeC(buf, 0x00);//sysmsg if smth is wrong
+		writeC(buf, 0x00);// sysmsg if smth is wrong
 	}
 
 	/**

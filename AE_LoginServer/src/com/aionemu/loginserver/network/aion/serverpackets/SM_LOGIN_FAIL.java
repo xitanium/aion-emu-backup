@@ -34,6 +34,7 @@ public class SM_LOGIN_FAIL extends AionServerPacket
 
 	/**
 	 * Constructor
+	 * 
 	 * @param response
 	 */
 	public SM_LOGIN_FAIL(AionAuthResponse response)

@@ -57,7 +57,7 @@ public class CM_PLAY extends AionClientPacket
 		super(buf, client);
 		accountId = readD();
 		loginOk = readD();
-		servId = (byte)readC();
+		servId = (byte) readC();
 	}
 
 	/**

@@ -65,8 +65,8 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 			Thread.NORM_PRIORITY));
 		scheduledThreadPool.setRemoveOnCancelPolicy(true);
 
-		disconnectionScheduledThreadPool = new ScheduledThreadPoolExecutor(4, new PriorityThreadFactory("ScheduledThreadPool",
-			Thread.NORM_PRIORITY));
+		disconnectionScheduledThreadPool = new ScheduledThreadPoolExecutor(4, new PriorityThreadFactory(
+			"ScheduledThreadPool", Thread.NORM_PRIORITY));
 		disconnectionScheduledThreadPool.setRemoveOnCancelPolicy(true);
 
 		aionPacketsThreadPool = new ThreadPoolExecutor(6, 8, 15L, TimeUnit.SECONDS,
@@ -142,9 +142,11 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 		try
 		{
 			disconnectionScheduledThreadPool.shutdown();
-			disconnectionScheduledThreadPool.awaitTermination(6,TimeUnit.MINUTES);
+			disconnectionScheduledThreadPool.awaitTermination(6, TimeUnit.MINUTES);
 		}
-		catch(Exception e){}
+		catch (Exception e)
+		{
+		}
 	}
 
 	private class PriorityThreadFactory implements ThreadFactory

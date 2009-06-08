@@ -18,11 +18,13 @@ package com.aionemu.loginserver;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.dao.DAOManager;
+import com.aionemu.commons.network.IPRange;
 import com.aionemu.commons.utils.NetworkUtils;
 import com.aionemu.loginserver.dao.GameServersDAO;
 import com.aionemu.loginserver.model.Account;
@@ -70,16 +72,23 @@ public class GameServerTable
 	 * Register GameServer if its possible.
 	 * 
 	 * @param gsConnection
+	 *            Connection object
 	 * @param requestedId
-	 * @param externalHost
-	 * @param internalHost
+	 *            id of server that was requested
+	 * @param defaultAddress
+	 *            default network address from server, usually internet address
+	 * @param ipRanges
+	 *            mapping of various ip ranges, usually used for local area networks
 	 * @param port
+	 *            port that is used by server
 	 * @param maxPlayers
+	 *            maximum amount of players
 	 * @param password
+	 *            server password that is specified configs, used to check if gs can auth on ls
 	 * @return GsAuthResponse
 	 */
-	public static GsAuthResponse registerGameServer(GsConnection gsConnection, byte requestedId, String externalHost,
-		String internalHost, int port, int maxPlayers, String password)
+	public static GsAuthResponse registerGameServer(GsConnection gsConnection, byte requestedId, byte[] defaultAddress,
+		List<IPRange> ipRanges, int port, int maxPlayers, String password)
 	{
 		GameServerInfo gsi = gameservers.get(requestedId);
 
@@ -107,8 +116,8 @@ public class GameServerTable
 			return GsAuthResponse.NOT_AUTHED;
 		}
 
-		gsi.setExternalHost(externalHost);
-		gsi.setInternalHost(internalHost);
+		gsi.setDefaultAddress(defaultAddress);
+		gsi.setIpRanges(ipRanges);
 		gsi.setPort(port);
 		gsi.setMaxPlayers(maxPlayers);
 		gsi.setGsConnection(gsConnection);

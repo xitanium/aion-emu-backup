@@ -71,9 +71,9 @@ public class LoginServer
 		IOServer.getInstance();
 		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
 
-        MemoryUsage hm = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
-        MemoryUsage nhm = ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage();
-        log.info("Heap Memory Usage: " + (hm.getUsed() / 1048576) + "/" + (hm.getMax() / 1048576) + " MB");
-        log.info("NonHeap Memory Usage: " + (nhm.getUsed() / 1048576) + "/" + (nhm.getMax() / 1048576) + " MB");
+		MemoryUsage hm = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
+		MemoryUsage nhm = ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage();
+		log.info("Heap Memory Usage: " + (hm.getUsed() / 1048576) + "/" + (hm.getMax() / 1048576) + " MB");
+		log.info("NonHeap Memory Usage: " + (nhm.getUsed() / 1048576) + "/" + (nhm.getMax() / 1048576) + " MB");
 	}
 }

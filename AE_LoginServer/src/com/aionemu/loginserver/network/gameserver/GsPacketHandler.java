@@ -29,13 +29,14 @@ import com.aionemu.loginserver.network.gameserver.clientpackets.CM_GS_AUTH;
  */
 public class GsPacketHandler
 {
-    /**
-     * logger for this class
-     */
+	/**
+	 * logger for this class
+	 */
 	private static final Logger	log	= Logger.getLogger(GsPacketHandler.class);
 
 	/**
 	 * Reads one packet from given ByteBuffer
+	 * 
 	 * @param data
 	 * @param client
 	 * @return GsClientPacket object from binary data
@@ -84,6 +85,7 @@ public class GsPacketHandler
 
 	/**
 	 * Logs unknown packet.
+	 * 
 	 * @param state
 	 * @param id
 	 */

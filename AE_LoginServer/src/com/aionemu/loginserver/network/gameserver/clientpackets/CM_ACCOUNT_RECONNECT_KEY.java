@@ -29,11 +29,11 @@ import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.serverpackets.SM_ACCOUNT_RECONNECT_KEY;
 
 /**
- * This packet is sended by GameServer when player
- * is requesting fast reconnect to login server.
- * LoginServer in response will send reconectKey.
+ * This packet is sended by GameServer when player is requesting fast reconnect to login server. LoginServer in response
+ * will send reconectKey.
+ * 
  * @author -Nemesiss-
- *
+ * 
  */
 public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 {
@@ -44,7 +44,7 @@ public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 	/**
 	 * accoundId of account that will be reconnecting.
 	 */
-	private final int accountId;
+	private final int			accountId;
 
 	/**
 	 * Constructor.
@@ -66,7 +66,7 @@ public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 	{
 		int reconectKey = Rnd.nextInt();
 		Account acc = getConnection().getGameServerInfo().removeAccountFromGameServer(accountId);
-		if(acc == null)
+		if (acc == null)
 			log.info("This shouldnt happend! [Error]");
 		else
 			AccountController.addReconnectingAccount(new ReconnectingAccount(acc, reconectKey));

@@ -31,6 +31,7 @@ import com.aionemu.loginserver.utils.ThreadPoolManager;
 
 /**
  * Object representing connection between LoginServer and GameServer.
+ * 
  * @author -Nemesiss-
  */
 public class GsConnection extends AConnection
@@ -68,7 +69,7 @@ public class GsConnection extends AConnection
 	/**
 	 * GameServerInfo for this GsConnection.
 	 */
-	private GameServerInfo gameServerInfo = null;
+	private GameServerInfo				gameServerInfo	= null;
 
 	/**
 	 * Constructor.
@@ -139,8 +140,8 @@ public class GsConnection extends AConnection
 	@Override
 	protected final void onDisconnect()
 	{
-		log.info(this+" disconnected");
-		if(gameServerInfo != null)
+		log.info(this + " disconnected");
+		if (gameServerInfo != null)
 		{
 			gameServerInfo.setGsConnection(null);
 			gameServerInfo = null;
@@ -154,7 +155,7 @@ public class GsConnection extends AConnection
 	protected final void onServerClose()
 	{
 		// TODO mb some packet should be send to gameserver before closing?
-		close(/*packet,*/ true);
+		close(/* packet, */true);
 	}
 
 	/**
@@ -225,8 +226,7 @@ public class GsConnection extends AConnection
 	}
 
 	/**
-	 * @return GameServerInfo for this GsConnection
-	 * or null if this GsConnection is not authenticated yet.
+	 * @return GameServerInfo for this GsConnection or null if this GsConnection is not authenticated yet.
 	 */
 	public GameServerInfo getGameServerInfo()
 	{
@@ -235,7 +235,7 @@ public class GsConnection extends AConnection
 
 	/**
 	 * @param gameServerInfo
-	 * 			Set GameServerInfo for this GsConnection.
+	 *            Set GameServerInfo for this GsConnection.
 	 */
 	public void setGameServerInfo(GameServerInfo gameServerInfo)
 	{
@@ -248,16 +248,17 @@ public class GsConnection extends AConnection
 	@Override
 	public String toString()
 	{
-        StringBuilder sb = new StringBuilder();
-        sb.append("GameServer [ID:");
-        if(gameServerInfo != null)
-        {
-            sb.append(gameServerInfo.getId());
-        } else
-        {
-            sb.append("null");
-        }
-        sb.append("] ").append(getIP());
-        return sb.toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append("GameServer [ID:");
+		if (gameServerInfo != null)
+		{
+			sb.append(gameServerInfo.getId());
+		}
+		else
+		{
+			sb.append("null");
+		}
+		sb.append("] ").append(getIP());
+		return sb.toString();
 	}
 }
