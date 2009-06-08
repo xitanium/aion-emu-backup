@@ -87,11 +87,7 @@ public class AionConnection extends AConnection
 	 * 
 	 */
 	private Account							account;
-	/**
-	 * If this connection should use internalIp for reconnecting to GameServer [ie when GameServer is in the same local
-	 * net as client]
-	 */
-	private boolean							usesInternalIP;
+
 	/**
 	 * Session Key for this connection.
 	 */
@@ -119,7 +115,6 @@ public class AionConnection extends AConnection
 
 		String ip = getIP();
 		log.info("connection from: " + ip);
-		usesInternalIP = ip.startsWith("192.168") || ip.startsWith("10.0") || ip.equals("127.0.0.1");
 
 		scrambledPair = LoginController.getInstance().getScrambledRSAKeyPair();
 		blowfishKey = LoginController.getInstance().getBlowfishKey();
@@ -305,17 +300,6 @@ public class AionConnection extends AConnection
 			sendMsgQueue.addLast(closePacket);
 			enableWriteInterest();
 		}
-	}
-
-	/**
-	 * True if this connection should use internalIp for reconnecting to GameServer [ie when GameServer is in the same
-	 * local net as client]
-	 * 
-	 * @return usesInternalIP
-	 */
-	public final boolean usesInternalIP()
-	{
-		return usesInternalIP;
 	}
 
 	public final byte[] getBlowfishKey()
