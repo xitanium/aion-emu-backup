@@ -33,9 +33,10 @@ import java.lang.annotation.Documented;
  * }
  * </pre>
  * 
- * block.<br><br>
+ * block.<br>
+ * <br>
  * Only static methods with no arguments can be marked with this annotation.
- *
+ * 
  * @author SoulKeeper
  */
 @Documented

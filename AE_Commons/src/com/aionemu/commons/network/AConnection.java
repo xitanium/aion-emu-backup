@@ -73,7 +73,7 @@ public abstract class AConnection
 	/**
 	 * Caching ip address to make sure that {@link #getIP()} method works even after disconnection
 	 */
-	private final String ip;
+	private final String		ip;
 
 	/**
 	 * Constructor

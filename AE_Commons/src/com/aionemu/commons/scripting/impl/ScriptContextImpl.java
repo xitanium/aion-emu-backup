@@ -32,61 +32,69 @@ import com.aionemu.commons.scripting.impl.javacompiler.ScriptCompilerImpl;
 
 /**
  * This class is actual implementation of {@link com.aionemu.commons.scripting.ScriptContext}
- *
+ * 
  * @author SoulKeeper
  */
 public class ScriptContextImpl implements ScriptContext
 {
 
-    /**
-     * logger for this class
-     */
+	/**
+	 * logger for this class
+	 */
 	private static final Logger	log	= Logger.getLogger(ScriptContextImpl.class);
 
-    /**
-     * Script context that is parent for this script context
-     */
+	/**
+	 * Script context that is parent for this script context
+	 */
 	private final ScriptContext	parentScriptContext;
 
-    /**
-     * Libraries (list of jar files) that have to be loaded class loader
-     */
+	/**
+	 * Libraries (list of jar files) that have to be loaded class loader
+	 */
 	private Iterable<File>		libraries;
 
-    /**
-     * Root directory of this script context.
-     * It and it's subdirectories will be scanned for .java files.
-     */
+	/**
+	 * Root directory of this script context. It and it's subdirectories will be scanned for .java files.
+	 */
 	private final File			root;
 
-    /**
-     * Result of compilation of script context
-     */
+	/**
+	 * Result of compilation of script context
+	 */
 	private CompilationResult	compilationResult;
 
-    /**
-     * List of child script contexts
-     */
+	/**
+	 * List of child script contexts
+	 */
 	private Set<ScriptContext>	childScriptContexts;
 
-    /**
-     * Creates new scriptcontext with given root file
-     * @param root file that represents root directory of this script context
-     * @throws NullPointerException if root is null
-     * @throws IllegalArgumentException if root directory doesn't exists or is not a directory
-     */
+	/**
+	 * Creates new scriptcontext with given root file
+	 * 
+	 * @param root
+	 *            file that represents root directory of this script context
+	 * @throws NullPointerException
+	 *             if root is null
+	 * @throws IllegalArgumentException
+	 *             if root directory doesn't exists or is not a directory
+	 */
 	public ScriptContextImpl(File root)
 	{
 		this(root, null);
 	}
 
-    /**
-     * Creates new ScriptContext with given file as root and another ScriptContext as parent
-     * @param root file that represents root directory of this script context
-     * @param parent parent ScriptContex. It's classes and libraries will be accessible for this script context
-     * @throws NullPointerException if root is null
-     * @throws IllegalArgumentException if root directory doesn't exists or is not a directory
-     */
+	/**
+	 * Creates new ScriptContext with given file as root and another ScriptContext as parent
+	 * 
+	 * @param root
+	 *            file that represents root directory of this script context
+	 * @param parent
+	 *            parent ScriptContex. It's classes and libraries will be accessible for this script context
+	 * @throws NullPointerException
+	 *             if root is null
+	 * @throws IllegalArgumentException
+	 *             if root directory doesn't exists or is not a directory
+	 */
 	public ScriptContextImpl(File root, ScriptContext parent)
 	{
 		if (root == null)
@@ -94,17 +102,18 @@ public class ScriptContextImpl implements ScriptContext
 			throw new NullPointerException("Root file must be specified");
 		}
 
-        if(!root.exists() || !root.isDirectory()){
-            throw new IllegalArgumentException("Root directory not exists or is not a directory");
-        }
+		if (!root.exists() || !root.isDirectory())
+		{
+			throw new IllegalArgumentException("Root directory not exists or is not a directory");
+		}
 
 		this.root = root;
 		this.parentScriptContext = parent;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings( { "ThrowableInstanceNeverThrown" })
 	public synchronized void init()
 	{
@@ -139,9 +148,9 @@ public class ScriptContextImpl implements ScriptContext
 		}
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings( { "ThrowableInstanceNeverThrown" })
 	public synchronized void shutdown()
 	{
@@ -152,90 +161,90 @@ public class ScriptContextImpl implements ScriptContext
 			return;
 		}
 
-        if(childScriptContexts != null)
-        {
-            for (ScriptContext child : childScriptContexts)
-            {
-                child.shutdown();
-            }
-        }
+		if (childScriptContexts != null)
+		{
+			for (ScriptContext child : childScriptContexts)
+			{
+				child.shutdown();
+			}
+		}
 
 		ClassAnnotationProcessor.preUnload(compilationResult.getCompiledClasses());
 		compilationResult = null;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	public void reload()
 	{
 		shutdown();
 		init();
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	public File getRoot()
 	{
 		return root;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	public CompilationResult getCompilationResult()
 	{
 		return compilationResult;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	public synchronized boolean isInitialized()
 	{
 		return compilationResult != null;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setLibraries(Iterable<File> files)
 	{
 		this.libraries = files;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Iterable<File> getLibraries()
 	{
 		return libraries;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ScriptContext getParentScriptContext()
 	{
 		return parentScriptContext;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Collection<ScriptContext> getChildScriptContexts()
 	{
 		return childScriptContexts;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void addChildScriptContext(ScriptContext context)
 	{
@@ -263,9 +272,9 @@ public class ScriptContextImpl implements ScriptContext
 		childScriptContexts.add(context);
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -276,29 +285,30 @@ public class ScriptContextImpl implements ScriptContext
 
 		ScriptContextImpl another = (ScriptContextImpl) obj;
 
-        if(parentScriptContext == null)
-        {
-            return another.getRoot().equals(root);
-        }
-        else
-        {
-            return another.getRoot().equals(root) && parentScriptContext.equals(another.parentScriptContext);
-        }
+		if (parentScriptContext == null)
+		{
+			return another.getRoot().equals(root);
+		}
+		else
+		{
+			return another.getRoot().equals(root) && parentScriptContext.equals(another.parentScriptContext);
+		}
 	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = parentScriptContext != null ? parentScriptContext.hashCode() : 0;
-        result = 31 * result + root.hashCode();
-        return result;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode()
+	{
+		int result = parentScriptContext != null ? parentScriptContext.hashCode() : 0;
+		result = 31 * result + root.hashCode();
+		return result;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void finalize() throws Throwable
 	{

@@ -29,108 +29,125 @@ import javax.xml.bind.annotation.XmlTransient;
  * Simple class that represents script info.<br>
  * <br>
  * It contains Script root, list of libraries and list of child contexes
- *
+ * 
  * @author SoulKeeper
  */
 @XmlRootElement(name = "scriptinfo")
-public class ScriptInfo {
+public class ScriptInfo
+{
 
-    /**
-     * Root of this script context.
-     * Child directories of root will be scanned for script files
-     */
-    @XmlAttribute(required = true)
-    private File root;
+	/**
+	 * Root of this script context. Child directories of root will be scanned for script files
+	 */
+	@XmlAttribute(required = true)
+	private File				root;
 
-    /**
-     * List of libraries of this script context
-     */
-    @XmlElement(name = "library")
-    private List<File> libraries;
+	/**
+	 * List of libraries of this script context
+	 */
+	@XmlElement(name = "library")
+	private List<File>			libraries;
 
-    /**
-     * List of child contexts
-     */
-    @XmlElement(name = "scriptinfo")
-    private List<ScriptInfo> scriptInfos;
+	/**
+	 * List of child contexts
+	 */
+	@XmlElement(name = "scriptinfo")
+	private List<ScriptInfo>	scriptInfos;
 
-    /**
-     * Returns root of script context
-     *
-     * @return root of script context
-     */
-    @XmlTransient
-    public File getRoot() {
-        return root;
-    }
+	/**
+	 * Returns root of script context
+	 * 
+	 * @return root of script context
+	 */
+	@XmlTransient
+	public File getRoot()
+	{
+		return root;
+	}
 
-    /**
-     * Sets root for script context
-     *
-     * @param root root for script context
-     */
-    public void setRoot(File root) {
-        this.root = root;
-    }
+	/**
+	 * Sets root for script context
+	 * 
+	 * @param root
+	 *            root for script context
+	 */
+	public void setRoot(File root)
+	{
+		this.root = root;
+	}
 
-    /**
-     * Returns list of libraries that will be used byscript context and it's children
-     * @return lib of libraries
-     */
-    @XmlTransient
-    public List<File> getLibraries() {
-        return libraries;
-    }
+	/**
+	 * Returns list of libraries that will be used byscript context and it's children
+	 * 
+	 * @return lib of libraries
+	 */
+	@XmlTransient
+	public List<File> getLibraries()
+	{
+		return libraries;
+	}
 
-    /**
-     * Sets list of libraries that will be used by script context and it's children
-     * @param libraries sets list of libraries
-     */
-    public void setLibraries(List<File> libraries) {
-        this.libraries = libraries;
-    }
+	/**
+	 * Sets list of libraries that will be used by script context and it's children
+	 * 
+	 * @param libraries
+	 *            sets list of libraries
+	 */
+	public void setLibraries(List<File> libraries)
+	{
+		this.libraries = libraries;
+	}
 
-    /**
-     * Return list of child context descriptors
-     * @return list of child context descriptors
-     */
-    @XmlTransient
-    public List<ScriptInfo> getScriptInfos() {
-        return scriptInfos;
-    }
+	/**
+	 * Return list of child context descriptors
+	 * 
+	 * @return list of child context descriptors
+	 */
+	@XmlTransient
+	public List<ScriptInfo> getScriptInfos()
+	{
+		return scriptInfos;
+	}
 
-    /**
-     * Sets list of child context descriptors
-     * @param scriptInfos list of child context descriptors
-     */
-    public void setScriptInfos(List<ScriptInfo> scriptInfos) {
-        this.scriptInfos = scriptInfos;
-    }
+	/**
+	 * Sets list of child context descriptors
+	 * 
+	 * @param scriptInfos
+	 *            list of child context descriptors
+	 */
+	public void setScriptInfos(List<ScriptInfo> scriptInfos)
+	{
+		this.scriptInfos = scriptInfos;
+	}
 
-    /**
-     * Returns true if roots are quals
-     * @param o object to compare with
-     * @return true if this ScriptInfo and anothers ScriptInfo has same root
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+	/**
+	 * Returns true if roots are quals
+	 * 
+	 * @param o
+	 *            object to compare with
+	 * @return true if this ScriptInfo and anothers ScriptInfo has same root
+	 */
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        ScriptInfo that = (ScriptInfo) o;
+		ScriptInfo that = (ScriptInfo) o;
 
-        return root.equals(that.root);
+		return root.equals(that.root);
 
-    }
+	}
 
-    /**
-     * Returns hashcode of root
-     * @return hashcode of root
-     */
-    @Override
-    public int hashCode()
+	/**
+	 * Returns hashcode of root
+	 * 
+	 * @return hashcode of root
+	 */
+	@Override
+	public int hashCode()
 	{
 		return root.hashCode();
 	}

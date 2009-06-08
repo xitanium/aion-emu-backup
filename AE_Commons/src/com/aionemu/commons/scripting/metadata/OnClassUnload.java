@@ -26,7 +26,7 @@ import java.lang.annotation.Documented;
 /**
  * Method marked as {@link OnClassUnload} will be called when there is a script reload or shutdown.<br>
  * Only static methods with no arguments can be marked with this annotation.
- *
+ * 
  * @author SoulKeeper
  */
 @Documented

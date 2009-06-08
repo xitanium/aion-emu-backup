@@ -19,35 +19,40 @@ package com.aionemu.commons.database.dao;
 
 /**
  * This exception is thrown if DAO is already registered in {@link com.aionemu.commons.database.dao.DAOManager}
- *
+ * 
  * @author SoulKeeper
  */
-public class DAOAlreadyRegisteredException extends DAOException {
+public class DAOAlreadyRegisteredException extends DAOException
+{
 
-    /**
-     * {@inheritDoc}
-     */
-    public DAOAlreadyRegisteredException() {
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public DAOAlreadyRegisteredException()
+	{
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public DAOAlreadyRegisteredException(String message) {
-        super(message);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public DAOAlreadyRegisteredException(String message)
+	{
+		super(message);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public DAOAlreadyRegisteredException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public DAOAlreadyRegisteredException(String message, Throwable cause)
+	{
+		super(message, cause);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public DAOAlreadyRegisteredException(Throwable cause) {
-        super(cause);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public DAOAlreadyRegisteredException(Throwable cause)
+	{
+		super(cause);
+	}
 }

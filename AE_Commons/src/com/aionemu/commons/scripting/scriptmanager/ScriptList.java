@@ -25,34 +25,38 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Root element for script descriptors
- *
+ * 
  * @author SoulKeeper
  */
 @XmlRootElement(name = "scriptlist")
-public class ScriptList {
+public class ScriptList
+{
 
-    /**
-     * List of Script descriptors
-     */
-    @XmlElement(name = "scriptinfo", type = ScriptInfo.class)
-    private Set<ScriptInfo> scriptInfos;
+	/**
+	 * List of Script descriptors
+	 */
+	@XmlElement(name = "scriptinfo", type = ScriptInfo.class)
+	private Set<ScriptInfo>	scriptInfos;
 
-    /**
-     * Returns list of script descriptors
-     *
-     * @return list of script descriptors
-     */
-    @XmlTransient
-    public Set<ScriptInfo> getScriptInfos() {
-        return scriptInfos;
-    }
+	/**
+	 * Returns list of script descriptors
+	 * 
+	 * @return list of script descriptors
+	 */
+	@XmlTransient
+	public Set<ScriptInfo> getScriptInfos()
+	{
+		return scriptInfos;
+	}
 
-    /**
-     * Sets list of script descriptors
-     *
-     * @param scriptInfos lisft of script descriptors
-     */
-    public void setScriptInfos(Set<ScriptInfo> scriptInfos) {
-        this.scriptInfos = scriptInfos;
+	/**
+	 * Sets list of script descriptors
+	 * 
+	 * @param scriptInfos
+	 *            lisft of script descriptors
+	 */
+	public void setScriptInfos(Set<ScriptInfo> scriptInfos)
+	{
+		this.scriptInfos = scriptInfos;
 	}
 }

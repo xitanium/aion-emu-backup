@@ -32,7 +32,7 @@ public interface ParamReadStH extends ReadStH
 	 * Enables coder to manually modify statement parameters.
 	 * 
 	 * @param stmt
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public void setParams(PreparedStatement stmt) throws SQLException;
 }

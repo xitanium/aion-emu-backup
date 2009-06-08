@@ -19,35 +19,40 @@ package com.aionemu.commons.database.dao;
 
 /**
  * Generic DAO exception class
- *
+ * 
  * @author SoulKeeper
  */
-public class DAOException extends RuntimeException {
+public class DAOException extends RuntimeException
+{
 
-    /**
-     * {@inheritDoc}
-     */
-    public DAOException() {
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public DAOException()
+	{
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public DAOException(String message) {
-        super(message);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public DAOException(String message)
+	{
+		super(message);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public DAOException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public DAOException(String message, Throwable cause)
+	{
+		super(message, cause);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public DAOException(Throwable cause) {
-        super(cause);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public DAOException(Throwable cause)
+	{
+		super(cause);
+	}
 }
