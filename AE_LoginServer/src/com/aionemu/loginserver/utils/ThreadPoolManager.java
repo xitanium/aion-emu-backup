@@ -19,7 +19,6 @@ package com.aionemu.loginserver.utils;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -29,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.DisconnectionTask;
 import com.aionemu.commons.network.DisconnectionThreadPool;
+import com.aionemu.commons.utils.ScheduledThreadPoolExecutorAE;
 
 /**
  * @author -Nemesiss-
@@ -42,8 +42,8 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 
 	private static ThreadPoolManager	instance	= new ThreadPoolManager();
 
-	private ScheduledThreadPoolExecutor	scheduledThreadPool;
-	private ScheduledThreadPoolExecutor	disconnectionScheduledThreadPool;
+	private ScheduledThreadPoolExecutorAE	scheduledThreadPool;
+	private ScheduledThreadPoolExecutorAE	disconnectionScheduledThreadPool;
 
 	private ThreadPoolExecutor			aionPacketsThreadPool;
 	private ThreadPoolExecutor			gameServerPacketsThreadPool;
@@ -61,11 +61,11 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 	 */
 	private ThreadPoolManager()
 	{
-		scheduledThreadPool = new ScheduledThreadPoolExecutor(4, new PriorityThreadFactory("ScheduledThreadPool",
+		scheduledThreadPool = new ScheduledThreadPoolExecutorAE(4, new PriorityThreadFactory("ScheduledThreadPool",
 			Thread.NORM_PRIORITY));
 		scheduledThreadPool.setRemoveOnCancelPolicy(true);
 
-		disconnectionScheduledThreadPool = new ScheduledThreadPoolExecutor(4, new PriorityThreadFactory(
+		disconnectionScheduledThreadPool = new ScheduledThreadPoolExecutorAE(4, new PriorityThreadFactory(
 			"ScheduledThreadPool", Thread.NORM_PRIORITY));
 		disconnectionScheduledThreadPool.setRemoveOnCancelPolicy(true);
 
