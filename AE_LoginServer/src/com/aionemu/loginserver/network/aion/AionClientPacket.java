@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.log4j.Logger;
 
+import com.aionemu.commons.network.packet.BaseClientPacket;
 import com.aionemu.loginserver.model.Account;
 
 /**
@@ -27,16 +28,12 @@ import com.aionemu.loginserver.model.Account;
  * 
  * @author -Nemesiss-
  */
-public abstract class AionClientPacket implements Runnable
+public abstract class AionClientPacket extends BaseClientPacket
 {
 	/**
 	 * Logger for this class.
 	 */
 	private static final Logger		log	= Logger.getLogger(AionClientPacket.class);
-	/**
-	 * ByteBuffer that contains this packet data
-	 */
-	private final ByteBuffer		buf;
 	/**
 	 * Owner of this packet.
 	 */
@@ -50,13 +47,14 @@ public abstract class AionClientPacket implements Runnable
 	 */
 	protected AionClientPacket(ByteBuffer buf, AionConnection client)
 	{
-		this.buf = buf;
+		super(buf);
 		this.client = client;
 	}
 
 	/**
 	 * run runImpl catching and logging Throwable.
 	 */
+	@Override
 	public final void run()
 	{
 		try
@@ -89,11 +87,6 @@ public abstract class AionClientPacket implements Runnable
 	}
 
 	/**
-	 * Execute this packet action.
-	 */
-	protected abstract void runImpl();
-
-	/**
 	 * Send new AionServerPacket to connection that is owner of this packet. This method is equvalent to:
 	 * getConnection().sendPacket(msg);
 	 * 
@@ -103,156 +96,4 @@ public abstract class AionClientPacket implements Runnable
 	{
 		getConnection().sendPacket(msg);
 	}
-
-	/**
-	 * @return number of bytes remaining in this packet buffer.
-	 */
-	public final int getRemainingBytes()
-	{
-		return buf.remaining();
-	}
-
-	/**
-	 * Read int from this packet buffer.
-	 * 
-	 * @return int
-	 */
-	public final int readD()
-	{
-		try
-		{
-			return buf.getInt();
-		}
-		catch (Exception e)
-		{
-			log.info("Missing D for: " + this);
-		}
-		return 0;
-	}
-
-	/**
-	 * Read byte from this packet buffer.
-	 * 
-	 * @return int
-	 */
-	public final int readC()
-	{
-		try
-		{
-			return buf.get() & 0xFF;
-		}
-		catch (Exception e)
-		{
-			log.info("Missing C for: " + this);
-		}
-		return 0;
-	}
-
-	/**
-	 * Read short from this packet buffer.
-	 * 
-	 * @return int
-	 */
-	public final int readH()
-	{
-		try
-		{
-			return buf.getShort() & 0xFFFF;
-		}
-		catch (Exception e)
-		{
-			log.info("Missing H for: " + this);
-		}
-		return 0;
-	}
-
-	/**
-	 * Read double from this packet buffer.
-	 * 
-	 * @return double
-	 */
-	public final double readF()
-	{
-		try
-		{
-			return buf.getDouble();
-		}
-		catch (Exception e)
-		{
-			log.info("Missing F for: " + this);
-		}
-		return 0;
-	}
-
-	/**
-	 * Read long from this packet buffer.
-	 * 
-	 * @return long
-	 */
-	public final long readQ()
-	{
-		try
-		{
-			return buf.getLong();
-		}
-		catch (Exception e)
-		{
-			log.info("Missing Q for: " + this);
-		}
-		return 0;
-	}
-
-	/**
-	 * Read String from this packet buffer.
-	 * 
-	 * @return String
-	 */
-	public final String readS()
-	{
-		StringBuffer sb = new StringBuffer();
-		char ch;
-		try
-		{
-			while ((ch = buf.getChar()) != 0)
-				sb.append(ch);
-		}
-		catch (Exception e)
-		{
-		}
-		return sb.toString();
-	}
-
-	/**
-	 * Read n bytes from this packet buffer, n = length.
-	 * 
-	 * @param length
-	 * @return byte[]
-	 */
-	public final byte[] readB(int length)
-	{
-		byte[] result = new byte[length];
-		try
-		{
-			buf.get(result);
-		}
-		catch (Exception e)
-		{
-			log.info("Missing byte[] for: " + this);
-		}
-		return result;
-	}
-
-	/**
-	 * @return String - packet name.
-	 */
-	@Override
-	public String toString()
-	{
-		return getType();
-	}
-
-	/**
-	 * @return String - packet name.
-	 */
-	public abstract String getType();
 }

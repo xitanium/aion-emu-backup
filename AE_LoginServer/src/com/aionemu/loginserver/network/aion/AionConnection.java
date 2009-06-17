@@ -79,7 +79,13 @@ public class AionConnection extends AConnection
 	 * Crypt to encrypt/decrypt packets
 	 */
 	private LoginCrypt						loginCrypt;
+	/**
+	 * Scrambled key pair for RSA
+	 */
 	private ScrambledKeyPair				scrambledPair;
+	/**
+	 * Blowfish key
+	 */
 	private byte[]							blowfishKey;
 
 	/**
@@ -302,16 +308,31 @@ public class AionConnection extends AConnection
 		}
 	}
 
+	/**
+	 * Return Blowfish key for this connection.
+	 * 
+	 * @return blowfishKey
+	 */
 	public final byte[] getBlowfishKey()
 	{
 		return blowfishKey;
 	}
 
+	/**
+	 * Return Scrambled modulus
+	 * 
+	 * @return Scrambled modulus
+	 */
 	public final byte[] getScrambledModulus()
 	{
 		return scrambledPair._scrambledModulus;
 	}
 
+	/**
+	 * Return RSA private key
+	 * 
+	 * @return rsa private key
+	 */
 	public final RSAPrivateKey getRSAPrivateKey()
 	{
 		return (RSAPrivateKey) scrambledPair._pair.getPrivate();

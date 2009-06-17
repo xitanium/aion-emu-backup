@@ -43,11 +43,26 @@ public class LoginController
 	 */
 	private static LoginController	instance;
 
+	/**
+	 * Key pairs
+	 */
 	protected ScrambledKeyPair[]	keyPairs;
 
+	/**
+	 * Blowfish keys
+	 */
 	protected byte[][]				blowfishKeys;
+
+	/**
+	 * Count of blowfish keys that will be generated
+	 */
 	private static final int		BLOWFISH_KEYS	= 20;
 
+	/**
+	 * Initialize LoginController
+	 * 
+	 * @throws GeneralSecurityException
+	 */
 	public static void load() throws GeneralSecurityException
 	{
 		if (instance == null)
@@ -60,11 +75,20 @@ public class LoginController
 		}
 	}
 
+	/**
+	 * Return instance of LoginController
+	 * @return LoginController instance
+	 */
 	public static LoginController getInstance()
 	{
 		return instance;
 	}
 
+	/**
+	 * Constructor.
+	 * 
+	 * @throws GeneralSecurityException
+	 */
 	private LoginController() throws GeneralSecurityException
 	{
 		log.info("Loading LoginContoller...");

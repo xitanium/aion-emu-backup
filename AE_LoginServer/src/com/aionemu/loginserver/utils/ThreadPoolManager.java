@@ -38,15 +38,30 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger			log			= Logger.getLogger(ThreadPoolManager.class);
+	private static final Logger				log			= Logger.getLogger(ThreadPoolManager.class);
 
-	private static ThreadPoolManager	instance	= new ThreadPoolManager();
+	/**
+	 * Instance of ThreadPoolManager
+	 */
+	private static ThreadPoolManager		instance	= new ThreadPoolManager();
 
+	/**
+	 * STPE for normal scheduled tasks
+	 */
 	private ScheduledThreadPoolExecutorAE	scheduledThreadPool;
+	/**
+	 * STPE for disconnection tasks
+	 */
 	private ScheduledThreadPoolExecutorAE	disconnectionScheduledThreadPool;
 
-	private ThreadPoolExecutor			aionPacketsThreadPool;
-	private ThreadPoolExecutor			gameServerPacketsThreadPool;
+	/**
+	 * TPE for execution of aion client packets
+	 */
+	private ThreadPoolExecutor				aionPacketsThreadPool;
+	/**
+	 * TPE for execution of gameserver client packets
+	 */
+	private ThreadPoolExecutor				gameServerPacketsThreadPool;
 
 	/**
 	 * @return ThreadPoolManager instance.
@@ -79,6 +94,14 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 
 	}
 
+	/**
+	 * Schedule
+	 * 
+	 * @param <T>
+	 * @param r
+	 * @param delay
+	 * @return ScheduledFuture
+	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Runnable> ScheduledFuture<T> schedule(T r, long delay)
 	{
@@ -94,6 +117,15 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 		}
 	}
 
+	/**
+	 * Schedule at fixed rate
+	 * 
+	 * @param <T>
+	 * @param r
+	 * @param initial
+	 * @param delay
+	 * @return ScheduledFuture
+	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Runnable> ScheduledFuture<T> scheduleAtFixedRate(T r, long initial, long delay)
 	{
@@ -112,11 +144,21 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 		}
 	}
 
+	/**
+	 * Executes Runnable - Aion Client packet.
+	 * 
+	 * @param pkt
+	 */
 	public void executeAionPacket(Runnable pkt)
 	{
 		aionPacketsThreadPool.execute(pkt);
 	}
 
+	/**
+	 * Executes Runnable - GameServer Client packet.
+	 * 
+	 * @param pkt
+	 */
 	public void executeGsPacket(Runnable pkt)
 	{
 		gameServerPacketsThreadPool.execute(pkt);
@@ -149,13 +191,35 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 		}
 	}
 
+	/**
+	 * PriorityThreadFactory creating new threads for ThreadPoolManager
+	 * 
+	 */
 	private class PriorityThreadFactory implements ThreadFactory
 	{
+		/**
+		 * Priority of new threads
+		 */
 		private int				prio;
+		/**
+		 * Thread group name
+		 */
 		private String			name;
+		/**
+		 * Number of created threads
+		 */
 		private AtomicInteger	threadNumber	= new AtomicInteger(1);
+		/**
+		 * ThreadGroup for created threads
+		 */
 		private ThreadGroup		group;
 
+		/**
+		 * Constructor.
+		 * 
+		 * @param name
+		 * @param prio
+		 */
 		public PriorityThreadFactory(String name, int prio)
 		{
 			this.prio = prio;
@@ -163,11 +227,10 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 			group = new ThreadGroup(this.name);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.util.concurrent.ThreadFactory#newThread(java.lang.Runnable)
+		/**
+		 * {@inheritDoc}
 		 */
+		@Override
 		public Thread newThread(Runnable r)
 		{
 			Thread t = new Thread(group, r);
@@ -175,11 +238,6 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 			t.setPriority(prio);
 			t.setUncaughtExceptionHandler(new ThreadUncaughtExceptionHandler());
 			return t;
-		}
-
-		public ThreadGroup getGroup()
-		{
-			return group;
 		}
 	}
 
