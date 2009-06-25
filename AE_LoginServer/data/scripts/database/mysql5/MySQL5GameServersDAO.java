@@ -21,13 +21,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import com.aionemu.commons.database.DB;
 import com.aionemu.commons.database.ReadStH;
-import com.aionemu.commons.database.dao.DAOManager;
-import com.aionemu.commons.scripting.metadata.OnClassLoad;
-import com.aionemu.commons.scripting.metadata.OnClassUnload;
 import com.aionemu.loginserver.GameServerInfo;
 import com.aionemu.loginserver.dao.GameServersDAO;
 
@@ -39,40 +34,6 @@ import com.aionemu.loginserver.dao.GameServersDAO;
  */
 public class MySQL5GameServersDAO extends GameServersDAO
 {
-	/**
-	 * Logger
-	 */
-	private static final Logger	log	= Logger.getLogger(MySQL5GameServersDAO.class);
-
-	/**
-	 * Register dao on class load
-	 */
-	@OnClassLoad
-	public static void onClassLoad()
-	{
-		try
-		{
-			DAOManager.registerDAO(MySQL5GameServersDAO.class);
-		}
-		catch (IllegalAccessException e)
-		{
-			log.error("Can't register DAO", e);
-		}
-		catch (InstantiationException e)
-		{
-			log.error("Can't register DAO", e);
-		}
-	}
-
-	/**
-	 * Unregister DAO on class unload
-	 */
-	@OnClassUnload
-	public static void onClassUnload()
-	{
-		DAOManager.unregisterDAO(MySQL5GameServersDAO.class);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */

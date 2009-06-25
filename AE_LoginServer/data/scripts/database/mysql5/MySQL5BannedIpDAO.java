@@ -24,15 +24,10 @@ import java.sql.Types;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 import com.aionemu.commons.database.DB;
 import com.aionemu.commons.database.IUStH;
 import com.aionemu.commons.database.ParamReadStH;
 import com.aionemu.commons.database.ReadStH;
-import com.aionemu.commons.database.dao.DAOManager;
-import com.aionemu.commons.scripting.metadata.OnClassLoad;
-import com.aionemu.commons.scripting.metadata.OnClassUnload;
 import com.aionemu.loginserver.dao.BannedIpDAO;
 import com.aionemu.loginserver.model.BannedIP;
 
@@ -43,40 +38,6 @@ import com.aionemu.loginserver.model.BannedIP;
  */
 public class MySQL5BannedIpDAO extends BannedIpDAO
 {
-	/**
-	 * Logger
-	 */
-	private static final Logger	log	= Logger.getLogger(MySQL5BannedIpDAO.class);
-
-	/**
-	 * Register dao on class load
-	 */
-	@OnClassLoad
-	public static void onClassLoad()
-	{
-		try
-		{
-			DAOManager.registerDAO(MySQL5BannedIpDAO.class);
-		}
-		catch (IllegalAccessException e)
-		{
-			log.error("Can't register DAO", e);
-		}
-		catch (InstantiationException e)
-		{
-			log.error("Can't register DAO", e);
-		}
-	}
-
-	/**
-	 * Unregister DAO on class unload
-	 */
-	@OnClassUnload
-	public static void onClassUnload()
-	{
-		DAOManager.unregisterDAO(MySQL5BannedIpDAO.class);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */

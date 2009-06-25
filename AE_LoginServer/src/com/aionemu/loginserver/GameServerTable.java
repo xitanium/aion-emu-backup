@@ -54,7 +54,7 @@ public class GameServerTable
 	 * 
 	 * @return collection of GameServers.
 	 */
-	public static final Collection<GameServerInfo> getGameServers()
+	public static Collection<GameServerInfo> getGameServers()
 	{
 		return Collections.unmodifiableCollection(gameservers.values());
 	}
@@ -132,7 +132,7 @@ public class GameServerTable
 	 * @param gameServerId
 	 * @return GameSererInfo object for given gameserverId.
 	 */
-	public static final GameServerInfo getGameServerInfo(byte gameServerId)
+	public static GameServerInfo getGameServerInfo(byte gameServerId)
 	{
 		return gameservers.get(gameServerId);
 	}
@@ -143,7 +143,7 @@ public class GameServerTable
 	 * @param acc
 	 * @return true is account is logged in on one of GameServers
 	 */
-	public static final boolean isAccountOnAnyGameServerAndKick(Account acc)
+	public static boolean isAccountOnAnyGameServerAndKick(Account acc)
 	{
 		for (GameServerInfo gsi : getGameServers())
 		{

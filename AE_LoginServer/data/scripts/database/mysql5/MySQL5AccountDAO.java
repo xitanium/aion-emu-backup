@@ -25,9 +25,6 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DB;
 import com.aionemu.commons.database.IUStH;
-import com.aionemu.commons.database.dao.DAOManager;
-import com.aionemu.commons.scripting.metadata.OnClassUnload;
-import com.aionemu.commons.scripting.metadata.OnClassLoad;
 import com.aionemu.loginserver.dao.AccountDAO;
 import com.aionemu.loginserver.model.Account;
 
@@ -42,35 +39,6 @@ public class MySQL5AccountDAO extends AccountDAO
 	 * Logger
 	 */
 	private static final Logger	log	= Logger.getLogger(MySQL5AccountDAO.class);
-
-	/**
-	 * Register dao on class load
-	 */
-	@OnClassLoad
-	public static void onLoad()
-	{
-		try
-		{
-			DAOManager.registerDAO(MySQL5AccountDAO.class);
-		}
-		catch (IllegalAccessException e)
-		{
-			log.error("Can't register DAO", e);
-		}
-		catch (InstantiationException e)
-		{
-			log.error("Can't register DAO", e);
-		}
-	}
-
-	/**
-	 * Unregister DAO class
-	 */
-	@OnClassUnload
-	public static void onUnload()
-	{
-		DAOManager.unregisterDAO(MySQL5AccountDAO.class);
-	}
 
 	/**
 	 * {@inheritDoc}
