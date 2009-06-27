@@ -19,6 +19,10 @@ package com.aionemu.loginserver;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryUsage;
 import java.security.GeneralSecurityException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.NoSuchPaddingException;
 
 import org.apache.log4j.Logger;
 
@@ -27,6 +31,7 @@ import com.aionemu.commons.services.LoggingService;
 import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.controller.BannedIpController;
 import com.aionemu.loginserver.network.IOServer;
+import com.aionemu.loginserver.network.crypt.Crypt;
 import com.aionemu.loginserver.utils.DeadLockDetector;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
 
@@ -53,6 +58,9 @@ public class LoginServer
 		new DeadLockDetector(60, DeadLockDetector.RESTART).start();
 		ThreadPoolManager.getInstance();
 
+		/**
+		 * Initialize LoginController.
+		 */
 		try
 		{
 			LoginController.load();
@@ -60,6 +68,19 @@ public class LoginServer
 		catch (GeneralSecurityException e)
 		{
 			log.fatal("Failed initializing LoginController. Reason: " + e.getMessage(), e);
+			System.exit(1);
+		}
+
+		/**
+		 * Initialize Crypt.
+		 */
+		try
+		{
+			Crypt.init();
+		}
+		catch (Exception e)
+		{
+			log.fatal("Failed initializing Crypt. Reason: " + e.getMessage(), e);
 			System.exit(1);
 		}
 

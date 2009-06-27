@@ -49,16 +49,6 @@ public class LoginController
 	protected ScrambledKeyPair[]	keyPairs;
 
 	/**
-	 * Blowfish keys
-	 */
-	protected byte[][]				blowfishKeys;
-
-	/**
-	 * Count of blowfish keys that will be generated
-	 */
-	private static final int		BLOWFISH_KEYS	= 20;
-
-	/**
 	 * Initialize LoginController
 	 * 
 	 * @throws GeneralSecurityException
@@ -109,9 +99,6 @@ public class LoginController
 		log.info("Cached 10 KeyPairs for RSA communication");
 
 		this.testCipher((RSAPrivateKey) keyPairs[0]._pair.getPrivate());
-
-		// Store keys for blowfish communication
-		this.generateBlowFishKeys();
 	}
 
 	/**
@@ -129,31 +116,6 @@ public class LoginController
 		// avoid worst-case execution, KenM
 		Cipher rsaCipher = Cipher.getInstance("RSA/ECB/nopadding");
 		rsaCipher.init(Cipher.DECRYPT_MODE, key);
-	}
-
-	/**
-	 * Generate and cache BlowFish keys.
-	 */
-	private void generateBlowFishKeys()
-	{
-		blowfishKeys = new byte[BLOWFISH_KEYS][16];
-
-		for (int i = 0; i < BLOWFISH_KEYS; i++)
-		{
-			for (int j = 0; j < blowfishKeys[i].length; j++)
-			{
-				blowfishKeys[i][j] = (byte) (Rnd.nextInt(255) + 1);
-			}
-		}
-		log.info("Stored " + blowfishKeys.length + " keys for Blowfish communication");
-	}
-
-	/**
-	 * @return Returns a random key
-	 */
-	public byte[] getBlowfishKey()
-	{
-		return blowfishKeys[(int) (Math.random() * BLOWFISH_KEYS)];
 	}
 
 	/**

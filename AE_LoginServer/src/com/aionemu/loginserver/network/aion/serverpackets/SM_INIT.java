@@ -18,6 +18,8 @@ package com.aionemu.loginserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
+import javax.crypto.SecretKey;
+
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
 
@@ -46,10 +48,11 @@ public final class SM_INIT extends AionServerPacket
 	 * Constructor
 	 * 
 	 * @param client
+	 * @param blowfishKey 
 	 */
-	public SM_INIT(AionConnection client)
+	public SM_INIT(AionConnection client, SecretKey blowfishKey)
 	{
-		this(client.getScrambledModulus(), client.getBlowfishKey(), client.getSessionId());
+		this(client.getScrambledModulus(), blowfishKey.getEncoded(), client.getSessionId());
 	}
 
 	/**

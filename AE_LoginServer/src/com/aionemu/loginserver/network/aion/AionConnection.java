@@ -23,6 +23,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import javax.crypto.SecretKey;
+
 import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.AConnection;
@@ -31,6 +33,7 @@ import com.aionemu.loginserver.LoginController;
 import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_INIT;
+import com.aionemu.loginserver.network.crypt.KeyGen;
 import com.aionemu.loginserver.network.crypt.LoginCrypt;
 import com.aionemu.loginserver.network.crypt.ScrambledKeyPair;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
@@ -78,16 +81,11 @@ public class AionConnection extends AConnection
 	/**
 	 * Crypt to encrypt/decrypt packets
 	 */
-	private LoginCrypt						loginCrypt;
+	private LoginCrypt						crypt;
 	/**
 	 * Scrambled key pair for RSA
 	 */
 	private ScrambledKeyPair				scrambledPair;
-	/**
-	 * Blowfish key
-	 */
-	private byte[]							blowfishKey;
-
 	/**
 	 * Account object for this connection. if state = AUTHED_LOGIN account cant be null.
 	 * 
@@ -123,12 +121,13 @@ public class AionConnection extends AConnection
 		log.info("connection from: " + ip);
 
 		scrambledPair = LoginController.getInstance().getScrambledRSAKeyPair();
-		blowfishKey = LoginController.getInstance().getBlowfishKey();
-		loginCrypt = new LoginCrypt();
-		loginCrypt.setKey(blowfishKey);
+		SecretKey blowfishKey = KeyGen.generateBlowfishKey();
+
+		crypt = new LoginCrypt();
+		crypt.setKey(blowfishKey.getEncoded());
 
 		/** Send Init packet */
-		sendPacket(new SM_INIT(this));
+		sendPacket(new SM_INIT(this, blowfishKey));
 	}
 
 	/**
@@ -219,7 +218,7 @@ public class AionConnection extends AConnection
 		boolean ret = false;
 		try
 		{
-			ret = loginCrypt.decrypt(buf.array(), offset, size);
+			ret = crypt.decrypt(buf.array(), offset, size);
 		}
 		catch (IOException e)
 		{
@@ -248,7 +247,7 @@ public class AionConnection extends AConnection
 		final int offset = buf.arrayOffset() + buf.position();
 		try
 		{
-			size = loginCrypt.encrypt(buf.array(), offset, size);
+			size = crypt.encrypt(buf.array(), offset, size);
 		}
 		catch (IOException e)
 		{
@@ -306,16 +305,6 @@ public class AionConnection extends AConnection
 			sendMsgQueue.addLast(closePacket);
 			enableWriteInterest();
 		}
-	}
-
-	/**
-	 * Return Blowfish key for this connection.
-	 * 
-	 * @return blowfishKey
-	 */
-	public final byte[] getBlowfishKey()
-	{
-		return blowfishKey;
 	}
 
 	/**
