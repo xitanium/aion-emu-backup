@@ -16,16 +16,16 @@
  */
 package com.aionemu.commons.network.packet;
 
-import java.nio.ByteBuffer;
-
 import org.apache.log4j.Logger;
+
+import java.nio.ByteBuffer;
 
 /**
  * Base class for every Client Packet
  * 
  * @author -Nemesiss-
  */
-public abstract class BaseClientPacket implements Runnable
+public abstract class BaseClientPacket extends BasePacket implements Runnable
 {
 	/**
 	 * Logger for this class.
@@ -37,12 +37,15 @@ public abstract class BaseClientPacket implements Runnable
 	private final ByteBuffer		buf;
 
 	/**
-	 * Constructor.
-	 * 
-	 * @param buf
+	 * Constructs a new client packet with specified id and data buffer.
+	 *
+	 * @param buf       packet data container.
+	 * @param opcode    packet opcode.
 	 */
-	public BaseClientPacket(ByteBuffer buf)
+	public BaseClientPacket(ByteBuffer buf, int opcode)
 	{
+		super(PacketType.CLIENT, opcode);
+
 		this.buf = buf;
 	}
 
@@ -67,7 +70,7 @@ public abstract class BaseClientPacket implements Runnable
 		}
 		catch (Exception e)
 		{
-			log.info("Missing D for: " + this);
+			log.error("Missing D for: " + this);
 		}
 		return 0;
 	}
@@ -85,7 +88,7 @@ public abstract class BaseClientPacket implements Runnable
 		}
 		catch (Exception e)
 		{
-			log.info("Missing C for: " + this);
+			log.error("Missing C for: " + this);
 		}
 		return 0;
 	}
@@ -103,7 +106,7 @@ public abstract class BaseClientPacket implements Runnable
 		}
 		catch (Exception e)
 		{
-			log.info("Missing H for: " + this);
+			log.error("Missing H for: " + this);
 		}
 		return 0;
 	}
@@ -121,7 +124,7 @@ public abstract class BaseClientPacket implements Runnable
 		}
 		catch (Exception e)
 		{
-			log.info("Missing DF for: " + this);
+			log.error("Missing DF for: " + this);
 		}
 		return 0;
 	}
@@ -139,7 +142,7 @@ public abstract class BaseClientPacket implements Runnable
 		}
 		catch (Exception e)
 		{
-			log.info("Missing F for: " + this);
+			log.error("Missing F for: " + this);
 		}
 		return 0;
 	}
@@ -157,7 +160,7 @@ public abstract class BaseClientPacket implements Runnable
 		}
 		catch (Exception e)
 		{
-			log.info("Missing Q for: " + this);
+			log.error("Missing Q for: " + this);
 		}
 		return 0;
 	}
@@ -178,6 +181,7 @@ public abstract class BaseClientPacket implements Runnable
 		}
 		catch (Exception e)
 		{
+			log.error("Missing S for: " + this);
 		}
 		return sb.toString();
 	}
@@ -197,27 +201,13 @@ public abstract class BaseClientPacket implements Runnable
 		}
 		catch (Exception e)
 		{
-			log.info("Missing byte[] for: " + this);
+			log.error("Missing byte[] for: " + this);
 		}
 		return result;
-	}
-
-	/**
-	 * @return String - packet name.
-	 */
-	@Override
-	public String toString()
-	{
-		return getType();
 	}
 
 	/**
 	 * Execute this packet action.
 	 */
 	protected abstract void runImpl();
-
-	/**
-	 * @return String - packet name.
-	 */
-	public abstract String getType();
 }

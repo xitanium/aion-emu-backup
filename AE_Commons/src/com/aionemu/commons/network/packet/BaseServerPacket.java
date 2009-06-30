@@ -23,8 +23,18 @@ import java.nio.ByteBuffer;
  * 
  * @author -Nemesiss-
  */
-public abstract class BaseServerPacket
+public abstract class BaseServerPacket extends BasePacket
 {
+	/**
+	 * Constructs a new server packet with specified id.
+	 *
+	 * @param opcode packet opcode.
+	 */
+	protected BaseServerPacket(int opcode)
+	{
+		super(PacketType.SERVER, opcode);
+	}
+
 	/**
 	 * Write int to buffer.
 	 * 
@@ -122,18 +132,4 @@ public abstract class BaseServerPacket
 	{
 		buf.put(data);
 	}
-
-	/**
-	 * @return String - packet name.
-	 */
-	@Override
-	public String toString()
-	{
-		return getType();
-	}
-
-	/**
-	 * @return String - packet name.
-	 */
-	public abstract String getType();
 }
