@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
-import org.bouncycastle.crypto.CipherParameters;
-//import org.bouncycastle.crypto.engines.BlowfishEngine;
 import org.bouncycastle.crypto.params.KeyParameter;
 
 /**
