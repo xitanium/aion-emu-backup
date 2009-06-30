@@ -73,7 +73,7 @@ public class Crypt
 		decrypt.init(Cipher.DECRYPT_MODE, blowfishKey);
 
 		/**
-		 * Initialize blowfish for encryption - with static key.
+		 * Initialize blowfish for encryption.
 		 */
 		encrypt = Cipher.getInstance("Blowfish");
 		encrypt.init(Cipher.ENCRYPT_MODE, blowfishKey);
@@ -108,6 +108,9 @@ public class Crypt
 		if (staticEncrypt == null)
 		{
 			log.info("Initializing Crypt...");
+			/**
+			 * Inaitialize static blowfish.
+			 */
 			staticEncrypt = Cipher.getInstance("Blowfish");
 			staticEncrypt.init(Cipher.ENCRYPT_MODE, new StaticBlowfishKey());
 			KeyGen.init();

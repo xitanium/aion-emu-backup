@@ -16,15 +16,14 @@
  */
 package com.aionemu.loginserver.network.aion.serverpackets;
 
-import java.nio.ByteBuffer;
-import java.util.Collection;
-
-import org.apache.log4j.Logger;
-
 import com.aionemu.loginserver.GameServerInfo;
 import com.aionemu.loginserver.GameServerTable;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
+import org.apache.log4j.Logger;
+
+import java.nio.ByteBuffer;
+import java.util.Collection;
 
 /**
  * @author -Nemesiss-
@@ -37,6 +36,14 @@ public class SM_SERVER_LIST extends AionServerPacket
 	protected static Logger	log	= Logger.getLogger(SM_SERVER_LIST.class);
 
 	/**
+	 * Constructs new instance of <tt>SM_SERVER_LIST</tt> packet.
+	 */
+	public SM_SERVER_LIST()
+	{
+		super(0x04);
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -44,7 +51,7 @@ public class SM_SERVER_LIST extends AionServerPacket
 	{
 		Collection<GameServerInfo> servers = GameServerTable.getGameServers();
 
-		writeC(buf, 0x04);
+		writeC(buf, getOpcode());
 		writeC(buf, servers.size());// servers
 		writeC(buf, con.getAccount().getLastServer());// last server
 		for (GameServerInfo gsi : servers)
@@ -60,14 +67,5 @@ public class SM_SERVER_LIST extends AionServerPacket
 			writeD(buf, 1);// bits);
 			writeC(buf, 0);// server.brackets ? 0x01 : 0x00);
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x04 SM_SERVER_LIST";
 	}
 }

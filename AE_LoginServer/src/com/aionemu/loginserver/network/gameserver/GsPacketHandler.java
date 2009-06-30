@@ -16,13 +16,14 @@
  */
 package com.aionemu.loginserver.network.gameserver;
 
-import java.nio.ByteBuffer;
-import org.apache.log4j.Logger;
 import com.aionemu.loginserver.network.gameserver.GsConnection.State;
 import com.aionemu.loginserver.network.gameserver.clientpackets.CM_ACCOUNT_AUTH;
 import com.aionemu.loginserver.network.gameserver.clientpackets.CM_ACCOUNT_DISCONNECTED;
 import com.aionemu.loginserver.network.gameserver.clientpackets.CM_ACCOUNT_RECONNECT_KEY;
 import com.aionemu.loginserver.network.gameserver.clientpackets.CM_GS_AUTH;
+import org.apache.log4j.Logger;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author -Nemesiss-
@@ -89,8 +90,8 @@ public class GsPacketHandler
 	 * @param state
 	 * @param id
 	 */
-	private static final void unknownPacket(State state, int id)
+	private static void unknownPacket(State state, int id)
 	{
-		log.info("Unknown packet recived from Game Server: " + id + " state=" + state);
+		log.warn(String.format("Unknown packet recived from Game Server: 0x%02X state=%s", id, state.toString()));
 	}
 }

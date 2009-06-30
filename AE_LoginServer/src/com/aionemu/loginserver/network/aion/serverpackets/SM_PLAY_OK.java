@@ -16,11 +16,11 @@
  */
 package com.aionemu.loginserver.network.aion.serverpackets;
 
-import java.nio.ByteBuffer;
-
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
 import com.aionemu.loginserver.network.aion.SessionKey;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author -Nemesiss-
@@ -37,12 +37,14 @@ public class SM_PLAY_OK extends AionServerPacket
 	private final int	playOk2;
 
 	/**
-	 * Constructor.
+	 * Constructs new instance of <tt>SM_PLAY_OK </tt> packet.
 	 * 
-	 * @param key
+	 * @param key session key
 	 */
 	public SM_PLAY_OK(SessionKey key)
 	{
+		super(0x07);
+
 		this.playOk1 = key.playOk1;
 		this.playOk2 = key.playOk2;
 	}
@@ -53,17 +55,8 @@ public class SM_PLAY_OK extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x07);
+		writeC(buf, getOpcode());
 		writeD(buf, playOk1);
 		writeD(buf, playOk2);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x07 SM_PLAY_OK";
 	}
 }

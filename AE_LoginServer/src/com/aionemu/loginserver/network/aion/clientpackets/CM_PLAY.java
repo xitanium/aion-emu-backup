@@ -16,17 +16,17 @@
  */
 package com.aionemu.loginserver.network.aion.clientpackets;
 
-import java.nio.ByteBuffer;
-
 import com.aionemu.loginserver.GameServerInfo;
 import com.aionemu.loginserver.GameServerTable;
+import com.aionemu.loginserver.network.aion.AionAuthResponse;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
-import com.aionemu.loginserver.network.aion.AionAuthResponse;
 import com.aionemu.loginserver.network.aion.SessionKey;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_LOGIN_FAIL;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_PLAY_FAIL;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_PLAY_OK;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author -Nemesiss-
@@ -47,14 +47,14 @@ public class CM_PLAY extends AionClientPacket
 	private final byte	servId;
 
 	/**
-	 * Constructor.
+	 * Constructs new instance of <tt>SM_PLAY_FAIL</tt> packet.
 	 * 
-	 * @param buf
-	 * @param client
+	 * @param buf       packet data
+	 * @param client    client
 	 */
 	public CM_PLAY(ByteBuffer buf, AionConnection client)
 	{
-		super(buf, client);
+		super(buf, client, 0x02);
 		accountId = readD();
 		loginOk = readD();
 		servId = (byte) readC();
@@ -85,14 +85,5 @@ public class CM_PLAY extends AionClientPacket
 		}
 		else
 			con.close(new SM_LOGIN_FAIL(AionAuthResponse.SYSTEM_ERROR), true);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x02 CM_PLAY";
 	}
 }

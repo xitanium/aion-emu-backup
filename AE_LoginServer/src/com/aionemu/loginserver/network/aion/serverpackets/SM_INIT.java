@@ -16,12 +16,11 @@
  */
 package com.aionemu.loginserver.network.aion.serverpackets;
 
-import java.nio.ByteBuffer;
-
-import javax.crypto.SecretKey;
-
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
+
+import javax.crypto.SecretKey;
+import java.nio.ByteBuffer;
 
 /**
  * Format: dd b dddd s d: session id d: protocol revision b: 0x90 bytes : 0x80 bytes for the scrambled RSA public key
@@ -56,14 +55,16 @@ public final class SM_INIT extends AionServerPacket
 	}
 
 	/**
-	 * Constructor
+	 * Creates new instance of <tt>SM_INIT</tt> packet.
 	 * 
-	 * @param publicRsaKey
-	 * @param blowfishKey
-	 * @param sessionId
+	 * @param publicRsaKey      Public RSA key
+	 * @param blowfishKey       Blowfish key
+	 * @param sessionId         Session identifier
 	 */
 	private SM_INIT(byte[] publicRsaKey, byte[] blowfishKey, int sessionId)
 	{
+		super(0x00);
+
 		this.sessionId = sessionId;
 		this.publicRsaKey = publicRsaKey;
 		this.blowfishKey = blowfishKey;
@@ -75,7 +76,7 @@ public final class SM_INIT extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x00); // init packet id
+		writeC(buf, getOpcode()); // init packet id
 
 		writeD(buf, sessionId); // session id
 		writeD(buf, 0x0000c621); // protocol revision
@@ -89,14 +90,5 @@ public final class SM_INIT extends AionServerPacket
 		writeB(buf, blowfishKey); // BlowFish key
 		writeD(buf, 197635); // unk
 		writeD(buf, 2097152); // unk
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x00 SM_INIT";
 	}
 }

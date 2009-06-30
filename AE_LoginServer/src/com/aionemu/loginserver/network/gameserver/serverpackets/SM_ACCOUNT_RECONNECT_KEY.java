@@ -16,10 +16,10 @@
  */
 package com.aionemu.loginserver.network.gameserver.serverpackets;
 
-import java.nio.ByteBuffer;
-
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsServerPacket;
+
+import java.nio.ByteBuffer;
 
 /**
  * In this packet LoginServer is sending response for CM_ACCOUNT_RECONNECT_KEY with account name and reconnectionKey.
@@ -46,6 +46,8 @@ public class SM_ACCOUNT_RECONNECT_KEY extends GsServerPacket
 	 */
 	public SM_ACCOUNT_RECONNECT_KEY(int accountId, int reconnectKey)
 	{
+		super(0x03);
+
 		this.accountId = accountId;
 		this.reconnectKey = reconnectKey;
 	}
@@ -56,17 +58,8 @@ public class SM_ACCOUNT_RECONNECT_KEY extends GsServerPacket
 	@Override
 	protected void writeImpl(GsConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x03);
+		writeC(buf, getOpcode());
 		writeD(buf, accountId);
 		writeD(buf, reconnectKey);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x03 SM_ACCOUNT_RECONNECT_KEY";
 	}
 }

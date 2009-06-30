@@ -16,10 +16,10 @@
  */
 package com.aionemu.loginserver.network.gameserver.serverpackets;
 
-import java.nio.ByteBuffer;
-
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsServerPacket;
+
+import java.nio.ByteBuffer;
 
 /**
  * In this packet LoginSerer is requesting kicking account from GameServer.
@@ -41,6 +41,8 @@ public class SM_REQUEST_KICK_ACCOUNT extends GsServerPacket
 	 */
 	public SM_REQUEST_KICK_ACCOUNT(int accountId)
 	{
+		super(0x02);
+
 		this.accountId = accountId;
 	}
 
@@ -50,16 +52,7 @@ public class SM_REQUEST_KICK_ACCOUNT extends GsServerPacket
 	@Override
 	protected void writeImpl(GsConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x02);
+		writeC(buf, getOpcode());
 		writeD(buf, accountId);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x02 SM_REQUEST_KICK_ACCOUNT";
 	}
 }

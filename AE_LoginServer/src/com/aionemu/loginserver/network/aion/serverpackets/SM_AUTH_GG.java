@@ -16,10 +16,10 @@
  */
 package com.aionemu.loginserver.network.aion.serverpackets;
 
-import java.nio.ByteBuffer;
-
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author -Nemesiss-
@@ -32,12 +32,14 @@ public class SM_AUTH_GG extends AionServerPacket
 	private final int	sessionId;
 
 	/**
-	 * Constructor.
+	 * Constructs new instance of <tt>SM_AUTH_GG</tt> packet
 	 * 
 	 * @param sessionId
 	 */
 	public SM_AUTH_GG(int sessionId)
 	{
+		super(0x0b);
+
 		this.sessionId = sessionId;
 	}
 
@@ -47,20 +49,11 @@ public class SM_AUTH_GG extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x0b);
+		writeC(buf, getOpcode());
 		writeD(buf, sessionId);
 		writeD(buf, 0x00);
 		writeD(buf, 0x00);
 		writeD(buf, 0x00);
 		writeD(buf, 0x00);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x0B SM_AUTH_GG";
 	}
 }

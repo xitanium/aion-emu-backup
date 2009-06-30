@@ -16,14 +16,14 @@
  */
 package com.aionemu.loginserver.network.aion.clientpackets;
 
-import java.nio.ByteBuffer;
-
+import com.aionemu.loginserver.network.aion.AionAuthResponse;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
-import com.aionemu.loginserver.network.aion.AionAuthResponse;
 import com.aionemu.loginserver.network.aion.AionConnection.State;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_AUTH_GG;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_LOGIN_FAIL;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author -Nemesiss-
@@ -40,14 +40,14 @@ public class CM_AUTH_GG extends AionClientPacket
 	 */
 
 	/**
-	 * Constructor
+	 * Constructs new instance of <tt>CM_AUTH_GG</tt> packet.
 	 * 
 	 * @param buf
 	 * @param client
 	 */
 	public CM_AUTH_GG(ByteBuffer buf, AionConnection client)
 	{
-		super(buf, client);
+		super(buf, client, 0x07);
 		sessionId = readD();
 		/*
 		 * data1 = readD(); data2 = readD(); data3 = readD(); data4 = readD();
@@ -73,14 +73,5 @@ public class CM_AUTH_GG extends AionClientPacket
 			 */
 			con.close(new SM_LOGIN_FAIL(AionAuthResponse.SYSTEM_ERROR), true);
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x07 CM_AUTH_GG";
 	}
 }

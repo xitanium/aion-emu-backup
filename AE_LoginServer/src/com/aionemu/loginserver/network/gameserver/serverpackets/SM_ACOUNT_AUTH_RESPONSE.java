@@ -16,10 +16,10 @@
  */
 package com.aionemu.loginserver.network.gameserver.serverpackets;
 
-import java.nio.ByteBuffer;
-
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsServerPacket;
+
+import java.nio.ByteBuffer;
 
 /**
  * In this packet LoginServer is answering on GameServer request about valid authentication data and also sends account
@@ -52,6 +52,8 @@ public class SM_ACOUNT_AUTH_RESPONSE extends GsServerPacket
 	 */
 	public SM_ACOUNT_AUTH_RESPONSE(int accountId, boolean ok, String accountName)
 	{
+		super(0x01);
+
 		this.accountId = accountId;
 		this.ok = ok;
 		this.accountName = accountName;
@@ -63,19 +65,10 @@ public class SM_ACOUNT_AUTH_RESPONSE extends GsServerPacket
 	@Override
 	protected void writeImpl(GsConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x01);
+		writeC(buf, getOpcode());
 		writeD(buf, accountId);
 		writeC(buf, ok ? 1 : 0);
 		if (ok)
 			writeS(buf, accountName);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x01 SM_ACOUNT_AUTH_RESPONSE";
 	}
 }

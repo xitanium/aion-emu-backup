@@ -16,11 +16,10 @@
  */
 package com.aionemu.loginserver.network.gameserver;
 
-import java.nio.ByteBuffer;
-
+import com.aionemu.commons.network.packet.BaseClientPacket;
 import org.apache.log4j.Logger;
 
-import com.aionemu.commons.network.packet.BaseClientPacket;
+import java.nio.ByteBuffer;
 
 /**
  * Base class for every GameServer -> LS Client Packet
@@ -39,14 +38,15 @@ public abstract class GsClientPacket extends BaseClientPacket
 	private final GsConnection	client;
 
 	/**
-	 * COnstructor.
+	 * Creates new packet instance. 
 	 * 
-	 * @param buf
-	 * @param client
+	 * @param buf packet data
+	 * @param client client
+	 * @param opcode packet id
 	 */
-	protected GsClientPacket(ByteBuffer buf, GsConnection client)
+	protected GsClientPacket(ByteBuffer buf, GsConnection client, int opcode)
 	{
-		super(buf);
+		super(buf, opcode);
 		this.client = client;
 	}
 

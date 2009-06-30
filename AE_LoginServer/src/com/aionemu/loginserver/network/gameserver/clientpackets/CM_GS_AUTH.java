@@ -16,10 +16,6 @@
  */
 package com.aionemu.loginserver.network.gameserver.clientpackets;
 
-import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.ArrayList;
-
 import com.aionemu.commons.network.IPRange;
 import com.aionemu.loginserver.GameServerTable;
 import com.aionemu.loginserver.network.gameserver.GsAuthResponse;
@@ -27,6 +23,10 @@ import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsConnection.State;
 import com.aionemu.loginserver.network.gameserver.serverpackets.SM_GS_AUTH_RESPONSE;
+
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is authentication packet that gs will send to login server for registration.
@@ -73,7 +73,7 @@ public class CM_GS_AUTH extends GsClientPacket
 	 */
 	public CM_GS_AUTH(ByteBuffer buf, GsConnection client)
 	{
-		super(buf, client);
+		super(buf, client, 0x00);
 		gameServerId = (byte) readC();
 
 		defaultAddress = readB(readC());
@@ -110,14 +110,5 @@ public class CM_GS_AUTH extends GsClientPacket
 			default:
 				client.close(new SM_GS_AUTH_RESPONSE(resp), true);
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x00 CM_GS_AUTH";
 	}
 }

@@ -16,9 +16,9 @@
  */
 package com.aionemu.loginserver.network.aion;
 
-import java.nio.ByteBuffer;
-
 import com.aionemu.commons.network.packet.BaseServerPacket;
+
+import java.nio.ByteBuffer;
 
 /**
  * Base class for every LS -> Aion Server Packet.
@@ -27,6 +27,16 @@ import com.aionemu.commons.network.packet.BaseServerPacket;
  */
 public abstract class AionServerPacket extends BaseServerPacket
 {
+	/**
+	 * Constructs a new server packet with specified id.
+	 *
+	 * @param opcode packet opcode.
+	 */
+	protected AionServerPacket(int opcode)
+	{
+		super(opcode);
+	}
+
 	/**
 	 * Write and encrypt this packet data for given connection, to given buffer.
 	 * 

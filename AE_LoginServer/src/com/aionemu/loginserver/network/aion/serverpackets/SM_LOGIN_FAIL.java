@@ -16,11 +16,11 @@
  */
 package com.aionemu.loginserver.network.aion.serverpackets;
 
-import java.nio.ByteBuffer;
-
+import com.aionemu.loginserver.network.aion.AionAuthResponse;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
-import com.aionemu.loginserver.network.aion.AionAuthResponse;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author KID
@@ -33,12 +33,14 @@ public class SM_LOGIN_FAIL extends AionServerPacket
 	private AionAuthResponse	response;
 
 	/**
-	 * Constructor
+	 * Constructs new instance of <tt>SM_LOGIN_FAIL</tt> packet.
 	 * 
-	 * @param response
+	 * @param response auth responce
 	 */
 	public SM_LOGIN_FAIL(AionAuthResponse response)
 	{
+		super(0x01);
+
 		this.response = response;
 	}
 
@@ -47,15 +49,7 @@ public class SM_LOGIN_FAIL extends AionServerPacket
 	 */
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x01);
+		writeC(buf, getOpcode());
 		writeD(buf, response.getMessageId());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public String getType()
-	{
-		return "0x01 SM_LOGIN_FAIL";
 	}
 }

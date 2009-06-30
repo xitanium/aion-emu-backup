@@ -16,11 +16,11 @@
  */
 package com.aionemu.loginserver.network.gameserver.serverpackets;
 
-import java.nio.ByteBuffer;
-
 import com.aionemu.loginserver.network.gameserver.GsAuthResponse;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsServerPacket;
+
+import java.nio.ByteBuffer;
 
 /**
  * This packet is response for CM_GS_AUTH its notify Gameserver if registration was ok or what was wrong.
@@ -41,6 +41,8 @@ public class SM_GS_AUTH_RESPONSE extends GsServerPacket
 	 */
 	public SM_GS_AUTH_RESPONSE(GsAuthResponse response)
 	{
+		super(0x00);
+
 		this.response = response;
 	}
 
@@ -50,16 +52,7 @@ public class SM_GS_AUTH_RESPONSE extends GsServerPacket
 	@Override
 	protected void writeImpl(GsConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x00);
+		writeC(buf, getOpcode());
 		writeC(buf, response.getResponseId());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x00 SM_GS_AUTH_RESPONSE";
 	}
 }

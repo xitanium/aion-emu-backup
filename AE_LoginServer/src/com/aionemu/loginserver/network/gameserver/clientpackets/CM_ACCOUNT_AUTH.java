@@ -16,12 +16,12 @@
  */
 package com.aionemu.loginserver.network.gameserver.clientpackets;
 
-import java.nio.ByteBuffer;
-
 import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.network.aion.SessionKey;
 import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
+
+import java.nio.ByteBuffer;
 
 /**
  * In this packet Gameserver is asking if given account sessionKey is valid at Loginserver side. [if user that is
@@ -45,7 +45,7 @@ public class CM_ACCOUNT_AUTH extends GsClientPacket
 	 */
 	public CM_ACCOUNT_AUTH(ByteBuffer buf, GsConnection client)
 	{
-		super(buf, client);
+		super(buf, client, 0x01);
 		int accountId = readD();
 		int loginOk = readD();
 		int playOk1 = readD();
@@ -61,14 +61,5 @@ public class CM_ACCOUNT_AUTH extends GsClientPacket
 	protected void runImpl()
 	{
 		AccountController.checkAuth(sessionKey, getConnection());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x01 CM_ACCOUNT_AUTH";
 	}
 }

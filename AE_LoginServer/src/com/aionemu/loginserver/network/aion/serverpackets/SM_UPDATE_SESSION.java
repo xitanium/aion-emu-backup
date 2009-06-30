@@ -16,11 +16,11 @@
  */
 package com.aionemu.loginserver.network.aion.serverpackets;
 
-import java.nio.ByteBuffer;
-
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionServerPacket;
 import com.aionemu.loginserver.network.aion.SessionKey;
+
+import java.nio.ByteBuffer;
 
 /**
  * This packet is send to client to update sessionKey [for fast reconnection feature]
@@ -39,12 +39,14 @@ public class SM_UPDATE_SESSION extends AionServerPacket
 	private final int	loginOk;
 
 	/**
-	 * Constructor.
+	 * Constructs new instance of <tt>SM_UPDATE_SESSION </tt> packet.
 	 * 
-	 * @param key
+	 * @param key session key
 	 */
 	public SM_UPDATE_SESSION(SessionKey key)
 	{
+		super(0x0c);
+
 		this.accountId = key.accountId;
 		this.loginOk = key.loginOk;
 	}
@@ -55,18 +57,9 @@ public class SM_UPDATE_SESSION extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0x0C);
+		writeC(buf, getOpcode());
 		writeD(buf, accountId);
 		writeD(buf, loginOk);
 		writeC(buf, 0x00);// sysmsg if smth is wrong
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x0C SM_UPDATE_SESSION";
 	}
 }

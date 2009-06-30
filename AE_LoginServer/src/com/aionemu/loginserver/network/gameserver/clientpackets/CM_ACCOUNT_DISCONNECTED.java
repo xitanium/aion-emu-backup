@@ -16,10 +16,10 @@
  */
 package com.aionemu.loginserver.network.gameserver.clientpackets;
 
-import java.nio.ByteBuffer;
-
 import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
+
+import java.nio.ByteBuffer;
 
 /**
  * In this packet GameServer is informing LoginServer that some account is no longer on GameServer [ie was disconencted]
@@ -42,7 +42,7 @@ public class CM_ACCOUNT_DISCONNECTED extends GsClientPacket
 	 */
 	public CM_ACCOUNT_DISCONNECTED(ByteBuffer buf, GsConnection client)
 	{
-		super(buf, client);
+		super(buf, client, 0x03);
 		accountId = readD();
 	}
 
@@ -53,14 +53,5 @@ public class CM_ACCOUNT_DISCONNECTED extends GsClientPacket
 	protected void runImpl()
 	{
 		getConnection().getGameServerInfo().removeAccountFromGameServer(accountId);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x03 CM_ACCOUNT_DISCONNECTED";
 	}
 }

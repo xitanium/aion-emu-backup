@@ -16,11 +16,11 @@
  */
 package com.aionemu.loginserver.network.aion.clientpackets;
 
-import java.nio.ByteBuffer;
-
 import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
 import com.aionemu.loginserver.network.aion.AionConnection;
+
+import java.nio.ByteBuffer;
 
 /**
  * This packet is send when client was connected to game server and now is reconnection to login server.
@@ -44,14 +44,14 @@ public class CM_UPDATE_SESSION extends AionClientPacket
 	private final int	reconnectKey;
 
 	/**
-	 * Constructor.
+	 * Constructs new instance of <tt>CM_UPDATE_SESSION </tt> packet.
 	 * 
-	 * @param buf
-	 * @param client
+	 * @param buf       packet data
+	 * @param client    client
 	 */
 	public CM_UPDATE_SESSION(ByteBuffer buf, AionConnection client)
 	{
-		super(buf, client);
+		super(buf, client, 0x08);
 		accountId = readD();
 		loginOk = readD();
 		reconnectKey = readD();
@@ -64,14 +64,5 @@ public class CM_UPDATE_SESSION extends AionClientPacket
 	protected void runImpl()
 	{
 		AccountController.authReconnectingAccount(accountId, loginOk, reconnectKey, getConnection());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x08 CM_UPDATE_SESSION";
 	}
 }

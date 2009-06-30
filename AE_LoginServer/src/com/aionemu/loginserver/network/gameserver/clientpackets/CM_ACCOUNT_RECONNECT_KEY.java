@@ -16,10 +16,6 @@
  */
 package com.aionemu.loginserver.network.gameserver.clientpackets;
 
-import java.nio.ByteBuffer;
-
-import org.apache.log4j.Logger;
-
 import com.aionemu.commons.utils.Rnd;
 import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.model.Account;
@@ -27,6 +23,9 @@ import com.aionemu.loginserver.model.ReconnectingAccount;
 import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.serverpackets.SM_ACCOUNT_RECONNECT_KEY;
+import org.apache.log4j.Logger;
+
+import java.nio.ByteBuffer;
 
 /**
  * This packet is sended by GameServer when player is requesting fast reconnect to login server. LoginServer in response
@@ -54,7 +53,7 @@ public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 	 */
 	public CM_ACCOUNT_RECONNECT_KEY(ByteBuffer buf, GsConnection client)
 	{
-		super(buf, client);
+		super(buf, client, 0x02);
 		accountId = readD();
 	}
 
@@ -71,14 +70,5 @@ public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 		else
 			AccountController.addReconnectingAccount(new ReconnectingAccount(acc, reconectKey));
 		sendPacket(new SM_ACCOUNT_RECONNECT_KEY(accountId, reconectKey));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getType()
-	{
-		return "0x02 CM_ACCOUNT_RECONECT_KEY";
 	}
 }
