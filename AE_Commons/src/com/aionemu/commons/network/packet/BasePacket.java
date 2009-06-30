@@ -91,20 +91,6 @@ public abstract class BasePacket
 	}
 
 	/**
-	 * Returns string representation of this packet based on  packet type, opcode and name.
-	 *
-	 * @return packet type string
-	 *
-	 * @see #TYPE_PATTERN
-	 * @see java.util.Formatter
-	 * @see String#format(String, Object[])
-	 */
-	public String getType()
-	{
-		return String.format(TYPE_PATTERN, getPacketType().getAbbr(), getOpcode(), getPacketName());
-	}
-
-	/**
 	 * Enumeration of packet types.
 	 */
 	public static enum PacketType
@@ -115,29 +101,44 @@ public abstract class BasePacket
 		/** Client packet */
 		CLIENT("C");
 
-		private final String abbr;
+		/**
+		 * String representing packet type.
+		 */
+		private final String name;
 
-		private PacketType(String abbr)
+		/**
+		 * Constructor.
+		 * 
+		 * @param name
+		 */
+		private PacketType(String name)
 		{
-			this.abbr = abbr;
+			this.name = name;
 		}
 
-		public String getAbbr()
+		/**
+		 * Returns packet type name.
+		 * 
+		 * @return packet type name.
+		 */
+		public String getName()
 		{
-			return abbr;
+			return name;
 		}
 	}
 
 	/**
-	 * Returns string representation of this packet.
+	 * Returns string representation of this packet based on  packet type, opcode and name.
 	 *
-	 * @return string representation of this packet
+	 * @return packet type string
 	 *
-	 * @see #getType()
+	 * @see #TYPE_PATTERN
+	 * @see java.util.Formatter
+	 * @see String#format(String, Object[])
 	 */
 	@Override
 	public String toString()
 	{
-		return getType();
+		return String.format(TYPE_PATTERN, getPacketType().getName(), getOpcode(), getPacketName());
 	}
 }
