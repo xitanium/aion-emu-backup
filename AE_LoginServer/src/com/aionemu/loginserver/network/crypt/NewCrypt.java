@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
-import org.bouncycastle.crypto.params.KeyParameter;
 
 /**
  * This class ...
@@ -38,8 +37,6 @@ public class NewCrypt
 	 */
 	public NewCrypt(byte[] blowfishKey)
 	{
-		KeyParameter kp = new KeyParameter(blowfishKey);
-		System.out.println("Keye te same: "+Arrays.equals(blowfishKey, kp.getKey()));
 		_crypt = new BlowfishEngine();
 		_crypt.init(true, /*new KeyParameter(*/blowfishKey);
 		_decrypt = new BlowfishEngine();
