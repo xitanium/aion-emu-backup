@@ -50,6 +50,39 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	}
 
 	/**
+	 * This method reads data from a packet buffer.
+	 * If the error occurred while reading data, the connection is closed.
+	 *
+	 * @return <code>true</code> if reading was successful, otherwise <code>false</code>
+	 *
+	 * @see com.aionemu.commons.network.AConnection#processData(java.nio.ByteBuffer) 
+	 * @see com.aionemu.commons.network.Dispatcher#parse(com.aionemu.commons.network.AConnection, java.nio.ByteBuffer)
+	 *
+	 */
+	public final boolean read()
+	{
+		try
+		{
+			readImpl();
+
+			if(getRemainingBytes() > 0)
+				log.debug("Packet "+this+" not fully readed!");
+
+			return true;
+		}
+		catch (Exception re)
+		{
+			log.error("Reading failed for packet " + this, re);
+			return false;
+		}
+	}
+
+	/**
+	 * Data reading implementation
+	 */
+	protected abstract void readImpl();
+
+	/**
 	 * @return number of bytes remaining in this packet buffer.
 	 */
 	public final int getRemainingBytes()
@@ -62,7 +95,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	 * 
 	 * @return int
 	 */
-	public final int readD()
+	protected final int readD()
 	{
 		try
 		{
@@ -80,7 +113,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	 * 
 	 * @return int
 	 */
-	public final int readC()
+	protected final int readC()
 	{
 		try
 		{
@@ -98,7 +131,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	 * 
 	 * @return int
 	 */
-	public final int readH()
+	protected final int readH()
 	{
 		try
 		{
@@ -116,7 +149,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	 * 
 	 * @return double
 	 */
-	public final double readDF()
+	protected final double readDF()
 	{
 		try
 		{
@@ -134,7 +167,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	 * 
 	 * @return double
 	 */
-	public final float readF()
+	protected final float readF()
 	{
 		try
 		{
@@ -152,7 +185,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	 * 
 	 * @return long
 	 */
-	public final long readQ()
+	protected final long readQ()
 	{
 		try
 		{
@@ -170,7 +203,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	 * 
 	 * @return String
 	 */
-	public final String readS()
+	protected final String readS()
 	{
 		StringBuffer sb = new StringBuffer();
 		char ch;
@@ -192,7 +225,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	 * @param length
 	 * @return byte[]
 	 */
-	public final byte[] readB(int length)
+	protected final byte[] readB(int length)
 	{
 		byte[] result = new byte[length];
 		try
