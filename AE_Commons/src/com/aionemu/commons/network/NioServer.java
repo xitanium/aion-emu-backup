@@ -42,7 +42,7 @@ public class NioServer
 	/**
 	 * The channels on which we'll accept connections
 	 */
-	private final List<ServerSocketChannel>	serverChannels	= new ArrayList<ServerSocketChannel>();
+	private final List<SelectionKey>	serverChannelKeys	= new ArrayList<SelectionKey>();
 
 	/**
 	 * Dispatcher that will accept connections
@@ -118,8 +118,8 @@ public class NioServer
 				/**
 				 * Register the server socket channel, indicating an interest in accepting new connections
 				 */
-				getAcceptDispatcher().register(serverChannel, SelectionKey.OP_ACCEPT, new Acceptor(cfg.factory, this));
-				serverChannels.add(serverChannel);
+				SelectionKey acceptKey = getAcceptDispatcher().register(serverChannel, SelectionKey.OP_ACCEPT, new Acceptor(cfg.factory, this));
+				serverChannelKeys.add(acceptKey);
 			}
 		}
 		catch (Exception e)
@@ -194,7 +194,7 @@ public class NioServer
 		}
 		else
 		{
-			count = acceptDispatcher.selector().keys().size() - serverChannels.size();
+			count = acceptDispatcher.selector().keys().size() - serverChannelKeys.size();
 		}
 		return count;
 	}
@@ -207,8 +207,8 @@ public class NioServer
 		log.info("Closing ServerChannels...");
 		try
 		{
-			for (ServerSocketChannel ssc : serverChannels)
-				ssc.close();
+			for (SelectionKey key : serverChannelKeys)
+				key.cancel();
 			log.info("ServerChannel closed.");
 		}
 		catch (Exception e)
