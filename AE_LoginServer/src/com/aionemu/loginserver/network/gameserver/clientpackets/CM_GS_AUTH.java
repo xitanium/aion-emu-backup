@@ -38,32 +38,32 @@ public class CM_GS_AUTH extends GsClientPacket
 	/**
 	 * Password for authentication
 	 */
-	private final String		password;
+	private String		password;
 
 	/**
 	 * Id of GameServer
 	 */
-	private final byte			gameServerId;
+	private byte			gameServerId;
 
 	/**
 	 * Maximum number of players that this Gameserver can accept.
 	 */
-	private final int			maxPalyers;
+	private int			maxPalyers;
 
 	/**
 	 * Port of this Gameserver.
 	 */
-	private final int			port;
+	private int			port;
 
 	/**
 	 * Default address for server
 	 */
-	private final byte[]		defaultAddress;
+	private byte[]		defaultAddress;
 
 	/**
 	 * List of IPRanges for this gameServer
 	 */
-	private final List<IPRange>	ipRanges;
+	private List<IPRange>	ipRanges;
 
 	/**
 	 * Constructor.
@@ -74,6 +74,12 @@ public class CM_GS_AUTH extends GsClientPacket
 	public CM_GS_AUTH(ByteBuffer buf, GsConnection client)
 	{
 		super(buf, client, 0x00);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void readImpl()
+	{
 		gameServerId = (byte) readC();
 
 		defaultAddress = readB(readC());

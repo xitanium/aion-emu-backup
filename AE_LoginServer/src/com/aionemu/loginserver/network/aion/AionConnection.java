@@ -143,9 +143,15 @@ public class AionConnection extends AConnection
 			return false;
 
 		AionClientPacket pck = AionPacketHandler.handle(data, this);
-		log.debug("recived packet: " + pck);
-		if (pck != null)
+		log.info("recived packet: " + pck);
+
+		/**
+		 * Execute packet only if packet exist (!= null)
+		 * and read was ok.
+		 */
+		if (pck != null && pck.read())
 			ThreadPoolManager.getInstance().executeAionPacket(pck);
+
 		return true;
 	}
 

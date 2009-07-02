@@ -43,7 +43,7 @@ public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 	/**
 	 * accoundId of account that will be reconnecting.
 	 */
-	private final int			accountId;
+	private int			accountId;
 
 	/**
 	 * Constructor.
@@ -54,6 +54,12 @@ public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 	public CM_ACCOUNT_RECONNECT_KEY(ByteBuffer buf, GsConnection client)
 	{
 		super(buf, client, 0x02);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void readImpl()
+	{
 		accountId = readD();
 	}
 

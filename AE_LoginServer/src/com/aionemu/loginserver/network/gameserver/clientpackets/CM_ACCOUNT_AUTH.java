@@ -35,7 +35,7 @@ public class CM_ACCOUNT_AUTH extends GsClientPacket
 	/**
 	 * SessionKey that GameServer needs to check if is valid at Loginserver side.
 	 */
-	private final SessionKey	sessionKey;
+	private SessionKey	sessionKey;
 
 	/**
 	 * Constructor.
@@ -46,6 +46,13 @@ public class CM_ACCOUNT_AUTH extends GsClientPacket
 	public CM_ACCOUNT_AUTH(ByteBuffer buf, GsConnection client)
 	{
 		super(buf, client, 0x01);
+
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void readImpl()
+	{
 		int accountId = readD();
 		int loginOk = readD();
 		int playOk1 = readD();

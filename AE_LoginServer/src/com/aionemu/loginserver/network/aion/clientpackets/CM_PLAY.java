@@ -36,15 +36,15 @@ public class CM_PLAY extends AionClientPacket
 	/**
 	 * accountId is part of session key - its used for security purposes
 	 */
-	private final int	accountId;
+	private int	accountId;
 	/**
 	 * loginOk is part of session key - its used for security purposes
 	 */
-	private final int	loginOk;
+	private int	loginOk;
 	/**
 	 * Id of game server that this client is trying to play on.
 	 */
-	private final byte	servId;
+	private byte	servId;
 
 	/**
 	 * Constructs new instance of <tt>SM_PLAY_FAIL</tt> packet.
@@ -55,9 +55,15 @@ public class CM_PLAY extends AionClientPacket
 	public CM_PLAY(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client, 0x02);
+	}
+
+	/** Data reading implementation */
+	@Override
+	protected void readImpl()
+	{
 		accountId = readD();
 		loginOk = readD();
-		servId = (byte) readC();
+		servId = (byte) readC();		
 	}
 
 	/**

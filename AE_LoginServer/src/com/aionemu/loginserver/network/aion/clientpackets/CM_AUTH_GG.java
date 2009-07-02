@@ -33,7 +33,7 @@ public class CM_AUTH_GG extends AionClientPacket
 	/**
 	 * session id - its should match sessionId that was send in Init packet.
 	 */
-	private final int	sessionId;
+	private int	sessionId;
 
 	/*
 	 * private final int data1; private final int data2; private final int data3; private final int data4;
@@ -48,10 +48,18 @@ public class CM_AUTH_GG extends AionClientPacket
 	public CM_AUTH_GG(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client, 0x07);
+	}
+
+	/** Data reading implementation */
+	@Override
+	protected void readImpl()
+	{
 		sessionId = readD();
-		/*
-		 * data1 = readD(); data2 = readD(); data3 = readD(); data4 = readD();
-		 */
+
+		//data1 = readD(); 
+		//data2 = readD();
+		//data3 = readD();
+		//data4 = readD();
 	}
 
 	/**

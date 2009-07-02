@@ -56,6 +56,12 @@ public class CM_LOGIN extends AionClientPacket
 	public CM_LOGIN(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client, 0x0b);
+	}
+
+	/** Data reading implementation */
+	@Override
+	protected void readImpl()
+	{
 		readD();
 		if (getRemainingBytes() >= 128)
 		{
@@ -81,18 +87,21 @@ public class CM_LOGIN extends AionClientPacket
 		catch (GeneralSecurityException e)
 		{
 			log.warn("Error while decripting data on user auth." + e, e);
-			sendPacket(new SM_LOGIN_FAIL(AionAuthResponse.INVALID_PASSWORD));
+			sendPacket(new SM_LOGIN_FAIL(AionAuthResponse.SYSTEM_ERROR));
 			return;
 		}
 		String user = new String(decrypted, 64, 32).trim().toLowerCase();
 		String password = new String(decrypted, 96, 32).trim().toLowerCase();
+
+		/*String user = new String(decrypted, 94, 14).trim().toLowerCase();
+		String password = new String(decrypted, 108, 16).trim().toLowerCase();*/
 
 		int ncotp = decrypted[0x7c];
 		ncotp |= decrypted[0x7d] << 8;
 		ncotp |= decrypted[0x7e] << 16;
 		ncotp |= decrypted[0x7f] << 24;
 
-		log.debug("AuthLogin: " + user + " pass: " + password + " ncotp: " + ncotp);
+		log.info("AuthLogin: " + user + " pass: " + password + " ncotp: " + ncotp);
 
 		AionConnection client = getConnection();
 		AionAuthResponse response = AccountController.login(user, password, client);

@@ -32,7 +32,7 @@ public class CM_ACCOUNT_DISCONNECTED extends GsClientPacket
 	/**
 	 * AccountId of account that was disconnected form GameServer.
 	 */
-	private final int	accountId;
+	private int	accountId;
 
 	/**
 	 * Constructor.
@@ -43,6 +43,13 @@ public class CM_ACCOUNT_DISCONNECTED extends GsClientPacket
 	public CM_ACCOUNT_DISCONNECTED(ByteBuffer buf, GsConnection client)
 	{
 		super(buf, client, 0x03);
+
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void readImpl()
+	{
 		accountId = readD();
 	}
 

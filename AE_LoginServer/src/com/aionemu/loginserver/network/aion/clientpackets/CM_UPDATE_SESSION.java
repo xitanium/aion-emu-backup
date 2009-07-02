@@ -32,16 +32,16 @@ public class CM_UPDATE_SESSION extends AionClientPacket
 	/**
 	 * accountId is part of session key - its used for security purposes
 	 */
-	private final int	accountId;
+	private int	accountId;
 	/**
 	 * loginOk is part of session key - its used for security purposes
 	 */
-	private final int	loginOk;
+	private int	loginOk;
 	/**
 	 * reconectKey is key that server sends to client for fast reconnection to login server - we will check if this key
 	 * is valid.
 	 */
-	private final int	reconnectKey;
+	private int	reconnectKey;
 
 	/**
 	 * Constructs new instance of <tt>CM_UPDATE_SESSION </tt> packet.
@@ -52,6 +52,12 @@ public class CM_UPDATE_SESSION extends AionClientPacket
 	public CM_UPDATE_SESSION(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client, 0x08);
+	}
+
+	/** Data reading implementation */
+	@Override
+	protected void readImpl()
+	{
 		accountId = readD();
 		loginOk = readD();
 		reconnectKey = readD();

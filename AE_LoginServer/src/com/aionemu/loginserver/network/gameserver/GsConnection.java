@@ -98,8 +98,10 @@ public class GsConnection extends AConnection
 	{
 		GsClientPacket pck = GsPacketHandler.handle(data, this);
 		log.info("recived packet: " + pck);
-		if (pck != null)
-			ThreadPoolManager.getInstance().executeGsPacket(pck);
+
+		if (pck != null && pck.read())
+			ThreadPoolManager.getInstance().executeAionPacket(pck);
+
 		return true;
 	}
 

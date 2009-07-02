@@ -33,11 +33,11 @@ public class CM_SERVER_LIST extends AionClientPacket
 	/**
 	 * accountId is part of session key - its used for security purposes
 	 */
-	private final int	accountId;
+	private int	accountId;
 	/**
 	 * loginOk is part of session key - its used for security purposes
 	 */
-	private final int	loginOk;
+	private int	loginOk;
 
 	/**
 	 * Constructs new instance of <tt>CM_SERVER_LIST </tt> packet.
@@ -48,6 +48,12 @@ public class CM_SERVER_LIST extends AionClientPacket
 	public CM_SERVER_LIST(ByteBuffer buf, AionConnection client)
 	{
 		super(buf, client, 0x05);
+	}
+
+	/** Data reading implementation */
+	@Override
+	protected void readImpl()
+	{
 		accountId = readD();
 		loginOk = readD();
 		readD();// unk
