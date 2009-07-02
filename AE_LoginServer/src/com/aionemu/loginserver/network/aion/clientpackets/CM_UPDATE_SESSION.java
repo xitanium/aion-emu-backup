@@ -54,7 +54,9 @@ public class CM_UPDATE_SESSION extends AionClientPacket
 		super(buf, client, 0x08);
 	}
 
-	/** Data reading implementation */
+	/**
+	 *  {@inheritDoc}
+	 */
 	@Override
 	protected void readImpl()
 	{

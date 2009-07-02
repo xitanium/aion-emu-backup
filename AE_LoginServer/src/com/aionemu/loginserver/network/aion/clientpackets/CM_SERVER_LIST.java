@@ -50,7 +50,9 @@ public class CM_SERVER_LIST extends AionClientPacket
 		super(buf, client, 0x05);
 	}
 
-	/** Data reading implementation */
+	/**
+	 *  {@inheritDoc}
+	 */
 	@Override
 	protected void readImpl()
 	{

@@ -46,7 +46,9 @@ public class CM_ACCOUNT_DISCONNECTED extends GsClientPacket
 
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 *  {@inheritDoc}
+	 */
 	@Override
 	protected void readImpl()
 	{

@@ -58,7 +58,9 @@ public class CM_LOGIN extends AionClientPacket
 		super(buf, client, 0x0b);
 	}
 
-	/** Data reading implementation */
+	/**
+	 *  {@inheritDoc}
+	 */
 	@Override
 	protected void readImpl()
 	{
@@ -93,15 +95,12 @@ public class CM_LOGIN extends AionClientPacket
 		String user = new String(decrypted, 64, 32).trim().toLowerCase();
 		String password = new String(decrypted, 96, 32).trim().toLowerCase();
 
-		/*String user = new String(decrypted, 94, 14).trim().toLowerCase();
-		String password = new String(decrypted, 108, 16).trim().toLowerCase();*/
-
 		int ncotp = decrypted[0x7c];
 		ncotp |= decrypted[0x7d] << 8;
 		ncotp |= decrypted[0x7e] << 16;
 		ncotp |= decrypted[0x7f] << 24;
 
-		log.info("AuthLogin: " + user + " pass: " + password + " ncotp: " + ncotp);
+		log.debug("AuthLogin: " + user + " pass: " + password + " ncotp: " + ncotp);
 
 		AionConnection client = getConnection();
 		AionAuthResponse response = AccountController.login(user, password, client);

@@ -50,16 +50,18 @@ public class CM_AUTH_GG extends AionClientPacket
 		super(buf, client, 0x07);
 	}
 
-	/** Data reading implementation */
+	/**
+	 *  {@inheritDoc}
+	 */
 	@Override
 	protected void readImpl()
 	{
 		sessionId = readD();
 
-		//data1 = readD(); 
-		//data2 = readD();
-		//data3 = readD();
-		//data4 = readD();
+		/*data1 = */readD(); 
+		/*data2 = */readD();
+		/*data3 = */readD();
+		/*data4 = */readD();
 	}
 
 	/**

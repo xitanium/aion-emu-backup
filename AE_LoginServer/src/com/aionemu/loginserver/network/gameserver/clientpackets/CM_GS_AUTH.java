@@ -76,7 +76,9 @@ public class CM_GS_AUTH extends GsClientPacket
 		super(buf, client, 0x00);
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 *  {@inheritDoc}
+	 */
 	@Override
 	protected void readImpl()
 	{

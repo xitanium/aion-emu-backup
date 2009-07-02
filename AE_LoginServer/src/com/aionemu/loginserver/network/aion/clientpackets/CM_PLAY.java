@@ -57,7 +57,9 @@ public class CM_PLAY extends AionClientPacket
 		super(buf, client, 0x02);
 	}
 
-	/** Data reading implementation */
+	/**
+	 *  {@inheritDoc}
+	 */
 	@Override
 	protected void readImpl()
 	{

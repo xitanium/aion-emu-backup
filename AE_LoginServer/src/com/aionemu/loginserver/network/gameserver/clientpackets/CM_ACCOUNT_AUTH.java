@@ -49,7 +49,9 @@ public class CM_ACCOUNT_AUTH extends GsClientPacket
 
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 *  {@inheritDoc}
+	 */
 	@Override
 	protected void readImpl()
 	{

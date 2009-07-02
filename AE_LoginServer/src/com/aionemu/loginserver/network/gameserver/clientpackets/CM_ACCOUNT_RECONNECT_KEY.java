@@ -56,7 +56,9 @@ public class CM_ACCOUNT_RECONNECT_KEY extends GsClientPacket
 		super(buf, client, 0x02);
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 *  {@inheritDoc}
+	 */
 	@Override
 	protected void readImpl()
 	{
