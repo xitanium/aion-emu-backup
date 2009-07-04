@@ -16,7 +16,6 @@
  */
 package com.aionemu.loginserver.network.aion;
 
-import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.model.Account;
 import com.aionemu.commons.utils.Rnd;
 
@@ -91,13 +90,6 @@ public class SessionKey
 	 */
 	public boolean checkSessionKey(SessionKey key)
 	{
-		if (Config.SHOW_LICENCE)
-		{
-			return (playOk1 == key.playOk1 && accountId == key.accountId && playOk2 == key.playOk2 && loginOk == key.loginOk);
-		}
-		else
-		{
-			return (playOk1 == key.playOk1 && playOk2 == key.playOk2);
-		}
+		return (playOk1 == key.playOk1 && accountId == key.accountId && playOk2 == key.playOk2 && loginOk == key.loginOk);
 	}
 }

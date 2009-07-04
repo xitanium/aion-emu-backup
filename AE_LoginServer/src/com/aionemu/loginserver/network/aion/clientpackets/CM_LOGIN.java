@@ -16,7 +16,6 @@
  */
 package com.aionemu.loginserver.network.aion.clientpackets;
 
-import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.network.aion.AionAuthResponse;
 import com.aionemu.loginserver.network.aion.AionClientPacket;
@@ -25,7 +24,6 @@ import com.aionemu.loginserver.network.aion.AionConnection.State;
 import com.aionemu.loginserver.network.aion.SessionKey;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_LOGIN_FAIL;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_LOGIN_OK;
-import com.aionemu.loginserver.network.aion.serverpackets.SM_SERVER_LIST;
 import org.apache.log4j.Logger;
 
 import javax.crypto.Cipher;
@@ -109,10 +107,7 @@ public class CM_LOGIN extends AionClientPacket
 			case AUTHED:
 				client.setState(State.AUTHED_LOGIN);
 				client.setSessionKey(new SessionKey(client.getAccount()));
-				if (Config.SHOW_LICENCE)
-					client.sendPacket(new SM_LOGIN_OK(client.getSessionKey()));
-				else
-					sendPacket(new SM_SERVER_LIST());
+				client.sendPacket(new SM_LOGIN_OK(client.getSessionKey()));
 				break;
 
 			default:

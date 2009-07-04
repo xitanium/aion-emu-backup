@@ -72,12 +72,6 @@ public class Config
 	public static int				WRONG_LOGIN_BAN_TIME;
 
 	/**
-	 * Show NC Licence
-	 */
-	@Property(key = "loginserver.client.showlicense", defaultValue = "true")
-	public static boolean			SHOW_LICENCE;
-
-	/**
 	 * Number of Threads that will handle io read (>= 0)
 	 */
 	@Property(key = "loginserver.network.nio.threads.read", defaultValue = "0")
