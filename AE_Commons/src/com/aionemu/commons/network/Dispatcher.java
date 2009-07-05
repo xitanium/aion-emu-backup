@@ -221,7 +221,7 @@ public abstract class Dispatcher extends Thread
 			 */
 			if (Assertion.NetworkAssertion)
 			{
-				assert !con.readBuffer.hasRemaining();
+				assert con.readBuffer.hasRemaining();
 			}
 		}
 		else
