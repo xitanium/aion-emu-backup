@@ -146,7 +146,7 @@ public class CryptEngine
      * @param offset byte array offset
      * @param length byte array size
      */
-    public static void appendChecksum(byte[] raw, int offset, int length)
+    private void appendChecksum(byte[] raw, int offset, int length)
     {
         long chksum = 0;
         int  count  = length - 4;

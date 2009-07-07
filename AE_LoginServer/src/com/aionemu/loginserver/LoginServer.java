@@ -76,7 +76,7 @@ public class LoginServer
 		}
 		catch (Exception e)
 		{
-			log.fatal("Failed initializing Crypt. Reason: " + e.getMessage(), e);
+			log.fatal("Failed initializing Key Generator. Reason: " + e.getMessage(), e);
 			System.exit(1);
 		}
 
