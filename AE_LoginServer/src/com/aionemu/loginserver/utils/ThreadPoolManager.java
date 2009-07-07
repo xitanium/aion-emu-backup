@@ -78,11 +78,11 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 	{
 		scheduledThreadPool = new ScheduledThreadPoolExecutorAE(4, new PriorityThreadFactory("ScheduledThreadPool",
 			Thread.NORM_PRIORITY));
-		scheduledThreadPool.setRemoveOnCancelPolicy(true);
+//		scheduledThreadPool.setRemoveOnCancelPolicy(true);
 
 		disconnectionScheduledThreadPool = new ScheduledThreadPoolExecutorAE(4, new PriorityThreadFactory(
 			"ScheduledThreadPool", Thread.NORM_PRIORITY));
-		disconnectionScheduledThreadPool.setRemoveOnCancelPolicy(true);
+//		disconnectionScheduledThreadPool.setRemoveOnCancelPolicy(true);
 
 		aionPacketsThreadPool = new ThreadPoolExecutor(6, 8, 15L, TimeUnit.SECONDS,
 			new LinkedBlockingQueue<Runnable>(),

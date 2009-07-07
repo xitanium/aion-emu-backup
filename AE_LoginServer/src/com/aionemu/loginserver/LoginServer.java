@@ -27,7 +27,7 @@ import com.aionemu.commons.services.LoggingService;
 import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.controller.BannedIpController;
 import com.aionemu.loginserver.network.IOServer;
-import com.aionemu.loginserver.network.crypt.Crypt;
+import com.aionemu.loginserver.network.ncrypt.KeyGen;
 import com.aionemu.loginserver.utils.DeadLockDetector;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
 
@@ -68,11 +68,11 @@ public class LoginServer
 		}
 
 		/**
-		 * Initialize Crypt.
+		 * Initialize Key Generator
 		 */
 		try
 		{
-			Crypt.init();
+			KeyGen.init();
 		}
 		catch (Exception e)
 		{

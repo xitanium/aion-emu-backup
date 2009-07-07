@@ -1,3 +1,4 @@
+
 /**
  * This file is part of aion-emu <aion-emu.com>.
  *
@@ -16,6 +17,21 @@
  */
 package com.aionemu.loginserver.network.aion;
 
+//~--- non-JDK imports --------------------------------------------------------
+
+import com.aionemu.commons.network.AConnection;
+import com.aionemu.commons.network.Dispatcher;
+import com.aionemu.loginserver.LoginController;
+import com.aionemu.loginserver.controller.AccountController;
+import com.aionemu.loginserver.model.Account;
+import com.aionemu.loginserver.network.ncrypt.CryptEngine;
+import com.aionemu.loginserver.network.aion.serverpackets.SM_INIT;
+import com.aionemu.loginserver.network.ncrypt.KeyGen;
+import com.aionemu.loginserver.network.ncrypt.ScrambledKeyPair;
+import com.aionemu.loginserver.utils.ThreadPoolManager;
+import org.apache.log4j.Logger;
+
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -23,411 +39,401 @@ import java.security.interfaces.RSAPrivateKey;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import javax.crypto.SecretKey;
-
-import org.apache.log4j.Logger;
-
-import com.aionemu.commons.network.AConnection;
-import com.aionemu.commons.network.Dispatcher;
-import com.aionemu.loginserver.LoginController;
-import com.aionemu.loginserver.controller.AccountController;
-import com.aionemu.loginserver.model.Account;
-import com.aionemu.loginserver.network.aion.serverpackets.SM_INIT;
-import com.aionemu.loginserver.network.crypt.KeyGen;
-import com.aionemu.loginserver.network.crypt.LoginCrypt;
-import com.aionemu.loginserver.network.crypt.ScrambledKeyPair;
-import com.aionemu.loginserver.utils.ThreadPoolManager;
-
 /**
  * Object representing connection between LoginServer and Aion Client.
- * 
+ *
  * @author -Nemesiss-
  */
 public class AionConnection extends AConnection
 {
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger	log	= Logger.getLogger(AionConnection.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger log = Logger.getLogger(AionConnection.class);
 
-	/**
-	 * Possible states of AionConnection
-	 */
-	public static enum State
-	{
-		/**
-		 * Means that client just connects
-		 */
-		CONNECTED,
-		/**
-		 * Means that clients GameGuard is authenticated
-		 */
-		AUTHED_GG,
-		/**
-		 * Means that client is logged in.
-		 */
-		AUTHED_LOGIN
-	}
+    /**
+     * Server Packet "to send" Queue
+     */
+    private final Deque<AionServerPacket> sendMsgQueue = new ArrayDeque<AionServerPacket>();
 
-	/**
-	 * Server Packet "to send" Queue
-	 */
-	private final Deque<AionServerPacket>	sendMsgQueue	= new ArrayDeque<AionServerPacket>();
+    /**
+     * Unique Session Id of this connection
+     */
+    private int sessionId = hashCode();
 
-	/**
-	 * Current state of this connection
-	 */
-	private State							state;
-	/**
-	 * Crypt to encrypt/decrypt packets
-	 */
-	private LoginCrypt						crypt;
-	/**
-	 * Scrambled key pair for RSA
-	 */
-	private ScrambledKeyPair				scrambledPair;
-	/**
-	 * Account object for this connection. if state = AUTHED_LOGIN account cant be null.
-	 * 
-	 */
-	private Account							account;
+    /**
+     * Account object for this connection. if state = AUTHED_LOGIN account cant be null.
+     *
+     */
+    private Account account;
 
-	/**
-	 * Session Key for this connection.
-	 */
-	private SessionKey						sessionKey;
-	/**
-	 * Unique Session Id of this connection
-	 */
-	private int								sessionId		= hashCode();
-	/**
-	 * True if this user is connecting to GS.
-	 */
-	private boolean							joinedGs;
+    /**
+     * Crypt to encrypt/decrypt packets
+     */
+    private CryptEngine cryptEngine;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param sc
-	 * @param d
-	 * @throws IOException
-	 */
-	public AionConnection(SocketChannel sc, Dispatcher d) throws IOException
-	{
-		super(sc, d);
-		state = State.CONNECTED;
+    /**
+     * True if this user is connecting to GS.
+     */
+    private boolean joinedGs;
 
-		String ip = getIP();
-		log.info("connection from: " + ip);
+    /**
+     * Scrambled key pair for RSA
+     */
+    private ScrambledKeyPair scrambledPair;
 
-		scrambledPair = LoginController.getInstance().getScrambledRSAKeyPair();
-		SecretKey blowfishKey = KeyGen.generateBlowfishKey();
+    /**
+     * Session Key for this connection.
+     */
+    private SessionKey sessionKey;
 
-		crypt = new LoginCrypt();
-		crypt.setKey(blowfishKey.getEncoded());
+    /**
+     * Current state of this connection
+     */
+    private State state;
 
-		/** Send Init packet */
-		sendPacket(new SM_INIT(this, blowfishKey));
-	}
+    /**
+     * Possible states of AionConnection
+     */
+    public static enum State
+    {
+        /**
+         * Means that client just connects
+         */
+        CONNECTED,
 
-	/**
-	 * Called by Dispatcher. ByteBuffer data contains one packet that should be processed.
-	 * 
-	 * @param data
-	 * @return True if data was processed correctly, False if some error occurred and connection should be closed NOW.
-	 */
-	@Override
-	protected final boolean processData(ByteBuffer data)
-	{
-		if (!decrypt(data))
-			return false;
+        /**
+         * Means that clients GameGuard is authenticated
+         */
+        AUTHED_GG,
 
-		AionClientPacket pck = AionPacketHandler.handle(data, this);
-		log.info("recived packet: " + pck);
+        /**
+         * Means that client is logged in.
+         */
+        AUTHED_LOGIN
+    }
 
-		/**
-		 * Execute packet only if packet exist (!= null)
-		 * and read was ok.
-		 */
-		if (pck != null && pck.read())
-			ThreadPoolManager.getInstance().executeAionPacket(pck);
+    /**
+     * Constructor
+     *
+     * @param sc
+     * @param d
+     * @throws IOException
+     */
+    public AionConnection(SocketChannel sc, Dispatcher d) throws IOException
+    {
+        super(sc, d);
+        state = State.CONNECTED;
 
-		return true;
-	}
+        String ip = getIP();
 
-	/**
-	 * This method will be called by Dispatcher, and will be repeated till return false.
-	 * 
-	 * @param data
-	 * @return True if data was written to buffer, False indicating that there are not any more data to write.
-	 */
-	@Override
-	protected final boolean writeData(ByteBuffer data)
-	{
-		synchronized (guard)
-		{
-			AionServerPacket packet = sendMsgQueue.pollFirst();
-			if (packet == null)
-				return false;
+        log.info("connection from: " + ip);
+        scrambledPair = LoginController.getInstance().getScrambledRSAKeyPair();
 
-			packet.write(this, data);
-			return true;
-		}
-	}
+        SecretKey blowfishKey = KeyGen.generateBlowfishKey();
 
-	/**
-	 * This method is called by Dispatcher when connection is ready to be closed.
-	 * 
-	 * @return time in ms after witch onDisconnect() method will be called. Always return 0.
-	 */
-	@Override
-	protected final long getDisconnectionDelay()
-	{
-		return 0;
-	}
+        cryptEngine = new CryptEngine();
+        cryptEngine.updateKey(blowfishKey.getEncoded());
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected final void onDisconnect()
-	{
-		/**
-		 * Remove account only if not joined GameServer yet.
-		 */
-		if (account != null && !joinedGs)
-		{
-			AccountController.removeAccountOnLS(account);
-		}
-	}
+        /** Send Init packet */
+        sendPacket(new SM_INIT(this, blowfishKey));
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected final void onServerClose()
-	{
-		// TODO mb some packet should be send to client before closing?
-		close(/* packet, */true);
-	}
+    /**
+     * Called by Dispatcher. ByteBuffer data contains one packet that should be processed.
+     *
+     * @param data
+     * @return True if data was processed correctly, False if some error occurred and connection should be closed NOW.
+     */
+    @Override
+    protected final boolean processData(ByteBuffer data)
+    {
+        if (!decrypt(data))
+        {
+            return false;
+        }
 
-	/**
-	 * Decrypt packet.
-	 * 
-	 * @param buf
-	 * @return true if success
-	 */
-	private boolean decrypt(ByteBuffer buf)
-	{
-		int size = buf.remaining();
-		final int offset = buf.arrayOffset() + buf.position();
-		boolean ret = false;
-		try
-		{
-			ret = crypt.decrypt(buf.array(), offset, size);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			return false;
-		}
+        AionClientPacket pck = AionPacketHandler.handle(data, this);
 
-		if (!ret)
-		{
-			byte[] dump = new byte[size];
-			System.arraycopy(buf.array(), buf.position(), dump, 0, size);
-			log.warn("Wrong checksum from client: " + this);
-		}
-		return ret;
-	}
+        log.info("recived packet: " + pck);
 
-	/**
-	 * Encrypt packet.
-	 * 
-	 * @param buf
-	 * @return encrypted packet size.
-	 */
-	public final int encrypt(ByteBuffer buf)
-	{
-		int size = buf.limit() - 2;
-		final int offset = buf.arrayOffset() + buf.position();
-		try
-		{
-			size = crypt.encrypt(buf.array(), offset, size);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			return -1;
-		}
-		return size;
-	}
+        /**
+         * Execute packet only if packet exist (!= null)
+         * and read was ok.
+         */
+        if ((pck != null) && pck.read())
+        {
+            ThreadPoolManager.getInstance().executeAionPacket(pck);
+        }
 
-	/**
-	 * Sends AionServerPacket to this client.
-	 * 
-	 * @param bp
-	 *            AionServerPacket to be sent.
-	 */
-	public final void sendPacket(AionServerPacket bp)
-	{
-		synchronized (guard)
-		{
-			/**
-			 * Connection is already closed or waiting for last (close packet) to be sent
-			 */
-			if (isWriteDisabled())
-				return;
+        return true;
+    }
 
-			log.debug("sending packet: " + bp);
+    /**
+     * This method will be called by Dispatcher, and will be repeated till return false.
+     *
+     * @param data
+     * @return True if data was written to buffer, False indicating that there are not any more data to write.
+     */
+    @Override
+    protected final boolean writeData(ByteBuffer data)
+    {
+        synchronized (guard)
+        {
+            AionServerPacket packet = sendMsgQueue.pollFirst();
 
-			sendMsgQueue.addLast(bp);
-			enableWriteInterest();
-		}
-	}
+            if (packet == null)
+            {
+                return false;
+            }
 
-	/**
-	 * Its guaranted that closePacket will be sent before closing connection, but all past and future packets wont.
-	 * Connection will be closed [by Dispatcher Thread], and onDisconnect() method will be called to clear all other
-	 * things. forced means that server shouldn't wait with removing this connection.
-	 * 
-	 * @param closePacket
-	 *            Packet that will be send before closing.
-	 * @param forced
-	 *            have no effect in this implementation.
-	 */
-	public final void close(AionServerPacket closePacket, boolean forced)
-	{
-		synchronized (guard)
-		{
-			if (isWriteDisabled())
-				return;
+            packet.write(this, data);
 
-			log.info("sending packet: " + closePacket + " and closing connection after that.");
+            return true;
+        }
+    }
 
-			pendingClose = true;
-			isForcedClosing = forced;
-			sendMsgQueue.clear();
-			sendMsgQueue.addLast(closePacket);
-			enableWriteInterest();
-		}
-	}
+    /**
+     * This method is called by Dispatcher when connection is ready to be closed.
+     *
+     * @return time in ms after witch onDisconnect() method will be called. Always return 0.
+     */
+    @Override
+    protected final long getDisconnectionDelay()
+    {
+        return 0;
+    }
 
-	/**
-	 * Return Scrambled modulus
-	 * 
-	 * @return Scrambled modulus
-	 */
-	public final byte[] getScrambledModulus()
-	{
-		return scrambledPair._scrambledModulus;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected final void onDisconnect()
+    {
+        /**
+         * Remove account only if not joined GameServer yet.
+         */
+        if ((account != null) && !joinedGs)
+        {
+            AccountController.removeAccountOnLS(account);
+        }
+    }
 
-	/**
-	 * Return RSA private key
-	 * 
-	 * @return rsa private key
-	 */
-	public final RSAPrivateKey getRSAPrivateKey()
-	{
-		return (RSAPrivateKey) scrambledPair._pair.getPrivate();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected final void onServerClose()
+    {
+        // TODO mb some packet should be send to client before closing?
+        close( /* packet, */true);
+    }
 
-	/**
-	 * Returns unique sessionId of this connection.
-	 * 
-	 * @return SessionId
-	 */
-	public final int getSessionId()
-	{
-		return sessionId;
-	}
+    /**
+     * Decrypt packet.
+     *
+     * @param buf
+     * @return true if success
+     */
+    private boolean decrypt(ByteBuffer buf)
+    {
+        int       size   = buf.remaining();
+        final int offset = buf.arrayOffset() + buf.position();
+        boolean   ret    = cryptEngine.decrypt(buf.array(), offset, size);
 
-	/**
-	 * Current state of this connection
-	 * 
-	 * @return state
-	 */
-	public final State getState()
-	{
-		return state;
-	}
+        if (!ret)
+        {
+            log.warn("Wrong checksum from client: " + this);
+        }
 
-	/**
-	 * Set current state of this connection
-	 * 
-	 * @param state
-	 */
-	public final void setState(State state)
-	{
-		this.state = state;
-	}
+        return ret;
+    }
 
-	/**
-	 * Returns Account object that this client logged in or null
-	 * 
-	 * @return Account
-	 */
-	public final Account getAccount()
-	{
-		return account;
-	}
+    /**
+     * Encrypt packet.
+     *
+     * @param buf
+     * @return encrypted packet size.
+     */
+    public final int encrypt(ByteBuffer buf)
+    {
+        int       size   = buf.limit() - 2;
+        final int offset = buf.arrayOffset() + buf.position();
 
-	/**
-	 * Set Account object for this connection.
-	 * 
-	 * @param account
-	 */
-	public final void setAccount(Account account)
-	{
-		this.account = account;
-	}
+        size = cryptEngine.encrypt(buf.array(), offset, size);
 
-	/**
-	 * Returns Session Key of this connection
-	 * 
-	 * @return SessionKey
-	 */
-	public final SessionKey getSessionKey()
-	{
-		return sessionKey;
-	}
+        return size;
+    }
 
-	/**
-	 * Set Session Key for this connection
-	 * 
-	 * @param sessionKey
-	 */
-	public final void setSessionKey(SessionKey sessionKey)
-	{
-		this.sessionKey = sessionKey;
-	}
+    /**
+     * Sends AionServerPacket to this client.
+     *
+     * @param bp
+     *            AionServerPacket to be sent.
+     */
+    public final void sendPacket(AionServerPacket bp)
+    {
+        synchronized (guard)
+        {
+            /**
+             * Connection is already closed or waiting for last (close packet) to be sent
+             */
+            if (isWriteDisabled())
+            {
+                return;
+            }
 
-	/**
-	 * Set joinedGs value to true
-	 */
-	public final void setJoinedGs()
-	{
-		joinedGs = true;
-	}
+            log.debug("sending packet: " + bp);
+            sendMsgQueue.addLast(bp);
+            enableWriteInterest();
+        }
+    }
 
-	/**
-	 * @return String info about this connection
-	 */
-	@Override
-	public String toString()
-	{
-		return account != null ? account + " " + getIP() : "not loged " + getIP();
-	}
+    /**
+     * Its guaranted that closePacket will be sent before closing connection, but all past and future packets wont.
+     * Connection will be closed [by Dispatcher Thread], and onDisconnect() method will be called to clear all other
+     * things. forced means that server shouldn't wait with removing this connection.
+     *
+     * @param closePacket
+     *            Packet that will be send before closing.
+     * @param forced
+     *            have no effect in this implementation.
+     */
+    public final void close(AionServerPacket closePacket, boolean forced)
+    {
+        synchronized (guard)
+        {
+            if (isWriteDisabled())
+            {
+                return;
+            }
 
-	/**
-	 * This method should no be modified, hashcode in this class is used to ensure that each connection hash unique id
-	 * 
-	 * @return unique identifier
-	 */
-	@Override
-	public int hashCode()
-	{
-		return super.hashCode();
-	}
+            log.info("sending packet: " + closePacket + " and closing connection after that.");
+            pendingClose    = true;
+            isForcedClosing = forced;
+            sendMsgQueue.clear();
+            sendMsgQueue.addLast(closePacket);
+            enableWriteInterest();
+        }
+    }
+
+    /**
+     * Return Scrambled modulus
+     *
+     * @return Scrambled modulus
+     */
+    public final byte[] getScrambledModulus()
+    {
+        return scrambledPair._scrambledModulus;
+    }
+
+    /**
+     * Return RSA private key
+     *
+     * @return rsa private key
+     */
+    public final RSAPrivateKey getRSAPrivateKey()
+    {
+        return (RSAPrivateKey) scrambledPair._pair.getPrivate();
+    }
+
+    /**
+     * Returns unique sessionId of this connection.
+     *
+     * @return SessionId
+     */
+    public final int getSessionId()
+    {
+        return sessionId;
+    }
+
+    /**
+     * Current state of this connection
+     *
+     * @return state
+     */
+    public final State getState()
+    {
+        return state;
+    }
+
+    /**
+     * Set current state of this connection
+     *
+     * @param state
+     */
+    public final void setState(State state)
+    {
+        this.state = state;
+    }
+
+    /**
+     * Returns Account object that this client logged in or null
+     *
+     * @return Account
+     */
+    public final Account getAccount()
+    {
+        return account;
+    }
+
+    /**
+     * Set Account object for this connection.
+     *
+     * @param account
+     */
+    public final void setAccount(Account account)
+    {
+        this.account = account;
+    }
+
+    /**
+     * Returns Session Key of this connection
+     *
+     * @return SessionKey
+     */
+    public final SessionKey getSessionKey()
+    {
+        return sessionKey;
+    }
+
+    /**
+     * Set Session Key for this connection
+     *
+     * @param sessionKey
+     */
+    public final void setSessionKey(SessionKey sessionKey)
+    {
+        this.sessionKey = sessionKey;
+    }
+
+    /**
+     * Set joinedGs value to true
+     */
+    public final void setJoinedGs()
+    {
+        joinedGs = true;
+    }
+
+    /**
+     * @return String info about this connection
+     */
+    @Override
+    public String toString()
+    {
+        return (account != null)
+               ? account + " " + getIP()
+               : "not loged " + getIP();
+    }
+
+    /**
+     * This method should no be modified, hashcode in this class is used to ensure that each connection hash unique id
+     *
+     * @return unique identifier
+     */
+    @Override
+    public int hashCode()
+    {
+        return super.hashCode();
+    }
 }

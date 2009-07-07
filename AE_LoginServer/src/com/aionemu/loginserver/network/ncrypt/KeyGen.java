@@ -14,53 +14,50 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.loginserver.network.crypt;
+package com.aionemu.loginserver.network.ncrypt;
 
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import org.apache.log4j.Logger;
+
 /**
- * Static blowfish key.
+ * Key generator. It will generate keys for Blowfish, RSA etc.
  * 
  * @author -Nemesiss-
  * 
  */
-public class StaticBlowfishKey implements SecretKey
+public class KeyGen
 {
 	/**
+	 * Logger for this class.
+	 */
+	protected static final Logger	log				= Logger.getLogger(KeyGen.class);
+	/**
+	 * Key generator for blowfish
+	 */
+	private static KeyGenerator		blowfishKeyGen;
+
+	/**
+	 * Initialize Key Generator.
 	 * 
+	 * @throws NoSuchAlgorithmException
 	 */
-	private static final long	serialVersionUID	= 1L;
-	/**
-	 * Static blowfish key for aion client/server packet crypt.
-	 */
-	private static final byte[]	staticBlowfishKey	= { (byte) 0x6b, (byte) 0x60, (byte) 0xcb, (byte) 0x5b,
-		(byte) 0x82, (byte) 0xce, (byte) 0x90, (byte) 0xb1, (byte) 0xcc, (byte) 0x2b, (byte) 0x6c, (byte) 0x55,
-		(byte) 0x6c, (byte) 0x6c, (byte) 0x6c, (byte) 0x6c };
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getAlgorithm()
+	public static void init() throws NoSuchAlgorithmException
 	{
-		return "Blowfish";
+		log.info("Initializing Key Generator...");
+		blowfishKeyGen = KeyGenerator.getInstance("Blowfish");
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Generate and return blowfish key
+	 * 
+	 * @return Random generated blowfish key
 	 */
-	@Override
-	public byte[] getEncoded()
+	public static SecretKey generateBlowfishKey()
 	{
-		return staticBlowfishKey;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getFormat()
-	{
-		return "RAW";
+		return blowfishKeyGen.generateKey();
 	}
 }

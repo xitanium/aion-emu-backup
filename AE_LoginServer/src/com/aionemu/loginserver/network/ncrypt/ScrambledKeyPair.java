@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.loginserver.network.crypt;
+package com.aionemu.loginserver.network.ncrypt;
 
 import java.math.BigInteger;
 import java.security.KeyPair;

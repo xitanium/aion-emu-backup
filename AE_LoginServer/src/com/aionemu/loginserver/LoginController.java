@@ -26,7 +26,7 @@ import javax.crypto.Cipher;
 import org.apache.log4j.Logger;
 
 import com.aionemu.commons.utils.Rnd;
-import com.aionemu.loginserver.network.crypt.ScrambledKeyPair;
+import com.aionemu.loginserver.network.ncrypt.ScrambledKeyPair;
 
 /**
  * @author -Nemesiss-
