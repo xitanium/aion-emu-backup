@@ -67,7 +67,7 @@ public class DAOManager
 
 		if (result == null)
 		{
-			String s = "DAO for class" + clazz.getName() + " not implemented";
+			String s = "DAO for class " + clazz.getName() + " not implemented";
 			log.error(s);
 			throw new DAONotFoundException(s);
 		}
