@@ -17,4 +17,6 @@
 
 package com.aionemu.loginserver;
 
-public class Test {}
+import junit.framework.TestCase;
+
+public class Test extends TestCase {}

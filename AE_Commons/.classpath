@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
     <classpathentry kind="src" path="src" />
+    <classpathentry kind="src" path="test" />
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" />
     <classpathentry kind="lib" path="lib/commons-pool-1.4.jar" />
     <classpathentry kind="lib" path="lib/mysql-connector-java-5.1.7-bin.jar" />
@@ -9,6 +10,7 @@
     <classpathentry kind="lib" path="lib/javac.jar" sourcepath="libsrc/javac.zip" />
     <classpathentry kind="lib" path="lib/commons-dbcp-1.3-SNAPSHOT-r756211-jdbc4.jar" />
     <classpathentry kind="lib" path="lib/javassist.jar" sourcepath="libsrc/javassist-3.10.0-src.zip" />
+    <classpathentry kind="lib" path="lib/junit-4.6.jar" />
     <classpathentry kind="output" path="bin" />
 </classpath>
 
