@@ -324,7 +324,7 @@ public class AionConnection extends AConnection
      */
     public final byte[] getScrambledModulus()
     {
-        return scrambledPair._scrambledModulus;
+        return scrambledPair.getScrambledModulus();
     }
 
     /**
@@ -334,7 +334,7 @@ public class AionConnection extends AConnection
      */
     public final RSAPrivateKey getRSAPrivateKey()
     {
-        return (RSAPrivateKey) scrambledPair._pair.getPrivate();
+        return (RSAPrivateKey) scrambledPair.getKeyPair().getPrivate();
     }
 
     /**

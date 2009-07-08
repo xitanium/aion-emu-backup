@@ -92,13 +92,13 @@ public class LoginController
 		keygen.initialize(spec);
 
 		// generate the initial set of keys
-		for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++)
 		{
 			keyPairs[i] = new ScrambledKeyPair(keygen.generateKeyPair());
 		}
 		log.info("Cached 10 KeyPairs for RSA communication");
 
-		this.testCipher((RSAPrivateKey) keyPairs[0]._pair.getPrivate());
+		this.testCipher((RSAPrivateKey) keyPairs[0].getKeyPair().getPrivate());
 	}
 
 	/**
