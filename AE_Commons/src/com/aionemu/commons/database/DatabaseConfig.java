@@ -84,7 +84,7 @@ public class DatabaseConfig
 	/**
 	 * Location of database script context descriptor
 	 */
-	@Property(key = "database.scriptcontext.descriptor", defaultValue = "./data/scripts/database/database.xml")
+	@Property(key = "database.scriptcontext.descriptor", defaultValue = "./data/scripts/system/database/database.xml")
 	public static File			DATABASE_SCRIPTCONTEXT_DESCRIPTOR;
 
 	/**
