@@ -19,4 +19,19 @@ package com.aionemu.loginserver;
 
 import junit.framework.TestCase;
 
-public class Test extends TestCase {}
+import java.security.GeneralSecurityException;
+
+import org.junit.Test;
+import com.aionemu.loginserver.network.ncrypt.KeyGen;
+
+public class KeyGenTest extends TestCase {
+
+    @Test
+    public void testKeyGenInit() {
+        try {
+            KeyGen.init();
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        }
+    }
+}
