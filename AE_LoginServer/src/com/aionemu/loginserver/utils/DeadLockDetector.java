@@ -24,6 +24,8 @@ import java.lang.management.ThreadMXBean;
 
 import org.apache.log4j.Logger;
 
+import com.aionemu.commons.utils.ExitCode;
+
 /**
  * @author -Nemesiss-
  */
@@ -110,7 +112,7 @@ public class DeadLockDetector extends Thread
 
 					if (doWhenDL == RESTART)
 					{
-						System.exit(1);
+						System.exit(ExitCode.CODE_RESTART);
 					}
 				}
 				Thread.sleep(sleepTime);

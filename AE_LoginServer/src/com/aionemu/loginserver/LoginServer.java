@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DatabaseFactory;
 import com.aionemu.commons.services.LoggingService;
+import com.aionemu.commons.utils.ExitCode;
 import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.controller.BannedIpController;
 import com.aionemu.loginserver.network.IOServer;
@@ -64,7 +65,7 @@ public class LoginServer
 		catch (GeneralSecurityException e)
 		{
 			log.fatal("Failed initializing LoginController. Reason: " + e.getMessage(), e);
-			System.exit(1);
+			System.exit(ExitCode.CODE_ERROR);
 		}
 
 		/**
