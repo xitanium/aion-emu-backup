@@ -23,6 +23,8 @@ import javax.tools.JavaFileObject;
 
 import org.apache.log4j.Logger;
 
+import java.util.Locale;
+
 /**
  * This class is simple compiler error listener that forwards errors to log4j logger
  * 
@@ -42,13 +44,16 @@ public class ErrorListener implements DiagnosticListener<JavaFileObject>
 	 * @param diagnostic
 	 *            compiler errors
 	 */
+	@Override
 	public void report(Diagnostic<? extends JavaFileObject> diagnostic)
 	{
-		log.error("Compier Error Report Start");
-		log.error("errcode:" + diagnostic.getCode());
-		log.error("line   :" + diagnostic.getLineNumber());
-		log.error("column :" + diagnostic.getColumnNumber());
-		log.error("message:" + diagnostic.getMessage(null));
-		log.error("Compier Error Report End");
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Compier Error Report Start").append("\n");
+		buffer.append("errcode:").append(diagnostic.getCode()).append("\n");
+		buffer.append("line   :").append(diagnostic.getLineNumber()).append("\n");
+		buffer.append("column :").append(diagnostic.getColumnNumber()).append("\n");
+		buffer.append("message:").append(diagnostic.getMessage(Locale.getDefault())).append("\n");
+		buffer.append("Compier Error Report End");
+		log.error(buffer.toString());
 	}
 }
