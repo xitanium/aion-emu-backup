@@ -250,7 +250,9 @@ public class CallbackHelper
 	 * 
 	 * <pre>
 	 * {@link CallbackPriority#DEFAULT_PRIORITY} - {@link CallbackPriority#getPriority()}
-	 * </pre>.<br>
+	 * </pre>
+	 * 
+	 * .<br>
 	 * If callback is not instance of CallbackPriority then it returns {@link CallbackPriority#DEFAULT_PRIORITY}
 	 * 
 	 * @param callback

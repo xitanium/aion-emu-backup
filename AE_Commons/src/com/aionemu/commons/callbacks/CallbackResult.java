@@ -149,8 +149,8 @@ public class CallbackResult<T>
 
 	/**
 	 * Returns callback that blocks another callbacks and method invocation.<br>
-	 * {@link com.aionemu.commons.callbacks.Callback#afterCall(Object, java.lang.reflect.Method, Object[], Object)} will
-	 * be invoked with the result from this call.
+	 * {@link com.aionemu.commons.callbacks.Callback#afterCall(Object, Object[], Object)} will be invoked with the
+	 * result from this call.
 	 * 
 	 * @param result
 	 *            Result of callback

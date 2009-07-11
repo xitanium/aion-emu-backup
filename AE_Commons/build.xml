@@ -65,6 +65,9 @@
         <jar destfile="${build}/ae_commons.jar">
             <fileset dir="${build.classes}"/>
 
+            <manifest>
+                <attribute name="Premain-Class" value="com.aionemu.commons.callbacks.JavaAgentEnhancer"/>
+            </manifest>
         </jar>
 
 	</target>

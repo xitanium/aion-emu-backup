@@ -28,14 +28,16 @@ public interface Callback<T>
 
 	/**
 	 * Method that is called before actual method is invoked.<br>
-	 * <p/> Callback should return one of the following results:
+	 * <p/>
+	 * Callback should return one of the following results:
 	 * <ul>
 	 * <li>{@link CallbackResult#newContinue()}</li>
 	 * <li>{@link CallbackResult#newCallbackBlocker()}</li>
 	 * <li>{@link CallbackResult#newFullBlocker(Object)}</li>
 	 * </ul>
-	 * <p/> if result is not {@link CallbackResult#newFullBlocker(Object)} then method will be executed normally. In
-	 * other case {@link CallbackResult#getResult()} will be returned.
+	 * <p/>
+	 * if result is not {@link CallbackResult#newFullBlocker(Object)} then method will be executed normally. In other
+	 * case {@link CallbackResult#getResult()} will be returned.
 	 * 
 	 * @param obj
 	 *            on whom method should be invoked
@@ -47,14 +49,16 @@ public interface Callback<T>
 
 	/**
 	 * Method that is called after actual method call.<br>
-	 * <p/> Callback should return one of the following results:
+	 * <p/>
+	 * Callback should return one of the following results:
 	 * <ul>
 	 * <li>{@link CallbackResult#newContinue()}</li>
 	 * <li>{@link CallbackResult#newCallbackBlocker()}</li>
 	 * <li>{@link CallbackResult#newFullBlocker(Object)}</li>
 	 * </ul>
-	 * <p/> if result is not {@link CallbackResult#newFullBlocker(Object)} then mehodResult will return unmodified. In
-	 * other case {@link CallbackResult#getResult()} will be returned.
+	 * <p/>
+	 * if result is not {@link CallbackResult#newFullBlocker(Object)} then mehodResult will return unmodified. In other
+	 * case {@link CallbackResult#getResult()} will be returned.
 	 * 
 	 * @param obj
 	 *            on whom method was called
@@ -67,8 +71,8 @@ public interface Callback<T>
 	public CallbackResult afterCall(T obj, Object[] args, Object methodResult);
 
 	/**
-	 * Returns base class that will be used as callback identificator.<br>
-	 * {@link Enhancable#callback()} should contain class that will be invoked
+	 * Returns base class that will be used as callback identificator.<br> {@link Enhancable#callback()} should contain
+	 * class that will be invoked
 	 * 
 	 * @return base class of callback
 	 */

@@ -48,7 +48,9 @@ import javassist.bytecode.annotation.Annotation;
  * If there is no methods to enhance - IllegalArgumentException will be thrown.<br>
  * 
  * @author SoulKeeper
+ * @deprecated Replaced with {@link com.aionemu.commons.callbacks.JavaAgentEnhancer}
  */
+@Deprecated
 public class ObjectEnhancer
 {
 

@@ -22,7 +22,8 @@ import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * Generic interface for all enhanced object
+ * Generic interface for all enhanced object.<br>
+ * <font color="red">NEVER IMPLEMENT THIS CLASS MANUALLY!!!</font>
  * 
  * @author SoulKeeper
  */
