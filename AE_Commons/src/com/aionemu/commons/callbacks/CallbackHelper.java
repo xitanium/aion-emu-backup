@@ -211,7 +211,7 @@ public class CallbackHelper
 			Map<Class<? extends Callback>, List<Callback>> cbMap = obj.getCallbacks();
 			List<Callback> list = cbMap.get(callbackClass);
 
-			if (list.isEmpty())
+			if (list == null || list.isEmpty())
 			{
 				return CallbackResult.newContinue();
 			}
