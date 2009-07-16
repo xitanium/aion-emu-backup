@@ -40,12 +40,9 @@ public class AccountTimeControllerTest
     {
         Account account = DAOManager.getDAO(AccountDAO.class).getAccount("df");
         AccountTime accountTime = account.getAccountTime();
-        long lastActiveTime = accountTime.getLastLoginTime().getTime();
-        long currentTime = System.currentTimeMillis();
 
-        int lDays = (int) (lastActiveTime / 1000 / 60 / 60 / 24);
-        int cDays = (int) (currentTime / 1000 / 60 / 60 / 24);
-
-        System.out.println("Days: " + lDays + " " + cDays);
+        int hours = AccountTimeController.getHours(accountTime.getAccumulatedRestTime());
+        int minutes = AccountTimeController.getMinutes(accountTime.getAccumulatedRestTime());
+        System.out.println("Hours: " + hours + " Minutes: " + minutes);        
     }
 }

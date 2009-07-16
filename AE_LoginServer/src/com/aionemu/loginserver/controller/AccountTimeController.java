@@ -131,7 +131,7 @@ public class AccountTimeController
      */
 	public static int getHours(long millis)
 	{
-		return (int) (millis / 1000 / 60 / 24);
+		return (int) (millis / 1000) / 3600;
 	}
 
     /**
@@ -141,7 +141,7 @@ public class AccountTimeController
      */
 	public static int getMinutes(long millis)
 	{
-		return (int) ((millis) / 1000 / 60);
+		return (int) ((millis / 1000) % 3600) / 60;
 	}
 
     /**
@@ -151,6 +151,6 @@ public class AccountTimeController
      */
     public static int getDays(long millis)
     {
-        return (int) (millis / 1000 / 60 / 60 / 24);
+        return (int) (millis / 1000 / 3600 / 24);
     }
 }
