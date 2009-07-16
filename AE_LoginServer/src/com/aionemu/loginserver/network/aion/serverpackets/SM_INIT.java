@@ -51,7 +51,7 @@ public final class SM_INIT extends AionServerPacket
 	 */
 	public SM_INIT(AionConnection client, SecretKey blowfishKey)
 	{
-		this(client.getScrambledModulus(), blowfishKey.getEncoded(), client.getSessionId());
+		this(client.getEncryptedModulus(), blowfishKey.getEncoded(), client.getSessionId());
 	}
 
 	/**

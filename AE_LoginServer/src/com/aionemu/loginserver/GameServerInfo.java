@@ -269,6 +269,11 @@ public class GameServerInfo
 		accountsOnGameServer.put(acc.getId(), acc);
 	}
 
+    public final Account getAccountFromGameServer(int accountId)
+    {
+        return accountsOnGameServer.get(accountId);
+    }
+
 	/**
 	 * Returns ip address that will be used as server ip for specific player.<br>
 	 * The problem is that players can access server from various subnetworks so we need to send different ip adresses.<br>

@@ -1,4 +1,3 @@
-
 /**
  * This file is part of aion-emu <aion-emu.com>.
  *
@@ -15,19 +14,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.loginserver.network.aion;
 
-//~--- non-JDK imports --------------------------------------------------------
+package com.aionemu.loginserver.network.aion;
 
 import com.aionemu.commons.network.AConnection;
 import com.aionemu.commons.network.Dispatcher;
-import com.aionemu.loginserver.LoginController;
 import com.aionemu.loginserver.controller.AccountController;
+import com.aionemu.loginserver.controller.AccountTimeController;
 import com.aionemu.loginserver.model.Account;
-import com.aionemu.loginserver.network.ncrypt.CryptEngine;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_INIT;
+import com.aionemu.loginserver.network.ncrypt.CryptEngine;
 import com.aionemu.loginserver.network.ncrypt.KeyGen;
-import com.aionemu.loginserver.network.ncrypt.ScrambledKeyPair;
+import com.aionemu.loginserver.network.ncrypt.EncryptedRSAKeyPair;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
 import org.apache.log4j.Logger;
 
@@ -49,48 +47,48 @@ public class AionConnection extends AConnection
     /**
      * Logger for this class.
      */
-    private static final Logger log = Logger.getLogger(AionConnection.class);
+    private static final Logger				log          = Logger.getLogger(AionConnection.class);
 
     /**
      * Server Packet "to send" Queue
      */
-    private final Deque<AionServerPacket> sendMsgQueue = new ArrayDeque<AionServerPacket>();
+    private final Deque<AionServerPacket>	sendMsgQueue = new ArrayDeque<AionServerPacket>();
 
     /**
      * Unique Session Id of this connection
      */
-    private int sessionId = hashCode();
+    private int								sessionId    = hashCode();
 
     /**
      * Account object for this connection. if state = AUTHED_LOGIN account cant be null.
      *
      */
-    private Account account;
+    private Account							account;
 
     /**
      * Crypt to encrypt/decrypt packets
      */
-    private CryptEngine cryptEngine;
+    private CryptEngine						cryptEngine;
 
     /**
      * True if this user is connecting to GS.
      */
-    private boolean joinedGs;
+    private boolean							joinedGs;
 
     /**
      * Scrambled key pair for RSA
      */
-    private ScrambledKeyPair scrambledPair;
+    private EncryptedRSAKeyPair encryptedRSAKeyPair;
 
     /**
      * Session Key for this connection.
      */
-    private SessionKey sessionKey;
+    private SessionKey						sessionKey;
 
     /**
      * Current state of this connection
      */
-    private State state;
+    private State							state;
 
     /**
      * Possible states of AionConnection
@@ -123,16 +121,19 @@ public class AionConnection extends AConnection
     public AionConnection(SocketChannel sc, Dispatcher d) throws IOException
     {
         super(sc, d);
+
         state = State.CONNECTED;
 
-        String ip = getIP();
+        String	ip = getIP();
 
         log.info("connection from: " + ip);
-        scrambledPair = LoginController.getInstance().getScrambledRSAKeyPair();
 
-        SecretKey blowfishKey = KeyGen.generateBlowfishKey();
+        encryptedRSAKeyPair = KeyGen.getEncryptedRSAKeyPair();
+
+        SecretKey	blowfishKey = KeyGen.generateBlowfishKey();
 
         cryptEngine = new CryptEngine();
+
         cryptEngine.updateKey(blowfishKey.getEncoded());
 
         /** Send Init packet */
@@ -148,12 +149,12 @@ public class AionConnection extends AConnection
     @Override
     protected final boolean processData(ByteBuffer data)
     {
-        if (!decrypt(data))
+        if(!decrypt(data))
         {
             return false;
         }
 
-        AionClientPacket pck = AionPacketHandler.handle(data, this);
+        AionClientPacket	pck = AionPacketHandler.handle(data, this);
 
         log.info("recived packet: " + pck);
 
@@ -161,7 +162,7 @@ public class AionConnection extends AConnection
          * Execute packet only if packet exist (!= null)
          * and read was ok.
          */
-        if ((pck != null) && pck.read())
+        if((pck != null) && pck.read())
         {
             ThreadPoolManager.getInstance().executeAionPacket(pck);
         }
@@ -180,9 +181,9 @@ public class AionConnection extends AConnection
     {
         synchronized (guard)
         {
-            AionServerPacket packet = sendMsgQueue.pollFirst();
+            AionServerPacket	packet = sendMsgQueue.pollFirst();
 
-            if (packet == null)
+            if(packet == null)
             {
                 return false;
             }
@@ -213,9 +214,10 @@ public class AionConnection extends AConnection
         /**
          * Remove account only if not joined GameServer yet.
          */
-        if ((account != null) && !joinedGs)
+        if((account != null) && !joinedGs)
         {
             AccountController.removeAccountOnLS(account);
+            AccountTimeController.updateOnLogout(account);
         }
     }
 
@@ -237,11 +239,11 @@ public class AionConnection extends AConnection
      */
     private boolean decrypt(ByteBuffer buf)
     {
-        int       size   = buf.remaining();
-        final int offset = buf.arrayOffset() + buf.position();
-        boolean   ret    = cryptEngine.decrypt(buf.array(), offset, size);
+        int			size   = buf.remaining();
+        final int	offset = buf.arrayOffset() + buf.position();
+        boolean		ret    = cryptEngine.decrypt(buf.array(), offset, size);
 
-        if (!ret)
+        if(!ret)
         {
             log.warn("Wrong checksum from client: " + this);
         }
@@ -257,8 +259,8 @@ public class AionConnection extends AConnection
      */
     public final int encrypt(ByteBuffer buf)
     {
-        int       size   = buf.limit() - 2;
-        final int offset = buf.arrayOffset() + buf.position();
+        int			size   = buf.limit() - 2;
+        final int	offset = buf.arrayOffset() + buf.position();
 
         size = cryptEngine.encrypt(buf.array(), offset, size);
 
@@ -278,7 +280,7 @@ public class AionConnection extends AConnection
             /**
              * Connection is already closed or waiting for last (close packet) to be sent
              */
-            if (isWriteDisabled())
+            if(isWriteDisabled())
             {
                 return;
             }
@@ -303,14 +305,16 @@ public class AionConnection extends AConnection
     {
         synchronized (guard)
         {
-            if (isWriteDisabled())
+            if(isWriteDisabled())
             {
                 return;
             }
 
             log.info("sending packet: " + closePacket + " and closing connection after that.");
+
             pendingClose    = true;
             isForcedClosing = forced;
+
             sendMsgQueue.clear();
             sendMsgQueue.addLast(closePacket);
             enableWriteInterest();
@@ -322,9 +326,9 @@ public class AionConnection extends AConnection
      *
      * @return Scrambled modulus
      */
-    public final byte[] getScrambledModulus()
+    public final byte[] getEncryptedModulus()
     {
-        return scrambledPair.getScrambledModulus();
+        return encryptedRSAKeyPair.getEncryptedModulus();
     }
 
     /**
@@ -334,7 +338,7 @@ public class AionConnection extends AConnection
      */
     public final RSAPrivateKey getRSAPrivateKey()
     {
-        return (RSAPrivateKey) scrambledPair.getKeyPair().getPrivate();
+        return (RSAPrivateKey) encryptedRSAKeyPair.getRSAKeyPair().getPrivate();
     }
 
     /**
@@ -421,9 +425,7 @@ public class AionConnection extends AConnection
     @Override
     public String toString()
     {
-        return (account != null)
-               ? account + " " + getIP()
-               : "not loged " + getIP();
+        return (account != null) ? account + " " + getIP() : "not loged " + getIP();
     }
 
     /**

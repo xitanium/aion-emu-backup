@@ -14,8 +14,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.aionemu.loginserver.network.gameserver.clientpackets;
 
+import com.aionemu.loginserver.controller.AccountTimeController;
+import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 
@@ -23,9 +26,9 @@ import java.nio.ByteBuffer;
 
 /**
  * In this packet GameServer is informing LoginServer that some account is no longer on GameServer [ie was disconencted]
- * 
+ *
  * @author -Nemesiss-
- * 
+ *
  */
 public class CM_ACCOUNT_DISCONNECTED extends GsClientPacket
 {
@@ -36,14 +39,13 @@ public class CM_ACCOUNT_DISCONNECTED extends GsClientPacket
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param buf
 	 * @param client
 	 */
 	public CM_ACCOUNT_DISCONNECTED(ByteBuffer buf, GsConnection client)
 	{
 		super(buf, client, 0x03);
-
 	}
 
 	/**
@@ -61,6 +63,16 @@ public class CM_ACCOUNT_DISCONNECTED extends GsClientPacket
 	@Override
 	protected void runImpl()
 	{
-		getConnection().getGameServerInfo().removeAccountFromGameServer(accountId);
+		Account	account = getConnection().getGameServerInfo().removeAccountFromGameServer(accountId);
+
+        /**
+         * account can be null if a player logged out from gs
+         * {@link CM_ACCOUNT_RECONNECT_KEY 
+         */
+		if(account != null)
+		{
+			AccountTimeController.updateOnLogout(account);
+		}
 	}
 }
+ 

@@ -1,26 +1,25 @@
 /**
  * This file is part of aion-emu <aion-emu.com>.
  *
- * aion-emu is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  aion-emu is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * aion-emu is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  aion-emu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.loginserver.model;
 
-import java.sql.Timestamp;
+package com.aionemu.loginserver.model;
 
 /**
  * This class represents Account model
- * 
+ *
  * @author SoulKeeper
  */
 public class Account
@@ -39,21 +38,6 @@ public class Account
 	 * Password hash
 	 */
 	private String		passwordHash;
-
-	/**
-	 * Date of last activity. Should be create date if creating new account
-	 */
-	private Timestamp	lastActive;
-
-	/**
-	 * Date when account expires Null if never
-	 */
-	private Timestamp	expirationTime;
-
-	/**
-	 * Date when penalty expires Null if never
-	 */
-	private Timestamp	penaltyEnd;
 
 	/**
 	 * Access level of account 0 = regular user, > 0 = GM
@@ -76,28 +60,13 @@ public class Account
 	private String		ipForce;
 
 	/**
-	 * Returns true if account has active penalty
-	 * 
-	 * @return true if account has active penalty
+	 * AccountTime data
 	 */
-	public boolean isPenaltyActive()
-	{
-		return penaltyEnd != null && penaltyEnd.getTime() >= System.currentTimeMillis();
-	}
-
-	/**
-	 * Returns true if account has expired
-	 * 
-	 * @return true if account has expired
-	 */
-	public boolean isExpired()
-	{
-		return expirationTime != null && expirationTime.getTime() < System.currentTimeMillis();
-	}
+	private AccountTime	accountTime;
 
 	/**
 	 * Returns account id, null if not stored in DB
-	 * 
+	 *
 	 * @return account id
 	 */
 	public Integer getId()
@@ -107,7 +76,7 @@ public class Account
 
 	/**
 	 * Sets account id
-	 * 
+	 *
 	 * @param id
 	 *            account id
 	 */
@@ -118,7 +87,7 @@ public class Account
 
 	/**
 	 * Returns account name
-	 * 
+	 *
 	 * @return account name
 	 */
 	public String getName()
@@ -128,7 +97,7 @@ public class Account
 
 	/**
 	 * Sets account name
-	 * 
+	 *
 	 * @param name
 	 *            account name
 	 */
@@ -139,7 +108,7 @@ public class Account
 
 	/**
 	 * Returns password hash
-	 * 
+	 *
 	 * @return password hash
 	 */
 	public String getPasswordHash()
@@ -149,7 +118,7 @@ public class Account
 
 	/**
 	 * Sets password hash
-	 * 
+	 *
 	 * @param passwordHash
 	 *            password hash
 	 */
@@ -159,71 +128,8 @@ public class Account
 	}
 
 	/**
-	 * Returns last activity of the user
-	 * 
-	 * @return last activity of the user
-	 */
-	public Timestamp getLastActive()
-	{
-		return lastActive;
-	}
-
-	/**
-	 * Sets lats activity time of the user
-	 * 
-	 * @param lastActive
-	 *            last activity time of the user
-	 */
-	public void setLastActive(Timestamp lastActive)
-	{
-		this.lastActive = lastActive;
-	}
-
-	/**
-	 * Returns expiration time of account
-	 * 
-	 * @return expiration time of account (do we need it?)
-	 */
-	public Timestamp getExpirationTime()
-	{
-		return expirationTime;
-	}
-
-	/**
-	 * Sets expiration time for account
-	 * 
-	 * @param expirationTime
-	 *            expiration time for account
-	 */
-	public void setExpirationTime(Timestamp expirationTime)
-	{
-		this.expirationTime = expirationTime;
-	}
-
-	/**
-	 * Returns penalty end time
-	 * 
-	 * @return penalty end time
-	 */
-	public Timestamp getPenaltyEnd()
-	{
-		return penaltyEnd;
-	}
-
-	/**
-	 * Sets penalty end time
-	 * 
-	 * @param penaltyEnd
-	 *            penalty end time
-	 */
-	public void setPenaltyEnd(Timestamp penaltyEnd)
-	{
-		this.penaltyEnd = penaltyEnd;
-	}
-
-	/**
 	 * Returns access level of account
-	 * 
+	 *
 	 * @return access level of account
 	 */
 	public byte getAccessLevel()
@@ -233,7 +139,7 @@ public class Account
 
 	/**
 	 * Sets access level of account
-	 * 
+	 *
 	 * @param accessLevel
 	 *            access level of account
 	 */
@@ -244,7 +150,7 @@ public class Account
 
 	/**
 	 * Returns last server that player visited
-	 * 
+	 *
 	 * @return last server that player visited
 	 */
 	public byte getLastServer()
@@ -254,7 +160,7 @@ public class Account
 
 	/**
 	 * Sets last server that player visited
-	 * 
+	 *
 	 * @param lastServer
 	 *            last server that player visited
 	 */
@@ -265,7 +171,7 @@ public class Account
 
 	/**
 	 * Returns last ip that player played from
-	 * 
+	 *
 	 * @return last ip that player played from
 	 */
 	public String getLastIp()
@@ -275,7 +181,7 @@ public class Account
 
 	/**
 	 * Sets last ip that player players from
-	 * 
+	 *
 	 * @param lastIp
 	 *            last ip that player played from
 	 */
@@ -286,7 +192,7 @@ public class Account
 
 	/**
 	 * Returns IP that player is forced to use with his account
-	 * 
+	 *
 	 * @return ip that player is forsed to use with his account
 	 */
 	public String getIpForce()
@@ -296,7 +202,7 @@ public class Account
 
 	/**
 	 * Sets ip that player has to use with his account
-	 * 
+	 *
 	 * @param ipForce
 	 *            sets ip that players has to use with his account
 	 */
@@ -305,9 +211,19 @@ public class Account
 		this.ipForce = ipForce;
 	}
 
+	public AccountTime getAccountTime()
+	{
+		return accountTime;
+	}
+
+	public void setAccountTime(AccountTime accountTime)
+	{
+		this.accountTime = accountTime;
+	}
+
 	/**
 	 * Retunrns true if players name and password has are equals
-	 * 
+	 *
 	 * @param o
 	 *            another player to check
 	 * @return true if names and password hash matches
@@ -315,30 +231,40 @@ public class Account
 	@Override
 	public boolean equals(Object o)
 	{
-		if (this == o)
+		if(this == o)
+		{
 			return true;
-		if (!(o instanceof Account))
-			return false;
+		}
 
-		Account account = (Account) o;
+		if(!(o instanceof Account))
+		{
+			return false;
+		}
+
+		Account	account = (Account) o;
 
 		// noinspection SimplifiableIfStatement
-		if (name != null ? !name.equals(account.name) : account.name != null)
+		if(name != null ? !name.equals(account.name) : account.name != null)
+		{
 			return false;
+		}
+
 		return !(passwordHash != null ? !passwordHash.equals(account.passwordHash) : account.passwordHash != null);
 
 	}
 
 	/**
 	 * Returns player hashcode.
-	 * 
+	 *
 	 * @return player hashcode
 	 */
 	@Override
 	public int hashCode()
 	{
-		int result = name != null ? name.hashCode() : 0;
+		int	result = name != null ? name.hashCode() : 0;
+
 		result = 31 * result + (passwordHash != null ? passwordHash.hashCode() : 0);
+
 		return result;
 	}
 }

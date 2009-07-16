@@ -31,67 +31,62 @@ import com.aionemu.loginserver.network.IOServer;
 import com.aionemu.loginserver.network.ncrypt.KeyGen;
 import com.aionemu.loginserver.utils.DeadLockDetector;
 import com.aionemu.loginserver.utils.ThreadPoolManager;
+import org.apache.log4j.Logger;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryUsage;
+import java.security.GeneralSecurityException;
 
 /**
  * @author -Nemesiss-
  */
 public class LoginServer
 {
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger	log	= Logger.getLogger(LoginServer.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger	log = Logger.getLogger(LoginServer.class);
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args)
-	{
-		LoggingService.init();
-		/** initializing DB Factory */
-		DatabaseFactory.init();
-		Config.load();
-		/** Start deadlock detector that will restart server if deadlock happened */
-		new DeadLockDetector(60, DeadLockDetector.RESTART).start();
-		ThreadPoolManager.getInstance();
+    /**
+     * @param args
+     */
+    public static void main(String[] args)
+    {
+        LoggingService.init();
+        DatabaseFactory.init();
+        Config.load();
 
-		/**
-		 * Initialize LoginController.
-		 */
-		try
-		{
-			LoginController.load();
-		}
-		catch (GeneralSecurityException e)
-		{
-			log.fatal("Failed initializing LoginController. Reason: " + e.getMessage(), e);
-			System.exit(ExitCode.CODE_ERROR);
-		}
+        /** Start deadlock detector that will restart server if deadlock happened */
+        new DeadLockDetector(60, DeadLockDetector.RESTART).start();
+        ThreadPoolManager.getInstance();
 
-		/**
-		 * Initialize Key Generator
-		 */
-		try
-		{
-			KeyGen.init();
-		}
-		catch (Exception e)
-		{
-			log.fatal("Failed initializing Key Generator. Reason: " + e.getMessage(), e);
-			System.exit(1);
-		}
 
-		GameServerTable.load();
-		BannedIpController.load();
-		// TODO! flood protector
-		// TODO! brute force protector
+        /**
+         * Initialize Key Generator
+         */
+        try
+        {
+            KeyGen.init();
+        }
+        catch (Exception e)
+        {
+            log.fatal("Failed initializing Key Generator. Reason: " + e.getMessage(), e);
+            System.exit(ExitCode.CODE_ERROR);
+        }
 
-		IOServer.getInstance();
-		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
+        GameServerTable.load();
+        BannedIpController.load();
 
-		MemoryUsage hm = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
-		MemoryUsage nhm = ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage();
-		log.info("Heap Memory Usage: " + (hm.getUsed() / 1048576) + "/" + (hm.getMax() / 1048576) + " MB");
-		log.info("NonHeap Memory Usage: " + (nhm.getUsed() / 1048576) + "/" + (nhm.getMax() / 1048576) + " MB");
-	}
+        // TODO! flood protector
+        // TODO! brute force protector
+
+        IOServer.getInstance();
+        Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
+
+        MemoryUsage	hm  = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
+        MemoryUsage	nhm = ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage();
+
+        log.info("Heap Memory Usage: " + (hm.getUsed() / 1048576) + "/" + (hm.getMax() / 1048576) + " MB");
+        log.info("NonHeap Memory Usage: " + (nhm.getUsed() / 1048576) + "/" + (nhm.getMax() / 1048576) + " MB");
+    }
 }

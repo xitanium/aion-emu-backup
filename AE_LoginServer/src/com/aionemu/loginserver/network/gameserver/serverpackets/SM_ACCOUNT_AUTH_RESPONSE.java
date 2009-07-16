@@ -18,6 +18,8 @@ package com.aionemu.loginserver.network.gameserver.serverpackets;
 
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsServerPacket;
+import com.aionemu.loginserver.model.AccountTime;
+import com.aionemu.loginserver.controller.AccountTimeController;
 
 import java.nio.ByteBuffer;
 
@@ -28,7 +30,7 @@ import java.nio.ByteBuffer;
  * @author -Nemesiss-
  * 
  */
-public class SM_ACOUNT_AUTH_RESPONSE extends GsServerPacket
+public class SM_ACCOUNT_AUTH_RESPONSE extends GsServerPacket
 {
 	/**
 	 * Account id
@@ -50,7 +52,7 @@ public class SM_ACOUNT_AUTH_RESPONSE extends GsServerPacket
 	 * @param ok
 	 * @param accountName
 	 */
-	public SM_ACOUNT_AUTH_RESPONSE(int accountId, boolean ok, String accountName)
+	public SM_ACCOUNT_AUTH_RESPONSE(int accountId, boolean ok, String accountName)
 	{
 		super(0x01);
 
@@ -59,7 +61,7 @@ public class SM_ACOUNT_AUTH_RESPONSE extends GsServerPacket
 		this.accountName = accountName;
 	}
 
-	/**
+    /**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -68,7 +70,14 @@ public class SM_ACOUNT_AUTH_RESPONSE extends GsServerPacket
 		writeC(buf, getOpcode());
 		writeD(buf, accountId);
 		writeC(buf, ok ? 1 : 0);
-		if (ok)
+		if (ok) {
 			writeS(buf, accountName);
+
+            AccountTime accountTime = con.getGameServerInfo().getAccountFromGameServer(accountId).getAccountTime();
+            writeC(buf, AccountTimeController.getHours(accountTime.getAccumulatedOnlineTime()));
+            writeC(buf, AccountTimeController.getMinutes(accountTime.getAccumulatedOnlineTime()));
+            writeC(buf, AccountTimeController.getHours(accountTime.getAccumulatedRestTime()));
+            writeC(buf, AccountTimeController.getMinutes(accountTime.getAccumulatedRestTime()));
+        }
 	}
 }

@@ -27,6 +27,7 @@ import com.aionemu.commons.database.DB;
 import com.aionemu.commons.database.IUStH;
 import com.aionemu.loginserver.dao.AccountDAO;
 import com.aionemu.loginserver.model.Account;
+import com.aionemu.loginserver.model.AccountTime;
 
 /**
  * MySQL5 Account DAO implementation
@@ -47,7 +48,8 @@ public class MySQL5AccountDAO extends AccountDAO
 	public Account getAccount(String name)
 	{
 		Account account = null;
-		PreparedStatement st = DB.prepareStatement("SELECT * FROM account_data WHERE `name` = ?");
+		PreparedStatement st = DB.prepareStatement("SELECT * FROM account_data ad " +
+                "LEFT OUTER JOIN account_time at on ad.id = at.id  WHERE ad.`name` = ?");
 		try
 		{
 			st.setString(1, name);
@@ -58,13 +60,20 @@ public class MySQL5AccountDAO extends AccountDAO
 				account.setId(rs.getInt("id"));
 				account.setName(name);
 				account.setPasswordHash(rs.getString("password"));
-				account.setLastActive(rs.getTimestamp("last_active"));
-				account.setExpirationTime(rs.getTimestamp("expiration_time"));
-				account.setPenaltyEnd(rs.getTimestamp("penalty_end"));
 				account.setAccessLevel(rs.getByte("access_level"));
 				account.setLastServer(rs.getByte("last_server"));
 				account.setLastIp(rs.getString("last_ip"));
 				account.setIpForce(rs.getString("ip_force"));
+
+                AccountTime accountTime = new AccountTime();
+                accountTime.setLastLoginTime(rs.getTimestamp("last_active"));
+                accountTime.setSessionDuration(rs.getLong("session_duration"));
+                accountTime.setAccumulatedOnlineTime(rs.getLong("accumulated_online"));
+                accountTime.setAccumulatedRestTime(rs.getLong("accumulated_rest"));
+                accountTime.setPenaltyEnd(rs.getTimestamp("penalty_end"));
+                accountTime.setExpirationTime(rs.getTimestamp("expiration_time"));
+
+                account.setAccountTime(accountTime);
 			}
 		}
 		catch (Exception e)
@@ -137,18 +146,15 @@ public class MySQL5AccountDAO extends AccountDAO
 
 		int result = 0;
 		PreparedStatement st = DB
-			.prepareStatement("INSERT INTO account_data(`name`, `password`, last_active, expiration_time, penalty_end, access_level, last_server, last_ip, ip_force) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			.prepareStatement("INSERT INTO account_data(`name`, `password`, access_level, last_server, last_ip, ip_force) VALUES (?, ?, ?, ?, ?, ?)");
 		try
 		{
 			st.setString(1, account.getName());
 			st.setString(2, account.getPasswordHash());
-			st.setTimestamp(3, account.getLastActive());
-			st.setTimestamp(4, account.getExpirationTime());
-			st.setTimestamp(5, account.getPenaltyEnd());
-			st.setByte(6, account.getAccessLevel());
-			st.setByte(7, account.getLastServer());
-			st.setString(8, account.getLastIp());
-			st.setString(9, account.getIpForce());
+			st.setByte(3, account.getAccessLevel());
+			st.setByte(4, account.getLastServer());
+			st.setString(5, account.getLastIp());
+			st.setString(6, account.getIpForce());
 			result = st.executeUpdate();
 		}
 		catch (SQLException e)
@@ -173,19 +179,16 @@ public class MySQL5AccountDAO extends AccountDAO
 	{
 		int result = 0;
 		PreparedStatement st = DB
-			.prepareStatement("UPDATE account_data SET `name` = ?, `password` = ?, last_active = ?, expiration_time = ?, penalty_end = ?, access_level = ?, last_server = ?, last_ip = ?, ip_force = ? WHERE `id` = ?");
+			.prepareStatement("UPDATE account_data SET `name` = ?, `password` = ?, access_level = ?, last_server = ?, last_ip = ?, ip_force = ? WHERE `id` = ?");
 		try
 		{
 			st.setString(1, account.getName());
 			st.setString(2, account.getPasswordHash());
-			st.setTimestamp(3, account.getLastActive());
-			st.setTimestamp(4, account.getExpirationTime());
-			st.setTimestamp(5, account.getPenaltyEnd());
-			st.setByte(6, account.getAccessLevel());
-			st.setByte(7, account.getLastServer());
-			st.setString(8, account.getLastIp());
-			st.setString(9, account.getIpForce());
-			st.setInt(10, account.getId());
+			st.setByte(3, account.getAccessLevel());
+			st.setByte(4, account.getLastServer());
+			st.setString(5, account.getLastIp());
+			st.setString(6, account.getIpForce());
+			st.setInt(7, account.getId());
 			st.executeUpdate();
 		}
 		catch (SQLException e)
@@ -203,15 +206,22 @@ public class MySQL5AccountDAO extends AccountDAO
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean updateLastActive(final int accountId, final Timestamp time)
+	public boolean updateAccountTime(final int accountId, final AccountTime accountTime)
 	{
-		return DB.insertUpdate("UPDATE account_data SET last_active = ? WHERE id = ?", new IUStH() {
+		return DB.insertUpdate("REPLACE INTO account_time (id, last_active, expiration_time, " +
+                "session_duration, accumulated_online, accumulated_rest, penalty_end) values " +
+                "(?,?,?,?,?,?,?)", new IUStH() {
 
 			@Override
 			public void handleInsertUpdate(PreparedStatement preparedStatement) throws SQLException
 			{
-				preparedStatement.setTimestamp(1, time);
-				preparedStatement.setInt(2, accountId);
+                preparedStatement.setLong(1, accountId);
+				preparedStatement.setTimestamp(2, accountTime.getLastLoginTime());
+                preparedStatement.setTimestamp(3, accountTime.getExpirationTime());
+                preparedStatement.setLong(4, accountTime.getSessionDuration());
+                preparedStatement.setLong(5, accountTime.getAccumulatedOnlineTime());
+                preparedStatement.setLong(6, accountTime.getAccumulatedRestTime());
+				preparedStatement.setTimestamp(7, accountTime.getPenaltyEnd());
 				preparedStatement.execute();
 			}
 		});

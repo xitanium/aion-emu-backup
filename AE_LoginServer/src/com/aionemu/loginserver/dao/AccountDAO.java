@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 
 import com.aionemu.commons.database.dao.DAO;
 import com.aionemu.loginserver.model.Account;
+import com.aionemu.loginserver.model.AccountTime;
 
 /**
  * DAO that manages accounts.
@@ -72,15 +73,16 @@ public abstract class AccountDAO implements DAO
 	public abstract boolean updateAccount(Account account);
 
 	/**
-	 * Updates LastActive field of account
-	 * 
+	 * Updates @link com.aionemu.loginserver.model.AccountTime data of account
+K
+     *
 	 * @param accountId
 	 *            account id
-	 * @param lastActive
-	 *            last activity
+	 * @param accountTime
+     *            account time set
 	 * @return was update successfull or not
 	 */
-	public abstract boolean updateLastActive(int accountId, Timestamp lastActive);
+	public abstract boolean updateAccountTime(int accountId, AccountTime accountTime);
 
 	/**
 	 * Updates lastServer field of account
