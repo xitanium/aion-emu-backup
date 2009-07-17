@@ -23,6 +23,7 @@ import com.aionemu.loginserver.GameServerInfo;
 import com.aionemu.loginserver.GameServerTable;
 import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.dao.AccountDAO;
+import com.aionemu.loginserver.dao.AccountTimeDAO;
 import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.model.ReconnectingAccount;
 import com.aionemu.loginserver.network.aion.AionAuthResponse;
@@ -96,7 +97,7 @@ public class AccountController
 				gsi.addAccountToGameServer(acc);
 
 				acc.setLastServer(gsi.getId());
-				getDAO().updateLastServer(acc.getId(), acc.getLastServer());
+				getAccountDAO().updateLastServer(acc.getId(), acc.getLastServer());
 
 				/**
 				 * Send response to GameServer
@@ -169,7 +170,7 @@ public class AccountController
 	 */
 	public static AionAuthResponse login(String name, String password, AionConnection connection)
 	{
-		Account	account = getDAO().getAccount(name);
+		Account	account = getAccountDAO().getAccount(name);
 
 		// Try to create new account
 		if(account == null && Config.ACCOUNT_AUTO_CREATION)
@@ -189,6 +190,9 @@ public class AccountController
 			return AionAuthResponse.INVALID_PASSWORD;
 		}
 
+        //load account time
+        account.setAccountTime(getAccountTimeDAO().getAccountTime(account.getId()));
+
 		// If account expired
 		if(AccountTimeController.isAccountExpired(account))
 		{
@@ -207,7 +211,7 @@ public class AccountController
 			if(!NetworkUtils.checkIPMatching(account.getIpForce(), connection.getIP()))
 			{
 				return AionAuthResponse.BAN_IP;
-			}                                  
+			}
 		}
 
 		// if ip is banned
@@ -243,7 +247,7 @@ public class AccountController
 		AccountTimeController.updateOnLogin(account);
 
 		// if everything was OK
-		getDAO().updateLastIp(account.getId(), connection.getIP());
+		getAccountDAO().updateLastIp(account.getId(), connection.getIP());
 
 		return AionAuthResponse.AUTHED;
 	}
@@ -266,7 +270,7 @@ public class AccountController
 		account.setPasswordHash(passwordHash);
 		account.setAccessLevel((byte) 0);
 
-		if(getDAO().insertAccount(account))
+		if(getAccountDAO().insertAccount(account))
 		{
 			return account;
 		}
@@ -281,8 +285,18 @@ public class AccountController
 	 *
 	 * @return {@link com.aionemu.loginserver.dao.AccountDAO}
 	 */
-	private static AccountDAO getDAO()
+	private static AccountDAO getAccountDAO()
 	{
 		return DAOManager.getDAO(AccountDAO.class);
+	}
+
+	/**
+	 * Returns {@link com.aionemu.loginserver.dao.AccountTimeDAO}, just a shortcut
+	 *
+	 * @return {@link com.aionemu.loginserver.dao.AccountTimeDAO}
+	 */
+	private static AccountTimeDAO getAccountTimeDAO()
+	{
+		return DAOManager.getDAO(AccountTimeDAO.class);
 	}
 }

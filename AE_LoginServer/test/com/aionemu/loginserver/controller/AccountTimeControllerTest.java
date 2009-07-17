@@ -21,6 +21,7 @@ import com.aionemu.commons.database.DatabaseFactory;
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.loginserver.configs.Config;
 import com.aionemu.loginserver.dao.AccountDAO;
+import com.aionemu.loginserver.dao.AccountTimeDAO;
 import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.model.AccountTime;
 import org.junit.Before;
@@ -39,10 +40,6 @@ public class AccountTimeControllerTest
 	public void testAccountTimeController() 
     {
         Account account = DAOManager.getDAO(AccountDAO.class).getAccount("df");
-        AccountTime accountTime = account.getAccountTime();
-
-        int hours = AccountTimeController.getHours(accountTime.getAccumulatedRestTime());
-        int minutes = AccountTimeController.getMinutes(accountTime.getAccumulatedRestTime());
-        System.out.println("Hours: " + hours + " Minutes: " + minutes);        
+        AccountTime accountTime = DAOManager.getDAO(AccountTimeDAO.class).getAccountTime(account.getId());
     }
 }

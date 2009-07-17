@@ -18,7 +18,7 @@
 package com.aionemu.loginserver.controller;
 
 import com.aionemu.commons.database.dao.DAOManager;
-import com.aionemu.loginserver.dao.AccountDAO;
+import com.aionemu.loginserver.dao.AccountTimeDAO;
 import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.model.AccountTime;
 
@@ -54,9 +54,8 @@ public class AccountTimeController
 			accountTime = new AccountTime();
 		}
 
-        int lastLoginDay = getDays(accountTime.getLastLoginTime().getTime());
-        int currentDay = getDays(System.currentTimeMillis());
-
+		int	lastLoginDay = getDays(accountTime.getLastLoginTime().getTime());
+		int	currentDay   = getDays(System.currentTimeMillis());
 
 		/**
 		 * The character from that account was online not today, so it's account timings
@@ -78,7 +77,7 @@ public class AccountTimeController
 
 		accountTime.setLastLoginTime(new Timestamp(System.currentTimeMillis()));
 
-		DAOManager.getDAO(AccountDAO.class).updateAccountTime(account.getId(), accountTime);
+		DAOManager.getDAO(AccountTimeDAO.class).updateAccountTime(account.getId(), accountTime);
 		account.setAccountTime(accountTime);
 	}
 
@@ -95,62 +94,43 @@ public class AccountTimeController
 
 		accountTime.setSessionDuration(System.currentTimeMillis() - accountTime.getLastLoginTime().getTime());
 		accountTime.setAccumulatedOnlineTime(accountTime.getAccumulatedOnlineTime() + accountTime.getSessionDuration());
-		DAOManager.getDAO(AccountDAO.class).updateAccountTime(account.getId(), accountTime);
+		DAOManager.getDAO(AccountTimeDAO.class).updateAccountTime(account.getId(), accountTime);
 		account.setAccountTime(accountTime);
 	}
 
-
-    /**
-     * Checks if account is already expired or not
-     * @param account
-     * @return true, if account is expired, false otherwise
-     */
+	/**
+	 * Checks if account is already expired or not
+	 * @param account
+	 * @return true, if account is expired, false otherwise
+	 */
 	public static boolean isAccountExpired(Account account)
-    {
-        AccountTime accountTime = account.getAccountTime();
-        return accountTime != null && accountTime.getExpirationTime() != null &&
-                accountTime.getExpirationTime().getTime() < System.currentTimeMillis();
-    }
-
-    /**
-     * Checks if account is restricted by penalty or not
-     * @param account
-     * @return true, is penalty is active, false otherwise
-     */
-    public static boolean isAccountPenaltyActive(Account account)
-    {
-        AccountTime accountTime = account.getAccountTime();
-        return accountTime != null && accountTime.getPenaltyEnd() != null &&
-                accountTime.getPenaltyEnd().getTime() >= System.currentTimeMillis();
-    }
-
-    /**
-     * Get hours from time presented in milliseconds
-     * @param millis time in ms
-     * @return hours
-     */
-	public static int getHours(long millis)
 	{
-		return (int) (millis / 1000) / 3600;
+		AccountTime	accountTime = account.getAccountTime();
+
+		return accountTime != null && accountTime.getExpirationTime() != null &&
+			   accountTime.getExpirationTime().getTime() < System.currentTimeMillis();
 	}
 
-    /**
-     * Get Minutes from time presented in milliseconds
-     * @param millis time in ms
-     * @return minutes
-     */
-	public static int getMinutes(long millis)
+	/**
+	 * Checks if account is restricted by penalty or not
+	 * @param account
+	 * @return true, is penalty is active, false otherwise
+	 */
+	public static boolean isAccountPenaltyActive(Account account)
 	{
-		return (int) ((millis / 1000) % 3600) / 60;
+		AccountTime	accountTime = account.getAccountTime();
+
+		return accountTime != null && accountTime.getPenaltyEnd() != null &&
+			   accountTime.getPenaltyEnd().getTime() >= System.currentTimeMillis();
 	}
 
-    /**
-     * Get days from time presented in milliseconds
-     * @param millis time in ms
-     * @return  days
-     */
-    public static int getDays(long millis)
-    {
-        return (int) (millis / 1000 / 3600 / 24);
-    }
+	/**
+	 * Get days from time presented in milliseconds
+	 * @param millis time in ms
+	 * @return  days
+	 */
+	public static int getDays(long millis)
+	{
+		return (int) (millis / 1000 / 3600 / 24);
+	}
 }

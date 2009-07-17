@@ -14,21 +14,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.aionemu.loginserver.network.gameserver.serverpackets;
 
+import com.aionemu.loginserver.model.AccountTime;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.GsServerPacket;
-import com.aionemu.loginserver.model.AccountTime;
-import com.aionemu.loginserver.controller.AccountTimeController;
 
 import java.nio.ByteBuffer;
 
 /**
  * In this packet LoginServer is answering on GameServer request about valid authentication data and also sends account
  * name of user that is authenticating on GameServer.
- * 
+ *
  * @author -Nemesiss-
- * 
+ *
  */
 public class SM_ACCOUNT_AUTH_RESPONSE extends GsServerPacket
 {
@@ -36,10 +36,12 @@ public class SM_ACCOUNT_AUTH_RESPONSE extends GsServerPacket
 	 * Account id
 	 */
 	private final int		accountId;
+
 	/**
 	 * True if account is authenticated.
 	 */
 	private final boolean	ok;
+
 	/**
 	 * account name
 	 */
@@ -47,7 +49,7 @@ public class SM_ACCOUNT_AUTH_RESPONSE extends GsServerPacket
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param accountId
 	 * @param ok
 	 * @param accountName
@@ -56,12 +58,12 @@ public class SM_ACCOUNT_AUTH_RESPONSE extends GsServerPacket
 	{
 		super(0x01);
 
-		this.accountId = accountId;
-		this.ok = ok;
+		this.accountId   = accountId;
+		this.ok          = ok;
 		this.accountName = accountName;
 	}
 
-    /**
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -70,14 +72,15 @@ public class SM_ACCOUNT_AUTH_RESPONSE extends GsServerPacket
 		writeC(buf, getOpcode());
 		writeD(buf, accountId);
 		writeC(buf, ok ? 1 : 0);
-		if (ok) {
+
+		if(ok)
+		{
 			writeS(buf, accountName);
 
-            AccountTime accountTime = con.getGameServerInfo().getAccountFromGameServer(accountId).getAccountTime();
-            writeC(buf, AccountTimeController.getHours(accountTime.getAccumulatedOnlineTime()));
-            writeC(buf, AccountTimeController.getMinutes(accountTime.getAccumulatedOnlineTime()));
-            writeC(buf, AccountTimeController.getHours(accountTime.getAccumulatedRestTime()));
-            writeC(buf, AccountTimeController.getMinutes(accountTime.getAccumulatedRestTime()));
-        }
+			AccountTime	accountTime = con.getGameServerInfo().getAccountFromGameServer(accountId).getAccountTime();
+
+			writeQ(buf, accountTime.getAccumulatedOnlineTime());
+			writeQ(buf, accountTime.getAccumulatedRestTime());
+		}
 	}
-}
+}        
