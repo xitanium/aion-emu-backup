@@ -1,31 +1,32 @@
-/**
+/*
  * This file is part of aion-emu <aion-emu.com>.
  *
- *  aion-emu is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * aion-emu is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  aion-emu is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * aion-emu is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package mysql5;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DB;
 import com.aionemu.commons.database.IUStH;
 import com.aionemu.loginserver.dao.AccountTimeDAO;
 import com.aionemu.loginserver.model.AccountTime;
-import org.apache.log4j.Logger;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * MySQL5 AccountTimeDAO implementation
@@ -45,7 +46,7 @@ public class MySQL5AccountTimeDAO extends AccountTimeDAO
 	@Override
 	public boolean updateAccountTime(final int accountId, final AccountTime accountTime)
 	{
-		return DB.insertUpdate("REPLACE INTO account_time (id, last_active, expiration_time, " +
+		return DB.insertUpdate("REPLACE INTO account_time (account_id, last_active, expiration_time, " +
 							   "session_duration, accumulated_online, accumulated_rest, penalty_end) values " +
 							   "(?,?,?,?,?,?,?)",
 							   new IUStH()
@@ -72,7 +73,7 @@ public class MySQL5AccountTimeDAO extends AccountTimeDAO
 	public AccountTime getAccountTime(int accountId)
 	{
 		AccountTime			accountTime = null;
-		PreparedStatement	st          = DB.prepareStatement("SELECT * FROM account_time WHERE id = ?");
+		PreparedStatement	st          = DB.prepareStatement("SELECT * FROM account_time WHERE account_id = ?");
 
 		try
 		{
