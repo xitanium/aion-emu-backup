@@ -17,6 +17,9 @@
 
 package com.aionemu.loginserver.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.commons.utils.NetworkUtils;
 import com.aionemu.loginserver.GameServerInfo;
@@ -34,9 +37,6 @@ import com.aionemu.loginserver.network.aion.serverpackets.SM_UPDATE_SESSION;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.serverpackets.SM_ACCOUNT_AUTH_RESPONSE;
 import com.aionemu.loginserver.utils.AccountUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is resposible for controlling all account actions
@@ -170,7 +170,7 @@ public class AccountController
 	 */
 	public static AionAuthResponse login(String name, String password, AionConnection connection)
 	{
-		Account	account = getAccountDAO().getAccount(name);
+		Account account = loadAccount(name);
 
 		// Try to create new account
 		if(account == null && Config.ACCOUNT_AUTO_CREATION)
@@ -189,9 +189,6 @@ public class AccountController
 		{
 			return AionAuthResponse.INVALID_PASSWORD;
 		}
-
-        //load account time
-        account.setAccountTime(getAccountTimeDAO().getAccountTime(account.getId()));
 
 		// If account expired
 		if(AccountTimeController.isAccountExpired(account))
@@ -250,6 +247,21 @@ public class AccountController
 		getAccountDAO().updateLastIp(account.getId(), connection.getIP());
 
 		return AionAuthResponse.AUTHED;
+	}
+
+	/**
+	 * Loads account from DB and returns it, or returns null if account was not loaded
+	 * @param name acccount name
+	 * @return loaded account or null
+	 */
+	public static Account loadAccount(String name) 
+	{
+		Account	account = getAccountDAO().getAccount(name);
+		if (account != null)
+		{
+			account.setAccountTime(getAccountTimeDAO().getAccountTime(account.getId()));
+		}
+		return account;
 	}
 
 	/**
