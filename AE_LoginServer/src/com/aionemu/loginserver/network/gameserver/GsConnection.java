@@ -146,6 +146,7 @@ public class GsConnection extends AConnection
 		if (gameServerInfo != null)
 		{
 			gameServerInfo.setGsConnection(null);
+			gameServerInfo.clearAccountsOnGameServer();
 			gameServerInfo = null;
 		}
 	}

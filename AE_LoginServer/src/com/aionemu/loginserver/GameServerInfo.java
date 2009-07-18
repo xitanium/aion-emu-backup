@@ -275,6 +275,14 @@ public class GameServerInfo
     }
 
 	/**
+	 * Clears all accounts on this gameServer
+	 */
+	public void clearAccountsOnGameServer()
+	{
+		accountsOnGameServer.clear();
+	}
+
+	/**
 	 * Returns ip address that will be used as server ip for specific player.<br>
 	 * The problem is that players can access server from various subnetworks so we need to send different ip adresses.<br>
 	 * If gameserver is not online - it returns 127.0.0.1 as server address.
