@@ -23,6 +23,8 @@ import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.network.gameserver.GsClientPacket;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
+import com.aionemu.loginserver.network.gameserver.serverpackets.SM_REQUEST_KICK_ACCOUNT;
+import com.aionemu.loginserver.GameServerTable;
 
 /**
  * Reads the list of accoutn id's that are logged to game server
@@ -63,6 +65,11 @@ public class CM_ACCOUNT_LIST extends GsClientPacket
 		for(String s : accountNames)
 		{
 			Account a = AccountController.loadAccount(s);
+			if(GameServerTable.isAccountOnAnyGameServer(a))
+			{
+				getConnection().sendPacket(new SM_REQUEST_KICK_ACCOUNT(a.getId()));
+				continue;
+			}
 			getConnection().getGameServerInfo().addAccountToGameServer(a);
 		}
 	}

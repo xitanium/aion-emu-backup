@@ -220,8 +220,9 @@ public class AccountController
 		// Do not allow to login two times with same account
 		synchronized (AccountController.class)
 		{
-			if(GameServerTable.isAccountOnAnyGameServerAndKick(account))
+			if(GameServerTable.isAccountOnAnyGameServer(account))
 			{
+				GameServerTable.kickAccountFromGameServer(account);
 				return AionAuthResponse.ALREADY_LOGGED_IN;
 			}
 

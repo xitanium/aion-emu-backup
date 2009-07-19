@@ -140,20 +140,35 @@ public class GameServerTable
 	/**
 	 * Check if account is already in use on any GameServer. If so - kick account from GameServer.
 	 * 
-	 * @param acc
+	 * @param acc account to check
 	 * @return true is account is logged in on one of GameServers
 	 */
-	public static boolean isAccountOnAnyGameServerAndKick(Account acc)
+	public static boolean isAccountOnAnyGameServer(Account acc)
 	{
 		for (GameServerInfo gsi : getGameServers())
 		{
 			if (gsi.isAccountOnGameServer(acc.getId()))
 			{
-				gsi.getGsConnection().sendPacket(new SM_REQUEST_KICK_ACCOUNT(acc.getId()));
 				return true;
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Helper method, used to kick account from any gameServer if it's logged in
+	 * @param account account to kick
+	 */
+	public static void kickAccountFromGameServer(Account account)
+	{
+		for (GameServerInfo gsi : getGameServers())
+		{
+			if (gsi.isAccountOnGameServer(account.getId()))
+			{
+				gsi.getGsConnection().sendPacket(new SM_REQUEST_KICK_ACCOUNT(account.getId()));
+				break;
+			}
+		}
 	}
 
 	/**
