@@ -148,6 +148,7 @@ public class JuliToLog4JHandler extends Handler
 	 */
 	protected static class CustomLog4jLevel extends org.apache.log4j.Level
 	{
+		private static final long serialVersionUID = 4014557380173323844L;
 
 		/**
 		 * Creates new Level of logging for Log4J

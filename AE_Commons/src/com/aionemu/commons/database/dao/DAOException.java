@@ -24,6 +24,7 @@ package com.aionemu.commons.database.dao;
  */
 public class DAOException extends RuntimeException
 {
+	private static final long serialVersionUID = 7637014806313099318L;
 
 	/**
 	 * {@inheritDoc}

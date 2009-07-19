@@ -95,6 +95,7 @@ public class ResourceBundleControl extends ResourceBundle.Control
 		{
 			try
 			{
+				@SuppressWarnings({"unchecked"})
 				Class<? extends ResourceBundle> bundleClass = (Class<? extends ResourceBundle>) loader
 					.loadClass(bundleName);
 

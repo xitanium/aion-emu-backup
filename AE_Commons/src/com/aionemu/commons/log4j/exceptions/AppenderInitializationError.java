@@ -25,6 +25,7 @@ package com.aionemu.commons.log4j.exceptions;
  */
 public class AppenderInitializationError extends Error
 {
+	private static final long serialVersionUID = -6090251689433934051L;
 
 	/**
 	 * Creates new Error
