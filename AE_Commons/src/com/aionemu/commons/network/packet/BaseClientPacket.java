@@ -30,34 +30,53 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger		log	= Logger.getLogger(BaseClientPacket.class);
+	private static final Logger	log	= Logger.getLogger(BaseClientPacket.class);
 	/**
 	 * ByteBuffer that contains this packet data
 	 */
-	private final ByteBuffer		buf;
+	private ByteBuffer			buf;
 
 	/**
 	 * Constructs a new client packet with specified id and data buffer.
-	 *
-	 * @param buf       packet data container.
-	 * @param opcode    packet opcode.
+	 * 
+	 * @param buf
+	 *            packet data container.
+	 * @param opcode
+	 *            packet opcode.
 	 */
 	public BaseClientPacket(ByteBuffer buf, int opcode)
 	{
-		super(PacketType.CLIENT, opcode);
-
+		this(opcode);
 		this.buf = buf;
 	}
 
 	/**
-	 * This method reads data from a packet buffer.
-	 * If the error occurred while reading data, the connection is closed.
-	 *
+	 * Constructs a new client packet with specified id. ByteBuffer must be later set with setBuffer method.
+	 * @param opcode
+	 *            packet opcode.
+	 */
+	public BaseClientPacket(int opcode)
+	{
+		super(PacketType.CLIENT, opcode);
+	}
+	
+	/**
+	 * Attach ByteBuffer to this packet.
+	 * @param buf
+	 */
+	public void setBuffer(ByteBuffer buf)
+	{
+		this.buf = buf;
+	}
+
+	/**
+	 * This method reads data from a packet buffer. If the error occurred while reading data, the connection is closed.
+	 * 
 	 * @return <code>true</code> if reading was successful, otherwise <code>false</code>
-	 *
-	 * @see com.aionemu.commons.network.AConnection#processData(java.nio.ByteBuffer) 
+	 * 
+	 * @see com.aionemu.commons.network.AConnection#processData(java.nio.ByteBuffer)
 	 * @see com.aionemu.commons.network.Dispatcher#parse(com.aionemu.commons.network.AConnection, java.nio.ByteBuffer)
-	 *
+	 * 
 	 */
 	public final boolean read()
 	{
@@ -65,8 +84,8 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 		{
 			readImpl();
 
-			if(getRemainingBytes() > 0)
-				log.debug("Packet "+this+" not fully readed!");
+			if (getRemainingBytes() > 0)
+				log.debug("Packet " + this + " not fully readed!");
 
 			return true;
 		}

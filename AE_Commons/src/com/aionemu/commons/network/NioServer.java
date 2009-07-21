@@ -62,6 +62,9 @@ public class NioServer
 	 */
 	private final DisconnectionThreadPool	dcPool;
 
+	private int readWriteThreads;
+	private ServerCfg[] cfgs;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -87,7 +90,12 @@ public class NioServer
 					"This is unstable build. Assertion must be enabled! Add -ea to your start script or consider using stable build instead.");
 		}
 		this.dcPool = dcPool;
+		this.readWriteThreads = readWriteThreads;
+		this.cfgs = cfgs;
+	}
 
+	public void connect()
+	{
 		try
 		{
 			this.initDispatchers(readWriteThreads, dcPool);
@@ -128,7 +136,6 @@ public class NioServer
 			throw new Error("NioServer Initialization Error!");
 		}
 	}
-
 	/**
 	 * @return Accept Dispatcher.
 	 */
