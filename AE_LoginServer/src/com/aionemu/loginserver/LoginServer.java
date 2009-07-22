@@ -80,7 +80,7 @@ public class LoginServer
         // TODO! flood protector
         // TODO! brute force protector
 
-        IOServer.getInstance();
+        IOServer.getInstance().connect();
         Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
 
         MemoryUsage	hm  = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
