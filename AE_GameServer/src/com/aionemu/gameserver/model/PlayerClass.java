@@ -1,0 +1,94 @@
+/**
+ * This file is part of aion-emu <aion-emu.com>.
+ *
+ *  aion-emu is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  aion-emu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.aionemu.gameserver.model;
+
+/**
+ * This enum represent class that a player may belong to.
+ * 
+ * @author Luno
+ * 
+ */
+public enum PlayerClass
+{
+	WARRIOR(0, true),
+	GLADIATOR(1),
+	TEMPLAR(2),
+	SCOUT(3, true),
+	ASSASSIN(4),
+	RANGER(5),
+	MAGE(6, true),
+	SORCERER(7),
+	SPIRIT_MASTER(8),
+	PRIEST(9, true),
+	CLERIC(10),
+	CHANTER(11);
+
+	/** This id is used on client side */
+	private byte	classId;
+	/** Tells whether player can create new character with this class */
+	private boolean	startingClass;
+
+	private PlayerClass(int classId)
+	{
+		this(classId, false);
+	}
+
+	private PlayerClass(int classId, boolean startingClass)
+	{
+		this.classId = (byte) classId;
+		this.startingClass = startingClass;
+	}
+
+	/**
+	 * Returns client-side id for this PlayerClass
+	 * 
+	 * @return
+	 */
+	public byte getClassId()
+	{
+		return classId;
+	}
+
+	/**
+	 * Returns <tt>PlayerClass</tt> object correlating with given classId.
+	 * 
+	 * @param classId
+	 *            - id of player class
+	 * @return PlayerClass objects that matches the given classId. If there isn't any objects that matches given id,
+	 *         then <b>IllegalArgumentException</b> is being thrown.
+	 */
+	public static PlayerClass getPlayerClassById(byte classId)
+	{
+		for(PlayerClass pc : values())
+		{
+			if(pc.getClassId() == classId)
+				return pc;
+		}
+
+		throw new IllegalArgumentException("There is no player class with id " + classId);
+	}
+
+	/**
+	 * 
+	 * @return true if this is one of starting classes ( player can create char with this class )
+	 */
+	public boolean isStartingClass()
+	{
+		return startingClass;
+	}
+}

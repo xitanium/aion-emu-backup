@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="ae_static_data" type="staticData"/>
+
+  <xs:element name="player_experience_table" type="playerExperienceTable"/>
+  <xs:element name="world_maps" type="worldMapsData"/>
+
+  <xs:element name="map" type="worldMapTemplate"/>
+  
+  <xs:element name="import">
+	<xs:annotation>
+	  <xs:documentation><![CDATA[
+      Attributes:
+		'file' :
+				Required attribute.
+				Specified path to imported file or directory.
+		'skipRoot' :
+				Optional attribute.
+				Default value: 'false'
+				If enabled, then root tags of imported files are ignored.
+		'recirsiveImport':
+				Optional attribute.
+				Default value: 'true'
+				If enabled and attribute 'file' points to the directory, then all xml files in that
+				directory ( and deeper - recursively ) will be imported, otherwise only files inside that directory (without it subdirectories)
+	]]></xs:documentation>
+	</xs:annotation>
+	<xs:complexType>
+	  <xs:attribute type="xs:string" name="file" use="required"/>
+	  <xs:attribute type="xs:boolean" name="skipRoot" use="optional" default="false"/>
+	  <xs:attribute type="xs:boolean" name="recursiveImport" use="optional" default="true" />
+	</xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="staticData">
+    <xs:sequence>
+      <xs:element ref="import" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="world_maps" minOccurs="0"/>
+      <xs:element ref="player_experience_table" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="worldMapsData">
+    <xs:sequence>
+      <xs:element ref="map" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="worldMapTemplate">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+    <xs:attribute name="twin_count" type="xs:int"/>
+    <xs:attribute name="max_user" type="xs:int"/>
+    <xs:attribute name="prison" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="playerExperienceTable">
+    <xs:sequence>
+      <xs:element name="exp" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+
