@@ -67,4 +67,8 @@
 	<import file="world_maps.xml" />
 	<import file="player_experience_table.xml" />
 
+	<stats_templates>
+		<import file="stats/" skipRoot="true" />
+	</stats_templates>
+
 </ae_static_data>

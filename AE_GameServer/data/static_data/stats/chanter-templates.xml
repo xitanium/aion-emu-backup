@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stats_templates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../static_data.xsd">
+
+	<stats_template class="CHANTER" level="10">
+		<maxHp>688</maxHp>
+		<maxMp>1320</maxMp>
+
+		<power>110</power>
+		<health>105</health>
+		<agility>90</agility>
+		<accuracy>90</accuracy>
+		<knowledge>105</knowledge>
+		<will>110</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>155</evasion>
+		<block>155</block>
+		<parry>155</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>250</main_hand_accuracy>
+		<main_hand_crit_rate>1</main_hand_crit_rate>
+
+		<magic_accuracy>124</magic_accuracy>
+	</stats_template>
+
+</stats_templates>

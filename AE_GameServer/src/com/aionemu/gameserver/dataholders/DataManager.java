@@ -64,6 +64,11 @@ public class DataManager
 	public final PlayerExperienceTable	PLAYER_EXPERIENCE_TABLE;
 
 	/**
+	 * 
+	 */
+	public final PlayerStatsData PLAYER_STATS_DATA;
+
+	/**
 	 * Constructor creating <tt>DataManager</tt> instance.<br>
 	 * NOTICE: calling constructor implies loading whole data from /data/static_data immediately
 	 */
@@ -85,6 +90,7 @@ public class DataManager
 		
 		WORLD_MAPS_DATA = data.worldMapsData;
 		PLAYER_EXPERIENCE_TABLE = data.playerExperienceTable;
+		PLAYER_STATS_DATA = data.statsData;
 		
 		
 		//some sexy time message

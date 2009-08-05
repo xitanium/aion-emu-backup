@@ -5,7 +5,7 @@
 
   <xs:element name="player_experience_table" type="playerExperienceTable"/>
   <xs:element name="world_maps" type="worldMapsData"/>
-
+  <xs:element name="stats_templates" type="statsTemplatesType" />
   <xs:element name="map" type="worldMapTemplate"/>
   
   <xs:element name="import">
@@ -38,6 +38,7 @@
       <xs:element ref="import" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element ref="world_maps" minOccurs="0"/>
       <xs:element ref="player_experience_table" minOccurs="0"/>
+      <xs:element ref="stats_templates" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -61,5 +62,47 @@
       <xs:element name="exp" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
+
+
+	<xs:complexType name="statsTemplateType">
+		<xs:sequence>
+			<xs:element type="xs:int" name="maxHp" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:int" name="maxMp" minOccurs="1" maxOccurs="1" />
+
+			<xs:element type="xs:int" name="power" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:int" name="health" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:int" name="agility" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:int" name="accuracy" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:int" name="knowledge" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:int" name="will" minOccurs="1" maxOccurs="1" />
+
+			<xs:element type="xs:int" name="walk_speed" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:int" name="run_speed" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:int" name="fly_speed" minOccurs="1" maxOccurs="1" />
+			
+			<xs:element type="xs:float" name="attack_speed" minOccurs="1" maxOccurs="1" />
+
+			<xs:element type="xs:int" name="evasion" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:int" name="block" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:int" name="parry" minOccurs="1" maxOccurs="1" />
+
+			<xs:element type="xs:int" name="main_hand_attack" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:int" name="main_hand_accuracy" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:int" name="main_hand_crit_rate" minOccurs="1" maxOccurs="1" />
+
+			<xs:element type="xs:int" name="magic_accuracy" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+
+		<xs:attribute type="xs:string" name="class" use="required" />
+		<xs:attribute type="xs:byte" name="level" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="statsTemplatesType">
+		<xs:sequence>
+			<xs:element ref="import" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element type="statsTemplateType" name="stats_template" maxOccurs="unbounded" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
 </xs:schema>
 

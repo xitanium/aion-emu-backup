@@ -93,4 +93,10 @@ public class Npc extends Creature
 	{
 		return (NpcController) super.getController();
 	}
+
+	@Override
+	public byte getLevel()
+	{
+		return 1;
+	}
 }

@@ -55,4 +55,6 @@ public abstract class Creature extends VisibleObject
 	{
 		return (CreatureController<? extends Creature>) super.getController();
 	}
+
+	public abstract byte getLevel();
 }

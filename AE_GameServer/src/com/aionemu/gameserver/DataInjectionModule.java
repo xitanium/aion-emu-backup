@@ -21,6 +21,7 @@ import com.aionemu.gameserver.dataholders.NpcData;
 import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
 import com.aionemu.gameserver.dataholders.SpawnData;
 import com.aionemu.gameserver.dataholders.WorldMapsData;
+import com.aionemu.gameserver.dataholders.PlayerStatsData;
 import com.aionemu.gameserver.services.AccountService;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.spawnengine.SpawnEngine;
@@ -91,5 +92,12 @@ public class DataInjectionModule extends AbstractModule
 	ChatHandlers provideChatHandlers()
 	{
 		return new ChatHandlersFactory(injector).createChatHandlers();
+	}
+
+	@Provides
+	@Singleton
+	PlayerStatsData providePlayerStatsData(DataManager datamanager)
+	{
+		return datamanager.PLAYER_STATS_DATA;
 	}
 }

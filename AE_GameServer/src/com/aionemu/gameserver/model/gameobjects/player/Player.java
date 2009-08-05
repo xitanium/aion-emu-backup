@@ -132,4 +132,10 @@ public class Player extends Creature
 	{
 		return (PlayerController) super.getController();
 	}
+
+	@Override
+	public byte getLevel()
+	{
+		return 1;
+	}
 }

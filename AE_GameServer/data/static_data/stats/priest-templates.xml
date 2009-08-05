@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stats_templates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../static_data.xsd">
+	
+	<stats_template class="PRIEST" level="1">
+		<maxHp>201</maxHp>
+		<maxMp>375</maxMp>
+
+		<power>95</power>
+		<health>95</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>100</knowledge>
+		<will>110</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>74</evasion>
+		<block>74</block>
+		<parry>74</parry>
+
+		<main_hand_attack>17</main_hand_attack>
+		<main_hand_accuracy>198</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+		
+		<magic_accuracy>12</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="PRIEST" level="2">
+		<maxHp>243</maxHp>
+		<maxMp>480</maxMp>
+
+		<power>95</power>
+		<health>95</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>100</knowledge>
+		<will>110</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>86</evasion>
+		<block>86</block>
+		<parry>86</parry>
+
+		<main_hand_attack>17</main_hand_attack>
+		<main_hand_accuracy>206</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>24</magic_accuracy>
+	</stats_template>
+
+
+	<stats_template class="PRIEST" level="3">
+		<maxHp>287</maxHp>
+		<maxMp>585</maxMp>
+
+		<power>95</power>
+		<health>95</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>100</knowledge>
+		<will>110</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>99</evasion>
+		<block>99</block>
+		<parry>99</parry>
+
+		<main_hand_attack>17</main_hand_attack>
+		<main_hand_accuracy>214</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>37</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="PRIEST" level="4">
+		<maxHp>333</maxHp>
+		<maxMp>690</maxMp>
+
+		<power>95</power>
+		<health>95</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>100</knowledge>
+		<will>110</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>111</evasion>
+		<block>111</block>
+		<parry>111</parry>
+
+		<main_hand_attack>17</main_hand_attack>
+		<main_hand_accuracy>222</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>37</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="PRIEST" level="5">
+		<maxHp>381</maxHp>
+		<maxMp>795</maxMp>
+
+		<power>95</power>
+		<health>95</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>100</knowledge>
+		<will>110</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>124</evasion>
+		<block>124</block>
+		<parry>124</parry>
+
+		<main_hand_attack>17</main_hand_attack>
+		<main_hand_accuracy>230</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>62</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="PRIEST" level="6">
+		<maxHp>431</maxHp>
+		<maxMp>900</maxMp>
+
+		<power>95</power>
+		<health>95</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>100</knowledge>
+		<will>110</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>136</evasion>
+		<block>136</block>
+		<parry>136</parry>
+
+		<main_hand_attack>17</main_hand_attack>
+		<main_hand_accuracy>238</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>74</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="PRIEST" level="7">
+		<maxHp>483</maxHp>
+		<maxMp>1005</maxMp>
+
+		<power>95</power>
+		<health>95</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>100</knowledge>
+		<will>110</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>136</evasion>
+		<block>136</block>
+		<parry>136</parry>
+
+		<main_hand_attack>17</main_hand_attack>
+		<main_hand_accuracy>246</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>86</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="PRIEST" level="8">
+		<maxHp>537</maxHp>
+		<maxMp>1110</maxMp>
+
+		<power>95</power>
+		<health>95</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>100</knowledge>
+		<will>110</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>161</evasion>
+		<block>161</block>
+		<parry>161</parry>
+
+		<main_hand_attack>17</main_hand_attack>
+		<main_hand_accuracy>254</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>99</magic_accuracy>
+	</stats_template>
+
+
+	<stats_template class="PRIEST" level="9">
+		<maxHp>594</maxHp>
+		<maxMp>1215</maxMp>
+
+		<power>95</power>
+		<health>95</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>100</knowledge>
+		<will>110</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>173</evasion>
+		<block>173</block>
+		<parry>173</parry>
+
+		<main_hand_attack>17</main_hand_attack>
+		<main_hand_accuracy>262</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>111</magic_accuracy>
+	</stats_template>
+
+</stats_templates>
