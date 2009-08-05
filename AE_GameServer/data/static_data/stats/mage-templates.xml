@@ -139,5 +139,6 @@
 		<main_hand_crit_rate>1</main_hand_crit_rate>
 
 		<magic_accuracy>62</magic_accuracy>
-        </stats_template>
+	</stats_template>
+
 </stats_templates>
