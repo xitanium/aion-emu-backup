@@ -27,10 +27,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAccessType;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created on: 31.07.2009 14:20:03
@@ -50,7 +50,7 @@ public class PlayerStatsData
 	{
 		for (StatsTemplate pt : templatesList)
 		{
-			int code = makeHash(pt.getPlayerClass(), pt.getLevel());
+			int code = makeHash(pt.getRequiredPlayerClass(), pt.getRequiredLevel());
 
 			templates.put(code, pt);
 		}

@@ -36,54 +36,54 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class StatsTemplate
 {
 	@XmlAttribute(name = "class", required = true)
-	protected PlayerClass playerClass;
+	private PlayerClass requiredPlayerClass;
 	@XmlAttribute(name = "level", required = true)
-	protected int level;
+	private int requiredLevel;
 
 	@XmlElement(name = "maxHp", required = true)
-	protected int maxHp;
+	private int maxHp;
 	@XmlElement(name = "maxMp", required = true)
-	protected int maxMp;
+	private int maxMp;
 	
 	@XmlElement(name = "power", required = true)
-	protected int power;
+	private int power;
 	@XmlElement(name = "health", required = true)
-	protected int health;
+	private int health;
 	@XmlElement(name = "agility", required = true)
-	protected int agility;
+	private int agility;
 	@XmlElement(name = "accuracy", required = true)
-	protected int accuracy;
+	private int accuracy;
 	@XmlElement(name = "knowledge", required = true)
-	protected int knowledge;
+	private int knowledge;
 	@XmlElement(name = "will", required = true)
-	protected int will;
+	private int will;
 
 	@XmlElement(name = "walk_speed", required = true)
-	protected int walkSpeed;
+	private int walkSpeed;
 	@XmlElement(name = "run_speed", required = true)
-	protected int runSpeed;
+	private int runSpeed;
 	@XmlElement(name = "fly_speed", required = true)
-	protected int flySpeed;
+	private int flySpeed;
 
 	@XmlElement(name = "attack_speed", required = true)
-	protected int attackSpeed;
+	private int attackSpeed;
 
 	@XmlElement(name = "evasion", required = true)
-	protected int evasion;
+	private int evasion;
 	@XmlElement(name = "block", required = true)
-	protected int block;
+	private int block;
 	@XmlElement(name = "parry", required = true)
-	protected int parry;
+	private int parry;
 
 	@XmlElement(name = "main_hand_attack", required = true)
-	protected int mainHandAttack;
+	private int mainHandAttack;
 	@XmlElement(name = "main_hand_accuracy", required = true)
-	protected int mainHandAccuracy;
+	private int mainHandAccuracy;
 	@XmlElement(name = "main_hand_crit_rate", required = true)
-	protected int mainHandCritRate;
+	private int mainHandCritRate;
 
 	@XmlElement(name = "magic_accuracy", required = true)
-	protected int magicAccuracy;
+	private int magicAccuracy;
 
 	/* ======================================= */
 
@@ -194,13 +194,13 @@ public class StatsTemplate
 
 	/* ======================================= */
 
-	public PlayerClass getPlayerClass()
+	public PlayerClass getRequiredPlayerClass()
 	{
-		return playerClass;
+		return requiredPlayerClass;
 	}
 
-	public int getLevel()
+	public int getRequiredLevel()
 	{
-		return level;
+		return requiredLevel;
 	}
 }
