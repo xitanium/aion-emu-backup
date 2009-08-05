@@ -141,4 +141,115 @@
 		<magic_accuracy>62</magic_accuracy>
 	</stats_template>
 
+        <stats_template class="MAGE" level="6">
+		<maxHp>298</maxHp>
+		<maxMp>930</maxMp>
+
+		<power>90</power>
+		<health>90</health>
+		<agility>95</agility>
+		<accuracy>95</accuracy>
+		<knowledge>115</knowledge>
+		<will>115</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>120</evasion>
+		<block>120</block>
+		<parry>120</parry>
+
+		<main_hand_attack>16</main_hand_attack>
+		<main_hand_accuracy>228</main_hand_accuracy>
+		<main_hand_crit_rate>1</main_hand_crit_rate>
+
+		<magic_accuracy>74</magic_accuracy>
+	</stats_template>
+
+        <stats_template class="MAGE" level="7">
+		<maxHp>336</maxHp>
+		<maxMp>1035</maxMp>
+
+		<power>90</power>
+		<health>90</health>
+		<agility>95</agility>
+		<accuracy>95</accuracy>
+		<knowledge>115</knowledge>
+		<will>115</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>133</evasion>
+		<block>133</block>
+		<parry>133</parry>
+
+		<main_hand_attack>16</main_hand_attack>
+		<main_hand_accuracy>236</main_hand_accuracy>
+		<main_hand_crit_rate>1</main_hand_crit_rate>
+
+		<magic_accuracy>86</magic_accuracy>
+	</stats_template>
+
+        <stats_template class="MAGE" level="8">
+		<maxHp>375</maxHp>
+		<maxMp>1140</maxMp>
+
+		<power>90</power>
+		<health>90</health>
+		<agility>95</agility>
+		<accuracy>95</accuracy>
+		<knowledge>115</knowledge>
+		<will>115</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>145</evasion>
+		<block>145</block>
+		<parry>145</parry>
+
+		<main_hand_attack>16</main_hand_attack>
+		<main_hand_accuracy>244</main_hand_accuracy>
+		<main_hand_crit_rate>1</main_hand_crit_rate>
+
+		<magic_accuracy>99</magic_accuracy>
+	</stats_template>
+
+        <stats_template class="MAGE" level="9">
+		<maxHp>416</maxHp>
+		<maxMp>1245</maxMp>
+
+		<power>90</power>
+		<health>90</health>
+		<agility>95</agility>
+		<accuracy>95</accuracy>
+		<knowledge>115</knowledge>
+		<will>115</will>
+
+		<walk_speed>6</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>158</evasion>
+		<block>158</block>
+		<parry>158</parry>
+
+		<main_hand_attack>16</main_hand_attack>
+		<main_hand_accuracy>252</main_hand_accuracy>
+		<main_hand_crit_rate>1</main_hand_crit_rate>
+
+		<magic_accuracy>111</magic_accuracy>
+	</stats_template>
 </stats_templates>
