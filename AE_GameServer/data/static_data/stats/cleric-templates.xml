@@ -57,34 +57,6 @@
 		<magic_accuracy>124</magic_accuracy>
 	</stats_template>
 
-	<stats_template class="CLERIC" level="22">
-		<maxHp>1394</maxHp>
-		<maxMp>2583</maxMp>
- 
-		<power>105</power>
-		<health>110</health>
-		<agility>90</agility>
-		<accuracy>90</accuracy>
-		<knowledge>105</knowledge>
-		<will>110</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>549</evasion>
-		<block>330</block>
-		<parry>303</parry>
-
-		<main_hand_attack>18</main_hand_attack>
-		<main_hand_accuracy>322</main_hand_accuracy>
-		<main_hand_crit_rate>1</main_hand_crit_rate>
-
-		<magic_accuracy>272</magic_accuracy>
-	</stats_template>
-
 	<stats_template class="CLERIC" level="26">
 		<maxHp>1708</maxHp>
 		<maxMp>3005</maxMp>
