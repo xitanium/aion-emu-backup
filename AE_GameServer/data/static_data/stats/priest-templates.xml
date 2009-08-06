@@ -14,7 +14,7 @@
 
 		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
-		<fly_speed>6</fly_speed>
+		<fly_speed>9</fly_speed>
 
 		<attack_speed>1.5</attack_speed>
 
@@ -42,7 +42,7 @@
 
 		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
-		<fly_speed>6</fly_speed>
+		<fly_speed>9</fly_speed>
 
 		<attack_speed>1.5</attack_speed>
 
@@ -71,7 +71,7 @@
 
 		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
-		<fly_speed>6</fly_speed>
+		<fly_speed>9</fly_speed>
 
 		<attack_speed>1.5</attack_speed>
 
@@ -99,7 +99,7 @@
 
 		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
-		<fly_speed>6</fly_speed>
+		<fly_speed>9</fly_speed>
 
 		<attack_speed>1.5</attack_speed>
 
@@ -127,7 +127,7 @@
 
 		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
-		<fly_speed>6</fly_speed>
+		<fly_speed>9</fly_speed>
 
 		<attack_speed>1.5</attack_speed>
 
@@ -155,7 +155,7 @@
 
 		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
-		<fly_speed>6</fly_speed>
+		<fly_speed>9</fly_speed>
 
 		<attack_speed>1.5</attack_speed>
 
@@ -183,7 +183,7 @@
 
 		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
-		<fly_speed>6</fly_speed>
+		<fly_speed>9</fly_speed>
 
 		<attack_speed>1.5</attack_speed>
 
@@ -211,7 +211,7 @@
 
 		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
-		<fly_speed>6</fly_speed>
+		<fly_speed>9</fly_speed>
 
 		<attack_speed>1.5</attack_speed>
 
@@ -240,7 +240,7 @@
 
 		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
-		<fly_speed>6</fly_speed>
+		<fly_speed>9</fly_speed>
 
 		<attack_speed>1.5</attack_speed>
 
