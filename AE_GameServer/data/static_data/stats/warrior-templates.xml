@@ -1,5 +1,255 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <stats_templates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../static_data.xsd">
 	
+	<stats_template class="WARRIOR" level="1">
+		<maxHp>284</maxHp>
+		<maxMp>170</maxMp>
 
+		<power>110</power>
+		<health>110</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>90</knowledge>
+		<will>90</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>74</evasion>
+		<block>74</block>
+		<parry>74</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>198</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>12</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="WARRIOR" level="2">
+		<maxHp>330</maxHp>
+		<maxMp>240</maxMp>
+
+		<power>110</power>
+		<health>110</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>90</knowledge>
+		<will>90</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>86</evasion>
+		<block>86</block>
+		<parry>86</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>206</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>24</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="WARRIOR" level="3">
+		<maxHp>379</maxHp>
+		<maxMp>310</maxMp>
+
+		<power>110</power>
+		<health>110</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>90</knowledge>
+		<will>90</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>99</evasion>
+		<block>99</block>
+		<parry>99</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>214</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>37</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="WARRIOR" level="4">
+		<maxHp>430</maxHp>
+		<maxMp>380</maxMp>
+
+		<power>110</power>
+		<health>110</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>90</knowledge>
+		<will>90</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>111</evasion>
+		<block>111</block>
+		<parry>111</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>222</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>49</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="WARRIOR" level="5">
+		<maxHp>483</maxHp>
+		<maxMp>450</maxMp>
+
+		<power>110</power>
+		<health>110</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>90</knowledge>
+		<will>90</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>124</evasion>
+		<block>124</block>
+		<parry>124</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>230</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>62</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="WARRIOR" level="6">
+		<maxHp>539</maxHp>
+		<maxMp>520</maxMp>
+
+		<power>110</power>
+		<health>110</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>90</knowledge>
+		<will>90</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>136</evasion>
+		<block>136</block>
+		<parry>136</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>238</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>74</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="WARRIOR" level="7">
+		<maxHp>597</maxHp>
+		<maxMp>590</maxMp>
+
+		<power>110</power>
+		<health>110</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>90</knowledge>
+		<will>90</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>148</evasion>
+		<block>148</block>
+		<parry>148</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>246</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>86</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="WARRIOR" level="8">
+		<maxHp>657</maxHp>
+		<maxMp>660</maxMp>
+
+		<power>110</power>
+		<health>110</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>90</knowledge>
+		<will>90</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>161</evasion>
+		<block>161</block>
+		<parry>161</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>254</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>99</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="WARRIOR" level="9">
+		<maxHp>720</maxHp>
+		<maxMp>730</maxMp>
+
+		<power>110</power>
+		<health>110</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>90</knowledge>
+		<will>90</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>6</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>173</evasion>
+		<block>173</block>
+		<parry>173</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>262</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>111</magic_accuracy>
+	</stats_template>
 </stats_templates>

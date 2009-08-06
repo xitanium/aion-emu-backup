@@ -12,7 +12,7 @@
 		<knowledge>115</knowledge>
 		<will>115</will>
 
-		<walk_speed>6</walk_speed>
+		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
 		<fly_speed>6</fly_speed>
 
@@ -40,7 +40,7 @@
 		<knowledge>115</knowledge>
 		<will>115</will>
 
-		<walk_speed>6</walk_speed>
+		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
 		<fly_speed>6</fly_speed>
 
@@ -68,7 +68,7 @@
 		<knowledge>115</knowledge>
 		<will>115</will>
 
-		<walk_speed>6</walk_speed>
+		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
 		<fly_speed>6</fly_speed>
 
@@ -96,7 +96,7 @@
 		<knowledge>115</knowledge>
 		<will>115</will>
 
-		<walk_speed>6</walk_speed>
+		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
 		<fly_speed>6</fly_speed>
 
@@ -124,7 +124,7 @@
 		<knowledge>115</knowledge>
 		<will>115</will>
 
-		<walk_speed>6</walk_speed>
+		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
 		<fly_speed>6</fly_speed>
 
@@ -152,7 +152,7 @@
 		<knowledge>115</knowledge>
 		<will>115</will>
 
-		<walk_speed>6</walk_speed>
+		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
 		<fly_speed>6</fly_speed>
 
@@ -180,7 +180,7 @@
 		<knowledge>115</knowledge>
 		<will>115</will>
 
-		<walk_speed>6</walk_speed>
+		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
 		<fly_speed>6</fly_speed>
 
@@ -208,7 +208,7 @@
 		<knowledge>115</knowledge>
 		<will>115</will>
 
-		<walk_speed>6</walk_speed>
+		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
 		<fly_speed>6</fly_speed>
 
@@ -236,7 +236,7 @@
 		<knowledge>115</knowledge>
 		<will>115</will>
 
-		<walk_speed>6</walk_speed>
+		<walk_speed>1.5</walk_speed>
 		<run_speed>6</run_speed>
 		<fly_speed>6</fly_speed>
 
