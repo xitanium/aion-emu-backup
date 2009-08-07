@@ -26,14 +26,14 @@ package com.aionemu.gameserver.model;
 public enum PlayerClass
 {
 	WARRIOR(0, true),
-	GLADIATOR(1),
-	TEMPLAR(2),
+	GLADIATOR(1), //fighter
+	TEMPLAR(2),   //knight
 	SCOUT(3, true),
 	ASSASSIN(4),
 	RANGER(5),
 	MAGE(6, true),
-	SORCERER(7),
-	SPIRIT_MASTER(8),
+	SORCERER(7), //wizard
+	SPIRIT_MASTER(8),//elementalist
 	PRIEST(9, true),
 	CLERIC(10),
 	CHANTER(11);

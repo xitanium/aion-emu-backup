@@ -59,14 +59,14 @@ public class StatsTemplate
 	private int will;
 
 	@XmlElement(name = "walk_speed", required = true)
-	private int walkSpeed;
+	private float walkSpeed;
 	@XmlElement(name = "run_speed", required = true)
-	private int runSpeed;
+	private float runSpeed;
 	@XmlElement(name = "fly_speed", required = true)
-	private int flySpeed;
+	private float flySpeed;
 
 	@XmlElement(name = "attack_speed", required = true)
-	private int attackSpeed;
+	private float attackSpeed;
 
 	@XmlElement(name = "evasion", required = true)
 	private int evasion;
@@ -131,22 +131,22 @@ public class StatsTemplate
 
 	/* ======================================= */
 
-	public int getWalkSpeed()
+	public float getWalkSpeed()
 	{
 		return walkSpeed;
 	}
 
-	public int getRunSpeed()
+	public float getRunSpeed()
 	{
 		return runSpeed;
 	}
 
-	public int getFlySpeed()
+	public float getFlySpeed()
 	{
 		return flySpeed;
 	}
 
-	public int getAttackSpeed()
+	public float getAttackSpeed()
 	{
 		return attackSpeed;
 	}

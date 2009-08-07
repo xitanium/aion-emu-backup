@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <stats_templates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../static_data.xsd">
 
-	<stats_template class="SPIRITMASTER" level="10">
+	<stats_template class="SPIRIT_MASTER" level="10">
 		<maxHp>423</maxHp>
 		<maxMp>1350</maxMp>
 
@@ -29,7 +29,7 @@
 		<magic_accuracy>124</magic_accuracy>
 	</stats_template>
 
-	<stats_template class="SPIRITMASTER" level="11">
+	<stats_template class="SPIRIT_MASTER" level="11">
 		<maxHp>463</maxHp>
 		<maxMp>1455</maxMp>
 
@@ -57,7 +57,7 @@
 		<magic_accuracy>136</magic_accuracy>
 	</stats_template>
 
-	<stats_template class="SPIRITMASTER" level="12">
+	<stats_template class="SPIRIT_MASTER" level="12">
 		<maxHp>504</maxHp>
 		<maxMp>1561</maxMp>
 
@@ -85,7 +85,7 @@
 		<magic_accuracy>148</magic_accuracy>
 	</stats_template>
 
-	<stats_template class="SPIRITMASTER" level="13">
+	<stats_template class="SPIRIT_MASTER" level="13">
 		<maxHp>548</maxHp>
 		<maxMp>1666</maxMp>
 

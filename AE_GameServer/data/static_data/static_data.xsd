@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:element name="ae_static_data" type="staticData"/>
+	<xs:element name="ae_static_data" type="staticData" />
 
-  <xs:element name="player_experience_table" type="playerExperienceTable"/>
-  <xs:element name="world_maps" type="worldMapsData"/>
-  <xs:element name="stats_templates" type="statsTemplatesType" />
-  <xs:element name="map" type="worldMapTemplate"/>
-  
-  <xs:element name="import">
-	<xs:annotation>
-	  <xs:documentation><![CDATA[
+	<xs:element name="player_experience_table" type="playerExperienceTable" />
+	<xs:element name="world_maps" type="worldMapsData" />
+	<xs:element name="stats_templates" type="statsTemplatesType" />
+	<xs:element name="map" type="worldMapTemplate" />
+
+	<xs:element name="import">
+		<xs:annotation>
+			<xs:documentation><![CDATA[
       Attributes:
 		'file' :
 				Required attribute.
@@ -25,43 +25,43 @@
 				If enabled and attribute 'file' points to the directory, then all xml files in that
 				directory ( and deeper - recursively ) will be imported, otherwise only files inside that directory (without it subdirectories)
 	]]></xs:documentation>
-	</xs:annotation>
-	<xs:complexType>
-	  <xs:attribute type="xs:string" name="file" use="required"/>
-	  <xs:attribute type="xs:boolean" name="skipRoot" use="optional" default="false"/>
-	  <xs:attribute type="xs:boolean" name="recursiveImport" use="optional" default="true" />
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute type="xs:string" name="file" use="required" />
+			<xs:attribute type="xs:boolean" name="skipRoot" use="optional" default="false" />
+			<xs:attribute type="xs:boolean" name="recursiveImport" use="optional" default="true" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="staticData">
+		<xs:sequence>
+			<xs:element ref="import" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element ref="world_maps" minOccurs="0" />
+			<xs:element ref="player_experience_table" minOccurs="0" />
+			<xs:element ref="stats_templates" minOccurs="0" />
+		</xs:sequence>
 	</xs:complexType>
-  </xs:element>
 
-  <xs:complexType name="staticData">
-    <xs:sequence>
-      <xs:element ref="import" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element ref="world_maps" minOccurs="0"/>
-      <xs:element ref="player_experience_table" minOccurs="0"/>
-      <xs:element ref="stats_templates" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
+	<xs:complexType name="worldMapsData">
+		<xs:sequence>
+			<xs:element ref="map" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
 
-  <xs:complexType name="worldMapsData">
-    <xs:sequence>
-      <xs:element ref="map" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
+	<xs:complexType name="worldMapTemplate">
+		<xs:sequence />
+		<xs:attribute name="name" type="xs:string" />
+		<xs:attribute name="id" type="xs:int" use="required" />
+		<xs:attribute name="twin_count" type="xs:int" />
+		<xs:attribute name="max_user" type="xs:int" />
+		<xs:attribute name="prison" type="xs:boolean" />
+	</xs:complexType>
 
-  <xs:complexType name="worldMapTemplate">
-    <xs:sequence/>
-    <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="id" type="xs:int" use="required"/>
-    <xs:attribute name="twin_count" type="xs:int"/>
-    <xs:attribute name="max_user" type="xs:int"/>
-    <xs:attribute name="prison" type="xs:boolean"/>
-  </xs:complexType>
-
-  <xs:complexType name="playerExperienceTable">
-    <xs:sequence>
-      <xs:element name="exp" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
+	<xs:complexType name="playerExperienceTable">
+		<xs:sequence>
+			<xs:element name="exp" type="xs:long" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
 
 
 	<xs:complexType name="statsTemplateType">
@@ -76,10 +76,10 @@
 			<xs:element type="xs:int" name="knowledge" minOccurs="1" maxOccurs="1" />
 			<xs:element type="xs:int" name="will" minOccurs="1" maxOccurs="1" />
 
-			<xs:element type="xs:int" name="walk_speed" minOccurs="1" maxOccurs="1" />
-			<xs:element type="xs:int" name="run_speed" minOccurs="1" maxOccurs="1" />
-			<xs:element type="xs:int" name="fly_speed" minOccurs="1" maxOccurs="1" />
-			
+			<xs:element type="xs:float" name="walk_speed" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:float" name="run_speed" minOccurs="1" maxOccurs="1" />
+			<xs:element type="xs:float" name="fly_speed" minOccurs="1" maxOccurs="1" />
+
 			<xs:element type="xs:float" name="attack_speed" minOccurs="1" maxOccurs="1" />
 
 			<xs:element type="xs:int" name="evasion" minOccurs="1" maxOccurs="1" />
@@ -93,16 +93,33 @@
 			<xs:element type="xs:int" name="magic_accuracy" minOccurs="1" maxOccurs="1" />
 		</xs:sequence>
 
-		<xs:attribute type="xs:string" name="class" use="required" />
+		<xs:attribute type="playerClass" name="class" use="required" />
 		<xs:attribute type="xs:byte" name="level" use="required" />
 	</xs:complexType>
 
 	<xs:complexType name="statsTemplatesType">
 		<xs:sequence>
 			<xs:element ref="import" minOccurs="0" maxOccurs="unbounded" />
-			<xs:element type="statsTemplateType" name="stats_template" maxOccurs="unbounded" minOccurs="0"/>
+			<xs:element type="statsTemplateType" name="stats_template"
+				maxOccurs="unbounded" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 
+	<xs:simpleType name="playerClass">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="WARRIOR" />
+			<xs:enumeration value="GLADIATOR" />
+			<xs:enumeration value="TEMPLAR" />
+			<xs:enumeration value="SCOUT" />
+			<xs:enumeration value="ASSASSIN" />
+			<xs:enumeration value="RANGER" />
+			<xs:enumeration value="MAGE" />
+			<xs:enumeration value="SORCERER" />
+			<xs:enumeration value="SPIRIT_MASTER" />
+			<xs:enumeration value="PRIEST" />
+			<xs:enumeration value="CLERIC" />
+			<xs:enumeration value="CHANTER" />
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>
 
