@@ -16,6 +16,7 @@
  */
 package com.aionemu.commons.utils;
 
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -105,21 +106,29 @@ public class ScheduledThreadPoolExecutorAE extends ScheduledThreadPoolExecutor
 		/**
 		 * Check if there was exception
 		 */
-		try
+		Future<?> f = ((Future<?>) r);
+		if(f.isDone())
 		{
-			((Future<?>) r).get();
-		}
-		catch(ExecutionException e)
-		{
-			/**
-			 * Get cause and notify thread UncaughtExceptionHandler
-			 */
-			Thread thread = Thread.currentThread();
-			thread.getUncaughtExceptionHandler().uncaughtException(thread, e.getCause());
-		}
-		catch (InterruptedException e)
-		{
-			//we dont care
+			try
+			{
+				f.get();
+			}
+			catch(ExecutionException e)
+			{
+				/**
+				 * Get cause and notify thread UncaughtExceptionHandler
+				 */
+				Thread thread = Thread.currentThread();
+				thread.getUncaughtExceptionHandler().uncaughtException(thread, e.getCause());
+			}
+			catch (InterruptedException e)
+			{
+				//we dont care
+			}
+			catch (CancellationException e)
+			{
+				//we dont care
+			}
 		}
 	}
 }
