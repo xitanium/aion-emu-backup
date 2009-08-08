@@ -20,6 +20,8 @@ package com.aionemu.commons.scripting;
 import java.io.File;
 import java.util.Collection;
 
+import com.aionemu.commons.scripting.classlistener.ClassListener;
+
 /**
  * This class represents script context that can be loaded, unloaded, etc...<br>
  */
@@ -104,6 +106,23 @@ public interface ScriptContext
 	 *            child context
 	 */
 	public void addChildScriptContext(ScriptContext context);
+
+	/**
+	 * Sets the class listener for this script context.
+	 *
+	 * @param cl class listener
+	 */
+	public void setClassListener(ClassListener cl);
+
+	/**
+	 * Returns class listener associated with this ScriptContext.<br>
+	 * If it's null - returns parent classListener.<br>
+	 * If parent is null and classListener is null - it will set {@link com.aionemu.commons.scripting.classlistener.DefaultClassListener}
+	 * as class listener and return it
+	 *
+	 * @return Associated class listener
+	 */
+	public ClassListener getClassListener();
 
 	/**
 	 * Tests if this ScriptContext is equal to another ScriptContext. Comparation is done by comparing root files and

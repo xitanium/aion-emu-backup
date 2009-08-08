@@ -15,7 +15,7 @@
  * along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aionemu.commons.scripting.impl;
+package com.aionemu.commons.scripting.classlistener;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -28,83 +28,50 @@ import com.aionemu.commons.scripting.metadata.OnClassLoad;
 import com.aionemu.commons.scripting.metadata.OnClassUnload;
 
 /**
- * This class is responsible for scanning loaded classes for annotations
- * {@link com.aionemu.commons.scripting.metadata.OnClassLoad} and
- * {@link com.aionemu.commons.scripting.metadata.OnClassUnload}
- * 
- * Methods with such annotations will be invoked.
- * 
  * @author SoulKeeper
  */
-public class ClassAnnotationProcessor
-{
+public class DefaultClassListener implements ClassListener {
 
-	/**
-	 * logger for this class
-	 */
-	private static final Logger	log	= Logger.getLogger(ClassAnnotationProcessor.class);
+	private static final Logger log = Logger.getLogger(DefaultClassListener.class);
 
-	/**
-	 * This method is invoked in the process of initialization of script contex
-	 * 
-	 * @param clazz
-	 *            classes to scan
-	 */
-	static void postLoad(Class<?>... clazz)
-	{
-		for (Class<?> c : clazz)
-		{
+	@Override
+	public void postLoad(Class<?>... classes) {
+		for (Class<?> c : classes) {
 			doMethodInvoke(c.getDeclaredMethods(), OnClassLoad.class);
 		}
 	}
 
-	/**
-	 * This method is invoked in the process of shutdown of script context
-	 * 
-	 * @param clazz
-	 *            classes to scan
-	 */
-	static void preUnload(Class<?>... clazz)
-	{
-		for (Class<?> c : clazz)
-		{
+	@Override
+	public void preUnload(Class<?>... classes) {
+		for (Class<?> c : classes) {
 			doMethodInvoke(c.getDeclaredMethods(), OnClassUnload.class);
 		}
 	}
 
 	/**
 	 * Actually invokes method where given annotation class is present. Only static methods can be invoked
-	 * 
-	 * @param methods
-	 *            Methods to scan for annotations
-	 * @param annotationClass
-	 *            class of annotation to search for
+	 *
+	 * @param methods		 Methods to scan for annotations
+	 * @param annotationClass class of annotation to search for
 	 */
-	static void doMethodInvoke(Method[] methods, Class<? extends Annotation> annotationClass)
-	{
-		for (Method m : methods)
-		{
+	static void doMethodInvoke(Method[] methods, Class<? extends Annotation> annotationClass) {
+		for (Method m : methods) {
 
-			if (!Modifier.isStatic(m.getModifiers()))
-			{
+			if (!Modifier.isStatic(m.getModifiers())) {
 				continue;
 			}
 
 			boolean accessible = m.isAccessible();
 			m.setAccessible(true);
 
-			if (m.getAnnotation(annotationClass) != null)
-			{
-				try
-				{
+			if (m.getAnnotation(annotationClass) != null) {
+				try {
 					m.invoke(null);
 				}
-				catch (IllegalAccessException e)
-				{
+				catch (IllegalAccessException e) {
 					log.error("Can't access method " + m.getName() + " of class " + m.getDeclaringClass().getName(), e);
 				}
-				catch (InvocationTargetException e)
-				{
+				catch (InvocationTargetException e) {
 					log.error("Can't invoke method " + m.getName() + " of class " + m.getDeclaringClass().getName(), e);
 				}
 			}

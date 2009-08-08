@@ -28,6 +28,8 @@ import org.apache.log4j.Logger;
 import com.aionemu.commons.scripting.CompilationResult;
 import com.aionemu.commons.scripting.ScriptCompiler;
 import com.aionemu.commons.scripting.ScriptContext;
+import com.aionemu.commons.scripting.classlistener.ClassListener;
+import com.aionemu.commons.scripting.classlistener.DefaultClassListener;
 import com.aionemu.commons.scripting.impl.javacompiler.ScriptCompilerImpl;
 
 /**
@@ -67,6 +69,11 @@ public class ScriptContextImpl implements ScriptContext
 	 * List of child script contexts
 	 */
 	private Set<ScriptContext>	childScriptContexts;
+
+	/**
+	 * Classlistener for this script context
+	 */
+	private ClassListener classListener;
 
 	/**
 	 * Creates new scriptcontext with given root file
@@ -137,7 +144,7 @@ public class ScriptContextImpl implements ScriptContext
 		scriptCompiler.setLibraires(libraries);
 		compilationResult = scriptCompiler.compile(files);
 
-		ClassAnnotationProcessor.postLoad(compilationResult.getCompiledClasses());
+		getClassListener().postLoad(compilationResult.getCompiledClasses());
 
 		if (childScriptContexts != null)
 		{
@@ -169,7 +176,7 @@ public class ScriptContextImpl implements ScriptContext
 			}
 		}
 
-		ClassAnnotationProcessor.preUnload(compilationResult.getCompiledClasses());
+		getClassListener().preUnload(compilationResult.getCompiledClasses());
 		compilationResult = null;
 	}
 
@@ -270,6 +277,39 @@ public class ScriptContextImpl implements ScriptContext
 		}
 
 		childScriptContexts.add(context);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setClassListener(ClassListener cl)
+	{
+		classListener = cl;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ClassListener getClassListener()
+	{
+		if(classListener == null)
+		{
+			if(getParentScriptContext() == null)
+			{
+				setClassListener(new DefaultClassListener());
+				return classListener;
+			}
+			else
+			{
+				return getParentScriptContext().getClassListener();
+			}
+		}
+		else
+		{
+			return classListener;
+		}
 	}
 
 	/**

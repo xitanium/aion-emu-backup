@@ -35,8 +35,11 @@ import java.lang.annotation.Documented;
  * 
  * block.<br>
  * <br>
- * Only static methods with no arguments can be marked with this annotation.
- * 
+ * Only static methods with no arguments can be marked with this annotation.<br>
+ *
+ * This is only used if {@link com.aionemu.commons.scripting.ScriptContext#getClassListener()} returns 
+ * {@link com.aionemu.commons.scripting.classlistener.DefaultClassListener} instance.
+ *
  * @author SoulKeeper
  */
 @Documented
