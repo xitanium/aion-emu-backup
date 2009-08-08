@@ -87,7 +87,7 @@ public class GameServer
 		
 		gs.startServers();
 		
-
+		Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownHook()));
 	}
 
 	/**
