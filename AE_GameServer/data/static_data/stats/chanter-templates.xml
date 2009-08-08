@@ -28,4 +28,32 @@
 
 		<magic_accuracy>124</magic_accuracy>
 	</stats_template>
+
+	<stats_template class="CHANTER" level="34">
+		<maxHp>2710</maxHp>
+		<maxMp>3848</maxMp>
+
+		<power>110</power>
+		<health>105</health>
+		<agility>90</agility>
+		<accuracy>90</accuracy>
+		<knowledge>105</knowledge>
+		<will>110</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>9</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>452</evasion>
+		<block>452</block>
+		<parry>452</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>442</main_hand_accuracy>
+		<main_hand_crit_rate>1</main_hand_crit_rate>
+
+		<magic_accuracy>421</magic_accuracy>
+	</stats_template>
 </stats_templates>

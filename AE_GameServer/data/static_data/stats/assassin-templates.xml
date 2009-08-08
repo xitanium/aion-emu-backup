@@ -140,4 +140,32 @@
 
 		<magic_accuracy>272</magic_accuracy>
 	</stats_template>
+
+	<stats_template class="ASSASSIN" level="23">
+		<maxHp>1617</maxHp>
+		<maxMp>1712</maxMp>
+
+		<power>110</power>
+		<health>100</health>
+		<agility>110</agility>
+		<accuracy>110</accuracy>
+		<knowledge>90</knowledge>
+		<will>90</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>9</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>378</evasion>
+		<block>378</block>
+		<parry>378</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>394</main_hand_accuracy>
+		<main_hand_crit_rate>3</main_hand_crit_rate>
+
+		<magic_accuracy>285</magic_accuracy>
+	</stats_template>
 </stats_templates>

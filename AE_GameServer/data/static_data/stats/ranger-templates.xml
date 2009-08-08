@@ -112,4 +112,32 @@
 
 		<magic_accuracy>161</magic_accuracy>
 	</stats_template>
+
+	<stats_template class="RANGER" level="16">
+		<maxHp>827</maxHp>
+		<maxMp>1221</maxMp>
+
+		<power>100</power>
+		<health>100</health>
+		<agility>115</agility>
+		<accuracy>115</accuracy>
+		<knowledge>90</knowledge>
+		<will>90</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>9</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>306</evasion>
+		<block>306</block>
+		<parry>306</parry>
+
+		<main_hand_attack>18</main_hand_attack>
+		<main_hand_accuracy>348</main_hand_accuracy>
+		<main_hand_crit_rate>3</main_hand_crit_rate>
+
+		<magic_accuracy>198</magic_accuracy>
+	</stats_template>
 </stats_templates>
