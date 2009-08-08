@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <stats_templates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../static_data.xsd">
 
-
 	<stats_template class="TEMPLAR" level="9">
 		<maxHp>782</maxHp>
 		<maxMp>790</maxMp>
@@ -56,6 +55,62 @@
 		<main_hand_crit_rate>2</main_hand_crit_rate>
 
 		<magic_accuracy>124</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="TEMPLAR" level="11">
+		<maxHp>933</maxHp>
+		<maxMp>930</maxMp>
+
+		<power>115</power>
+		<health>100</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>90</knowledge>
+		<will>105</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>9</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>198</evasion>
+		<block>198</block>
+		<parry>198</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>278</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>136</magic_accuracy>
+	</stats_template>
+
+	<stats_template class="TEMPLAR" level="12">
+		<maxHp>1013</maxHp>
+		<maxMp>1000</maxMp>
+
+		<power>115</power>
+		<health>100</health>
+		<agility>100</agility>
+		<accuracy>100</accuracy>
+		<knowledge>90</knowledge>
+		<will>105</will>
+
+		<walk_speed>1.5</walk_speed>
+		<run_speed>6</run_speed>
+		<fly_speed>9</fly_speed>
+
+		<attack_speed>1.5</attack_speed>
+
+		<evasion>210</evasion>
+		<block>210</block>
+		<parry>210</parry>
+
+		<main_hand_attack>19</main_hand_attack>
+		<main_hand_accuracy>286</main_hand_accuracy>
+		<main_hand_crit_rate>2</main_hand_crit_rate>
+
+		<magic_accuracy>148</magic_accuracy>
 	</stats_template>
 
 	<stats_template class="TEMPLAR" level="16">
