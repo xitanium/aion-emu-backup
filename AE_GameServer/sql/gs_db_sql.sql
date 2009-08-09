@@ -8,6 +8,13 @@ Date: 06.06.2009 19:41:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+CREATE TABLE `server_variables` (
+  `key` varchar(30) NOT NULL,
+  `value` varchar(30) NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- ----------------------------
 -- Table structure for player_appearance
 -- ----------------------------

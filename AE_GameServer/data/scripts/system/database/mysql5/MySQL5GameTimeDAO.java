@@ -42,7 +42,7 @@ public class MySQL5GameTimeDAO extends GameTimeDAO
 		{
 			ResultSet rs = ps.executeQuery();
 			if(rs.next())
-				return rs.getInt("value");
+				return Integer.parseInt(rs.getString("value"));
 		}
 		catch(SQLException e)
 		{
@@ -67,7 +67,7 @@ public class MySQL5GameTimeDAO extends GameTimeDAO
 		try
 		{
 			ps.setString(1, "time");
-			ps.setInt(2, time);
+			ps.setString(2, String.valueOf(time));
 			success = ps.executeUpdate() > 0;
 		}
 		catch(SQLException e)
