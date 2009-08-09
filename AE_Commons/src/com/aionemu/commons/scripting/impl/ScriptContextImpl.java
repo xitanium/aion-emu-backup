@@ -30,7 +30,6 @@ import com.aionemu.commons.scripting.ScriptCompiler;
 import com.aionemu.commons.scripting.ScriptContext;
 import com.aionemu.commons.scripting.classlistener.ClassListener;
 import com.aionemu.commons.scripting.classlistener.DefaultClassListener;
-import com.aionemu.commons.scripting.impl.javacompiler.ScriptCompilerImpl;
 
 /**
  * This class is actual implementation of {@link com.aionemu.commons.scripting.ScriptContext}
@@ -74,6 +73,11 @@ public class ScriptContextImpl implements ScriptContext
 	 * Classlistener for this script context
 	 */
 	private ClassListener classListener;
+
+	/**
+	 * Class name of the compiler that will be used to compile sources
+	 */
+	private String compilerClassName;
 
 	/**
 	 * Creates new scriptcontext with given root file
@@ -131,10 +135,10 @@ public class ScriptContextImpl implements ScriptContext
 			return;
 		}
 
-		@SuppressWarnings("unchecked")
-		Collection<File> files = FileUtils.listFiles(root, new String[] { "java" }, true);
+		ScriptCompiler scriptCompiler = instantiateCompiler();
 
-		ScriptCompiler scriptCompiler = new ScriptCompilerImpl();
+		@SuppressWarnings("unchecked")
+		Collection<File> files = FileUtils.listFiles(root, scriptCompiler.getSupportedFileTypes(), true);
 
 		if (parentScriptContext != null)
 		{
@@ -310,6 +314,53 @@ public class ScriptContextImpl implements ScriptContext
 		{
 			return classListener;
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setCompilerClassName(String className)
+	{
+		this.compilerClassName = className;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getCompilerClassName()
+	{
+		return this.compilerClassName;
+	}
+
+	/**
+	 * Creates new instance of ScriptCompiler that should be used with this ScriptContext
+	 *
+	 * @return instance of ScriptCompiler
+	 * @throws RuntimeException if failed to create instance
+	 */
+	protected ScriptCompiler instantiateCompiler() throws RuntimeException
+	{
+		ClassLoader cl = getClass().getClassLoader();
+		if(getParentScriptContext() != null)
+		{
+			cl = getParentScriptContext().getCompilationResult().getClassLoader();
+		}
+
+		ScriptCompiler sc;
+		try
+		{
+			sc = (ScriptCompiler) Class.forName(getCompilerClassName(), true, cl).newInstance();
+		}
+		catch (Exception e)
+		{
+			RuntimeException e1 = new RuntimeException("Can't create instance of compiler", e);
+			log.error(e1);
+			throw e1;
+		}
+
+		return sc;
 	}
 
 	/**

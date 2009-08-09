@@ -20,10 +20,13 @@ package com.aionemu.commons.scripting.scriptmanager;
 import java.io.File;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import com.aionemu.commons.scripting.impl.javacompiler.ScriptCompilerImpl;
 
 /**
  * Simple class that represents script info.<br>
@@ -33,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author SoulKeeper
  */
 @XmlRootElement(name = "scriptinfo")
+@XmlAccessorType(XmlAccessType.NONE)
 public class ScriptInfo
 {
 
@@ -55,11 +59,16 @@ public class ScriptInfo
 	private List<ScriptInfo>	scriptInfos;
 
 	/**
+	 * Default compiler class name.
+	 */
+	@XmlElement(name = "compiler")
+	private String compilerClass = ScriptCompilerImpl.class.getName();
+
+	/**
 	 * Returns root of script context
 	 * 
 	 * @return root of script context
 	 */
-	@XmlTransient
 	public File getRoot()
 	{
 		return root;
@@ -81,7 +90,6 @@ public class ScriptInfo
 	 * 
 	 * @return lib of libraries
 	 */
-	@XmlTransient
 	public List<File> getLibraries()
 	{
 		return libraries;
@@ -103,7 +111,6 @@ public class ScriptInfo
 	 * 
 	 * @return list of child context descriptors
 	 */
-	@XmlTransient
 	public List<ScriptInfo> getScriptInfos()
 	{
 		return scriptInfos;
@@ -118,6 +125,27 @@ public class ScriptInfo
 	public void setScriptInfos(List<ScriptInfo> scriptInfos)
 	{
 		this.scriptInfos = scriptInfos;
+	}
+
+	/**
+	 * Returns compiler class name
+	 *
+	 * @return name of compiler class
+	 */
+	public String getCompilerClass()
+	{
+		return compilerClass;
+	}
+
+	/**
+	 * Sets compiler class name
+	 *
+	 * @param compilerClass
+	 * 						name of compiler class
+	 */
+	public void setCompilerClass(String compilerClass)
+	{
+		this.compilerClass = compilerClass;
 	}
 
 	/**

@@ -79,4 +79,11 @@ public interface ScriptCompiler
 	 * @return {@link com.aionemu.commons.scripting.CompilationResult}
 	 */
 	public CompilationResult compile(Iterable<File> compilationUnits);
+
+	/**
+	 * Returns array of supported file types. This files will be threated as source files.
+	 *
+	 * @return array of supported file types.
+	 */
+	public String[] getSupportedFileTypes();
 }

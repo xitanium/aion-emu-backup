@@ -100,6 +100,7 @@ public class ScriptManager
 	{
 		ScriptContext context = ScriptContextFactory.getScriptContext(si.getRoot(), parent);
 		context.setLibraries(si.getLibraries());
+		context.setCompilerClassName(si.getCompilerClass());
 
 		if (parent == null && contexts.contains(context))
 		{

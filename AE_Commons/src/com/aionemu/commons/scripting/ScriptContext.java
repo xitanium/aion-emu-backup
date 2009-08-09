@@ -125,6 +125,21 @@ public interface ScriptContext
 	public ClassListener getClassListener();
 
 	/**
+	 * Sets compiler class name for this script context.<br>
+	 * Compiler is not inherrited by children.<br>
+	 *
+	 * @param className compiler class name
+	 */
+	public void setCompilerClassName(String className);
+
+	/**
+	 * Returns compiler class name that will be used for this script context.
+	 *
+	 * @return compiler class name that will be used for tis script context
+	 */
+	public String getCompilerClassName();
+
+	/**
 	 * Tests if this ScriptContext is equal to another ScriptContext. Comparation is done by comparing root files and
 	 * parent contexts (if there is any parent)
 	 * 

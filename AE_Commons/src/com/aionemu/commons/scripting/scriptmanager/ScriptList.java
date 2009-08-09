@@ -19,9 +19,10 @@ package com.aionemu.commons.scripting.scriptmanager;
 
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Root element for script descriptors
@@ -29,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author SoulKeeper
  */
 @XmlRootElement(name = "scriptlist")
+@XmlAccessorType(XmlAccessType.NONE)
 public class ScriptList
 {
 
@@ -43,7 +45,6 @@ public class ScriptList
 	 * 
 	 * @return list of script descriptors
 	 */
-	@XmlTransient
 	public Set<ScriptInfo> getScriptInfos()
 	{
 		return scriptInfos;
