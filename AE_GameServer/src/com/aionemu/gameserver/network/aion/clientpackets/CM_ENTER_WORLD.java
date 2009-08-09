@@ -25,6 +25,7 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ENTER_WORLD_CHECK;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_GAME_TIME;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_MACRO_LIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_MESSAGE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SKILL_LIST;
@@ -125,6 +126,7 @@ public class CM_ENTER_WORLD extends AionClientPacket
 				+ " server\npowered by aion-emu software\ndeveloped by aion-emu.com team.\nCopyright 2009", null,
 				ChatType.ANNOUNCEMENTS));
 
+			sendPacket(new SM_GAME_TIME());
 			//sendPacket(new SM_SYSTEM_MESSAGE(SM_SYSTEM_MESSAGE.DURATION_TIME, "%DURATIONTIMENOSEC", "12043"));
 
 			/**

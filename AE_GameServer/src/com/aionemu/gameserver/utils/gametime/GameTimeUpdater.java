@@ -14,31 +14,35 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.gameserver;
-
-import org.apache.log4j.Logger;
-
-import com.aionemu.gameserver.utils.gametime.GameTimeManager;
+package com.aionemu.gameserver.utils.gametime;
 
 /**
- * This task is run, when server is shutting down.
- * We should do here all data saving etc. 
+ * Responsible for updating the clock
  * 
- * @author Luno
- *
+ * @author Ben
+ * 
  */
-public class ShutdownHook implements Runnable
+public class GameTimeUpdater implements Runnable
 {
-	private static final Logger log = Logger.getLogger(ShutdownHook.class);
-	
+	private GameTime	time;
+
 	/**
-	 * {@inheritDoc}
+	 * Constructs GameTimeUpdater to update the given GameTime
+	 * 
+	 * @param time
+	 *            GameTime to update
+	 */
+	public GameTimeUpdater(GameTime time)
+	{
+		this.time = time;
+	}
+
+	/**
+	 * Increases the time by one minute
 	 */
 	@Override
 	public void run()
 	{
-		log.info("Starting AE GS shutdown sequence");
-		
-		GameTimeManager.saveTime();
+		time.increase();
 	}
 }

@@ -14,31 +14,35 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.gameserver;
+package com.aionemu.gameserver.dao;
 
-import org.apache.log4j.Logger;
-
-import com.aionemu.gameserver.utils.gametime.GameTimeManager;
+import com.aionemu.commons.database.dao.DAO;
 
 /**
- * This task is run, when server is shutting down.
- * We should do here all data saving etc. 
- * 
- * @author Luno
+ * @author Ben
  *
  */
-public class ShutdownHook implements Runnable
+public abstract class GameTimeDAO implements DAO
 {
-	private static final Logger log = Logger.getLogger(ShutdownHook.class);
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void run()
+	public final String getClassName()
 	{
-		log.info("Starting AE GS shutdown sequence");
-		
-		GameTimeManager.saveTime();
+		return GameTimeDAO.class.getName();
 	}
+
+	/**
+	 * Loads the game time stored in the database
+	 * @returns Time stored in database
+	 */
+	public abstract int load();
+	
+	/**
+	 * Stores the given time in the database as the GameTime
+	 */
+	public abstract boolean store(int time);
+
 }
