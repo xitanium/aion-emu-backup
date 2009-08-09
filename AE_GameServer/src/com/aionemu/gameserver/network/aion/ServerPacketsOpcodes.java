@@ -111,7 +111,7 @@ public class ServerPacketsOpcodes
 
 		if(idSet.contains(opcode))
 			throw new IllegalArgumentException(String.format("There already exists another packet with id 0x%02d",
-				opcode));
+				Integer.toHexString(opcode)));
 
 		idSet.add(opcode);
 		opcodes.put(packetClass, opcode);
