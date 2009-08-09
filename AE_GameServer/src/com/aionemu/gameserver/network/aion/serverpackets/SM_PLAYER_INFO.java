@@ -47,7 +47,6 @@ public class SM_PLAYER_INFO extends AionServerPacket
 	 */
 	public SM_PLAYER_INFO(Player player, boolean self)
 	{
-		super(Version.Chiness ? 0xFE : 0x06);
 		this.player = player;
 		this.self = self;
 	}
@@ -64,7 +63,6 @@ public class SM_PLAYER_INFO extends AionServerPacket
 		final int genderId = pcd.getGender().getGenderId();
 		final PlayerAppearance playerAppearance = player.getPlayerAppearance();
 
-		writeOP(buf, getOpcode());
 		writeF(buf, player.getX());// x
 		writeF(buf, player.getY());// y
 		writeF(buf, player.getZ());// z

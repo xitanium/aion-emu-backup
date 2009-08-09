@@ -29,21 +29,11 @@ import com.aionemu.gameserver.network.aion.Version;
 public class SM_VERSION_CHECK extends AionServerPacket
 {
 	/**
-	 * Constructs new <tt>SM_VERSION_CHECK</tt> packet
-	 */
-	public SM_VERSION_CHECK()
-	{
-		super(Version.Chiness ? 0xF6 : 0xFE);
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
-
 		if(Version.Chiness)
 		{
 			writeH(buf, 0x0600);// unk

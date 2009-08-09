@@ -31,20 +31,11 @@ import com.aionemu.gameserver.network.aion.Version;
 public class SM_ENTER_WORLD_CHECK extends AionServerPacket
 {
 	/**
-	 * Constructs new <tt>SM_ENTER_WORLD_CHECK </tt> packet
-	 */
-	public SM_ENTER_WORLD_CHECK()
-	{
-		super(Version.Chiness ? 0xF4 : 0x04);
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeC(buf, 0x00);
 		writeC(buf, 0x00);
 		writeC(buf, 0x00);

@@ -38,8 +38,6 @@ public class SM_PLAYER_STATE extends AionServerPacket
 
 	public SM_PLAYER_STATE(Player player)
 	{
-		super(Version.Chiness ? 0x33 : 0x45);
-
 		playerObjId = player.getObjectId();
 	}
 
@@ -49,8 +47,6 @@ public class SM_PLAYER_STATE extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
-
 		writeD(buf, playerObjId);
 		writeC(buf, 0x00);
 		writeC(buf, 0x00);

@@ -43,7 +43,6 @@ public class SM_RECONNECT_KEY extends AionServerPacket
 	 */
 	public SM_RECONNECT_KEY(int key)
 	{
-		super(Version.Chiness ? 0x0D : 0xFF);
 		this.key = key;
 	}
 
@@ -53,7 +52,6 @@ public class SM_RECONNECT_KEY extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeC(buf, 0x00);
 		writeD(buf, key);
 	}

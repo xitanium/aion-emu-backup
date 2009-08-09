@@ -45,8 +45,6 @@ public class SM_NICKNAME_CHECK_RESPONSE extends AionServerPacket
 	 */
 	public SM_NICKNAME_CHECK_RESPONSE(int value)
 	{
-		super(Version.Chiness ? 0xDF : 0xE9);
-
 		this.value = value;
 	}
 
@@ -56,8 +54,6 @@ public class SM_NICKNAME_CHECK_RESPONSE extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
-
 		/**
 		 * Here is some msg: 0x00 = ok 0x0A = not ok and much more
 		 */

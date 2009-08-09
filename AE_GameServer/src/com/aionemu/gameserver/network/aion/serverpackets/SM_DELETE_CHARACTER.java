@@ -38,8 +38,6 @@ public class SM_DELETE_CHARACTER extends AionServerPacket
 	 */
 	public SM_DELETE_CHARACTER(int playerObjId, int deletionTime)
 	{
-		super(Version.Chiness ? 0xC0 : 0xC8);
-
 		this.playerObjId = playerObjId;
 		this.deletionTime = deletionTime;
 	}
@@ -50,8 +48,6 @@ public class SM_DELETE_CHARACTER extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
-
 		if(playerObjId != 0)
 		{
 			writeD(buf, 0x00);// unk

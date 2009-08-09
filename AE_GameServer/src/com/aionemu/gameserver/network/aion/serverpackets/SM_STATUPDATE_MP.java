@@ -40,8 +40,6 @@ public class SM_STATUPDATE_MP extends AionServerPacket
 	 */
 	public SM_STATUPDATE_MP(int currentHp, int maxHp)
 	{
-		super(0x14); // EU only
-
 		this.currentHp = currentHp;
 		this.maxHp = maxHp;
 	}
@@ -52,8 +50,6 @@ public class SM_STATUPDATE_MP extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
-
 		writeD(buf, currentHp);
 		writeD(buf, maxHp);
 	}

@@ -27,18 +27,12 @@ public class SM_UNKE1 extends AionServerPacket
 		(byte) 0x0C, (byte) 0x55, (byte) 0x89, (byte) 0x97, (byte) 0x44, (byte) 0x14, (byte) 0xA0, (byte) 0x82,
 		(byte) 0x44, (byte) 0xA0, (byte) 0xB4, (byte) 0x0C, (byte) 0x43 };
 
-	public SM_UNKE1()
-	{
-		super(0xe1);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeB(buf, data);
 	}
 }

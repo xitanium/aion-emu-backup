@@ -45,7 +45,6 @@ public class SM_STATS_INFO extends AionServerPacket
 	 */
 	public SM_STATS_INFO(Player player)
 	{
-		super(Version.Chiness ? 0x29 : 0x13);
 		this.player = player;
 	}
 
@@ -57,7 +56,6 @@ public class SM_STATS_INFO extends AionServerPacket
 	{
 		PlayerCommonData pcd = player.getCommonData();
 		
-		writeOP(buf, getOpcode());
 		writeD(buf, player.getObjectId());
 
 		writeD(buf, 52910559);// unk 52910559 32759DF

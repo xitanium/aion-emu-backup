@@ -35,7 +35,7 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 	 */
 	public SM_INVENTORY_INFO()
 	{
-		super(Version.Chiness ? 0x2B : 0x1D);
+		//inventory will be set here
 	}
 
 	/**
@@ -44,7 +44,6 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, 0x00);
 		writeH(buf, 0x00);
 	}

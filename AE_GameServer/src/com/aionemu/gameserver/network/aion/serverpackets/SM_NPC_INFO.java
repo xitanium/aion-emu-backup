@@ -47,7 +47,6 @@ public class SM_NPC_INFO extends AionServerPacket
 	 */
 	public SM_NPC_INFO(Npc npc)
 	{
-		super(Version.Chiness ? 0xFF : 0x09);
 		this.npc = npc;
 	}
 
@@ -57,7 +56,6 @@ public class SM_NPC_INFO extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeF(buf, npc.getX());// x
 		writeF(buf, npc.getY());// y
 		writeF(buf, npc.getZ());// z

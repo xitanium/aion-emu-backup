@@ -24,18 +24,12 @@ import com.aionemu.gameserver.network.aion.Version;
 
 public class SM_UNK0C extends AionServerPacket
 {
-	public SM_UNK0C()
-	{
-		super(Version.Chiness ? 0x0C : 0xFC);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, 0x3C);
 	}
 }

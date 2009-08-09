@@ -20,7 +20,6 @@ import java.nio.ByteBuffer;
 
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.network.aion.Version;
 
 /**
  * In this packet Server is sending Skill Info?
@@ -31,20 +30,11 @@ import com.aionemu.gameserver.network.aion.Version;
 public class SM_SKILL_LIST extends AionServerPacket
 {
 	/**
-	 * Constructs new <tt>SM_SKILL_LIST </tt> packet
-	 */
-	public SM_SKILL_LIST()
-	{
-		super(Version.Chiness ? 0x1D : 0x2F);
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeH(buf, 1);// skills list size
 		// for skills
 		// {

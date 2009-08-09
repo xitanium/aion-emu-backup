@@ -20,7 +20,6 @@ import java.nio.ByteBuffer;
 
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.network.aion.Version;
 
 /**
  * @author -Nemesiss-
@@ -28,13 +27,6 @@ import com.aionemu.gameserver.network.aion.Version;
  */
 public class SM_KEY extends AionServerPacket
 {
-	/**
-	 * Constructs new <tt>SM_KEY </tt> packet
-	 */
-	public SM_KEY()
-	{
-		super(Version.Chiness ? 0x3F : 0x49);
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -42,7 +34,6 @@ public class SM_KEY extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, con.enableCryptKey());
 	}
 }

@@ -58,8 +58,6 @@ public class SM_MOVE extends AionServerPacket
 	public SM_MOVE(Creature movingCreature, float x, float y, float z, float x2, float y2, float z2, byte heading,
 		MovementType moveType)
 	{
-		super(Version.Chiness ? 0x4F : 0x39);
-
 		this.movingCreature = movingCreature;
 		this.x = x;
 		this.y = y;
@@ -77,7 +75,6 @@ public class SM_MOVE extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, movingCreature.getObjectId());
 		writeF(buf, x);
 		writeF(buf, y);

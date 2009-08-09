@@ -29,14 +29,12 @@ import com.aionemu.gameserver.network.Crypt;
 public abstract class AionServerPacket extends BaseServerPacket
 {
 	/**
-	 * Constructs new server packet with specified opcode
-	 * 
-	 * @param opcode
-	 *            packet id
+	 * Constructs new server packet
 	 */
-	protected AionServerPacket(int opcode)
+	protected AionServerPacket()
 	{
-		super(opcode);
+		super();
+		setOpcode(ServerPacketsOpcodes.getOpcode(getClass()));
 	}
 
 	/**
@@ -45,7 +43,7 @@ public abstract class AionServerPacket extends BaseServerPacket
 	 * @param buf
 	 * @param value
 	 */
-	protected final void writeOP(ByteBuffer buf, int value)
+	private final void writeOP(ByteBuffer buf, int value)
 	{
 		/** obfuscate packet id */
 		byte op = Crypt.encodeOpcodec(value);
@@ -67,6 +65,7 @@ public abstract class AionServerPacket extends BaseServerPacket
 	public final void write(AionConnection con, ByteBuffer buf)
 	{
 		buf.putShort((short) 0);
+		writeOP(buf, getOpcode());
 		writeImpl(con, buf);
 		buf.flip();
 		buf.putShort((short) buf.limit());
@@ -81,5 +80,5 @@ public abstract class AionServerPacket extends BaseServerPacket
 	 * @param con
 	 * @param buf
 	 */
-	protected abstract void writeImpl(AionConnection con, ByteBuffer buf);
+	protected void writeImpl(AionConnection con, ByteBuffer buf){}
 }

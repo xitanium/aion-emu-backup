@@ -23,18 +23,12 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 public class SM_UNK91 extends AionServerPacket
 {
-	public SM_UNK91()
-	{
-		super(0x91);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeH(buf, 1);
 		writeH(buf, 0x7D0);
 		writeH(buf, 1);

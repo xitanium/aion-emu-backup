@@ -23,18 +23,12 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 public class SM_UNK0A extends AionServerPacket
 {
-	public SM_UNK0A()
-	{
-		super(0x0A);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeC(buf, 0x66);
 		writeC(buf, 0x6E);
 		writeC(buf, 0x6E);

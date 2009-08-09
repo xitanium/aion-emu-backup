@@ -21,7 +21,6 @@ import java.nio.ByteBuffer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.network.aion.Version;
 
 /**
  * This packet is notify client what map should be loaded.
@@ -43,7 +42,7 @@ public class SM_UNKF5 extends AionServerPacket
 	 */
 	public SM_UNKF5(Player player)
 	{
-		super(Version.Chiness ? 0xF5 : 0x07);
+		super();
 		this.player = player;
 	}
 
@@ -53,7 +52,6 @@ public class SM_UNKF5 extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, player.getWorldId());// worldid+instanceid?
 		writeD(buf, player.getWorldId());
 		writeD(buf, 0x00);// unk

@@ -31,7 +31,7 @@ public class SM_UNKEF extends AionServerPacket
 
 	public SM_UNKEF(Player player)
 	{
-		super(0xef);
+		super();
 		this.player = player;
 	}
 
@@ -41,7 +41,6 @@ public class SM_UNKEF extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, player.getObjectId());
 		writeB(buf, data);
 	}

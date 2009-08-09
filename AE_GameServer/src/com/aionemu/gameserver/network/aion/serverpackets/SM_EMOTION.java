@@ -58,7 +58,6 @@ public class SM_EMOTION extends AionServerPacket
 	 */
 	public SM_EMOTION(int senderObjectId, int unknown, int emotionId)
 	{
-		super(Version.Chiness ? 0x14 : 0x24);
 		this.senderObjectId = senderObjectId;
 		this.emotionId = emotionId;
 		this.unknown = unknown;
@@ -70,7 +69,6 @@ public class SM_EMOTION extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, senderObjectId);
 		writeC(buf, unknown);
 		writeC(buf, 0x01); // unknown

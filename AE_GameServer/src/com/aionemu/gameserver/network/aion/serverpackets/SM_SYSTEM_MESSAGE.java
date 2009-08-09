@@ -21,7 +21,6 @@ import java.nio.ByteBuffer;
 
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.network.aion.Version;
 
 /**
  * System message packet.
@@ -63,8 +62,6 @@ public class SM_SYSTEM_MESSAGE extends AionServerPacket
 	 */
 	public SM_SYSTEM_MESSAGE(int code, String... params)
 	{
-		super(Version.Chiness ? 0x2A : 0x1A);
-
 		this.code = code;
 		this.params = params;
 	}
@@ -75,7 +72,6 @@ public class SM_SYSTEM_MESSAGE extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeH(buf, 0x13); // unk
 		writeD(buf, 0x00); // unk
 		writeD(buf, code); // msg id

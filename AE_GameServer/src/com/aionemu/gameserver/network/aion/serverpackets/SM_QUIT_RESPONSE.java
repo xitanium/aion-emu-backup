@@ -20,7 +20,6 @@ import java.nio.ByteBuffer;
 
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.network.aion.Version;
 
 /**
  * This packet is response for CM_QUIT
@@ -31,20 +30,11 @@ import com.aionemu.gameserver.network.aion.Version;
 public class SM_QUIT_RESPONSE extends AionServerPacket
 {
 	/**
-	 * Constructs new <tt>SM_QUIT_RESPONSE </tt> packet
-	 */
-	public SM_QUIT_RESPONSE()
-	{
-		super(Version.Chiness ? 0x59 : 0x63);
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, 0x01);// unk
 		writeC(buf, 0x00);// unk
 	}

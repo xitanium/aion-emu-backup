@@ -22,7 +22,6 @@ import java.util.Map;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.network.aion.Version;
 
 /**
  * Packet with macro list.
@@ -39,7 +38,6 @@ public class SM_MACRO_LIST extends AionServerPacket
 	 */
 	public SM_MACRO_LIST(Player player)
 	{
-		super(Version.Chiness ? 0xD5 : 0xE7);
 		this.player = player;
 	}
 
@@ -49,7 +47,6 @@ public class SM_MACRO_LIST extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, player.getObjectId());// player oid
 		writeC(buf, 0x01);// unk
 

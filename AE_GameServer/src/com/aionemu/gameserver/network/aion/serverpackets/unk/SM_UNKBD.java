@@ -20,22 +20,15 @@ import java.nio.ByteBuffer;
 
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.network.aion.Version;
 
 public class SM_UNKBD extends AionServerPacket
 {
-	public SM_UNKBD()
-	{
-		super(Version.Chiness ? 0xBD : 0xCF);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeH(buf, 0);
 	}
 }

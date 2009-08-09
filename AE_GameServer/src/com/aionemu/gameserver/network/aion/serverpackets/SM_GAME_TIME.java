@@ -17,8 +17,6 @@
 package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
-import java.util.Calendar;
-import java.util.Date;
 
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
@@ -32,25 +30,13 @@ import com.aionemu.gameserver.utils.gametime.GameTimeManager;
  */
 public class SM_GAME_TIME extends AionServerPacket
 {
-	int time;
 	/**
-	 * 
-	 * @param minutes Minutes since 1/1/00 00:00:00
-	 */
-	public SM_GAME_TIME() 
-	{
-		super(0x27);
-		time = GameTimeManager.getGameTime().getTime();
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.network.aion.AionServerPacket#writeImpl(com.aionemu.gameserver.network.aion.AionConnection, java.nio.ByteBuffer)
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode()); // Opcode
-		writeD(buf, time); // Minutes since 1/1/00 00:00:00
+		writeD(buf, GameTimeManager.getGameTime().getTime()); // Minutes since 1/1/00 00:00:00
 	}
 
 }

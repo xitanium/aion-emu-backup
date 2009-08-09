@@ -20,7 +20,6 @@ import java.nio.ByteBuffer;
 
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.network.aion.Version;
 
 /**
  * This packet is response for CM_MAY_LOGIN_INTO_GAME
@@ -31,22 +30,11 @@ import com.aionemu.gameserver.network.aion.Version;
 public class SM_MAY_LOGIN_INTO_GAME extends AionServerPacket
 {
 	/**
-	 * Constructs new <tt>SM_MAY_LOGIN_INTO_GAME</tt> packet
-	 * 
-	 * 
-	 */
-	public SM_MAY_LOGIN_INTO_GAME()
-	{
-		super(Version.Chiness ? 0x7F : 0x89);
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		/**
 		 * probably here is msg if fail.
 		 */

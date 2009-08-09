@@ -44,7 +44,6 @@ public class SM_RESTORE_CHARACTER extends AionServerPacket
 	 */
 	public SM_RESTORE_CHARACTER(int chaOid, boolean success)
 	{
-		super(Version.Chiness ? 0xC1 : 0xCB);
 		this.chaOid = chaOid;
 		this.success = success;
 	}
@@ -55,7 +54,6 @@ public class SM_RESTORE_CHARACTER extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, success ? 0x00 : 0x10);// unk
 		writeD(buf, chaOid);
 	}

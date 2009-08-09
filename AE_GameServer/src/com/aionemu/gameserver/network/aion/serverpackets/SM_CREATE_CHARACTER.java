@@ -76,8 +76,6 @@ public class SM_CREATE_CHARACTER extends PlayerInfo
 
 	public SM_CREATE_CHARACTER(PlayerAccountData accPlData, int responseCode)
 	{
-		super(Version.Chiness ? 0xBF : 0xC9);
-
 		this.player = accPlData;
 		this.responseCode = responseCode;
 	}
@@ -88,8 +86,6 @@ public class SM_CREATE_CHARACTER extends PlayerInfo
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
-
 		writeD(buf, responseCode);
 
 		if(responseCode == RESPONSE_OK)

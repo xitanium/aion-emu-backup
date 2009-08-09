@@ -19,7 +19,6 @@ package com.aionemu.gameserver.network.aion;
 import java.nio.ByteBuffer;
 
 import com.aionemu.gameserver.model.account.PlayerAccountData;
-import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerAppearance;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 
@@ -31,15 +30,9 @@ import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
  */
 public abstract class PlayerInfo extends AionServerPacket
 {
-	/**
-	 * Constructs new server packet with specified opcode
-	 * 
-	 * @param opcode
-	 *            packet id
-	 */
-	protected PlayerInfo(int opcode)
+	protected PlayerInfo()
 	{
-		super(opcode);
+		
 	}
 
 

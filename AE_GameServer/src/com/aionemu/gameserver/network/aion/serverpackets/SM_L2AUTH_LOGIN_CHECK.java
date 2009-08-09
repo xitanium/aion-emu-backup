@@ -40,7 +40,6 @@ public class SM_L2AUTH_LOGIN_CHECK extends AionServerPacket
 	 */
 	public SM_L2AUTH_LOGIN_CHECK(boolean ok)
 	{
-		super(Version.Chiness ? 0xB5 : 0xC7);
 		this.ok = ok;
 	}
 
@@ -50,7 +49,6 @@ public class SM_L2AUTH_LOGIN_CHECK extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, ok ? 0x00 : 0x01);
 		writeS(buf, "aionemu_rox!!!");
 	}

@@ -150,7 +150,8 @@ public class SM_CUSTOM_PACKET extends AionServerPacket
 
 	public SM_CUSTOM_PACKET(int opcode)
 	{
-		super(opcode);
+		super();
+		setOpcode(opcode);
 	}
 
 	/**
@@ -178,8 +179,6 @@ public class SM_CUSTOM_PACKET extends AionServerPacket
 	@Override
 	public void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
-
 		for(PacketElement el : elements)
 		{
 			el.writeValue(this, buf);

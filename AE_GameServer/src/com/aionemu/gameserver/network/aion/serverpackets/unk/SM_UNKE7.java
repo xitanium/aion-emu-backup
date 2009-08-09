@@ -145,10 +145,6 @@ public class SM_UNKE7 extends AionServerPacket
 		(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x02, (byte) 0x02,
 		(byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x00, (byte) 0xFF, (byte) 0xFF };
 
-	public SM_UNKE7()
-	{
-		super(0xe7);
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -156,7 +152,6 @@ public class SM_UNKE7 extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeB(buf, data);
 	}
 }

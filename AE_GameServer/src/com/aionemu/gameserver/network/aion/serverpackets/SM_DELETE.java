@@ -43,7 +43,6 @@ public class SM_DELETE extends AionServerPacket
 	 */
 	public SM_DELETE(AionObject object)
 	{
-		super(Version.Chiness ? 0xFB : 0x0D);
 		this.object = object;
 	}
 
@@ -53,7 +52,6 @@ public class SM_DELETE extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, object.getObjectId());
 		writeC(buf, 0x00);
 	}

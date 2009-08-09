@@ -70,7 +70,6 @@ public class SM_MESSAGE extends AionServerPacket
 	 */
 	public SM_MESSAGE(Player player, String message, ChatType chatType)
 	{
-		super(Version.Chiness ? 0x31 : 0x1B);
 		this.senderObjectId = player.getObjectId();
 		this.senderName = player.getName();
 		this.message = message;
@@ -94,7 +93,6 @@ public class SM_MESSAGE extends AionServerPacket
 	 */
 	public SM_MESSAGE(int senderObjectId, String senderName, String message, Race race, ChatType chatType)
 	{
-		super(Version.Chiness ? 0x31 : 0x1B);
 		this.senderObjectId = senderObjectId;
 		this.senderName = senderName;
 		this.message = message;
@@ -114,7 +112,6 @@ public class SM_MESSAGE extends AionServerPacket
 			canRead = race.equals(con.getActivePlayer().getCommonData().getRace());
 		}
 
-		writeOP(buf, getOpcode());
 		writeC(buf, chatType.toInteger()); // type
 		writeC(buf, canRead ? 0 : 1); // is race valid? In other case we will get bullshit instead of valid chat;
 		writeD(buf, senderObjectId); // sender object id

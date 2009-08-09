@@ -28,19 +28,12 @@ public class SM_UNK64 extends AionServerPacket
 		(byte) 0x00, (byte) 0x80, (byte) 0x3F, (byte) 0x01, (byte) 0x00, (byte) 0x10, (byte) 0xAB, (byte) 0xD7,
 		(byte) 0x17, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
 		(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x80, (byte) 0x3F };
-
-	public SM_UNK64()
-	{
-		super(0x64);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeB(buf, data);
 	}
 }

@@ -41,8 +41,6 @@ public class SM_STATUPDATE_EXP extends AionServerPacket
 	 */
 	public SM_STATUPDATE_EXP(long currentExp, long recoverableExp, long maxExp)
 	{
-		super(0x19); // EU only
-
 		this.currentExp = currentExp;
 		this.recoverableExp = recoverableExp;
 		this.maxExp = maxExp;
@@ -54,7 +52,6 @@ public class SM_STATUPDATE_EXP extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeQ(buf, currentExp);
 		writeQ(buf, recoverableExp);
 		writeQ(buf, maxExp);

@@ -16,34 +16,16 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
-import java.nio.ByteBuffer;
-
-import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.network.aion.Version;
 
 /**
  * I have no idea wtf is this
  * 
- * @author -Nemsiss-
+ * @author -Nemesiss-
  * 
  */
 public class SM_PONG extends AionServerPacket
 {
-	/**
-	 * Constructs new <tt>SM_PONG</tt> packet
-	 */
-	public SM_PONG()
-	{
-		super(Version.Chiness ? 0x7C : 0x8C);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void writeImpl(AionConnection con, ByteBuffer buf)
-	{
-		writeOP(buf, getOpcode());
-	}
+	//Don't be fooled with empty class :D
+	//This packet is just sending opcode, without any content
 }

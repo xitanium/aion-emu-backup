@@ -27,18 +27,12 @@ public class SM_UNK8D extends AionServerPacket
 		(byte) 0x51, (byte) 0x04, (byte) 0x00, (byte) 0x00, (byte) 0xB6, (byte) 0x84, (byte) 0x00, (byte) 0x00,
 		(byte) 0x4D, (byte) 0x04, (byte) 0x00, (byte) 0x00 };
 
-	public SM_UNK8D()
-	{
-		super(0x8d);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeB(buf, data);
 	}
 }

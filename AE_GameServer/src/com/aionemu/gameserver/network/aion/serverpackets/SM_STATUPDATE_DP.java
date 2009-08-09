@@ -38,7 +38,6 @@ public class SM_STATUPDATE_DP extends AionServerPacket
 	 */
 	public SM_STATUPDATE_DP(int currentDp)
 	{
-		super(0x17); // EU only
 		this.currentDp = currentDp;
 	}
 
@@ -48,7 +47,6 @@ public class SM_STATUPDATE_DP extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, currentDp);
 	}
 

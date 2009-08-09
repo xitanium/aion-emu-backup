@@ -22,7 +22,6 @@ import com.aionemu.gameserver.model.account.Account;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.PlayerInfo;
-import com.aionemu.gameserver.network.aion.Version;
 
 /**
  * In this packet Server is sending Character List to client.
@@ -42,7 +41,6 @@ public class SM_CHARACTER_LIST extends PlayerInfo
 	 */
 	public SM_CHARACTER_LIST(int playOk2)
 	{
-		super(Version.Chiness ? 0xBE : 0xC6);
 		this.playOk2 = playOk2;
 	}
 
@@ -52,7 +50,6 @@ public class SM_CHARACTER_LIST extends PlayerInfo
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeOP(buf, getOpcode());
 		writeD(buf, playOk2);
 
 		Account account = con.getAccount();
