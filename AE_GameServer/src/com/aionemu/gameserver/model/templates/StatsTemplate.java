@@ -16,8 +16,6 @@
  */
 package com.aionemu.gameserver.model.templates;
 
-import com.aionemu.gameserver.model.PlayerClass;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -35,54 +33,49 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "stats_template")
 public class StatsTemplate
 {
-	@XmlAttribute(name = "class", required = true)
-	private PlayerClass requiredPlayerClass;
-	@XmlAttribute(name = "level", required = true)
-	private int requiredLevel;
-
-	@XmlElement(name = "maxHp", required = true)
+	@XmlAttribute(name = "maxHp")
 	private int maxHp;
-	@XmlElement(name = "maxMp", required = true)
+	@XmlAttribute(name = "maxMp")
 	private int maxMp;
 	
-	@XmlElement(name = "power", required = true)
+	@XmlAttribute(name = "power")
 	private int power;
-	@XmlElement(name = "health", required = true)
+	@XmlAttribute(name = "health")
 	private int health;
-	@XmlElement(name = "agility", required = true)
+	@XmlAttribute(name = "agility")
 	private int agility;
-	@XmlElement(name = "accuracy", required = true)
+	@XmlAttribute(name = "accuracy")
 	private int accuracy;
-	@XmlElement(name = "knowledge", required = true)
+	@XmlAttribute(name = "knowledge")
 	private int knowledge;
-	@XmlElement(name = "will", required = true)
+	@XmlAttribute(name = "will")
 	private int will;
 
-	@XmlElement(name = "walk_speed", required = true)
+	@XmlAttribute(name = "walk_speed")
 	private float walkSpeed;
-	@XmlElement(name = "run_speed", required = true)
+	@XmlAttribute(name = "run_speed")
 	private float runSpeed;
-	@XmlElement(name = "fly_speed", required = true)
+	@XmlAttribute(name = "fly_speed")
 	private float flySpeed;
 
-	@XmlElement(name = "attack_speed", required = true)
+	@XmlAttribute(name = "attack_speed")
 	private float attackSpeed;
 
-	@XmlElement(name = "evasion", required = true)
+	@XmlAttribute(name = "evasion")
 	private int evasion;
-	@XmlElement(name = "block", required = true)
+	@XmlAttribute(name = "block")
 	private int block;
-	@XmlElement(name = "parry", required = true)
+	@XmlAttribute(name = "parry")
 	private int parry;
 
-	@XmlElement(name = "main_hand_attack", required = true)
+	@XmlAttribute(name = "main_hand_attack")
 	private int mainHandAttack;
-	@XmlElement(name = "main_hand_accuracy", required = true)
+	@XmlAttribute(name = "main_hand_accuracy")
 	private int mainHandAccuracy;
-	@XmlElement(name = "main_hand_crit_rate", required = true)
+	@XmlAttribute(name = "main_hand_crit_rate")
 	private int mainHandCritRate;
 
-	@XmlElement(name = "magic_accuracy", required = true)
+	@XmlAttribute(name = "magic_accuracy")
 	private int magicAccuracy;
 
 	/* ======================================= */
@@ -190,17 +183,5 @@ public class StatsTemplate
 	public int getMagicAccuracy()
 	{
 		return magicAccuracy;
-	}
-
-	/* ======================================= */
-
-	public PlayerClass getRequiredPlayerClass()
-	{
-		return requiredPlayerClass;
-	}
-
-	public int getRequiredLevel()
-	{
-		return requiredLevel;
 	}
 }

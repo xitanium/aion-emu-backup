@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAttribute;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -41,18 +42,18 @@ import java.util.ArrayList;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PlayerStatsData
 {
-	@XmlElement(name = "stats_template", required = true)
-	private List<StatsTemplate> templatesList = new ArrayList<StatsTemplate>();
+	@XmlElement(name = "player_stats", required = true)
+	private List<PlayerStatsType> templatesList = new ArrayList<PlayerStatsType>();
 
 	private final Map<Integer, StatsTemplate> templates = new HashMap<Integer, StatsTemplate>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent)
 	{
-		for (StatsTemplate pt : templatesList)
+		for (PlayerStatsType pt : templatesList)
 		{
 			int code = makeHash(pt.getRequiredPlayerClass(), pt.getRequiredLevel());
 
-			templates.put(code, pt);
+			templates.put(code, pt.getTemplate());
 		}
 
 		templatesList.clear();
@@ -69,16 +70,43 @@ public class PlayerStatsData
 		return templates.get(makeHash(playerClass, level));
 	}
 
+	public int size()
+	{
+		return templates.size();
+	}
+
+	@XmlRootElement(name="player_stats")
+	private static class PlayerStatsType
+	{
+		@XmlAttribute(name = "class", required = true)
+		private PlayerClass requiredPlayerClass;
+		@XmlAttribute(name = "level", required = true)
+		private int requiredLevel;
+
+		@XmlElement(name="stats_template")
+		private StatsTemplate template;
+
+		public PlayerClass getRequiredPlayerClass()
+		{
+			return requiredPlayerClass;
+		}
+
+		public int getRequiredLevel()
+		{
+			return requiredLevel;
+		}
+
+		public StatsTemplate getTemplate()
+		{
+			return template;
+		}
+	}
+
 	private static int makeHash(PlayerClass playerClass, int level)
 	{
 		int result = 0x1f;
 		result = 0x1f * result + playerClass.ordinal();
 		result = 0x1f * result + level;
 		return result;
-	}
-
-	public int size()
-	{
-		return templates.size();
 	}
 }

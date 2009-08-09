@@ -1,255 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <stats_templates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../static_data.xsd">
-	
-	<stats_template class="SCOUT" level="1">
-		<maxHp>219</maxHp>
-		<maxMp>170</maxMp>
 
-		<power>100</power>
-		<health>100</health>
-		<agility>110</agility>
-		<accuracy>110</accuracy>
-		<knowledge>90</knowledge>
-		<will>90</will>
+	<player_stats class="SCOUT" level="1">
+		<stats_template maxHp="219" maxMp="170"
+		                power="100" health="100" agility="110" accuracy="110" knowledge="90" will="90"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="105" block="105" parry="105"
+		                main_hand_attack="18" main_hand_accuracy="218" main_hand_crit_rate="3"
+		                magic_accuracy="12" />
+	</player_stats>
 
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
+	<player_stats class="SCOUT" level="2">
+		<stats_template maxHp="261" maxMp="240"
+		                power="100" health="100" agility="110" accuracy="110" knowledge="90" will="90"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="117" block="117" parry="117"
+		                main_hand_attack="18" main_hand_accuracy="226" main_hand_crit_rate="3"
+		                magic_accuracy="24" />
+	</player_stats>
 
-		<attack_speed>1.5</attack_speed>
+	<player_stats class="SCOUT" level="3">
+		<stats_template maxHp="305" maxMp="310"
+		                power="100" health="100" agility="110" accuracy="110" knowledge="90" will="90"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="130" block="130" parry="130"
+		                main_hand_attack="18" main_hand_accuracy="234" main_hand_crit_rate="3"
+		                magic_accuracy="37" />
+	</player_stats>
 
-		<evasion>105</evasion>
-		<block>105</block>
-		<parry>105</parry>
+	<player_stats class="SCOUT" level="4">
+		<stats_template maxHp="351" maxMp="380"
+		                power="100" health="100" agility="110" accuracy="110" knowledge="90" will="90"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="142" block="142" parry="142"
+		                main_hand_attack="18" main_hand_accuracy="242" main_hand_crit_rate="3"
+		                magic_accuracy="49" />
+	</player_stats>
 
-		<main_hand_attack>18</main_hand_attack>
-		<main_hand_accuracy>218</main_hand_accuracy>
-		<main_hand_crit_rate>3</main_hand_crit_rate>
-		
-		<magic_accuracy>12</magic_accuracy>
-	</stats_template>
+	<player_stats class="SCOUT" level="5">
+		<stats_template maxHp="399" maxMp="450"
+		                power="100" health="100" agility="110" accuracy="110" knowledge="90" will="90"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="155" block="155" parry="155"
+		                main_hand_attack="18" main_hand_accuracy="250" main_hand_crit_rate="3"
+		                magic_accuracy="62" />
+	</player_stats>
 
-	<stats_template class="SCOUT" level="2">
-		<maxHp>261</maxHp>
-		<maxMp>240</maxMp>
+	<player_stats class="SCOUT" level="6">
+		<stats_template maxHp="449" maxMp="520"
+		                power="100" health="100" agility="110" accuracy="110" knowledge="90" will="90"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="167" block="167" parry="167"
+		                main_hand_attack="18" main_hand_accuracy="258" main_hand_crit_rate="3"
+		                magic_accuracy="74" />
+	</player_stats>
 
-		<power>100</power>
-		<health>100</health>
-		<agility>110</agility>
-		<accuracy>110</accuracy>
-		<knowledge>90</knowledge>
-		<will>90</will>
+	<player_stats class="SCOUT" level="7">
+		<stats_template maxHp="501" maxMp="590"
+		                power="100" health="100" agility="110" accuracy="110" knowledge="90" will="90"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="179" block="179" parry="179"
+		                main_hand_attack="18" main_hand_accuracy="266" main_hand_crit_rate="3"
+		                magic_accuracy="86" />
+	</player_stats>
 
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
+	<player_stats class="SCOUT" level="8">
+		<stats_template maxHp="555" maxMp="660"
+		                power="100" health="100" agility="110" accuracy="110" knowledge="90" will="90"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="192" block="192" parry="192"
+		                main_hand_attack="18" main_hand_accuracy="274" main_hand_crit_rate="3"
+		                magic_accuracy="99" />
+	</player_stats>
 
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>117</evasion>
-		<block>117</block>
-		<parry>117</parry>
-
-		<main_hand_attack>18</main_hand_attack>
-		<main_hand_accuracy>226</main_hand_accuracy>
-		<main_hand_crit_rate>3</main_hand_crit_rate>
-		
-		<magic_accuracy>24</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="SCOUT" level="3">
-		<maxHp>305</maxHp>
-		<maxMp>310</maxMp>
-
-		<power>100</power>
-		<health>100</health>
-		<agility>110</agility>
-		<accuracy>110</accuracy>
-		<knowledge>90</knowledge>
-		<will>90</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>130</evasion>
-		<block>130</block>
-		<parry>130</parry>
-
-		<main_hand_attack>18</main_hand_attack>
-		<main_hand_accuracy>234</main_hand_accuracy>
-		<main_hand_crit_rate>3</main_hand_crit_rate>
-		
-		<magic_accuracy>37</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="SCOUT" level="4">
-		<maxHp>351</maxHp>
-		<maxMp>380</maxMp>
-
-		<power>100</power>
-		<health>100</health>
-		<agility>110</agility>
-		<accuracy>110</accuracy>
-		<knowledge>90</knowledge>
-		<will>90</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>142</evasion>
-		<block>142</block>
-		<parry>142</parry>
-
-		<main_hand_attack>18</main_hand_attack>
-		<main_hand_accuracy>242</main_hand_accuracy>
-		<main_hand_crit_rate>3</main_hand_crit_rate>
-		
-		<magic_accuracy>49</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="SCOUT" level="5">
-		<maxHp>399</maxHp>
-		<maxMp>450</maxMp>
-
-		<power>100</power>
-		<health>100</health>
-		<agility>110</agility>
-		<accuracy>110</accuracy>
-		<knowledge>90</knowledge>
-		<will>90</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>155</evasion>
-		<block>155</block>
-		<parry>155</parry>
-
-		<main_hand_attack>18</main_hand_attack>
-		<main_hand_accuracy>250</main_hand_accuracy>
-		<main_hand_crit_rate>3</main_hand_crit_rate>
-		
-		<magic_accuracy>62</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="SCOUT" level="6">
-		<maxHp>449</maxHp>
-		<maxMp>520</maxMp>
-
-		<power>100</power>
-		<health>100</health>
-		<agility>110</agility>
-		<accuracy>110</accuracy>
-		<knowledge>90</knowledge>
-		<will>90</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>167</evasion>
-		<block>167</block>
-		<parry>167</parry>
-
-		<main_hand_attack>18</main_hand_attack>
-		<main_hand_accuracy>258</main_hand_accuracy>
-		<main_hand_crit_rate>3</main_hand_crit_rate>
-		
-		<magic_accuracy>74</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="SCOUT" level="7">
-		<maxHp>501</maxHp>
-		<maxMp>590</maxMp>
-
-		<power>100</power>
-		<health>100</health>
-		<agility>110</agility>
-		<accuracy>110</accuracy>
-		<knowledge>90</knowledge>
-		<will>90</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>179</evasion>
-		<block>179</block>
-		<parry>179</parry>
-
-		<main_hand_attack>18</main_hand_attack>
-		<main_hand_accuracy>266</main_hand_accuracy>
-		<main_hand_crit_rate>3</main_hand_crit_rate>
-		
-		<magic_accuracy>86</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="SCOUT" level="8">
-		<maxHp>555</maxHp>
-		<maxMp>660</maxMp>
-
-		<power>100</power>
-		<health>100</health>
-		<agility>110</agility>
-		<accuracy>110</accuracy>
-		<knowledge>90</knowledge>
-		<will>90</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>192</evasion>
-		<block>192</block>
-		<parry>192</parry>
-
-		<main_hand_attack>18</main_hand_attack>
-		<main_hand_accuracy>274</main_hand_accuracy>
-		<main_hand_crit_rate>3</main_hand_crit_rate>
-		
-		<magic_accuracy>99</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="SCOUT" level="9">
-		<maxHp>612</maxHp>
-		<maxMp>730</maxMp>
-
-		<power>100</power>
-		<health>100</health>
-		<agility>110</agility>
-		<accuracy>110</accuracy>
-		<knowledge>90</knowledge>
-		<will>90</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>204</evasion>
-		<block>204</block>
-		<parry>204</parry>
-
-		<main_hand_attack>18</main_hand_attack>
-		<main_hand_accuracy>282</main_hand_accuracy>
-		<main_hand_crit_rate>3</main_hand_crit_rate>
-		
-		<magic_accuracy>111</magic_accuracy>
-	</stats_template>
+	<player_stats class="SCOUT" level="9">
+		<stats_template maxHp="612" maxMp="730"
+		                power="100" health="100" agility="110" accuracy="110" knowledge="90" will="90"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="204" block="204" parry="204"
+		                main_hand_attack="18" main_hand_accuracy="282" main_hand_crit_rate="3"
+		                magic_accuracy="111" />
+	</player_stats>
 </stats_templates>

@@ -1,143 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <stats_templates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../static_data.xsd">
 
-	<stats_template class="TEMPLAR" level="9">
-		<maxHp>782</maxHp>
-		<maxMp>790</maxMp>
+	<player_stats class="TEMPLAR" level="9">
+		<stats_template maxHp="782" maxMp="790"
+		                power="115" health="100" agility="100" accuracy="100" knowledge="90" will="105"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="173" block="173" parry="173"
+		                main_hand_attack="19" main_hand_accuracy="262" main_hand_crit_rate="2"
+		                magic_accuracy="111" />
+	</player_stats>
 
-		<power>115</power>
-		<health>100</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>90</knowledge>
-		<will>105</will>
+	<player_stats class="TEMPLAR" level="10">
+		<stats_template maxHp="856" maxMp="860"
+		                power="115" health="100" agility="100" accuracy="100" knowledge="90" will="105"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="186" block="186" parry="186"
+		                main_hand_attack="19" main_hand_accuracy="270" main_hand_crit_rate="2"
+		                magic_accuracy="124" />
+	</player_stats>
 
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
+	<player_stats class="TEMPLAR" level="11">
+		<stats_template maxHp="933" maxMp="930"
+		                power="115" health="100" agility="100" accuracy="100" knowledge="90" will="105"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="198" block="198" parry="198"
+		                main_hand_attack="19" main_hand_accuracy="278" main_hand_crit_rate="2"
+		                magic_accuracy="136" />
+	</player_stats>
 
-		<attack_speed>1.5</attack_speed>
+	<player_stats class="TEMPLAR" level="12">
+		<stats_template maxHp="1013" maxMp="1000"
+		                power="115" health="100" agility="100" accuracy="100" knowledge="90" will="105"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="210" block="210" parry="210"
+		                main_hand_attack="19" main_hand_accuracy="286" main_hand_crit_rate="2"
+		                magic_accuracy="148" />
+	</player_stats>
 
-		<evasion>173</evasion>
-		<block>173</block>
-		<parry>173</parry>
-
-		<main_hand_attack>19</main_hand_attack>
-		<main_hand_accuracy>262</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>111</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="TEMPLAR" level="10">
-		<maxHp>856</maxHp>
-		<maxMp>860</maxMp>
-
-		<power>115</power>
-		<health>100</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>90</knowledge>
-		<will>105</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>186</evasion>
-		<block>186</block>
-		<parry>186</parry>
-
-		<main_hand_attack>19</main_hand_attack>
-		<main_hand_accuracy>270</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>124</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="TEMPLAR" level="11">
-		<maxHp>933</maxHp>
-		<maxMp>930</maxMp>
-
-		<power>115</power>
-		<health>100</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>90</knowledge>
-		<will>105</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>198</evasion>
-		<block>198</block>
-		<parry>198</parry>
-
-		<main_hand_attack>19</main_hand_attack>
-		<main_hand_accuracy>278</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>136</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="TEMPLAR" level="12">
-		<maxHp>1013</maxHp>
-		<maxMp>1000</maxMp>
-
-		<power>115</power>
-		<health>100</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>90</knowledge>
-		<will>105</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>210</evasion>
-		<block>210</block>
-		<parry>210</parry>
-
-		<main_hand_attack>19</main_hand_attack>
-		<main_hand_accuracy>286</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>148</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="TEMPLAR" level="16">
-		<maxHp>1359</maxHp>
-		<maxMp>1281</maxMp>
-
-		<power>115</power>
-		<health>100</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>90</knowledge>
-		<will>105</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>260</evasion>
-		<block>260</block>
-		<parry>260</parry>
-
-		<main_hand_attack>19</main_hand_attack>
-		<main_hand_accuracy>318</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>198</magic_accuracy>
-	</stats_template>
+	<player_stats class="TEMPLAR" level="16">
+		<stats_template maxHp="1359" maxMp="1281"
+		                power="115" health="100" agility="100" accuracy="100" knowledge="90" will="105"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="260" block="260" parry="260"
+		                main_hand_attack="19" main_hand_accuracy="318" main_hand_crit_rate="2"
+		                magic_accuracy="198" />
+	</player_stats>
 </stats_templates>

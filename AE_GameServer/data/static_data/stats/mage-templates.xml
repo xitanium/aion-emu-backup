@@ -1,255 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <stats_templates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../static_data.xsd">
+
+	<player_stats class="MAGE" level="1">
+		<stats_template maxHp="132" maxMp="405"
+		                power="90" health="90" agility="95" accuracy="95" knowledge="115" will="115"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="58" block="58" parry="58"
+		                main_hand_attack="16" main_hand_accuracy="188" main_hand_crit_rate="1"
+		                magic_accuracy="12" />
+	</player_stats>
+
+	<player_stats class="MAGE" level="2">
+		<stats_template maxHp="162" maxMp="510"
+		                power="90" health="90" agility="95" accuracy="95" knowledge="115" will="115"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="71" block="71" parry="71"
+		                main_hand_attack="16" main_hand_accuracy="196" main_hand_crit_rate="1"
+		                magic_accuracy="24" />
+	</player_stats>
+
+	<player_stats class="MAGE" level="3">
+		<stats_template maxHp="194" maxMp="615"
+		                power="90" health="90" agility="95" accuracy="95" knowledge="115" will="115"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="83" block="83" parry="83"
+		                main_hand_attack="16" main_hand_accuracy="204" main_hand_crit_rate="1"
+		                magic_accuracy="37" />
+	</player_stats>
+
+	<player_stats class="MAGE" level="4">
+		<stats_template maxHp="227" maxMp="720"
+		                power="90" health="90" agility="95" accuracy="95" knowledge="115" will="115"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="96" block="96" parry="96"
+		                main_hand_attack="16" main_hand_accuracy="212" main_hand_crit_rate="1"
+		                magic_accuracy="49" />
+	</player_stats>
+
+	<player_stats class="MAGE" level="5">
+		<stats_template maxHp="262" maxMp="825"
+		                power="90" health="90" agility="95" accuracy="95" knowledge="115" will="115"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="108" block="108" parry="108"
+		                main_hand_attack="16" main_hand_accuracy="220" main_hand_crit_rate="1"
+		                magic_accuracy="62" />
+	</player_stats>
+
+	<player_stats class="MAGE" level="6">
+		<stats_template maxHp="298" maxMp="930"
+		                power="90" health="90" agility="95" accuracy="95" knowledge="115" will="115"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="120" block="120" parry="120"
+		                main_hand_attack="16" main_hand_accuracy="228" main_hand_crit_rate="1"
+		                magic_accuracy="74" />
+	</player_stats>
+
+	<player_stats class="MAGE" level="7">
+		<stats_template maxHp="336" maxMp="1035"
+		                power="90" health="90" agility="95" accuracy="95" knowledge="115" will="115"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="133" block="133" parry="133"
+		                main_hand_attack="16" main_hand_accuracy="236" main_hand_crit_rate="1"
+		                magic_accuracy="86" />
+	</player_stats>
+
+	<player_stats class="MAGE" level="8">
+		<stats_template maxHp="375" maxMp="1140"
+		                power="90" health="90" agility="95" accuracy="95" knowledge="115" will="115"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="145" block="145" parry="145"
+		                main_hand_attack="16" main_hand_accuracy="244" main_hand_crit_rate="1"
+		                magic_accuracy="99" />
+	</player_stats>
+
+	<player_stats class="MAGE" level="9">
+		<stats_template maxHp="416" maxMp="1245"
+		                power="90" health="90" agility="95" accuracy="95" knowledge="115" will="115"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="158" block="158" parry="158"
+		                main_hand_attack="16" main_hand_accuracy="252" main_hand_crit_rate="1"
+		                magic_accuracy="111" />
+	</player_stats>
 	
-	<stats_template class="MAGE" level="1">
-		<maxHp>132</maxHp>
-		<maxMp>405</maxMp>
-
-		<power>90</power>
-		<health>90</health>
-		<agility>95</agility>
-		<accuracy>95</accuracy>
-		<knowledge>115</knowledge>
-		<will>115</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>58</evasion>
-		<block>58</block>
-		<parry>58</parry>
-
-		<main_hand_attack>16</main_hand_attack>
-		<main_hand_accuracy>188</main_hand_accuracy>
-		<main_hand_crit_rate>1</main_hand_crit_rate>
-
-		<magic_accuracy>12</magic_accuracy>
-	</stats_template>
-
-        <stats_template class="MAGE" level="2">
-		<maxHp>162</maxHp>
-		<maxMp>510</maxMp>
-
-		<power>90</power>
-		<health>90</health>
-		<agility>95</agility>
-		<accuracy>95</accuracy>
-		<knowledge>115</knowledge>
-		<will>115</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>71</evasion>
-		<block>71</block>
-		<parry>71</parry>
-
-		<main_hand_attack>16</main_hand_attack>
-		<main_hand_accuracy>196</main_hand_accuracy>
-		<main_hand_crit_rate>1</main_hand_crit_rate>
-
-		<magic_accuracy>24</magic_accuracy>
-        </stats_template>
-
-        <stats_template class="MAGE" level="3">
-		<maxHp>194</maxHp>
-		<maxMp>615</maxMp>
-
-		<power>90</power>
-		<health>90</health>
-		<agility>95</agility>
-		<accuracy>95</accuracy>
-		<knowledge>115</knowledge>
-		<will>115</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>83</evasion>
-		<block>83</block>
-		<parry>83</parry>
-
-		<main_hand_attack>16</main_hand_attack>
-		<main_hand_accuracy>204</main_hand_accuracy>
-		<main_hand_crit_rate>1</main_hand_crit_rate>
-
-		<magic_accuracy>37</magic_accuracy>
-        </stats_template>
-
-        <stats_template class="MAGE" level="4">
-		<maxHp>227</maxHp>
-		<maxMp>720</maxMp>
-
-		<power>90</power>
-		<health>90</health>
-		<agility>95</agility>
-		<accuracy>95</accuracy>
-		<knowledge>115</knowledge>
-		<will>115</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>96</evasion>
-		<block>96</block>
-		<parry>96</parry>
-
-		<main_hand_attack>16</main_hand_attack>
-		<main_hand_accuracy>212</main_hand_accuracy>
-		<main_hand_crit_rate>1</main_hand_crit_rate>
-
-		<magic_accuracy>49</magic_accuracy>
-        </stats_template>
-
-        <stats_template class="MAGE" level="5">
-		<maxHp>262</maxHp>
-		<maxMp>825</maxMp>
-
-		<power>90</power>
-		<health>90</health>
-		<agility>95</agility>
-		<accuracy>95</accuracy>
-		<knowledge>115</knowledge>
-		<will>115</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>108</evasion>
-		<block>108</block>
-		<parry>108</parry>
-
-		<main_hand_attack>16</main_hand_attack>
-		<main_hand_accuracy>220</main_hand_accuracy>
-		<main_hand_crit_rate>1</main_hand_crit_rate>
-
-		<magic_accuracy>62</magic_accuracy>
-	</stats_template>
-
-        <stats_template class="MAGE" level="6">
-		<maxHp>298</maxHp>
-		<maxMp>930</maxMp>
-
-		<power>90</power>
-		<health>90</health>
-		<agility>95</agility>
-		<accuracy>95</accuracy>
-		<knowledge>115</knowledge>
-		<will>115</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>120</evasion>
-		<block>120</block>
-		<parry>120</parry>
-
-		<main_hand_attack>16</main_hand_attack>
-		<main_hand_accuracy>228</main_hand_accuracy>
-		<main_hand_crit_rate>1</main_hand_crit_rate>
-
-		<magic_accuracy>74</magic_accuracy>
-	</stats_template>
-
-        <stats_template class="MAGE" level="7">
-		<maxHp>336</maxHp>
-		<maxMp>1035</maxMp>
-
-		<power>90</power>
-		<health>90</health>
-		<agility>95</agility>
-		<accuracy>95</accuracy>
-		<knowledge>115</knowledge>
-		<will>115</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>133</evasion>
-		<block>133</block>
-		<parry>133</parry>
-
-		<main_hand_attack>16</main_hand_attack>
-		<main_hand_accuracy>236</main_hand_accuracy>
-		<main_hand_crit_rate>1</main_hand_crit_rate>
-
-		<magic_accuracy>86</magic_accuracy>
-	</stats_template>
-
-        <stats_template class="MAGE" level="8">
-		<maxHp>375</maxHp>
-		<maxMp>1140</maxMp>
-
-		<power>90</power>
-		<health>90</health>
-		<agility>95</agility>
-		<accuracy>95</accuracy>
-		<knowledge>115</knowledge>
-		<will>115</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>145</evasion>
-		<block>145</block>
-		<parry>145</parry>
-
-		<main_hand_attack>16</main_hand_attack>
-		<main_hand_accuracy>244</main_hand_accuracy>
-		<main_hand_crit_rate>1</main_hand_crit_rate>
-
-		<magic_accuracy>99</magic_accuracy>
-	</stats_template>
-
-        <stats_template class="MAGE" level="9">
-		<maxHp>416</maxHp>
-		<maxMp>1245</maxMp>
-
-		<power>90</power>
-		<health>90</health>
-		<agility>95</agility>
-		<accuracy>95</accuracy>
-		<knowledge>115</knowledge>
-		<will>115</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>158</evasion>
-		<block>158</block>
-		<parry>158</parry>
-
-		<main_hand_attack>16</main_hand_attack>
-		<main_hand_accuracy>252</main_hand_accuracy>
-		<main_hand_crit_rate>1</main_hand_crit_rate>
-
-		<magic_accuracy>111</magic_accuracy>
-	</stats_template>
 </stats_templates>

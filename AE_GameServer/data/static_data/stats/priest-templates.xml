@@ -1,257 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <stats_templates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../static_data.xsd">
-	
-	<stats_template class="PRIEST" level="1">
-		<maxHp>201</maxHp>
-		<maxMp>375</maxMp>
 
-		<power>95</power>
-		<health>95</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>100</knowledge>
-		<will>110</will>
+	<player_stats class="PRIEST" level="1">
+		<stats_template maxHp="201" maxMp="375"
+		                power="95" health="95" agility="100" accuracy="100" knowledge="100" will="110"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="74" block="74" parry="74"
+		                main_hand_attack="17" main_hand_accuracy="198" main_hand_crit_rate="2"
+		                magic_accuracy="12" />
+	</player_stats>
 
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>74</evasion>
-		<block>74</block>
-		<parry>74</parry>
-
-		<main_hand_attack>17</main_hand_attack>
-		<main_hand_accuracy>198</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-		
-		<magic_accuracy>12</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="PRIEST" level="2">
-		<maxHp>243</maxHp>
-		<maxMp>480</maxMp>
-
-		<power>95</power>
-		<health>95</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>100</knowledge>
-		<will>110</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>86</evasion>
-		<block>86</block>
-		<parry>86</parry>
-
-		<main_hand_attack>17</main_hand_attack>
-		<main_hand_accuracy>206</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>24</magic_accuracy>
-	</stats_template>
+	<player_stats class="PRIEST" level="2">
+		<stats_template maxHp="243" maxMp="480"
+		                power="95" health="95" agility="100" accuracy="100" knowledge="100" will="110"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="86" block="86" parry="86"
+		                main_hand_attack="17" main_hand_accuracy="206" main_hand_crit_rate="2"
+		                magic_accuracy="24" />
+	</player_stats>
 
 
-	<stats_template class="PRIEST" level="3">
-		<maxHp>287</maxHp>
-		<maxMp>585</maxMp>
+	<player_stats class="PRIEST" level="3">
+		<stats_template maxHp="287" maxMp="585"
+		                power="95" health="95" agility="100" accuracy="100" knowledge="100" will="110"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="99" block="99" parry="99"
+		                main_hand_attack="17" main_hand_accuracy="214" main_hand_crit_rate="2"
+		                magic_accuracy="37" />
+	</player_stats>
 
-		<power>95</power>
-		<health>95</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>100</knowledge>
-		<will>110</will>
+	<player_stats class="PRIEST" level="4">
+		<stats_template maxHp="333" maxMp="690"
+		                power="95" health="95" agility="100" accuracy="100" knowledge="100" will="110"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="111" block="111" parry="111"
+		                main_hand_attack="17" main_hand_accuracy="222" main_hand_crit_rate="2"
+		                magic_accuracy="37" />
+	</player_stats>
 
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
+	<player_stats class="PRIEST" level="5">
+		<stats_template maxHp="381" maxMp="795"
+		                power="95" health="95" agility="100" accuracy="100" knowledge="100" will="110"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="124" block="124" parry="124"
+		                main_hand_attack="17" main_hand_accuracy="230" main_hand_crit_rate="2"
+		                magic_accuracy="62" />
+	</player_stats>
 
-		<attack_speed>1.5</attack_speed>
+	<player_stats class="PRIEST" level="6">
+		<stats_template maxHp="431" maxMp="900"
+		                power="95" health="95" agility="100" accuracy="100" knowledge="100" will="110"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="136" block="136" parry="136"
+		                main_hand_attack="17" main_hand_accuracy="238" main_hand_crit_rate="2"
+		                magic_accuracy="74" />
+	</player_stats>
 
-		<evasion>99</evasion>
-		<block>99</block>
-		<parry>99</parry>
+	<player_stats class="PRIEST" level="7">
+		<stats_template maxHp="483" maxMp="1005"
+		                power="95" health="95" agility="100" accuracy="100" knowledge="100" will="110"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="136" block="136" parry="136"
+		                main_hand_attack="17" main_hand_accuracy="246" main_hand_crit_rate="2"
+		                magic_accuracy="86" />
+	</player_stats>
 
-		<main_hand_attack>17</main_hand_attack>
-		<main_hand_accuracy>214</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>37</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="PRIEST" level="4">
-		<maxHp>333</maxHp>
-		<maxMp>690</maxMp>
-
-		<power>95</power>
-		<health>95</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>100</knowledge>
-		<will>110</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>111</evasion>
-		<block>111</block>
-		<parry>111</parry>
-
-		<main_hand_attack>17</main_hand_attack>
-		<main_hand_accuracy>222</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>37</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="PRIEST" level="5">
-		<maxHp>381</maxHp>
-		<maxMp>795</maxMp>
-
-		<power>95</power>
-		<health>95</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>100</knowledge>
-		<will>110</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>124</evasion>
-		<block>124</block>
-		<parry>124</parry>
-
-		<main_hand_attack>17</main_hand_attack>
-		<main_hand_accuracy>230</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>62</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="PRIEST" level="6">
-		<maxHp>431</maxHp>
-		<maxMp>900</maxMp>
-
-		<power>95</power>
-		<health>95</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>100</knowledge>
-		<will>110</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>136</evasion>
-		<block>136</block>
-		<parry>136</parry>
-
-		<main_hand_attack>17</main_hand_attack>
-		<main_hand_accuracy>238</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>74</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="PRIEST" level="7">
-		<maxHp>483</maxHp>
-		<maxMp>1005</maxMp>
-
-		<power>95</power>
-		<health>95</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>100</knowledge>
-		<will>110</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>136</evasion>
-		<block>136</block>
-		<parry>136</parry>
-
-		<main_hand_attack>17</main_hand_attack>
-		<main_hand_accuracy>246</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>86</magic_accuracy>
-	</stats_template>
-
-	<stats_template class="PRIEST" level="8">
-		<maxHp>537</maxHp>
-		<maxMp>1110</maxMp>
-
-		<power>95</power>
-		<health>95</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>100</knowledge>
-		<will>110</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>161</evasion>
-		<block>161</block>
-		<parry>161</parry>
-
-		<main_hand_attack>17</main_hand_attack>
-		<main_hand_accuracy>254</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>99</magic_accuracy>
-	</stats_template>
+	<player_stats class="PRIEST" level="8">
+		<stats_template maxHp="537" maxMp="1110"
+		                power="95" health="95" agility="100" accuracy="100" knowledge="100" will="110"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="161" block="161" parry="161"
+		                main_hand_attack="17" main_hand_accuracy="254" main_hand_crit_rate="2"
+		                magic_accuracy="99" />
+	</player_stats>
 
 
-	<stats_template class="PRIEST" level="9">
-		<maxHp>594</maxHp>
-		<maxMp>1215</maxMp>
-
-		<power>95</power>
-		<health>95</health>
-		<agility>100</agility>
-		<accuracy>100</accuracy>
-		<knowledge>100</knowledge>
-		<will>110</will>
-
-		<walk_speed>1.5</walk_speed>
-		<run_speed>6</run_speed>
-		<fly_speed>9</fly_speed>
-
-		<attack_speed>1.5</attack_speed>
-
-		<evasion>173</evasion>
-		<block>173</block>
-		<parry>173</parry>
-
-		<main_hand_attack>17</main_hand_attack>
-		<main_hand_accuracy>262</main_hand_accuracy>
-		<main_hand_crit_rate>2</main_hand_crit_rate>
-
-		<magic_accuracy>111</magic_accuracy>
-	</stats_template>
+	<player_stats class="PRIEST" level="9">
+		<stats_template maxHp="594" maxMp="1215"
+		                power="95" health="95" agility="100" accuracy="100" knowledge="100" will="110"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="173" block="173" parry="173"
+		                main_hand_attack="17" main_hand_accuracy="262" main_hand_crit_rate="2"
+		                magic_accuracy="111" />
+	</player_stats>
 </stats_templates>
