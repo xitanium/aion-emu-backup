@@ -36,15 +36,29 @@ public abstract class AdminCommand
 	}
 
 	/**
-	 * This value says, how many params the command has.<br>
-	 * What does it mean: when admin types //admin param0 param1 param2, then
-	 * {@link #executeCommand(Player, String[])} is called with an array of params.<br>
-	 * With default value of getSplitSize (-1) it'll be an array containing (in this case) 3 params
-	 * ("param0","param1","param2").<br>
-	 * But if we want to have only 2 params ("param0" - 1st param , "param1 param2" - 2nd param) we must override
-	 * getSplitSize() method in subclass, and make it returning 2.
-	 * 
-	 * @return
+	 * This method is responsible for number of arguments that comman will accept.<br>
+	 * <br>
+	 * Lets say user types command: <b>//doSomething arg1 arg2 arg3 arg4</b><br>
+	 * If this method returns <b>-1</b>, then every arg that is separated by whitespace ( ) will be threatead as command
+	 * parameter, example:
+	 * <ul>
+	 * <li>Command: doSomething</li>
+	 * <li>Param: arg1</li>
+	 * <li>Param: arg2</li>
+	 * <li>Param: arg3</li>
+	 * <li>Param: arg4</li>
+	 * </ul>
+	 * <br>
+	 * Let's say this method returns <b>2</b>.<br>
+	 * In such case it will be threated as:
+	 * <ul>
+	 * <li>Command: doSomething</li>
+	 * <li>Param: arg1</li>
+	 * <li>Param: arg2 arg3 arg4</li>
+	 * </ul>
+	 * so we will have only two params.<br>
+	 *
+	 * @return number of params in command
 	 */
 	public int getSplitSize()
 	{
