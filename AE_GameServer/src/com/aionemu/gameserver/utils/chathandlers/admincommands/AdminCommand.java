@@ -38,7 +38,7 @@ public abstract class AdminCommand
 	/**
 	 * This value says, how many params the command has.<br>
 	 * What does it mean: when admin types //admin param0 param1 param2, then
-	 * {@link AdminCommand#executeCommand(Player, String...)} is called with an array of params.<br>
+	 * {@link #executeCommand(Player, String[])} is called with an array of params.<br>
 	 * With default value of getSplitSize (-1) it'll be an array containing (in this case) 3 params
 	 * ("param0","param1","param2").<br>
 	 * But if we want to have only 2 params ("param0" - 1st param , "param1 param2" - 2nd param) we must override
