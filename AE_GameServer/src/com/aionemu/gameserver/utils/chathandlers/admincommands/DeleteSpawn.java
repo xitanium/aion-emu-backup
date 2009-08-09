@@ -32,9 +32,6 @@ public class DeleteSpawn extends AdminCommand
 	@Inject
 	private SpawnData	spawnData;
 
-	/**
-	 * @param commandName
-	 */
 	public DeleteSpawn()
 	{
 		super("delete");
@@ -49,23 +46,14 @@ public class DeleteSpawn extends AdminCommand
 	public void executeCommand(Player admin, String... params)
 	{
 		Creature cre = admin.getTarget();
-		Npc npc = null;
 		if(!(cre instanceof Npc))
 		{
 			PacketSendUtility.sendMessage(admin, "Wrong target");
 			return;
 		}
-		npc = (Npc) cre;
-		if(npc == null)
-		{
-			PacketSendUtility.sendMessage(admin, "target is null");
-			return;
-		}
-		else
-		{
-			spawnData.removeSpawn(npc.getSpawn());
-			npc.getController().delete();
-			PacketSendUtility.sendMessage(admin, "Spawn removed to save changes type //save_spawn");
-		}
+		Npc npc = (Npc) cre;
+		spawnData.removeSpawn(npc.getSpawn());
+		npc.getController().delete();
+		PacketSendUtility.sendMessage(admin, "Spawn removed to save changes type //save_spawn");
 	}
 }
