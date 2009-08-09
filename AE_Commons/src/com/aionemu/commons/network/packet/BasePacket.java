@@ -41,7 +41,7 @@ public abstract class BasePacket
 	/**
 	 * Packet opcode field
 	 */
-	private final int opcode;
+	private int opcode;
 
 	/**
 	 * Constructs a new packet with specified type and id.
@@ -54,7 +54,28 @@ public abstract class BasePacket
 		this.packetType = packetType;
 		this.opcode = opcode;
 	}
-
+	
+	/**
+	 * Constructs a new packet with given type.<br>
+	 * If this constructor is used, then setOpcode() must be used
+	 * just after it. 
+	 * 
+	 * @param packetType
+	 */
+	protected BasePacket(PacketType packetType)
+	{
+		this.packetType = packetType;
+	}
+	
+	/**
+	 * Sets opcode of this packet.<br>
+	 * <font color='red'>NOTICE: </font> Use only if BasePacket(PacketType) constructor was use
+	 * @param opcode
+	 */
+	protected void setOpcode(int opcode)
+	{
+		this.opcode = opcode;
+	}
 	/**
 	 * Returns packet opcode.
 	 *

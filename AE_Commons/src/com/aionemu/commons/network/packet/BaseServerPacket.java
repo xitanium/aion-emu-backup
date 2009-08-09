@@ -36,6 +36,15 @@ public abstract class BaseServerPacket extends BasePacket
 	}
 
 	/**
+	 * Constructs a new server packet.<br>
+	 * If this constructor was used, then {@link #setOpcode(int)} must be called
+	 */
+	protected BaseServerPacket()
+	{
+		super(PacketType.SERVER);
+	}
+	
+	/**
 	 * Write int to buffer.
 	 * 
 	 * @param buf
