@@ -17,18 +17,13 @@
 
 package com.aionemu.commons.scripting.impl.javacompiler;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.net.MalformedURLException;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import javax.tools.JavaFileObject;
 
@@ -54,20 +49,9 @@ public class ScriptClassLoaderImpl extends ScriptClassLoader
 	private static final Logger					log					= Logger.getLogger(ScriptClassLoaderImpl.class);
 
 	/**
-	 * URL Stream handler to allow valid url generation by {@link #getResource(String)}
-	 */
-	private final VirtualClassURLStreamHandler	urlStreamHandler	= new VirtualClassURLStreamHandler(this);
-
-	/**
 	 * ClassFileManager that is related to this ClassLoader
 	 */
 	private final ClassFileManager				classFileManager;
-
-	/**
-	 * Classes that were loaded from libraries. They are no parsed for any annotations, but they are needed by
-	 * JavaCompiler to perform valid compilation
-	 */
-	private Set<String>							libraryClasses		= new HashSet<String>();
 
 	/**
 	 * Creates new ScriptClassLoader with given ClassFileManger
@@ -103,104 +87,6 @@ public class ScriptClassLoaderImpl extends ScriptClassLoader
 	public ClassFileManager getClassFileManager()
 	{
 		return classFileManager;
-	}
-
-	/**
-	 * AddsLibrary jar
-	 * 
-	 * @param file
-	 *            jar file to add
-	 * @throws IOException
-	 */
-	public void addLibrary(File file) throws IOException
-	{
-		URL fileURL = file.toURI().toURL();
-		addURL(fileURL);
-
-		JarFile jarFile = new JarFile(file);
-
-		Enumeration<JarEntry> entries = jarFile.entries();
-		while (entries.hasMoreElements())
-		{
-			JarEntry entry = entries.nextElement();
-
-			String name = entry.getName();
-			if (name.endsWith(".class"))
-			{
-				name = name.substring(0, name.length() - 6);
-				name = name.replace('/', '.');
-				libraryClasses.add(name);
-			}
-		}
-
-		jarFile.close();
-	}
-
-	/**
-	 * Loads class from library, parent or compiled
-	 * 
-	 * @param name
-	 *            class to load
-	 * @return loaded class
-	 * @throws ClassNotFoundException
-	 *             if class not found
-	 */
-	@Override
-	public Class<?> loadClass(String name) throws ClassNotFoundException
-	{
-		BinaryClass bc = classFileManager.getCompiledClasses().get(name);
-		if (bc == null)
-		{
-			return super.loadClass(name, true);
-		}
-
-		Class<?> c = bc.getDefinedClass();
-		if (c == null)
-		{
-			byte[] b = bc.getBytes();
-			c = super.defineClass(name, b, 0, b.length);
-			bc.setDefinedClass(c);
-		}
-		return c;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public URL getResource(String name)
-	{
-
-		if (!name.endsWith(".class"))
-		{
-			return super.getResource(name);
-		}
-		else
-		{
-			String newName = name.substring(0, name.length() - 6);
-			newName = newName.replace('/', '.');
-			if (classFileManager.getCompiledClasses().containsKey(newName))
-			{
-				try
-				{
-					return new URL(null, VirtualClassURLStreamHandler.HANDLER_PROTOCOL + newName, urlStreamHandler);
-				}
-				catch (MalformedURLException e)
-				{
-					log.error("Can't create url for compiled class", e);
-				}
-			}
-		}
-
-		return super.getResource(name);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Set<String> getLibraryClasses()
-	{
-		return Collections.unmodifiableSet(libraryClasses);
 	}
 
 	/**
@@ -308,5 +194,43 @@ public class ScriptClassLoaderImpl extends ScriptClassLoader
 			}
 		}
 		return clazz;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public byte[] getByteCode(String className) {
+		BinaryClass bc = getClassFileManager().getCompiledClasses().get(className);
+		byte[] b = new byte[bc.getBytes().length];
+		System.arraycopy(bc.getBytes(), 0, b, 0, b.length);
+		return b;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Class<?> getDefinedClass(String name) {
+		BinaryClass bc = classFileManager.getCompiledClasses().get(name);
+		if(bc == null){
+			return null;
+		}
+
+		return bc.getDefinedClass();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setDefinedClass(String name, Class<?> clazz) {
+		BinaryClass bc = classFileManager.getCompiledClasses().get(name);
+
+		if(bc == null){
+			throw new IllegalArgumentException("Attempt to set defined class for class that was not compiled?");
+		}
+
+		bc.setDefinedClass(clazz);
 	}
 }

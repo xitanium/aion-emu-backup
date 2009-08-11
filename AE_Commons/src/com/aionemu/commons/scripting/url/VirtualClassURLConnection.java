@@ -15,13 +15,15 @@
  * along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aionemu.commons.scripting.impl.javacompiler;
+package com.aionemu.commons.scripting.url;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+
+import com.aionemu.commons.scripting.ScriptClassLoader;
 
 /**
  * This class represents URL Connection that is used to "connect" to scripts binary data that was loaded by specified
@@ -47,13 +49,10 @@ public class VirtualClassURLConnection extends URLConnection
 	 * @param cl
 	 *            classloader
 	 */
-	protected VirtualClassURLConnection(URL url, ScriptClassLoaderImpl cl)
+	protected VirtualClassURLConnection(URL url, ScriptClassLoader cl)
 	{
 		super(url);
-		BinaryClass bc = cl.getClassFileManager().getCompiledClasses().get(url.getHost());
-		byte[] b = new byte[bc.getBytes().length];
-		System.arraycopy(bc.getBytes(), 0, b, 0, b.length);
-		is = new ByteArrayInputStream(b);
+		is = new ByteArrayInputStream(cl.getByteCode(url.getHost()));
 	}
 
 	/**

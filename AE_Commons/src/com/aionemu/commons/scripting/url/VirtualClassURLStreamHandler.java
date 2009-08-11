@@ -15,12 +15,14 @@
  * along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aionemu.commons.scripting.impl.javacompiler;
+package com.aionemu.commons.scripting.url;
 
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
+
+import com.aionemu.commons.scripting.ScriptClassLoader;
 
 /**
  * This class represents URL Stream handler that accepts {@value #HANDLER_PROTOCOL} protocol
@@ -38,7 +40,7 @@ public class VirtualClassURLStreamHandler extends URLStreamHandler
 	/**
 	 * Script class loader that loaded those classes
 	 */
-	private final ScriptClassLoaderImpl	cl;
+	private final ScriptClassLoader cl;
 
 	/**
 	 * Creates new instance of url stream handler with given classloader
@@ -46,7 +48,7 @@ public class VirtualClassURLStreamHandler extends URLStreamHandler
 	 * @param cl
 	 *            ScriptClassLoaderImpl that was used to load compiled class
 	 */
-	public VirtualClassURLStreamHandler(ScriptClassLoaderImpl cl)
+	public VirtualClassURLStreamHandler(ScriptClassLoader cl)
 	{
 		this.cl = cl;
 	}
