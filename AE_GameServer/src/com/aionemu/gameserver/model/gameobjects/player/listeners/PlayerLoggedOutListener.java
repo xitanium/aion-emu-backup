@@ -61,7 +61,7 @@ public abstract class PlayerLoggedOutListener implements Callback<Player>
 	@Override
 	public final Class<? extends Callback<Player>> getBaseClass()
 	{
-		return PlayerLoggedInListener.class;
+		return PlayerLoggedOutListener.class;
 	}
 
 }
