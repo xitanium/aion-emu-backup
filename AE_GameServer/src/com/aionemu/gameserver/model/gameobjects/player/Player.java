@@ -16,10 +16,14 @@
  */
 package com.aionemu.gameserver.model.gameobjects.player;
 
+import com.aionemu.commons.callbacks.Enhancable;
 import com.aionemu.gameserver.controllers.PlayerController;
 import com.aionemu.gameserver.model.gameobjects.Creature;
+import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedInListener;
+import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedOutListener;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
+import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
@@ -50,10 +54,10 @@ public class Player extends Creature
 	public Player(PlayerController controller, PlayerCommonData plCommonData, PlayerAppearance appereance)
 	{
 		super(plCommonData.getPlayerObjId(), controller, plCommonData.getPosition());
-		
+
 		this.playerCommonData = plCommonData;
 		this.playerAppearance = appereance;
-		
+
 		controller.setOwner(this);
 	}
 
@@ -137,5 +141,32 @@ public class Player extends Creature
 	public byte getLevel()
 	{
 		return 1;
+	}
+
+	/**
+	 * This method is called when player logs into the game. It's main responsibility is to call all registered
+	 * listeners.<br>
+	 * <br>
+	 * 
+	 * <b><font color='red'>NOTICE: </font>this method is supposed to be called only from
+	 * {@link PlayerService#playerLoggedIn(Player)}</b>
+	 */
+	@Enhancable(callback = PlayerLoggedInListener.class)
+	public void onLoggedIn()
+	{
+
+	}
+
+	/**
+	 * This method is called when player leaves the game. It's main responsibility is to call all registered listeners.<br>
+	 * <br>
+	 * 
+	 * <b><font color='red'>NOTICE: </font>this method is supposed to be called only from
+	 * {@link PlayerService#playerLoggedOut(Player)}</b>
+	 */
+	@Enhancable(callback = PlayerLoggedOutListener.class)
+	public void onLoggedOut()
+	{
+
 	}
 }

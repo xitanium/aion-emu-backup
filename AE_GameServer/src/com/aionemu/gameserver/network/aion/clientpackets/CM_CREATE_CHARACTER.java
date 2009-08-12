@@ -189,10 +189,8 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 			aionObjectsIDFactory.releaseId(playerCommonData.getPlayerObjId());
 			return;
 		}
-		
 
 		Player player = playerService.newPlayer(playerCommonData, playerAppearance);
-		player.setClientConnection(client);
 
 		Account account = client.getAccount();
 
@@ -204,9 +202,9 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		{
 			PlayerAccountData accPlData = new PlayerAccountData(playerCommonData, playerAppearance);
 			accPlData.setCreationDate(new Timestamp(System.currentTimeMillis()));
-			
+
 			playerService.storeCreationTime(player.getObjectId(), accPlData.getCreationDate());
-			
+
 			account.addPlayerAccountData(accPlData);
 			client.sendPacket(new SM_CREATE_CHARACTER(accPlData, SM_CREATE_CHARACTER.RESPONSE_OK));
 		}

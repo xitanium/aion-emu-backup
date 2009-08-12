@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 
 import org.apache.log4j.Logger;
 
+import com.aionemu.commons.callbacks.EnhancedObject;
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.configs.CacheConfig;
 import com.aionemu.gameserver.configs.Config;
@@ -33,6 +34,11 @@ import com.aionemu.gameserver.model.gameobjects.player.MacroList;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerAppearance;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
+import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedInListener;
+import com.aionemu.gameserver.network.aion.AionConnection;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_ENTER_WORLD;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_QUIT;
+import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.collections.cachemap.CacheMap;
 import com.aionemu.gameserver.utils.collections.cachemap.CacheMapFactory;
 import com.aionemu.gameserver.utils.idfactory.IDFactory;
@@ -163,6 +169,35 @@ public class PlayerService
 		Player player = new Player(new PlayerController(), playerCommonData, playerAppearance);
 
 		return player;
+	}
+
+	/**
+	 * This method is called just after player logged in to the game.<br>
+	 * <br>
+	 * <b><font color='red'>NOTICE: </font> This method called only from {@link CM_ENTER_WORLD} and must not be called from anywhere else.</b>
+	 * 
+	 * @param player
+	 */
+	public void playerLoggedIn(Player player)
+	{
+		player.onLoggedIn();
+	}
+
+	/**
+	 * This method is called when player leaves the game, which includes just two cases: either player goes back to char
+	 * selection screen or it's leaving the game [closing client].<br><br>
+	 * 
+	 * <b><font color='red'>NOTICE: </font> This method is called only from {@link AionConnection} and {@link CM_QUIT} and must not be called from anywhere else</b>
+	 * @param player
+	 */
+	public void playerLoggedOut(Player player)
+	{
+		player.onLoggedOut();
+		
+		player.getController().delete();
+		player.setClientConnection(null);
+		
+		storePlayer(player);
 	}
 
 	/**

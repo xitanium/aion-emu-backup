@@ -155,6 +155,8 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			// sendPacket(new SM_UNK0A());
 			// sendPacket(new SM_UNK97());
 			// sendPacket(new SM_UNK8D());
+			
+			playerService.playerLoggedIn(player);
 		}
 		else
 		{

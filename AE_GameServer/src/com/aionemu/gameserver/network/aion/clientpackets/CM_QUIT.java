@@ -72,16 +72,7 @@ public class CM_QUIT extends AionClientPacket
 
 			Player player = client.getActivePlayer();
 
-			/**
-			 * Store to db.
-			 */
-			playerService.storePlayer(player);
-
-			/**
-			 * delete from the world.
-			 */
-			player.getController().delete();
-			player.setClientConnection(null);
+			playerService.playerLoggedOut(player);
 
 			/**
 			 * clear active player.

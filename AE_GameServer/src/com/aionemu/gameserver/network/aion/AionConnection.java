@@ -206,17 +206,7 @@ public class AionConnection extends AConnection
 			loginServer.aionClientDisconnected(getAccount().getId());
 		if(getActivePlayer() != null)
 		{
-			/**
-			 * Store to db.
-			 */
-			playerService.storePlayer(getActivePlayer());
-
-			/**
-			 * delete from the world.
-			 */
-			Player player = getActivePlayer();
-			player.getController().delete();
-			player.setClientConnection(null);
+			playerService.playerLoggedOut(getActivePlayer());
 		}
 	}
 
