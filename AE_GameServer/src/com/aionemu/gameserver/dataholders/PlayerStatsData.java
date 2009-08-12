@@ -17,21 +17,21 @@
 package com.aionemu.gameserver.dataholders;
 
 
-import com.aionemu.gameserver.model.PlayerClass;
-import com.aionemu.gameserver.model.templates.StatsTemplate;
-import com.aionemu.gameserver.model.gameobjects.player.Player;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAttribute;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
+
+import com.aionemu.gameserver.model.PlayerClass;
+import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 
 /**
  * Created on: 31.07.2009 14:20:03
@@ -45,7 +45,7 @@ public class PlayerStatsData
 	@XmlElement(name = "player_stats", required = true)
 	private List<PlayerStatsType> templatesList = new ArrayList<PlayerStatsType>();
 
-	private final Map<Integer, StatsTemplate> templates = new HashMap<Integer, StatsTemplate>();
+	private final Map<Integer, PlayerStatsTemplate> templates = new HashMap<Integer, PlayerStatsTemplate>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent)
 	{
@@ -60,12 +60,12 @@ public class PlayerStatsData
 		templatesList = null;
 	}
 
-	public StatsTemplate getTemplate(Player player)
+	public PlayerStatsTemplate getTemplate(Player player)
 	{
 		return getTemplate(player.getCommonData().getPlayerClass(), player.getLevel());
 	}
 
-	public StatsTemplate getTemplate(PlayerClass playerClass, int level)
+	public PlayerStatsTemplate getTemplate(PlayerClass playerClass, int level)
 	{
 		return templates.get(makeHash(playerClass, level));
 	}
@@ -84,7 +84,7 @@ public class PlayerStatsData
 		private int requiredLevel;
 
 		@XmlElement(name="stats_template")
-		private StatsTemplate template;
+		private PlayerStatsTemplate template;
 
 		public PlayerClass getRequiredPlayerClass()
 		{
@@ -96,7 +96,7 @@ public class PlayerStatsData
 			return requiredLevel;
 		}
 
-		public StatsTemplate getTemplate()
+		public PlayerStatsTemplate getTemplate()
 		{
 			return template;
 		}

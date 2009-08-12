@@ -105,7 +105,6 @@ abstract class DataLoader
 	 */
 	private void loadFile(File file)
 	{
-		log.info("Loading " + this.getClass().getSimpleName() + " (" + file.getPath() + ")");
 		LineIterator it = null;
 		try
 		{

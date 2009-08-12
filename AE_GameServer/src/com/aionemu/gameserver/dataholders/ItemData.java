@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -26,51 +26,41 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.aionemu.gameserver.model.gameobjects.Npc;
-import com.aionemu.gameserver.model.templates.NpcTemplate;
+import com.aionemu.gameserver.model.templates.ItemTemplate;
 
 /**
- * This is a container holding and serving all {@link NpcTemplate} instances.<br>
- * Briefly: Every {@link Npc} instance represents some class of NPCs among which each have the same id, name, items,
- * statistics. Data for such NPC class is defined in {@link NpcTemplate} and is uniquely identified by npc id.
- * 
  * @author Luno
- * 
+ *
  */
-@XmlRootElement(name = "npc_data")
+@XmlRootElement(name = "item_data")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class NpcData
+public class ItemData
 {
-	@XmlElement(name = "npc_template")
-	private List<NpcTemplate> npcs;
+	@XmlElement(name="item")
+	private List<ItemTemplate> its;
 	
-	/** A map containing all npc templates */
-	private Map<Integer, NpcTemplate>	npcData	= new HashMap<Integer, NpcTemplate>();
-
+	private Map<Integer, ItemTemplate> items;
+	
 	void afterUnmarshal(Unmarshaller u, Object parent)
 	{
-		for(NpcTemplate npc: npcs)
+		items = new HashMap<Integer, ItemTemplate>();
+		for(ItemTemplate it: its)
 		{
-			npcData.put(npc.getNpcId(), npc);
+			items.put(it.getItemId(), it);
 		}
+		its = null;
 	}
 	
+	public ItemTemplate getItemTemplate(int itemId)
+	{
+		return items.get(itemId);
+	}
+
+	/**
+	 * @return
+	 */
 	public int size()
 	{
-		return npcData.size();
+		return items.size();
 	}
-	/**
-
-	/**
-	 * Returns an {@link NpcTemplate} object with given id.
-	 * 
-	 * @param id
-	 *            id of NPC
-	 * @return NpcTemplate object containing data about NPC with that id.
-	 */
-	public NpcTemplate getNpcTemplate(int id)
-	{
-		return npcData.get(id);
-	}
-
 }

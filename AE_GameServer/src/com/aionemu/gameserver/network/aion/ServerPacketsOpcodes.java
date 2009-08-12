@@ -38,7 +38,7 @@ public class ServerPacketsOpcodes
 	{
 		Set<Integer> idSet = new HashSet<Integer>();
 
-		addPacketOpcode(SM_CUSTOM_PACKET.class, 99999, idSet); // afke packet
+		addPacketOpcode(SM_CUSTOM_PACKET.class, 99999, idSet); // fake packet
 		
 		addPacketOpcode(SM_UNKF5.class, Version.Chiness ? 0xF5 : 0x07, idSet);
 		addPacketOpcode(SM_UNKEF.class, Version.Chiness ? 0xef : -1, idSet);

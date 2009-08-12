@@ -16,27 +16,46 @@
  */
 package com.aionemu.gameserver.model.templates;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.aionemu.gameserver.model.NpcType;
+import com.aionemu.gameserver.model.items.NpcEquippedGear;
+import com.aionemu.gameserver.model.templates.stats.NpcStatsTemplate;
+
 /**
  * @author Luno
  * 
  */
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(name = "npc_template")
 public class NpcTemplate
 {
-	private int		npcId;
-	private int		nameId;
-	private String	name;
-
-	/**
-	 * @param id
-	 * @param nameId
-	 * @param name
-	 */
-	public NpcTemplate(int id, int nameId, String name)
-	{
-		this.npcId = id;
-		this.nameId = nameId;
-		this.name = name;
-	}
+	private int					npcId;
+	@XmlAttribute(name = "level", required = true)
+	private byte				level;
+	@XmlAttribute(name = "name_id", required = true)
+	private int					nameId;
+	@XmlAttribute(name = "title_id")
+	private int					titleId;
+	@XmlAttribute(name = "name")
+	private String				name;
+	@XmlAttribute(name = "height")
+	private float				height			= 1;
+	@XmlAttribute(name = "talking_distance")
+	private int					talkingDistance	= 2;
+	@XmlAttribute(name = "npc_type", required = true)
+	private NpcType				npcType;
+	@XmlElement(name = "stats")
+	private NpcStatsTemplate	statsTemplate;
+	@XmlElement(name = "equipment")
+	private NpcEquippedGear		equipment;
+	@XmlElement(name = "ammo_speed")
+	private int					ammoSpeed		= 0;
 
 	public int getNpcId()
 	{
@@ -48,9 +67,37 @@ public class NpcTemplate
 		return nameId;
 	}
 
+	public int getTitleId()
+	{
+		return titleId;
+	}
+
 	public String getName()
 	{
 		return name;
+	}
+
+	/**
+	 * @return
+	 */
+	public float getHeight()
+	{
+		return height;
+	}
+
+	public NpcType getNpcType()
+	{
+		return npcType;
+	}
+
+	public NpcEquippedGear getEquipment()
+	{
+		return equipment;
+	}
+
+	public byte getLevel()
+	{
+		return level;
 	}
 
 	/**
@@ -60,5 +107,19 @@ public class NpcTemplate
 	public String toString()
 	{
 		return "Npc Template id: " + npcId + " name: " + name;
+	}
+
+	
+	@SuppressWarnings("unused")
+	@XmlID
+	@XmlAttribute(name = "npc_id", required = true)
+	private void setXmlUid(String uid)
+	{
+		/*
+		 * This method is used only by JAXB unmarshaller.
+		 * I couldn't set annotations at field, because
+		 * ID must be a string. 
+		 */
+		npcId = Integer.parseInt(uid);
 	}
 }

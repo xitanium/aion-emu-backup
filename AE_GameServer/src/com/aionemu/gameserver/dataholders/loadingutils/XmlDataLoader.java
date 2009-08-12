@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.gameserver.dataholders;
+package com.aionemu.gameserver.dataholders.loadingutils;
 
 import java.io.File;
 
@@ -27,6 +27,8 @@ import javax.xml.validation.SchemaFactory;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
+import com.aionemu.gameserver.dataholders.StaticData;
+
 /**
  * This class is responsible for loading xml files. It uses JAXB to do the job.<br>
  * In addition, it uses @{link {@link XmlMerger} to create input file from all xml files.
@@ -34,7 +36,7 @@ import org.xml.sax.SAXException;
  * @author Luno
  * 
  */
-class XmlDataLoader
+public class XmlDataLoader
 {
 	private static final Logger	log				= Logger.getLogger(XmlDataLoader.class);
 
@@ -56,7 +58,7 @@ class XmlDataLoader
 	 * 
 	 * @return StaticData object, containing all game data defined in xml files
 	 */
-	StaticData loadStaticData()
+	public StaticData loadStaticData()
 	{
 		makeCacheDirectory();
 

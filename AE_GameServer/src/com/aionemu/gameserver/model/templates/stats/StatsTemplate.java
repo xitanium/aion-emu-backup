@@ -14,12 +14,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.gameserver.model.templates;
+package com.aionemu.gameserver.model.templates.stats;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,25 +30,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "stats_template")
-public class StatsTemplate
+public abstract class StatsTemplate
 {
 	@XmlAttribute(name = "maxHp")
 	private int maxHp;
 	@XmlAttribute(name = "maxMp")
 	private int maxMp;
-	
-	@XmlAttribute(name = "power")
-	private int power;
-	@XmlAttribute(name = "health")
-	private int health;
-	@XmlAttribute(name = "agility")
-	private int agility;
-	@XmlAttribute(name = "accuracy")
-	private int accuracy;
-	@XmlAttribute(name = "knowledge")
-	private int knowledge;
-	@XmlAttribute(name = "will")
-	private int will;
 
 	@XmlAttribute(name = "walk_speed")
 	private float walkSpeed;
@@ -90,37 +76,6 @@ public class StatsTemplate
 		return maxMp;
 	}
 
-	/* ======================================= */
-
-	public int getPower()
-	{
-		return power;
-	}
-
-	public int getHealth()
-	{
-		return health;
-	}
-
-	public int getAgility()
-	{
-		return agility;
-	}
-
-	public int getAccuracy()
-	{
-		return accuracy;
-	}
-
-	public int getKnowledge()
-	{
-		return knowledge;
-	}
-
-	public int getWill()
-	{
-		return will;
-	}
 
 	/* ======================================= */
 

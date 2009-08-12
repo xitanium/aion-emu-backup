@@ -39,7 +39,12 @@ public class StaticData
 	public PlayerExperienceTable	playerExperienceTable;
 
 	@XmlElement(name = "stats_templates")
-	public PlayerStatsData statsData;
+	public PlayerStatsData			statsData;
+
+	@XmlElement(name = "item_data")
+	public ItemData					itemData;
+	@XmlElement(name = "npc_data")
+	public NpcData					npcData;
 
 	// JAXB callback
 	private void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
@@ -48,5 +53,7 @@ public class StaticData
 		DataManager.log.info("Loaded world maps data: " + worldMapsData.size() + " maps");
 		DataManager.log.info("Loaded player exp table: " + playerExperienceTable.getMaxLevel() + " levels");
 		DataManager.log.info("Loaded : " + statsData.size() + " stat templates");
+		DataManager.log.info("Loaded " + itemData.size() + " item templates");
+		DataManager.log.info("Loaded " + npcData.size() + " npc templates");
 	}
 }

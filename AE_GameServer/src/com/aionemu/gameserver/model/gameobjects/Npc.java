@@ -78,11 +78,6 @@ public class Npc extends Creature
 		return getTemplate().getNpcId();
 	}
 
-	public int getNpcNameId()
-	{
-		return getTemplate().getNameId();
-	}
-
 	/**
 	 * Return NpcController of this Npc object.
 	 * 
@@ -97,6 +92,6 @@ public class Npc extends Creature
 	@Override
 	public byte getLevel()
 	{
-		return 1;
+		return getTemplate().getLevel();
 	}
 }

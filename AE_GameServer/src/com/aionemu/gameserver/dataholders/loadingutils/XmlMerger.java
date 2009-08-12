@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.gameserver.dataholders;
+package com.aionemu.gameserver.dataholders.loadingutils;
 
 import static org.apache.commons.io.filefilter.FileFilterUtils.andFileFilter;
 import static org.apache.commons.io.filefilter.FileFilterUtils.makeSVNAware;

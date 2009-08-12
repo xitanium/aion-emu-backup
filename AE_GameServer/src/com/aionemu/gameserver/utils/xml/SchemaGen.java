@@ -36,7 +36,7 @@ public class SchemaGen
 		{
 			public Result createOutput(String namespaceUri, String suggestedFileName) throws IOException
 			{
-				return new StreamResult(new File(baseDir, "static_data.xsd"));
+				return new StreamResult(new File(baseDir, "static_data1.xsd"));
 			}
 		}
 		JAXBContext context = JAXBContext.newInstance(StaticData.class);
