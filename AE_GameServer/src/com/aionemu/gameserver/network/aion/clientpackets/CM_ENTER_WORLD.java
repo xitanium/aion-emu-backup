@@ -28,9 +28,9 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_ENTER_WORLD_CHECK;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_GAME_TIME;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_MACRO_LIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_MESSAGE;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_SKILL_LIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATS_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
+import com.aionemu.gameserver.network.aion.serverpackets.skills.SM_SKILL_LIST;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.world.World;
@@ -122,12 +122,10 @@ public class CM_ENTER_WORLD extends AionClientPacket
 
 			// sendPacket(new SM_UNKE1());
 			sendPacket(new SM_MACRO_LIST(player));
-			sendPacket(new SM_MESSAGE(0, null, "Welcome to " + Config.SERVER_NAME
-				+ " server\npowered by aion-emu software\ndeveloped by aion-emu.com team.\nCopyright 2009", null,
-				ChatType.ANNOUNCEMENTS));
+			
 
 			sendPacket(new SM_GAME_TIME());
-			//sendPacket(new SM_SYSTEM_MESSAGE(SM_SYSTEM_MESSAGE.DURATION_TIME, "%DURATIONTIMENOSEC", "12043"));
+			sendPacket(SM_SYSTEM_MESSAGE.REMAINING_PLAYING_TIME(12043));
 
 			/**
 			 * Player's accumulated time; params are: - 0h 12m - play time (1st and 2nd string-params) - 1h 26m - rest
@@ -135,10 +133,12 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			 */
 			AccountTime accountTime = getConnection().getAccount().getAccountTime();
 
-			sendPacket(new SM_SYSTEM_MESSAGE(SM_SYSTEM_MESSAGE.ACCUMULATED_TIME, String.valueOf(accountTime
-				.getAccumulatedOnlineHours()), String.valueOf(accountTime.getAccumulatedOnlineMinutes()), String
-				.valueOf(accountTime.getAccumulatedRestHours()), String
-				.valueOf(accountTime.getAccumulatedRestMinutes())));
+			sendPacket(SM_SYSTEM_MESSAGE.ACCUMULATED_TIME(
+															accountTime .getAccumulatedOnlineHours(), 
+															accountTime.getAccumulatedOnlineMinutes(),
+															accountTime.getAccumulatedRestHours(),
+															accountTime.getAccumulatedRestMinutes())
+														);
 
 			/*
 			 * Needed
@@ -155,6 +155,10 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			// sendPacket(new SM_UNK0A());
 			// sendPacket(new SM_UNK97());
 			// sendPacket(new SM_UNK8D());
+			
+			sendPacket(new SM_MESSAGE(0, null, "Welcome to " + Config.SERVER_NAME
+				+ " server\npowered by aion-emu software\ndeveloped by aion-emu.com team.\nCopyright 2009", null,
+				ChatType.ANNOUNCEMENTS));
 			
 			playerService.playerLoggedIn(player);
 		}

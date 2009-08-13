@@ -85,7 +85,7 @@ public class CM_CHAT_MESSAGE_WHISPER extends AionClientPacket
 
 		if(reciver == null)
 		{
-			sendPacket(new SM_SYSTEM_MESSAGE(SM_SYSTEM_MESSAGE.WHISPERED_PLAYER_OFFLINE, name));
+			sendPacket(SM_SYSTEM_MESSAGE.PLAYER_IS_OFFLINE(name));
 		}
 		else
 		{

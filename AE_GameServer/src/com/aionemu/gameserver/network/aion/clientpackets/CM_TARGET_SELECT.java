@@ -23,6 +23,8 @@ import com.aionemu.gameserver.model.gameobjects.AionObject;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_SELECTED_TARGET;
+import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
 
@@ -79,23 +81,26 @@ public class CM_TARGET_SELECT extends AionClientPacket
 	@Override
 	protected void runImpl()
 	{
+		Player player = getConnection().getActivePlayer();
+		if(player == null)
+			return;
+		
+		int targeterOid = player.getObjectId();
+		
 		if(targetObjectId != 0)
 		{
 			log.info(String.format("Selecting target with object id: %d", targetObjectId));
-			Player player = getConnection().getActivePlayer();
-			if(player != null)
+			
+			AionObject obj = world.findAionObject(targetObjectId);
+			if(obj != null && obj instanceof Creature)
 			{
-				AionObject obj = world.findAionObject(targetObjectId);
-				if(obj != null && obj instanceof Creature)
-				{
-					player.setTarget((Creature) obj);
-				}
+				player.setTarget((Creature) obj);
 			}
+
 		}
 		else
 		{
-			log.info("Unselecting target");
+			player.setTarget(null);
 		}
-
 	}
 }

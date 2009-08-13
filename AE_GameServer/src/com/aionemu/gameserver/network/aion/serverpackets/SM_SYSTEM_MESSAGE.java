@@ -27,45 +27,93 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
  * 
  * @author -Nemesiss-
  * @author EvilSpirit
+ * @author Luno :D
  */
 public class SM_SYSTEM_MESSAGE extends AionServerPacket
 {
 	/**
-	 * Player duration time, called by %DURATIONTIMENOSEC ingame command
+	 * The remaining playing time is %0.
+	 * 
+	 * @param playTime
+	 * @return
 	 */
-	public static final int	DURATION_TIME				= 0x13D8EF;
+	public static SM_SYSTEM_MESSAGE REMAINING_PLAYING_TIME(int playTime)
+	{
+		return new SM_SYSTEM_MESSAGE(1300719, playTime);
+	}
 
 	/**
-	 * player's accumulated ingame time
+	 * Your accumulated play time is %0 hour(s) %1 minute(s). Your accumulated rest time is %2 hour(s) %3 minute(s).
+	 * 
+	 * @param onlineHours
+	 *            accumulated online hours
+	 * @param onlineMinutes
+	 *            accumulated online minutes
+	 * @param restHours
+	 *            accumulated rest hours
+	 * @param restMinutes
+	 *            accumulated rest minutes
+	 * @return
 	 */
-	public static final int	ACCUMULATED_TIME			= 0x15363D;
+	public static SM_SYSTEM_MESSAGE ACCUMULATED_TIME(int onlineHours, int onlineMinutes, int restHours, int restMinutes)
+	{
+		return new SM_SYSTEM_MESSAGE(1390141, onlineHours, onlineMinutes, restHours, restMinutes);
+	}
 
 	/**
-	 * Sent when someone whispers a player which is offline at the moment
+	 * %0 is not playing the game
+	 * 
+	 * @param player
+	 *            name
+	 * @return
 	 */
-	public static final int	WHISPERED_PLAYER_OFFLINE	= 0x13D893;
-	
-	/**
-	 * Someone tries to add a player to their friendslist, who is too busy to reply
-	 */
-	public static final int STR_BUDDYLIST_BUSY = 0x0DBEEF;
-	
-	/**
-	 * Buddy not in your buddy list
-	 */
-	public static final int STR_BUDDYLIST_NOT_IN_LIST 	= 0x13D999;
-	
-	/**
-	 * Your buddy list is full.
-	 */
-	public static final int STR_BUDDYLIST_LIST_FULL		= 0x13D997;
-	
-	/**
-	 * /loc ingame command response
-	 */
-	public static final int	LOC							= 0x038296;
+	public static SM_SYSTEM_MESSAGE PLAYER_IS_OFFLINE(String playerName)
+	{
+		return new SM_SYSTEM_MESSAGE(1300627, playerName);
+	}
 
-	private final String[]	params;
+	/**
+	 * Busy in game
+	 * 
+	 * @return
+	 */
+	public static SM_SYSTEM_MESSAGE BUDDYLIST_BUSY()
+	{
+		return new SM_SYSTEM_MESSAGE(900847);
+	}
+
+	/**
+	 * The character is not on your Friends List.
+	 */
+	public static SM_SYSTEM_MESSAGE BUDDYLIST_NOT_IN_LIST()
+	{
+		return new SM_SYSTEM_MESSAGE(1300889);
+	}
+
+	/**
+	 * Your Friends List is full
+	 */
+	public static SM_SYSTEM_MESSAGE BUDDYLIST_LIST_FULL()
+	{
+		return new SM_SYSTEM_MESSAGE(1300887);
+	}
+
+	/**
+	 * Coordinates of current location: %WORLDNAME0 Region, X=%1 Y=%2 Z=%3
+	 * 
+	 * @param worldId
+	 *            id of the world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+	public static SM_SYSTEM_MESSAGE CURRENT_LOCATION(int worldId, float x, float y, float z)
+	{
+		return new SM_SYSTEM_MESSAGE(230038, x, y, z);
+	}
+
+	private final Object[]	params;
 	private final int		code;
 
 	/**
@@ -75,7 +123,7 @@ public class SM_SYSTEM_MESSAGE extends AionServerPacket
 	 *            operation code, take it from SM_SYSTEM_MESSAGE public static values
 	 * @param params
 	 */
-	public SM_SYSTEM_MESSAGE(int code, String... params)
+	private SM_SYSTEM_MESSAGE(int code, Object... params)
 	{
 		this.code = code;
 		this.params = params;
@@ -92,9 +140,9 @@ public class SM_SYSTEM_MESSAGE extends AionServerPacket
 		writeD(buf, code); // msg id
 		writeC(buf, params.length); // count
 
-		for(String param : params)
+		for(Object param : params)
 		{
-			writeS(buf, param);
+			writeS(buf, String.valueOf(param));
 		}
 	}
 }

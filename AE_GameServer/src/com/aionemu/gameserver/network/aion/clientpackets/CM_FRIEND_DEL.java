@@ -66,7 +66,7 @@ public class CM_FRIEND_DEL extends AionClientPacket
 		if (target == null)
 		{
 			log.warn(activePlayer.getName() + " tried to delete friend " + targetName + " who is not his friend");
-			sendPacket(new SM_SYSTEM_MESSAGE(SM_SYSTEM_MESSAGE.STR_BUDDYLIST_NOT_IN_LIST));
+			sendPacket(SM_SYSTEM_MESSAGE.BUDDYLIST_NOT_IN_LIST());
 		}
 		else
 		{
