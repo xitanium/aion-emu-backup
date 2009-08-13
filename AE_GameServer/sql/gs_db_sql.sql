@@ -1,12 +1,3 @@
-/*
-MySQL Data Transfer
-Source Host: localhost
-Source Database: ae_server_gs
-Target Host: localhost
-Target Database: ae_server_gs
-Date: 06.06.2009 19:41:41
-*/
-
 SET FOREIGN_KEY_CHECKS=0;
 
 CREATE TABLE `server_variables` (
@@ -96,8 +87,21 @@ CREATE TABLE `players` (
   `player_class` enum('WARRIOR','GLADIATOR','TEMPLAR','SCOUT','ASSASSIN','RANGER','MAGE','SORCERER','SPIRIT_MASTER','PRIEST','CLERIC','CHANTER') NOT NULL,
   `creation_date` timestamp NOT NULL default '0000-00-00 00:00:00',
   `deletion_date` timestamp NULL DEFAULT NULL,
+  `last_online` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `admin` boolean NOT NULL DEFAULT FALSE,
+  `note` text,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name_unique` (`name`),
   INDEX (`account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Table "friends" DDL
+
+CREATE TABLE `friends` (
+  `player` int(11) NOT NULL,
+  `friend` int(11) NOT NULL,
+  PRIMARY KEY (`player`,`friend`),
+  FOREIGN KEY (`player`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`friend`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
