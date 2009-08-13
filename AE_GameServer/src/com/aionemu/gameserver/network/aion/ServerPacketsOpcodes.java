@@ -74,7 +74,7 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_RESTORE_CHARACTER.class, Version.Chiness ? 0xC1 : 0xCB, idSet);
 		addPacketOpcode(SM_RECONNECT_KEY.class, Version.Chiness ? 0x0D : 0xFF, idSet);
 		addPacketOpcode(SM_QUIT_RESPONSE.class, Version.Chiness ? 0x59 : 0x63, idSet);
-		addPacketOpcode(SM_QUESTION_WINDOW.class, 0x37, idSet);
+		addPacketOpcode(SM_QUESTION_WINDOW.class, Version.Chiness ? -1 : 0x37, idSet);
 		addPacketOpcode(SM_PONG.class, Version.Chiness ? 0x7C : 0x8C, idSet);
 		addPacketOpcode(SM_PLAYER_STATE.class, Version.Chiness ? 0x33 : 0x45, idSet);
 		addPacketOpcode(SM_PLAYER_INFO.class, Version.Chiness ? 0xFE : 0x06, idSet);
@@ -87,10 +87,10 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_L2AUTH_LOGIN_CHECK.class, Version.Chiness ? 0xB5 : 0xC7, idSet);
 		addPacketOpcode(SM_KEY.class, Version.Chiness ? 0x3F : 0x49, idSet);
 		addPacketOpcode(SM_INVENTORY_INFO.class, Version.Chiness ? 0x2B : 0x1D, idSet);
-		addPacketOpcode(SM_GAME_TIME.class, 0x27, idSet);
-		addPacketOpcode(SM_FRIEND_RESPONSE.class, 0xDC, idSet);
-		addPacketOpcode(SM_FRIEND_NOTIFY.class, 0xE1, idSet);
-		addPacketOpcode(SM_FRIEND_LIST.class,0x82, idSet);
+		addPacketOpcode(SM_GAME_TIME.class, Version.Chiness ? -1 : 0x27, idSet);
+		addPacketOpcode(SM_FRIEND_RESPONSE.class, Version.Chiness ? -1 : 0xDC, idSet);
+		addPacketOpcode(SM_FRIEND_NOTIFY.class, Version.Chiness ? -1 : 0xE1, idSet);
+		addPacketOpcode(SM_FRIEND_LIST.class,Version.Chiness ? -1 : 0x82, idSet);
 		addPacketOpcode(SM_ENTER_WORLD_CHECK.class, Version.Chiness ? 0xF4 : 0x04, idSet);
 		addPacketOpcode(SM_EMOTION.class, Version.Chiness ? 0x14 : 0x24, idSet);
 		addPacketOpcode(SM_DELETE.class, Version.Chiness ? 0xFB : 0x0D, idSet);
