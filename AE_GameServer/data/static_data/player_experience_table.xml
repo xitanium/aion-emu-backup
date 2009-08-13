@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <player_experience_table xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="static_data.xsd">
+	xsi:noNamespaceSchemaLocation="player_experience_table.xsd">
 	<exp>0</exp> <!-- level 1 -->
 	<exp>650</exp> <!-- level 2 -->
 	<exp>1917</exp> <!-- level 3 -->

@@ -72,6 +72,7 @@
 	<stats_templates>
 		<import file="stats/" skipRoot="true" />
 	</stats_templates>
+	
 	<npc_data>
 		<import file="npcs" skipRoot="true"/>
 	</npc_data>

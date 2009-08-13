@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<item_data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../static_data.xsd">	<item item_id="100000001" target_slot="MAIN_HAND"/>
+<item_data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="items.xsd">
+	<item item_id="100000001" target_slot="MAIN_HAND"/>
 	<item item_id="100000002" target_slot="MAIN_HAND"/>
 	<item item_id="100000003" target_slot="MAIN_HAND"/>
 	<item item_id="100000004" target_slot="MAIN_HAND"/>

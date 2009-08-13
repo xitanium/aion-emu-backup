@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <world_maps xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="static_data.xsd">
+	xsi:noNamespaceSchemaLocation="world_maps.xsd">
 	<map id="110010000" name="LC1" />
 	<map id="120010000" name="DC1" />
 	<map id="210010000" max_user="200" twin_count="4" name="LF1" />
