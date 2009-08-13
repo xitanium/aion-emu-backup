@@ -22,6 +22,7 @@ import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedInListener;
 import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedOutListener;
 import com.aionemu.gameserver.network.aion.AionConnection;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_LIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -39,7 +40,9 @@ public class Player extends Creature
 	private PlayerAppearance	playerAppearance;
 	private PlayerCommonData	playerCommonData;
 	private MacroList			macroList;
-
+	private FriendList			friendList;
+	private ResponseRequester	requester;
+	
 	/** When player enters game its char is in kind of "protection" state, when is blinking etc */
 	private boolean				protectionActive;
 
@@ -57,8 +60,11 @@ public class Player extends Creature
 
 		this.playerCommonData = plCommonData;
 		this.playerAppearance = appereance;
-
+		
+		this.requester = new ResponseRequester(this);
+		
 		controller.setOwner(this);
+
 	}
 
 	public PlayerCommonData getCommonData()
@@ -126,6 +132,26 @@ public class Player extends Creature
 		this.macroList = macroList;
 	}
 
+	public FriendList getFriendList()
+	{
+		return friendList;
+	}
+	
+	public void setFriendList(FriendList list)
+	{
+		this.friendList = list;
+	}
+	
+	/**
+	 * Gets the ResponseRequester for this player
+	 * @return
+	 */
+	public ResponseRequester getResponseRequester()
+	{
+		return requester;
+	}
+	
+	
 	/**
 	 * Return PlayerController of this Player Object.
 	 * 

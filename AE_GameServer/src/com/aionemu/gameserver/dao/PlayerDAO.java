@@ -88,6 +88,12 @@ public abstract class PlayerDAO implements IDFactoryAwareDAO
 	public abstract List<Integer> getPlayerOidsOnAccount(int accountId);
 
 	/**
+	 * Stores the last online time
+	 * @param objectId Object ID of player to store
+	 * @param lastOnline Last online time of player to store
+	 */
+	public abstract void storeLastOnlineTime(final int objectId, final Timestamp lastOnline);
+	/**
 	 * Identifier name for all PlayerDAO classes
 	 * 
 	 * @return PlayerDAO.class.getName()

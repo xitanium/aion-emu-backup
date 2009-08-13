@@ -16,11 +16,47 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+import java.nio.ByteBuffer;
+import java.util.Map.Entry;
+
+import com.aionemu.commons.database.dao.DAOManager;
+import com.aionemu.gameserver.dao.PlayerDAO;
+import com.aionemu.gameserver.model.gameobjects.player.Friend;
+import com.aionemu.gameserver.model.gameobjects.player.FriendList;
+import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
+import com.aionemu.gameserver.network.aion.AionConnection;
+import com.aionemu.gameserver.network.aion.AionServerPacket;
+import com.aionemu.gameserver.world.World;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+
 /**
- * @author Luno
+ * Sends a friend list to the client
+ * @author Ben
  *
  */
-public class SM_FRIEND_LIST
+public class SM_FRIEND_LIST extends AionServerPacket
 {
-
+	
+	
+	@Override
+	protected void writeImpl(AionConnection con, ByteBuffer buf)
+	{
+		FriendList list = con.getActivePlayer().getFriendList();
+		writeH(buf, list.getSize());
+		writeC(buf, 0); // Unk
+       
+        for (Friend friend : list)
+        {
+            writeS(buf, friend.getName());
+            writeD(buf, friend.getLevel());
+            writeD(buf, friend.getPlayerClass().getClassId());
+            writeC(buf, 1); // Unk
+            writeD(buf, friend.getMapId());
+            writeD(buf, friend.getLastOnlineTime()); // Date friend was last online as a Unix timestamp.
+            writeS(buf, friend.getNote()); // Friend note
+            writeC(buf, friend.getStatus().getIntValue());
+        }
+	}
 }

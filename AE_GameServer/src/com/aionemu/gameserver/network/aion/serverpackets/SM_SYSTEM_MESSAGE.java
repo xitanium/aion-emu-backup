@@ -44,7 +44,22 @@ public class SM_SYSTEM_MESSAGE extends AionServerPacket
 	 * Sent when someone whispers a player which is offline at the moment
 	 */
 	public static final int	WHISPERED_PLAYER_OFFLINE	= 0x13D893;
-
+	
+	/**
+	 * Someone tries to add a player to their friendslist, who is too busy to reply
+	 */
+	public static final int STR_BUDDYLIST_BUSY = 0x0DBEEF;
+	
+	/**
+	 * Buddy not in your buddy list
+	 */
+	public static final int STR_BUDDYLIST_NOT_IN_LIST 	= 0x13D999;
+	
+	/**
+	 * Your buddy list is full.
+	 */
+	public static final int STR_BUDDYLIST_LIST_FULL		= 0x13D997;
+	
 	/**
 	 * /loc ingame command response
 	 */

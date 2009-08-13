@@ -16,11 +16,10 @@
  */
 package com.aionemu.gameserver.model.gameobjects.player;
 
-import com.aionemu.gameserver.dao.PlayerDAO;
+import java.sql.Timestamp;
 import com.aionemu.gameserver.model.Gender;
 import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.Race;
-import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.world.WorldPosition;
 
 /**
@@ -35,9 +34,13 @@ public class PlayerCommonData
 	private Race			race;
 	private String			name;
 	private PlayerClass		playerClass;
+	private int				level;
 	private boolean			admin;
 	private Gender			gender;
-
+	private Timestamp		lastOnline;
+	private boolean 		online;
+	private String 			note;
+	
 	private WorldPosition	position;
 
 	public PlayerCommonData(int objId)
@@ -90,6 +93,14 @@ public class PlayerCommonData
 		this.admin = admin;
 	}
 
+	public boolean isOnline() 
+	{
+		return online;
+	}
+	public void setOnline(boolean online)
+	{
+		this.online = online;
+	}
 	public Gender getGender()
 	{
 		return gender;
@@ -104,7 +115,38 @@ public class PlayerCommonData
 	{
 		return position;
 	}
-
+	
+	public Timestamp getLastOnline()
+	{
+		return lastOnline;
+	}
+	
+	public void setLastOnline(Timestamp timestamp)
+	{
+		lastOnline = timestamp;
+	}
+	
+	public int getLevel()
+	{
+		//TODO: Real level
+		return 1;
+	}
+	
+	public void setLevel(int level)
+	{
+		this.level = level;
+	}
+	
+	public String getNote()
+	{
+		return note;
+	}
+	
+	public void setNote(String note)
+	{
+		this.note = note;
+	}
+	
 	/**
 	 * This method should be called exactly once after creating object of this class
 	 * @param position
@@ -116,5 +158,19 @@ public class PlayerCommonData
 			throw new IllegalStateException("position already set");
 		}
 		this.position = position;
+	}
+	
+	/**
+	 * Gets the cooresponding Player for this common data.
+	 * Returns null if the player is not online
+	 * @return Player or null
+	 */
+	public Player getPlayer()
+	{
+		if (online && getPosition() != null)
+		{
+			return getPosition().getWorld().findPlayer(playerObjId);
+		}
+		return null;
 	}
 }

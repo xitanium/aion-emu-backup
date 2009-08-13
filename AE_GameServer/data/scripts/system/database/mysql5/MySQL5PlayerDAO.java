@@ -87,7 +87,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 	@Override
 	public void storePlayer(final Player player)
 	{
-		DB.insertUpdate("UPDATE players SET name=?, x=?, y=?, z=?, heading=?, world_id=?, player_class=?, admin=? WHERE id=?", new IUStH(){
+		DB.insertUpdate("UPDATE players SET name=?, x=?, y=?, z=?, heading=?, world_id=?, player_class=?, last_online=?, admin=?, note=? WHERE id=?", new IUStH(){
 			@Override
 			public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
 			{
@@ -100,9 +100,10 @@ public class MySQL5PlayerDAO extends PlayerDAO
 				stmt.setInt(5, player.getHeading());
 				stmt.setInt(6, player.getWorldId());
 				stmt.setString(7, player.getCommonData().getPlayerClass().toString());
-				stmt.setBoolean(8, player.getCommonData().isAdmin());
-				
-				stmt.setInt(9, player.getObjectId());
+				stmt.setTimestamp(8, player.getCommonData().getLastOnline());
+				stmt.setBoolean(9, player.getCommonData().isAdmin());
+				stmt.setString(10,player.getCommonData().getNote());
+				stmt.setInt(11, player.getObjectId());
 				stmt.execute();
 			}
 		});
@@ -181,7 +182,9 @@ public class MySQL5PlayerDAO extends PlayerDAO
 				cd.setGender(Gender.valueOf(resultSet.getString("gender")));
 				cd.setPlayerClass(PlayerClass.valueOf(resultSet.getString("player_class")));
 				cd.setAdmin(resultSet.getBoolean("admin"));
-
+				cd.setLastOnline(resultSet.getTimestamp("last_online"));
+				cd.setNote(resultSet.getString("note"));
+				
 				float x = resultSet.getFloat("x");
 				float y = resultSet.getFloat("y");
 				float z = resultSet.getFloat("z");
@@ -313,7 +316,20 @@ public class MySQL5PlayerDAO extends PlayerDAO
 			}
 		});
 	}
-
+	
+	@Override
+	public void storeLastOnlineTime(final int objectId, final Timestamp lastOnline)
+	{
+		DB.insertUpdate("UPDATE players set last_online = ? where id = ?", new IUStH(){
+			@Override
+			public void handleInsertUpdate(PreparedStatement preparedStatement) throws SQLException
+			{
+				preparedStatement.setTimestamp(1, lastOnline);
+				preparedStatement.setInt(2, objectId);
+				preparedStatement.execute();
+			}
+		});
+	}
 	/**
 	 * {@inheritDoc}
 	 */

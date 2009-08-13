@@ -26,10 +26,13 @@ import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.configs.CacheConfig;
 import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.controllers.PlayerController;
+import com.aionemu.gameserver.dao.FriendListDAO;
 import com.aionemu.gameserver.dao.PlayerAppearanceDAO;
 import com.aionemu.gameserver.dao.PlayerDAO;
 import com.aionemu.gameserver.dao.PlayerMacrossesDAO;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
+import com.aionemu.gameserver.model.gameobjects.player.Friend;
+import com.aionemu.gameserver.model.gameobjects.player.FriendList;
 import com.aionemu.gameserver.model.gameobjects.player.MacroList;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerAppearance;
@@ -38,6 +41,8 @@ import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedInL
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_ENTER_WORLD;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_QUIT;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_LIST;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_RESPONSE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.collections.cachemap.CacheMap;
 import com.aionemu.gameserver.utils.collections.cachemap.CacheMapFactory;
@@ -69,6 +74,8 @@ public class PlayerService
 	private PlayerDAO					playerDAO		= DAOManager.getDAO(PlayerDAO.class);
 	private PlayerMacrossesDAO			macrosesDAO		= DAOManager.getDAO(PlayerMacrossesDAO.class);
 	private PlayerAppearanceDAO			appereanceDAO	= DAOManager.getDAO(PlayerAppearanceDAO.class);
+	private FriendListDAO				friendsDAO		= DAOManager.getDAO(FriendListDAO.class);
+	
 
 	@Inject
 	public PlayerService(@IDFactoryAionObject IDFactory aionObjectsIDFactory, World world)
@@ -142,9 +149,10 @@ public class PlayerService
 		player = new Player(new PlayerController(), pcd, appereance);
 		player.setMacroList(macroses);
 		player.setKnownlist(new KnownList(player));
-
+		player.setFriendList(friendsDAO.load(player, world));
+		
 		if(CacheConfig.CACHE_PLAYERS)
-			playerCache.put(playerObjId, player);
+			playerCache.put(playerObjId, player);	
 
 		return player;
 	}
@@ -180,6 +188,8 @@ public class PlayerService
 	 */
 	public void playerLoggedIn(Player player)
 	{
+		player.getCommonData().setOnline(true);
+
 		player.onLoggedIn();
 	}
 
@@ -194,6 +204,9 @@ public class PlayerService
 	{
 		player.onLoggedOut();
 		
+		player.getCommonData().setOnline(false);
+		player.getCommonData().setLastOnline(new Timestamp(System.currentTimeMillis()));
+			
 		player.getController().delete();
 		player.setClientConnection(null);
 		
@@ -303,4 +316,52 @@ public class PlayerService
 			macrosesDAO.deleteMacro(player.getObjectId(), macroOrder);
 		}
 	}
+	
+	/**
+	 * Adds two players to eachothers friend lists, and updates the database<br />
+	 * <ul><li>Does not send notification packets, and does not send new list packet</li></ul>
+	 * @param friend1
+	 * @param friend2
+	 * @return Successs
+	 */
+	public void addFriends(Player friend1, Player friend2)
+	{
+		friendsDAO.addFriends(friend1, friend2);
+
+		friend1.getFriendList().addFriend( new Friend(friend2.getCommonData()));
+		friend2.getFriendList().addFriend( new Friend(friend1.getCommonData()));	
+	}
+	
+	/**
+	 * Deletes two players from eachothers friend lists, and updates the database
+	 * <ul><li>Note: Does not send notification packets, and does not send new list packet</ul></li>
+	 * @param exFriend1 Object ID
+	 * @param exFriend2 Object ID
+	 * @return Success
+	 */
+	public void delFriends(int exFriend1Id, int exFriend2Id)
+	{
+		friendsDAO.delFriends(exFriend1Id, exFriend2Id);
+		
+		Player friend1Player = playerCache.get(exFriend1Id);
+		Player friend2Player = playerCache.get(exFriend2Id);
+		
+		if (friend1Player == null)
+			friend1Player = world.findPlayer(exFriend1Id);
+		if (friend2Player == null)
+			friend2Player = world.findPlayer(exFriend2Id);
+		
+		if (friend1Player != null)
+		{
+		
+			friend1Player.getFriendList().delFriend(exFriend2Id);
+		}
+		
+		if (friend2Player != null)
+		{
+			friend1Player.getFriendList().delFriend(exFriend1Id);
+		}
+		
+	}
+	
 }
