@@ -22,6 +22,7 @@ import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
 import com.aionemu.gameserver.dataholders.SpawnData;
 import com.aionemu.gameserver.dataholders.WorldMapsData;
 import com.aionemu.gameserver.dataholders.PlayerStatsData;
+import com.aionemu.gameserver.dataholders.PlayerInitialData;
 import com.aionemu.gameserver.services.AccountService;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.spawnengine.SpawnEngine;
@@ -99,5 +100,12 @@ public class DataInjectionModule extends AbstractModule
 	PlayerStatsData providePlayerStatsData(DataManager datamanager)
 	{
 		return datamanager.PLAYER_STATS_DATA;
+	}
+
+	@Provides
+	@Singleton
+	PlayerInitialData providePlayerInitialData(DataManager datamanager)
+	{
+		return datamanager.PLAYER_INITIAL_DATA;
 	}
 }

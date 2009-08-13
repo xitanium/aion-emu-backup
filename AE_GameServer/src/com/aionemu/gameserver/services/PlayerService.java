@@ -17,11 +17,6 @@
 
 package com.aionemu.gameserver.services;
 
-import java.sql.Timestamp;
-
-import org.apache.log4j.Logger;
-
-import com.aionemu.commons.callbacks.EnhancedObject;
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.configs.CacheConfig;
 import com.aionemu.gameserver.configs.Config;
@@ -30,20 +25,17 @@ import com.aionemu.gameserver.dao.FriendListDAO;
 import com.aionemu.gameserver.dao.PlayerAppearanceDAO;
 import com.aionemu.gameserver.dao.PlayerDAO;
 import com.aionemu.gameserver.dao.PlayerMacrossesDAO;
+import com.aionemu.gameserver.dataholders.PlayerInitialData;
+import com.aionemu.gameserver.dataholders.PlayerInitialData.LocationData;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
 import com.aionemu.gameserver.model.gameobjects.player.Friend;
-import com.aionemu.gameserver.model.gameobjects.player.FriendList;
 import com.aionemu.gameserver.model.gameobjects.player.MacroList;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerAppearance;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
-import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedInListener;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_ENTER_WORLD;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_QUIT;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_LIST;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_RESPONSE;
-import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.collections.cachemap.CacheMap;
 import com.aionemu.gameserver.utils.collections.cachemap.CacheMapFactory;
 import com.aionemu.gameserver.utils.idfactory.IDFactory;
@@ -52,6 +44,9 @@ import com.aionemu.gameserver.world.KnownList;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.world.WorldPosition;
 import com.google.inject.Inject;
+import org.apache.log4j.Logger;
+
+import java.sql.Timestamp;
 
 /**
  * 
@@ -69,19 +64,21 @@ public class PlayerService
 
 	private IDFactory					aionObjectsIDFactory;
 	private World						world;
+	private PlayerInitialData           playerInitialData;
 
 	// DAOs
 	private PlayerDAO					playerDAO		= DAOManager.getDAO(PlayerDAO.class);
 	private PlayerMacrossesDAO			macrosesDAO		= DAOManager.getDAO(PlayerMacrossesDAO.class);
 	private PlayerAppearanceDAO			appereanceDAO	= DAOManager.getDAO(PlayerAppearanceDAO.class);
 	private FriendListDAO				friendsDAO		= DAOManager.getDAO(FriendListDAO.class);
-	
+
 
 	@Inject
-	public PlayerService(@IDFactoryAionObject IDFactory aionObjectsIDFactory, World world)
+	public PlayerService(@IDFactoryAionObject IDFactory aionObjectsIDFactory, World world, PlayerInitialData playerInitialData)
 	{
 		this.aionObjectsIDFactory = aionObjectsIDFactory;
 		this.world = world;
+		this.playerInitialData = playerInitialData;
 	}
 
 	/**
@@ -167,7 +164,9 @@ public class PlayerService
 	public Player newPlayer(PlayerCommonData playerCommonData, PlayerAppearance playerAppearance)
 	{
 		// TODO values should go from template
-		WorldPosition position = world.createPosition(220010000, 562, 2786, 299, (byte) 0x20);
+		LocationData ld = playerInitialData.getSpawnLocation(playerCommonData.getRace());
+
+		WorldPosition position = world.createPosition(ld.getMapId(), ld.getX(), ld.getY(), ld.getZ(), ld.getHeading());
 
 		playerCommonData.setPosition(position);
 

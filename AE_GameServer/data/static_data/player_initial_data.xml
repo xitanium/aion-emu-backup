@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<player_initial_data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="static_data.xsd">
+
+	<asmodian_spawn_location
+			map_id="210010000"
+			heading="32"
+			x="559.00000" y="2782.0000" z="298.80658"/>
+	
+	<elyos_spawn_location
+			map_id="210010000"
+			heading="32"
+			x="1159.5969" y="1045.1846" z="131.29884"/>
+
+	<player_data class="WARRIOR">
+		<items>
+			<!-- TODO: fill me -->
+		</items>
+	</player_data>
+
+	<player_data class="MAGE">
+		<items>
+			<!-- TODO: fill me -->
+		</items>
+	</player_data>
+
+	<player_data class="PRIEST">
+		<items>
+			<!-- TODO: fill me -->
+		</items>
+	</player_data>
+
+	<player_data class="SCOUT">
+		<items>
+			<!-- TODO: fill me -->
+		</items>
+	</player_data>
+
+</player_initial_data>

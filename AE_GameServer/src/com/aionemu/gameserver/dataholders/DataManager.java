@@ -19,7 +19,6 @@ package com.aionemu.gameserver.dataholders;
 import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.dataholders.loadingutils.XmlDataLoader;
-import com.aionemu.gameserver.model.templates.NpcTemplate;
 
 /**
  * 
@@ -74,6 +73,12 @@ public class DataManager
 	private final ItemData				ITEM_DATA;
 
 	/**
+	 * Player initial data table.<br />
+	 * Contains initial player settings.
+	 */
+	public final PlayerInitialData PLAYER_INITIAL_DATA;
+
+	/**
 	 * Constructor creating <tt>DataManager</tt> instance.<br>
 	 * NOTICE: calling constructor implies loading whole data from /data/static_data immediately
 	 */
@@ -94,6 +99,7 @@ public class DataManager
 		PLAYER_STATS_DATA = data.statsData;
 		ITEM_DATA = data.itemData;
 		NPC_DATA = data.npcData;
+		PLAYER_INITIAL_DATA = data.playerInitialData;
 		
 		// now this outstanding spawndata and (still) npcdata:
 		SPAWN_DATA = new SpawnData(NPC_DATA);
