@@ -25,6 +25,7 @@ import com.aionemu.gameserver.utils.chathandlers.admincommands.SendFakeServerPac
 import com.aionemu.gameserver.utils.chathandlers.admincommands.SpawnNpc;
 import com.aionemu.gameserver.utils.chathandlers.admincommands.UnloadSpawn;
 import com.aionemu.gameserver.utils.chathandlers.admincommands.AdvSendFakeServerPacket;
+import com.aionemu.gameserver.utils.chathandlers.admincommands.SendRawPacket;
 import com.google.inject.Injector;
 
 /**
@@ -60,6 +61,7 @@ public class ChatHandlersFactory
 		// Inits admin command handlers (TODO: those admin command handlers may be loaded as scripts)
 		addAdminCommand(adminCCH, new SendFakeServerPacket());
 		addAdminCommand(adminCCH, new AdvSendFakeServerPacket());
+		addAdminCommand(adminCCH, new SendRawPacket());
 		addAdminCommand(adminCCH, new SpawnNpc());
 		addAdminCommand(adminCCH, new SaveSpawnData());
 		addAdminCommand(adminCCH, new DeleteSpawn());

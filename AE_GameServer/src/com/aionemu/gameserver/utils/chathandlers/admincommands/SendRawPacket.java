@@ -16,73 +16,86 @@
  */
 package com.aionemu.gameserver.utils.chathandlers.admincommands;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CUSTOM_PACKET;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CUSTOM_PACKET.PacketElementType;
 import com.aionemu.gameserver.utils.PacketSendUtility;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
- * @author Luno
+ * Send packet in raw format.
  *
+ * @author Luno
+ * @author Aquanox
  */
 public class SendRawPacket extends AdminCommand
 {
+	private static final File ROOT = new File("data/packets/");
 
-	/**
-	 * @param commandName
-	 */
+	private static final Logger logger = Logger.getLogger(SendRawPacket.class);
+
 	public SendRawPacket()
 	{
 		super("raw");
-		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.model.gameobjects.player.Player, java.lang.String[])
+	 * @see super#executeCommand(com.aionemu.gameserver.model.gameobjects.player.Player, java.lang.String[])
 	 */
-	@SuppressWarnings("null")
 	@Override
 	public void executeCommand(Player admin, String... params)
 	{
+		if (params.length != 1)
+		{
+			PacketSendUtility.sendMessage(admin, "Usage: //raw [name]");
+			return;
+		}
+
+		File file = new File(ROOT, params[0]+".txt");
+
+		if (!file.exists() || !file.canRead())
+		{
+			PacketSendUtility.sendMessage(admin, "Wrong file selected.");
+			return;
+		}
+
 		try
 		{
-			Scanner sc = new Scanner(new File("data/packets/"+params[0]+".txt"));
-			
+			@SuppressWarnings({"unchecked"})
+			List<String> lines = FileUtils.readLines(file);
+
 			SM_CUSTOM_PACKET packet = null;
-			
-			int i = 0;
-			while(sc.hasNextLine())
+
+			for (String row : lines)
 			{
-				String row = sc.nextLine().substring(0,48).trim();
-				for(String st: row.split(" "))
+				String[] tokens = row.substring(0,48).trim().split(" ");
+				int len = tokens.length;
+
+				for (int i = 0; i < len; i++)
 				{
-					if(i == 0)
+					if (i == 0)
 					{
-						int id = Integer.decode("0x"+st);
-						packet = new SM_CUSTOM_PACKET(id);
+						packet = new SM_CUSTOM_PACKET(Integer.valueOf(tokens[i], 16));
 					}
-					else if(i > 2)
+					else if (i > 2)
 					{
-						packet.addElement(PacketElementType.C, "0x"+st);
+						packet.addElement(PacketElementType.C, "0x" + tokens[i]);
 					}
-					i++;
 				}
 			}
 			
 			if(packet != null)
 				PacketSendUtility.sendPacket(admin, packet);
-			sc.close();
 		}
-		catch(FileNotFoundException e)
+		catch(IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			PacketSendUtility.sendMessage(admin, "An error has occurred.");
+			logger.warn("IO Error.", e);
 		}
-
 	}
-
 }
