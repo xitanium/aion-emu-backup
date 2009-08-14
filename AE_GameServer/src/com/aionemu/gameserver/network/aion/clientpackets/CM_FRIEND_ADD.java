@@ -82,7 +82,7 @@ public class CM_FRIEND_ADD extends AionClientPacket
 		}
 		else if (activePlayer.getFriendList().getSize() >= FriendList.MAX_FRIENDS)
 		{
-			sendPacket(SM_SYSTEM_MESSAGE.BUDDYLIST_LIST_FULL());
+			sendPacket(SM_SYSTEM_MESSAGE.BUDDYLIST_LIST_FULL);
 		}
 		else if (targetPlayer.getFriendList().getSize() >= FriendList.MAX_FRIENDS)
 		{
@@ -128,7 +128,7 @@ public class CM_FRIEND_ADD extends AionClientPacket
 			//If the player is busy and could not be asked
 			if (!requested)
 			{
-				sendPacket(SM_SYSTEM_MESSAGE.BUDDYLIST_BUSY());
+				sendPacket(SM_SYSTEM_MESSAGE.BUDDYLIST_BUSY);
 			}
 			else 
 			{
