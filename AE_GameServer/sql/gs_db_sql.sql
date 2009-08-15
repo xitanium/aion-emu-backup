@@ -105,3 +105,10 @@ CREATE TABLE `friends` (
   FOREIGN KEY (`friend`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE  `player_preferences` (
+  `player_id` int(11) NOT NULL,
+  `preferences` blob NOT NULL,
+  PRIMARY KEY (`player_id`)
+  FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
