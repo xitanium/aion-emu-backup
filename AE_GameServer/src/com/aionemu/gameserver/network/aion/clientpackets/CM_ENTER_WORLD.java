@@ -129,7 +129,7 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			sendPacket(new SM_MACRO_LIST(player));
 			
 
-			sendPacket(new SM_GAME_TIME());
+			//sendPacket(new SM_GAME_TIME()); till we have it for chinese ids
 			sendPacket(SM_SYSTEM_MESSAGE.REMAINING_PLAYING_TIME(12043));
 
 			/**
