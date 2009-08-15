@@ -27,5 +27,5 @@ public class Version
 	/**
 	 * What version should server support [true = chs, false = EU/US]
 	 */
-	public final static boolean	Chiness	= true;
+	public final static boolean	Chiness	= false;
 }

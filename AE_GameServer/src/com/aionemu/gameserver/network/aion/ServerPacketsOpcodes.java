@@ -59,6 +59,7 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_UNK60.class, Version.Chiness ? 0x60 : -1, idSet);
 		addPacketOpcode(SM_UNK5E.class, Version.Chiness ? 0x5e : -1, idSet);
 		addPacketOpcode(SM_UNK32.class, Version.Chiness ? 0x32 : -1, idSet);
+		addPacketOpcode(SM_UNK17.class, Version.Chiness ? 0x17 : -1, idSet);
 		addPacketOpcode(SM_UNK15.class, Version.Chiness ? 0x15 : -1, idSet);
 		addPacketOpcode(SM_UNK0C.class, Version.Chiness ? 0x0C : 0xFC, idSet);
 		addPacketOpcode(SM_UNK0A.class, Version.Chiness ? 0x0A : -1, idSet);
@@ -89,14 +90,13 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_GAME_TIME.class, Version.Chiness ? -1 : 0x27, idSet);
 		addPacketOpcode(SM_FRIEND_RESPONSE.class, Version.Chiness ? -1 : 0xDC, idSet);
 		addPacketOpcode(SM_FRIEND_NOTIFY.class, Version.Chiness ? -1 : 0xE1, idSet);
-		addPacketOpcode(SM_FRIEND_LIST.class,Version.Chiness ? 0x72 : 0x82, idSet);
+		addPacketOpcode(SM_FRIEND_LIST.class,Version.Chiness ? -1 : 0x82, idSet);
 		addPacketOpcode(SM_ENTER_WORLD_CHECK.class, Version.Chiness ? 0xF4 : 0x04, idSet);
 		addPacketOpcode(SM_EMOTION.class, Version.Chiness ? 0x14 : 0x24, idSet);
 		addPacketOpcode(SM_DELETE.class, Version.Chiness ? 0xFB : 0x0D, idSet);
 		addPacketOpcode(SM_DELETE_CHARACTER.class, Version.Chiness ? 0xC0 : 0xC8, idSet);
 		addPacketOpcode(SM_CREATE_CHARACTER.class, Version.Chiness ? 0xBF : 0xC9, idSet);
 		addPacketOpcode(SM_CHARACTER_LIST.class, Version.Chiness ? 0xBE : 0xC6, idSet);
-		addPacketOpcode(SM_PLAYERS_SETTINGS.class, Version.Chiness ? 0x17 : -1, idSet);
 	}
 
 	static int getOpcode(Class<? extends AionServerPacket> packetClass)

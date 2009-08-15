@@ -28,7 +28,6 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_ENTER_WORLD_CHECK;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_GAME_TIME;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_MACRO_LIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_MESSAGE;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYERS_SETTINGS;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SKILL_LIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATS_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
@@ -100,11 +99,7 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			world.storeObject(player);
 
 			sendPacket(new SM_SKILL_LIST());
-			
-			if(playerService.havePlayerPreferences(objectId))
-			{
-			 sendPacket(new SM_PLAYERS_SETTINGS(objectId));
-			}
+
 			// sendPacket(new SM_UNK91());
 			// sendPacket(new SM_UNKC7());
 			// sendPacket(new SM_UNKC8());
@@ -129,7 +124,7 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			sendPacket(new SM_MACRO_LIST(player));
 			
 
-			//sendPacket(new SM_GAME_TIME()); till we have it for chinese ids
+			sendPacket(new SM_GAME_TIME());
 			sendPacket(SM_SYSTEM_MESSAGE.REMAINING_PLAYING_TIME(12043));
 
 			/**
