@@ -364,7 +364,99 @@ public class MySQL5PlayerDAO extends PlayerDAO
 
 		return new int[0];
 	}
+	  /**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public byte[] getPlayerPreferences(int playerId)
+	{
+	byte[] test = null;
+		PreparedStatement st = DB.prepareStatement("SELECT preferences FROM `player_preferences` WHERE `player_id` = ?");
+		try
+		{
+		st.setInt(1, playerId);
+		ResultSet rs = st.executeQuery();
+			if (rs.next())
+			{
+			test = rs.getBytes("preferences");
+			}
+			
+			}
+		catch (SQLException e)
+		{
+			log.error("error sql:", e);
+		}
+		finally
+		{
+			DB.close(st);
+		}
 
+	return test;
+	
+	}
+	
+    /**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean havePlayerPreferences(int playerId)
+	{
+	boolean test = false;
+		PreparedStatement st = DB.prepareStatement("SELECT count(*) as C FROM `player_preferences` WHERE `player_id` = ?");
+		try
+		{
+		st.setInt(1,playerId);
+		ResultSet rs = st.executeQuery();
+			if (rs.next())
+			{
+			return rs.getBoolean("C");
+			}
+			
+			}
+		catch (SQLException e)
+		{
+			log.error("error sql:", e);
+		}
+		finally
+		{
+			DB.close(st);
+		}
+
+	return test;
+	
+	}
+	
+    /**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setPlayerPreferences(int playerId,byte[] preferences)
+	{
+			PreparedStatement ps = DB.prepareStatement("REPLACE into player_preferences (player_id, preferences) values (?,?)");
+		try 
+		{
+			ps.setInt(1, playerId);
+		    ps.setBytes(2, preferences);
+		    ps.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally 
+		{
+		  try
+		{
+			ps.close();
+		}
+		catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		}
 	/**
 	 * {@inheritDoc}
 	 */

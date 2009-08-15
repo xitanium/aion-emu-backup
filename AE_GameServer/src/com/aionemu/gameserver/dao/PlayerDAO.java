@@ -71,6 +71,12 @@ public abstract class PlayerDAO implements IDFactoryAwareDAO
 
 	public abstract void storeCreationTime(int objectId, Timestamp creationDate);
 
+	
+	public abstract byte[] getPlayerPreferences(int playerId);
+	
+	public abstract void setPlayerPreferences(int playerId,byte[] preferences);
+	
+	public abstract boolean havePlayerPreferences(int playerId);
 	/**
 	 * Loads creation and deletion time from database, for particular player and sets these values in given
 	 * <tt>PlayerAccountData</tt> object.

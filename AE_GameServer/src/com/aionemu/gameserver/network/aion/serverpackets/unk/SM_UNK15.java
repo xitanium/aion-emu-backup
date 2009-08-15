@@ -29,9 +29,6 @@ public class SM_UNK15 extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeC(buf, 0xB4);
-		writeC(buf, 0x62);
-		writeC(buf, 0x27);
-		writeC(buf, 0x03);
+		writeD(buf, 123456789);
 	}
 }

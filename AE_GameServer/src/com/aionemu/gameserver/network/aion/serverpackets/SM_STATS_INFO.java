@@ -18,11 +18,15 @@ package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
+import org.apache.log4j.Logger;
+
+import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 import com.aionemu.gameserver.network.aion.Version;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_CREATE_CHARACTER;
 
 /**
  * In this packet Server is sending User Info?
@@ -32,11 +36,13 @@ import com.aionemu.gameserver.network.aion.Version;
  */
 public class SM_STATS_INFO extends AionServerPacket
 {
-
+	/** Logger for this class. */
+	private static final Logger	log	= Logger.getLogger(SM_STATS_INFO.class);
 	/**
 	 * Player that stats info will be send
 	 */
 	private Player	player;
+	private PlayerExperienceTable exp;
 
 	/**
 	 * Constructs new <tt>SM_UI</tt> packet
@@ -58,128 +64,129 @@ public class SM_STATS_INFO extends AionServerPacket
 		
 		writeD(buf, player.getObjectId());
 
-		writeD(buf, 52910559);// unk 52910559 32759DF
+		writeD(buf, 123456789);// unk 52910559 32759DF
 
-		writeH(buf, 91);// current power [confirmed]
-		writeH(buf, 90);// current health [confirmed]
-		writeH(buf, 96);// current accuracy [confirmed]
-		writeH(buf, 50);// current agility [confirmed]
-		writeH(buf, 115);// current knowledge [confirmed]
-		writeH(buf, 114);// current will [confirmed]
+		writeH(buf, 110);// current power [confirmed]
+		writeH(buf, 110);// current health [confirmed]
+		writeH(buf, 100);// current accuracy [confirmed]
+		writeH(buf, 100);// current agility [confirmed]
+		writeH(buf, 90);// current knowledge [confirmed]
+		writeH(buf, 90);// current will [confirmed]
 
-		writeH(buf, 1);// water res [confirmed]
-		writeH(buf, 2);// wind res [confirmed]
-		writeH(buf, 3);// earth res [confirmed]
-		writeH(buf, 4);// fire res [confirmed]
+		writeH(buf, 0);// water res [confirmed]
+		writeH(buf, 0);// wind res [confirmed]
+		writeH(buf, 0);// earth res [confirmed]
+		writeH(buf, 1);// fire res [confirmed]
 
 		writeD(buf, 0);// unk 0
-		writeH(buf, 5);// level [confirmed] ***
+		writeH(buf, 1);// level [confirmed] ***
+		
 		writeH(buf, 0); //
 		writeD(buf, 0);//
-
-		writeQ(buf, 10L * Integer.MAX_VALUE);// max xp [confirmed]
-		writeQ(buf, 2L * Integer.MAX_VALUE); // recoverable xp [confirmed]
-		writeQ(buf, 3L * Integer.MAX_VALUE); // current xp [confirmed]
-
+		writeQ(buf, 650);// max xp [confirmed]
+		writeQ(buf, 0); // recoverable xp [confirmed]
+		writeQ(buf, 0); // current xp [confirmed]
+		
 		writeD(buf, 0); //
-		writeD(buf, 40); // max hp [confirmed] {cur hp is as % in CI packet}
-		writeD(buf, 1);// if set to 0, then client thinks you're dead! [confirmed] (why there is whole int ?)
+		writeD(buf, 284); // max hp [confirmed] {cur hp is as % in CI packet}
+		writeD(buf, 284);// if set to 0, then client thinks you're dead! [confirmed] (why there is whole int ?)=>because it's the curHp ... Niato
 
-		writeD(buf, 5000000);// max mp [confirmed]
-		writeD(buf, 3000000);// cur mp [confirmed]
+		writeD(buf, 500);// max mp [confirmed]
+		writeD(buf, 300);// cur mp [confirmed]
 
-		writeH(buf, 8000);// max dp [confirmed]
-		writeH(buf, 7000);// cur dp [confirmed]
+		writeH(buf, 4000);// max dp [confirmed]
+		writeH(buf, 0);// cur dp [confirmed]
 
-		writeD(buf, 0);// unk 60
+		writeD(buf, 70);// unk 60 MaxFlightTime
 
-		writeD(buf, 0);// unk1 0
+		writeD(buf, 60);// unk1 0 CurentflightTime
 
 		writeH(buf, 0);// unk2
 
-		writeH(buf, 18457); // Main-Hand attack [confirmed]
-		writeH(buf, 0xFEDC); // Off-Hand attack [confirmed]
+		writeH(buf, 29); // Main-Hand attack [confirmed]
+		writeH(buf, 0); // Off-Hand attack [confirmed]
 
-		writeH(buf, 0xEFAA);// Physical defence [confirmed]
-
-		writeH(buf, 0);//
-
-		writeH(buf, 0xFAAC); // Magical resistance [confirmed]
+		writeH(buf, 46);// Physical defence [confirmed]
 
 		writeH(buf, 0);//
-		writeH(buf, 0);//
-		writeH(buf, 0);//
-		writeH(buf, 1758);// evasion [confirmed]
-		writeH(buf, 1987);// parry [confirmed]
-		writeH(buf, 2457);// block [confirmed]
 
-		writeH(buf, 21852);// Main-Hand Crit Rate [confirmed]
-		writeH(buf, 23823);// 0ff-Hand Crit Rate [confirmed]
+		writeH(buf, 18); // Magical resistance [confirmed]
 
-		writeH(buf, 25478);// Main-Hand Accuracy [confirmed]
-		writeH(buf, 20145);// Off-Hand Accuracy [confirmed]
+		writeH(buf, 0);// 
+		writeH(buf, 16320);//
+		writeH(buf, 1400);// 
+		writeH(buf, 112);// evasion [confirmed]
+		writeH(buf, 247);// parry [confirmed]
+		writeH(buf, 74);// block [confirmed]
 
-		writeH(buf, 0);// unk10
-		writeH(buf, 415);// Magic Accuracy [confirmed]
-		writeH(buf, 0); // unk
-		writeH(buf, 688); // Magic Boost [confirmed]
+		writeH(buf, 52);// Main-Hand Crit Rate [confirmed]
+		writeH(buf, 0);// 0ff-Hand Crit Rate [confirmed]
 
-		writeH(buf, 0);// unk12
+		writeH(buf, 198);// Main-Hand Accuracy [confirmed]
+		writeH(buf, 0);// Off-Hand Accuracy [confirmed]
+
+		writeH(buf, 2);// unk10
+		writeH(buf, 12);// Magic Accuracy [confirmed]
+		writeH(buf, 14); // unk
+		writeH(buf, 0); // Magic Boost [confirmed]
+
+		writeH(buf, 27);// unk12
 		writeH(buf, 0);// unk12
 
 		writeD(buf, 2);// unk13 2
 		writeD(buf, 0);// unk14 0
 		writeD(buf, 0);// unk15 0
-		writeD(buf, pcd.getPlayerClass().getClassId());// class id [ should be rather H or even C]
+		writeH(buf, 0);// unk12
+		writeH(buf, pcd.getPlayerClass().getClassId());// class id 
 		writeD(buf, 0);// unk17 0
 
-		writeH(buf, 20);// base power [confirmed]
-		writeH(buf, 30);// base health [confirmed]
-		writeH(buf, 40);// base accuracy [confirmed]
-		writeH(buf, 50);// base agility [confirmed]
-		writeH(buf, 60);// base knowledge [confirmed]
-		writeH(buf, 70); // base will [confirmed]
+		writeH(buf, 110);// base power [confirmed]
+		writeH(buf, 110);// base health [confirmed]
+		writeH(buf, 100);// base accuracy [confirmed]
+		writeH(buf, 100);// base agility [confirmed]
+		writeH(buf, 90);// base knowledge [confirmed]
+		writeH(buf, 90); // base will [confirmed]
 
-		writeH(buf, 901);// base water res [confirmed]
-		writeH(buf, 902);// base wind res [confirmed]
-		writeH(buf, 903);// base earth res [confirmed]
-		writeH(buf, 904);// base fire res [confirmed]
+		writeH(buf, 0);// base water res [confirmed]
+		writeH(buf, 0);// base wind res [confirmed]
+		writeH(buf, 0);// base earth res [confirmed]
+		writeH(buf, 0);// base fire res [confirmed]
 
 		writeD(buf, 0);// unk23 0 ? ***
 
-		writeD(buf, 205);// base hp [confirmed]
-		writeD(buf, 415);// base mp [confirmed]
+		writeD(buf, 284);// base hp [confirmed]
+		writeD(buf, 170);// base mp [confirmed]
 
-		writeD(buf, 0);// unk26
-		writeD(buf, 60);// unk27 60
+		writeD(buf, 4000);// unk26 maxDp ?
+		writeD(buf, 45);// unk27 60 curent flight time?
 
-		writeH(buf, 305);// base Main-Hand Attack [confirmed]
-		writeH(buf, 306);// base Off-Hand Attack [confirmed]
+		writeH(buf, 19);// base Main-Hand Attack [confirmed]
+		writeH(buf, 0);// base Off-Hand Attack [confirmed]
 
 		writeH(buf, 0); // ***
-		writeH(buf, 6789); // base Physical Def [confirmed]
+		writeH(buf, 44); // base Physical Def [confirmed]
 
-		writeH(buf, 1800); // base Magical res [confirmed]
+		writeH(buf, 18); // base Magical res [confirmed]
 		writeH(buf, 0); // *** ??
 
-		writeD(buf, 0);// unk31 1069547520 3FC00000 ** co to ?
+		writeD(buf, 1069547520);// unk31 1069547520 3FC00000 ** co to ?
 
-		writeH(buf, 248); // base evasion [confirmed]
-		writeH(buf, 172); // base parry [confirmed]
-		writeH(buf, 75); // base block [confirmed]
+		writeH(buf, 112); // base evasion [confirmed]
+		writeH(buf, 247); // base parry [confirmed]
+		writeH(buf, 74); // base block [confirmed]
 
-		writeH(buf, 13); // base Main-Hand crit rate [confirmed]
-		writeH(buf, 208); // base Off-Hand crit rate [confirmed]
+		writeH(buf, 52); // base Main-Hand crit rate [confirmed]
+		writeH(buf, 0); // base Off-Hand crit rate [confirmed]
 
-		writeH(buf, 1122); // base Main-Hand Accuracy [confirmed]
-		writeH(buf, 1133); // base Off-Hand Accuracy [confirmed]
+		writeH(buf, 198); // base Main-Hand Accuracy [confirmed]
+		writeH(buf, 0); // base Off-Hand Accuracy [confirmed]
 
-		writeH(buf, 0);// unk35 co to ? ***
+		writeH(buf, 2);// unk35 co to ? ***
 
-		writeH(buf, 666); // base Magic Acc [confirmed]
-		writeH(buf, 0);// unk36 ***
+		writeH(buf, 12); // base Magic Acc [confirmed]
+		writeH(buf, 14);// unk36 ***
 
-		writeH(buf, 80); // base Magic Boost [confirmed]
+		writeH(buf, 00); // base Magic Boost [confirmed]
 
 		writeH(buf, 0); // ***
 	}

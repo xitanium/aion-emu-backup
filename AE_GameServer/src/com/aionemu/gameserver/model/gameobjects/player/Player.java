@@ -16,13 +16,15 @@
  */
 package com.aionemu.gameserver.model.gameobjects.player;
 
+import java.sql.PreparedStatement;
+
 import com.aionemu.commons.callbacks.Enhancable;
+import com.aionemu.commons.database.DB;
 import com.aionemu.gameserver.controllers.PlayerController;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedInListener;
 import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedOutListener;
 import com.aionemu.gameserver.network.aion.AionConnection;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_LIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -126,7 +128,7 @@ public class Player extends Creature
 	{
 		return macroList;
 	}
-
+	
 	public void setMacroList(MacroList macroList)
 	{
 		this.macroList = macroList;
@@ -150,6 +152,8 @@ public class Player extends Creature
 	{
 		return requester;
 	}
+	
+	
 	
 	
 	/**
