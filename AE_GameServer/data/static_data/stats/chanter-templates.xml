@@ -11,6 +11,16 @@
 		                magic_accuracy="124" />
 	</player_stats>
 
+	<player_stats class="CHANTER" level="33">
+		<stats_template maxHp="2602" maxMp="3743"
+		                power="110" health="105" agility="90" accuracy="90" knowledge="105" will="110"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="440" block="440" parry="440"
+		                main_hand_attack="19" main_hand_accuracy="434" main_hand_crit_rate="1"
+		                magic_accuracy="409" />
+	</player_stats>
+
 	<player_stats class="CHANTER" level="34">
 		<stats_template maxHp="2710" maxMp="3848"
 		                power="110" health="105" agility="90" accuracy="90" knowledge="105" will="110"
