@@ -48,7 +48,7 @@
 		                attack_speed="1.5"
 		                evasion="328" block="328" parry="328"
 		                main_hand_attack="19" main_hand_accuracy="372" main_hand_crit_rate="3"
-		                magic_accuracy="148" />
+		                magic_accuracy="235" />
 	</player_stats>
 
 	<player_stats class="ASSASSIN" level="22">
