@@ -71,6 +71,16 @@
 		                magic_accuracy="186" />
 	</player_stats>
 
+	<player_stats class="CLERIC" level="16">
+		<stats_template maxHp="977" maxMp="1951"
+		                power="105" health="110" agility="90" accuracy="90" knowledge="105" will="110"
+		                walk_speed="1.5" run_speed="6" fly_speed="9"
+		                attack_speed="1.5"
+		                evasion="229" block="229" parry="229"
+		                main_hand_attack="18" main_hand_accuracy="298" main_hand_crit_rate="1"
+		                magic_accuracy="198" />
+	</player_stats>
+
 	<player_stats class="CLERIC" level="25">
 		<stats_template maxHp="1627" maxMp="2899"
 		                power="105" health="110" agility="90" accuracy="90" knowledge="105" will="110"
