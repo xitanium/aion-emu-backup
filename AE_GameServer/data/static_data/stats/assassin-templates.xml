@@ -47,7 +47,7 @@
 		                walk_speed="1.5" run_speed="6" fly_speed="9"
 		                attack_speed="1.5"
 		                evasion="328" block="328" parry="328"
-		                main_hand_attack="19" main_hand_accuracy="372" main_hand_crit_rate="3"
+		                main_hand_attack="19" main_hand_accuracy="362" main_hand_crit_rate="3"
 		                magic_accuracy="235" />
 	</player_stats>
 
