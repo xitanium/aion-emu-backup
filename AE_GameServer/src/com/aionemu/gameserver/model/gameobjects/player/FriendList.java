@@ -21,10 +21,9 @@ import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import com.aionemu.commons.callbacks.EnhancedObject;
-import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedInListener;
 import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedOutListener;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_LIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_NOTIFY;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_UPDATE;
 
 /**
  * Represents a player's Friend list
@@ -61,19 +60,6 @@ public class FriendList implements Iterable<Friend>
 		this.friends = new ConcurrentLinkedQueue<Friend>(newFriends);
 		this.player = owner;
 		
-		//Add the listeners for when the play logs in and out
-		((EnhancedObject)player).addCallback(new PlayerLoggedInListener(){
-			
-			@Override
-			protected void onLoggedIn(Player loggedInPlayer)
-			{
-				// Set status
-				setStatus(FriendList.Status.ONLINE);
-				//Send list to self
-				loggedInPlayer.getClientConnection().sendPacket(new SM_FRIEND_LIST());
-				
-			}
-		});
 		
 		((EnhancedObject)player).addCallback(new PlayerLoggedOutListener(){
 			
@@ -152,6 +138,11 @@ public class FriendList implements Iterable<Friend>
 				it.remove();
 	}
 	
+	public boolean isFull()
+	{
+		return getSize() >= MAX_FRIENDS;
+	}
+	
 	/**
 	 * Gets players status
 	 * @return Status
@@ -177,7 +168,7 @@ public class FriendList implements Iterable<Friend>
 			if (friend.isOnline()) // If the player is online
 			{
 				Player friendPlayer = friend.getPlayer();
-				friendPlayer.getClientConnection().sendPacket(new SM_FRIEND_LIST()); // Send him a new friend list packet
+				friendPlayer.getClientConnection().sendPacket(new SM_FRIEND_UPDATE(player.getObjectId()));
 				
 				if (previousStatus == Status.OFFLINE) 
 				{

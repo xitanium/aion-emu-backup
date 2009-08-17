@@ -18,11 +18,12 @@ package com.aionemu.gameserver.model.gameobjects.player;
 
 import com.aionemu.commons.callbacks.Enhancable;
 import com.aionemu.gameserver.controllers.PlayerController;
+import com.aionemu.gameserver.model.Gender;
+import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedInListener;
 import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedOutListener;
 import com.aionemu.gameserver.network.aion.AionConnection;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_LIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -41,7 +42,9 @@ public class Player extends Creature
 	private PlayerCommonData	playerCommonData;
 	private MacroList			macroList;
 	private FriendList			friendList;
+	private BlockList			blockList;
 	private ResponseRequester	requester;
+	private boolean				lfg = false;
 	
 	/** When player enters game its char is in kind of "protection" state, when is blinking etc */
 	private boolean				protectionActive;
@@ -132,16 +135,52 @@ public class Player extends Creature
 		this.macroList = macroList;
 	}
 
+	/**
+	 * Gets this players Friend List
+	 * @return
+	 */
 	public FriendList getFriendList()
 	{
 		return friendList;
 	}
 	
+	/**
+	 * Is this player looking for a group
+	 * @return
+	 */
+	public boolean isLFG()
+	{
+		return lfg;
+	}
+	
+	/**
+	 * Sets whether or not this player is looking for a group
+	 * @param lfg
+	 */
+	public synchronized void setLFG(boolean lfg)
+	{
+		this.lfg = lfg;
+	}
+	
+	/**
+	 * Sets this players friend list. <br />
+	 * Remember to send the player the <tt>SM_FRIEND_LIST</tt> packet.
+	 * @param list
+	 */
 	public void setFriendList(FriendList list)
 	{
 		this.friendList = list;
 	}
 	
+	public BlockList getBlockList()
+	{
+		return blockList;
+	}
+	
+	public void setBlockList(BlockList list)
+	{
+		this.blockList = list;
+	}
 	/**
 	 * Gets the ResponseRequester for this player
 	 * @return
@@ -151,6 +190,20 @@ public class Player extends Creature
 		return requester;
 	}
 	
+	public boolean isOnline()
+	{
+		return getClientConnection() != null;
+	}
+	
+	public PlayerClass getPlayerClass()
+	{
+		return playerCommonData.getPlayerClass();
+	}
+	
+	public Gender getGender()
+	{
+		return playerCommonData.getGender();
+	}
 	
 	/**
 	 * Return PlayerController of this Player Object.

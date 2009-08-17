@@ -40,6 +40,10 @@ public enum PlayerClass
 
 	/** This id is used on client side */
 	private byte	classId;
+	
+	/** This is the mask for this class id, used with bitwise AND in arguments that contain more than one possible class */
+	private int		idMask;
+	
 	/** Tells whether player can create new character with this class */
 	private boolean	startingClass;
 
@@ -52,6 +56,7 @@ public enum PlayerClass
 	{
 		this.classId = (byte) classId;
 		this.startingClass = startingClass;
+		this.idMask = (int)Math.pow(2, classId);
 	}
 
 	/**
@@ -90,5 +95,10 @@ public enum PlayerClass
 	public boolean isStartingClass()
 	{
 		return startingClass;
+	}
+	
+	public int getMask()
+	{
+		return idMask;
 	}
 }

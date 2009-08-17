@@ -24,7 +24,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_LIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_RESPONSE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_QUESTION_WINDOW;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
-import com.aionemu.gameserver.services.PlayerService;
+import com.aionemu.gameserver.services.SocialService;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
 
@@ -38,7 +38,7 @@ public class CM_FRIEND_ADD extends AionClientPacket
 {
 	private String 				targetName;
 	@Inject
-	private PlayerService 		playerService;
+	private SocialService 		socialService;
 	@Inject
 	private World				world;
 	
@@ -80,47 +80,51 @@ public class CM_FRIEND_ADD extends AionClientPacket
 		{
 			sendPacket(new SM_FRIEND_RESPONSE(targetPlayer.getName(), SM_FRIEND_RESPONSE.TARGET_ALREADY_FRIEND));
 		}
-		else if (activePlayer.getFriendList().getSize() >= FriendList.MAX_FRIENDS)
+		else if (activePlayer.getFriendList().isFull())
 		{
 			sendPacket(SM_SYSTEM_MESSAGE.BUDDYLIST_LIST_FULL);
 		}
-		else if (targetPlayer.getFriendList().getSize() >= FriendList.MAX_FRIENDS)
+		else if (targetPlayer.getFriendList().isFull())
 		{
 			sendPacket(new SM_FRIEND_RESPONSE(targetPlayer.getName(),SM_FRIEND_RESPONSE.TARGET_LIST_FULL));
 		}
+		else if (activePlayer.getBlockList().contains(targetPlayer.getObjectId()))
+		{
+			sendPacket(new SM_FRIEND_RESPONSE(targetPlayer.getName(), SM_FRIEND_RESPONSE.TARGET_BLOCKED));
+		}
+		else if (targetPlayer.getBlockList().contains(activePlayer.getObjectId()))
+		{
+			sendPacket(SM_SYSTEM_MESSAGE.YOU_ARE_BLOCKED_BY(targetName));
+		}
 		else // Send request
 		{
-			RequestResponseHandler responseHandler = new RequestResponseHandler() {
+			RequestResponseHandler responseHandler = new RequestResponseHandler(activePlayer) {
 				
 				@Override
-				public void handle(Player responder, int response)
+				public void acceptRequest(Player requester, Player responder)
 				{
-					if (response == 1)
+					if (!targetPlayer.getCommonData().isOnline())
 					{
-						if (!targetPlayer.getCommonData().isOnline())
-						{
-							sendPacket(new SM_FRIEND_RESPONSE(targetName , SM_FRIEND_RESPONSE.TARGET_OFFLINE));
-						}
-						else if (activePlayer.getFriendList().getSize() >= FriendList.MAX_FRIENDS || 
-							responder.getFriendList().getSize() >= FriendList.MAX_FRIENDS)
-						{
-							return;	
-						}
-							
-						else
-						{
-							playerService.addFriends(activePlayer, responder);
-							activePlayer.getClientConnection().sendPacket(new SM_FRIEND_LIST());
-							responder.getClientConnection().sendPacket(new SM_FRIEND_LIST());
-							sendPacket(new SM_FRIEND_RESPONSE(targetName, SM_FRIEND_RESPONSE.TARGET_ADDED));
-							responder.getClientConnection()
-								.sendPacket(new SM_FRIEND_RESPONSE(activePlayer.getName(), SM_FRIEND_RESPONSE.TARGET_ADDED));
-						}
+						sendPacket(new SM_FRIEND_RESPONSE(targetName , SM_FRIEND_RESPONSE.TARGET_OFFLINE));
 					}
-					else 
+					else if (activePlayer.getFriendList().isFull() || 
+						responder.getFriendList().isFull())
 					{
-						sendPacket(new SM_FRIEND_RESPONSE(targetName, SM_FRIEND_RESPONSE.TARGET_DENIED));
+						return;	
 					}
+						
+					else
+					{
+						socialService.makeFriends(requester, responder);
+					}
+					
+				}
+
+				@Override
+				public void denyRequest(Player requester, Player responder)
+				{
+					sendPacket(new SM_FRIEND_RESPONSE(targetName, SM_FRIEND_RESPONSE.TARGET_DENIED));
+					
 				}
 			};
 			

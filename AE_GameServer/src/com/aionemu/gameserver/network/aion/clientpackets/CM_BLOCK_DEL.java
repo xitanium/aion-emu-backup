@@ -17,12 +17,13 @@
 package com.aionemu.gameserver.network.aion.clientpackets;
 
 import org.apache.log4j.Logger;
-import com.aionemu.gameserver.model.gameobjects.player.Friend;
+
+import com.aionemu.gameserver.model.gameobjects.player.BlockedPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_LIST;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_NOTIFY;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_RESPONSE;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_BLOCK_LIST;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_BLOCK_RESPONSE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.services.SocialService;
 import com.google.inject.Inject;
@@ -31,19 +32,23 @@ import com.google.inject.Inject;
  * @author Ben
  *
  */
-public class CM_FRIEND_DEL extends AionClientPacket
+public class CM_BLOCK_DEL extends AionClientPacket
 {
-
-	private String 				targetName;
+	private static Logger	log				= Logger.getLogger(CM_BLOCK_DEL.class);
 	@Inject
-	private SocialService		socialService;
-	private static Logger		log				= Logger.getLogger(CM_FRIEND_DEL.class);
+	private SocialService	socialService;
 	
-	public CM_FRIEND_DEL(int opcode)
+	private String			targetName;
+
+	/**
+	 * {@inheritDoc}
+	 * @param opcode
+	 */
+	public CM_BLOCK_DEL(int opcode)
 	{
 		super(opcode);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -51,31 +56,27 @@ public class CM_FRIEND_DEL extends AionClientPacket
 	protected void readImpl()
 	{
 		targetName = readS();
-
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void runImpl()
 	{
-		
 		Player activePlayer = getConnection().getActivePlayer();
-		Friend target = activePlayer.getFriendList().getFriend(targetName);
+		
+		BlockedPlayer target = activePlayer.getBlockList().getBlockedPlayer(targetName);
 		if (target == null)
 		{
-			log.warn(activePlayer.getName() + " tried to delete friend " + targetName + " who is not his friend");
 			sendPacket(SM_SYSTEM_MESSAGE.BUDDYLIST_NOT_IN_LIST);
 		}
-		else
+		else 
 		{
-			socialService.delFriends(activePlayer.getObjectId(), target.getOid());
-			
-			
+			if (!socialService.delBlockedUser(activePlayer, target.getObjId()))
+			{
+				log.debug("Could not unblock " + targetName + " from " + activePlayer.getName() + " blocklist. Check database setup.");
+			}
 		}
-		
-
 	}
-
 }

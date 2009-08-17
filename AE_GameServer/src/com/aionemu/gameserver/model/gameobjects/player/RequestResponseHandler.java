@@ -22,14 +22,44 @@ package com.aionemu.gameserver.model.gameobjects.player;
  * @author Ben
  *
  */
-public interface RequestResponseHandler
+public abstract class RequestResponseHandler
 {
+	
+	private Player requester;
+	
+	public RequestResponseHandler(Player requester)
+	{
+		this.requester = requester;
+	}
 	
 	/**
 	 * Called when a response is received
-	 * @param responder Player who responded to this request
+	 * @param requested Player whom requested this response
+	 * @param responder Player whom responded to this request
 	 * @param responseCode The response the player gave, usually 0 = no 1 = yes
 	 */
-	public void handle(Player responder, int response);
+	public void handle(Player responder, int response)
+	{
+		if (response == 0)
+			denyRequest(requester, responder);
+		else
+			acceptRequest(requester, responder);
+	}
+	
+	/**
+	 * Called when the player accepts a request
+	 * @param requester Player whom requested this response
+	 * @param responder Player whom responded to this request
+	 */
+	public abstract void acceptRequest(Player requester, Player responder);
+	
+	/**
+	 * Called when the player denies a request
+	 * @param requester Player whom requested this response
+	 * @param responder Player whom responded to this request
+	 */
+	public abstract void denyRequest(Player requester, Player responder);
+	
+	
 
 }

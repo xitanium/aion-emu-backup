@@ -20,6 +20,9 @@ import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.AionPacketHandler;
 import com.aionemu.gameserver.network.aion.Version;
 import com.aionemu.gameserver.network.aion.AionConnection.State;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_BLOCK_ADD;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_BLOCK_DEL;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_BLOCK_SET_REASON;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_CHARACTER_LIST;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_CHAT_MESSAGE_PUBLIC;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_CHAT_MESSAGE_WHISPER;
@@ -42,11 +45,15 @@ import com.aionemu.gameserver.network.aion.clientpackets.CM_MAC_ADDRESS2;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_MAY_LOGIN_INTO_GAME;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_MOVE;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_PING;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_PLAYER_SEARCH;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_QUESTION_RESPONSE;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_QUIT;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_RECONNECT_AUTH;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_RESTORE_CHARACTER;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_SEARCH_STATUS;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_SET_NOTE;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_SHOW_BLOCKLIST;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_SHOW_FRIENDLIST;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_TARGET_SELECT;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_TIME_CHECK;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_VERSION_CHECK;
@@ -81,9 +88,13 @@ public class AionPacketHandlerFactory
 		addPacket(new CM_TIME_CHECK(Version.Chiness ? 0x3e : 0x42), State.CONNECTED, State.AUTHED, State.IN_GAME);
 		addPacket(new CM_SET_NOTE(0x1A), State.IN_GAME);
 		addPacket(new CM_TARGET_SELECT(Version.Chiness ? 0x33 : 0x31), State.IN_GAME);
+		addPacket(new CM_SHOW_FRIENDLIST(Version.Chiness ? -1 : 0xE6), State.IN_GAME);
+		addPacket(new CM_SHOW_BLOCKLIST(Version.Chiness ? -1 : 0xA8), State.IN_GAME);
+		addPacket(new CM_SEARCH_STATUS(Version.Chiness ? -1 : 0xF0), State.IN_GAME);
 		addPacket(new CM_RESTORE_CHARACTER(Version.Chiness ? 0xB5 : 0xBB), State.AUTHED);
 		addPacket(new CM_QUIT(Version.Chiness ? 0x4F : 0x4D), State.AUTHED, State.IN_GAME);
-		addPacket(new CM_QUESTION_RESPONSE(0x22), State.IN_GAME);
+		addPacket(new CM_QUESTION_RESPONSE(Version.Chiness ? -1 : 0x22), State.IN_GAME);
+		addPacket(new CM_PLAYER_SEARCH(Version.Chiness ? -1 : 0xB1), State.IN_GAME);
 		addPacket(new CM_PING(Version.Chiness ? 0x20 : 0x24), State.AUTHED, State.IN_GAME);
 		addPacket(new CM_MOVE(Version.Chiness ? 0x1C : 0x20), State.IN_GAME);
 		addPacket(new CM_MAY_LOGIN_INTO_GAME(Version.Chiness ? 0x96 : 0x9A), State.AUTHED);
@@ -93,9 +104,9 @@ public class AionPacketHandlerFactory
 		addPacket(new CM_MAC_ADDRESS(Version.Chiness ? 0x91 : 0x97), State.CONNECTED, State.AUTHED, State.IN_GAME);
 		addPacket(new CM_LOGIN_OUT(Version.Chiness ? 0x4E : 0x52), State.AUTHED, State.IN_GAME);
 		addPacket(new CM_LEVEL_READY(Version.Chiness ? 0x45 : 0x4B), State.IN_GAME);
-		addPacket(new CM_FRIEND_STATUS(0xAA), State.IN_GAME);
-		addPacket(new CM_FRIEND_DEL(0xE0), State.IN_GAME);
-		addPacket(new CM_FRIEND_ADD(0xE1), State.IN_GAME);
+		addPacket(new CM_FRIEND_STATUS(Version.Chiness ? -1 : 0xAA), State.IN_GAME);
+		addPacket(new CM_FRIEND_DEL(Version.Chiness ? -1 : 0xE0), State.IN_GAME);
+		addPacket(new CM_FRIEND_ADD(Version.Chiness ? -1 : 0xE1), State.IN_GAME);
 		addPacket(new CM_ENTER_WORLD(Version.Chiness ? 0x44 : 0x48), State.AUTHED);
 		addPacket(new CM_EMOTION(Version.Chiness ? 0x27 : 0x25), State.IN_GAME);
 		addPacket(new CM_DELETE_CHARACTER(Version.Chiness ? 0xB4 : 0xB8), State.AUTHED);
@@ -105,6 +116,9 @@ public class AionPacketHandlerFactory
 		addPacket(new CM_CHAT_MESSAGE_WHISPER(Version.Chiness ? 0x30 : 0x34), State.IN_GAME);
 		addPacket(new CM_CHAT_MESSAGE_PUBLIC(Version.Chiness ? 0x37 : 0x35), State.IN_GAME);
 		addPacket(new CM_CHARACTER_LIST(Version.Chiness ? 0xBA : 0xBE), State.AUTHED);
+		addPacket(new CM_BLOCK_SET_REASON(Version.Chiness ? -1 : 0x9D),State.IN_GAME);
+		addPacket(new CM_BLOCK_DEL(Version.Chiness ? -1 : 0xA9), State.IN_GAME);
+		addPacket(new CM_BLOCK_ADD(Version.Chiness ? -1 : 0xAE), State.IN_GAME);
 		
 	}
 

@@ -81,15 +81,19 @@ public class CM_CHAT_MESSAGE_WHISPER extends AionClientPacket
 	{
 		log.info(String.format("Whisper To: %s, Message: %s", name, message));
 		Player sender = getConnection().getActivePlayer();
-		Player reciver = world.findPlayer(name);
+		Player receiver = world.findPlayer(name);
 
-		if(reciver == null)
+		if(receiver == null)
 		{
 			sendPacket(SM_SYSTEM_MESSAGE.PLAYER_IS_OFFLINE(name));
 		}
+		else if (receiver.getBlockList().contains(sender.getObjectId()))
+		{
+			sendPacket(SM_SYSTEM_MESSAGE.YOU_ARE_BLOCKED_BY(receiver.getName()));
+		}
 		else
 		{
-			PacketSendUtility.sendPacket(reciver, new SM_MESSAGE(sender, message, ChatType.WHISPER));
+			PacketSendUtility.sendPacket(receiver, new SM_MESSAGE(sender, message, ChatType.WHISPER));
 		}
 	}
 }

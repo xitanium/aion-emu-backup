@@ -21,6 +21,7 @@ import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.configs.CacheConfig;
 import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.controllers.PlayerController;
+import com.aionemu.gameserver.dao.BlockListDAO;
 import com.aionemu.gameserver.dao.FriendListDAO;
 import com.aionemu.gameserver.dao.PlayerAppearanceDAO;
 import com.aionemu.gameserver.dao.PlayerDAO;
@@ -71,7 +72,8 @@ public class PlayerService
 	private PlayerMacrossesDAO			macrosesDAO		= DAOManager.getDAO(PlayerMacrossesDAO.class);
 	private PlayerAppearanceDAO			appereanceDAO	= DAOManager.getDAO(PlayerAppearanceDAO.class);
 	private FriendListDAO				friendsDAO		= DAOManager.getDAO(FriendListDAO.class);
-
+	private BlockListDAO				blocksDAO		= DAOManager.getDAO(BlockListDAO.class);
+	
 
 	@Inject
 	public PlayerService(@IDFactoryAionObject IDFactory aionObjectsIDFactory, World world, PlayerInitialData playerInitialData)
@@ -147,6 +149,7 @@ public class PlayerService
 		player.setMacroList(macroses);
 		player.setKnownlist(new KnownList(player));
 		player.setFriendList(friendsDAO.load(player, world));
+		player.setBlockList(blocksDAO.load(player,world));;
 		
 		if(CacheConfig.CACHE_PLAYERS)
 			playerCache.put(playerObjId, player);	
@@ -317,50 +320,12 @@ public class PlayerService
 	}
 	
 	/**
-	 * Adds two players to eachothers friend lists, and updates the database<br />
-	 * <ul><li>Does not send notification packets, and does not send new list packet</li></ul>
-	 * @param friend1
-	 * @param friend2
-	 * @return Successs
+	 * Gets a player ONLY if he is in the cache
+	 * @return Player or null if not cached
 	 */
-	public void addFriends(Player friend1, Player friend2)
+	public Player getCachedPlayer(int playerObjectId)
 	{
-		friendsDAO.addFriends(friend1, friend2);
-
-		friend1.getFriendList().addFriend( new Friend(friend2.getCommonData()));
-		friend2.getFriendList().addFriend( new Friend(friend1.getCommonData()));	
-	}
-	
-	/**
-	 * Deletes two players from eachothers friend lists, and updates the database
-	 * <ul><li>Note: Does not send notification packets, and does not send new list packet</ul></li>
-	 * @param exFriend1 Object ID
-	 * @param exFriend2 Object ID
-	 * @return Success
-	 */
-	public void delFriends(int exFriend1Id, int exFriend2Id)
-	{
-		friendsDAO.delFriends(exFriend1Id, exFriend2Id);
-		
-		Player friend1Player = playerCache.get(exFriend1Id);
-		Player friend2Player = playerCache.get(exFriend2Id);
-		
-		if (friend1Player == null)
-			friend1Player = world.findPlayer(exFriend1Id);
-		if (friend2Player == null)
-			friend2Player = world.findPlayer(exFriend2Id);
-		
-		if (friend1Player != null)
-		{
-		
-			friend1Player.getFriendList().delFriend(exFriend2Id);
-		}
-		
-		if (friend2Player != null)
-		{
-			friend1Player.getFriendList().delFriend(exFriend1Id);
-		}
-		
+		return playerCache.get(playerObjectId);
 	}
 	
 }

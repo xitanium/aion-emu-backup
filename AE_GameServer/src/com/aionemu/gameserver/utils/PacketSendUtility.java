@@ -16,6 +16,9 @@
  */
 package com.aionemu.gameserver.utils;
 
+import java.util.Collection;
+
+import com.aionemu.commons.objects.filter.ObjectFilter;
 import com.aionemu.gameserver.model.ChatType;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -63,9 +66,9 @@ public class PacketSendUtility
 	 * @param player
 	 * 
 	 * @param packet
-	 *            ServerPacket that will be broadcasted.
+	 *            ServerPacket that will be broadcast
 	 * @param toSelf
-	 *            true if packet should be also send to this player.
+	 *            true if packet should also be sent to this player
 	 */
 	public static void broadcastPacket(Player player, AionServerPacket packet, boolean toSelf)
 	{
@@ -86,6 +89,36 @@ public class PacketSendUtility
 		{
 			if(obj instanceof Player)
 				sendPacket(((Player) obj), packet);
+		}
+	}
+	
+	/**
+	 * Broadcasts packet to all visible players matching a filter
+	 * @param player
+	 * 
+	 * @param packet
+	 * 			ServerPacket to be broadcast
+	 * @param toSelf
+	 * 			true if packet should also be sent to this player
+	 * @param filter
+	 * 			filter determining who should be messaged
+	 */
+	public static void broadcastPacket(Player player, AionServerPacket packet,boolean toSelf, ObjectFilter<Player> filter)
+	{
+		if (toSelf)
+		{
+			sendPacket(player, packet);
+		}
+		
+		for(VisibleObject obj: player.getKnownList())
+		{
+			if (obj instanceof Player)
+			{
+				Player target = (Player)obj;
+				if (filter.acceptObject(target))
+					sendPacket(target, packet);
+				
+			}
 		}
 	}
 }

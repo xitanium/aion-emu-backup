@@ -17,9 +17,14 @@
 
 package com.aionemu.gameserver.network.aion.clientpackets;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.apache.log4j.Logger;
 
+import com.aionemu.commons.objects.filter.ObjectFilter;
 import com.aionemu.gameserver.model.ChatType;
+import com.aionemu.gameserver.model.gameobjects.AionObject;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_MESSAGE;
@@ -90,8 +95,8 @@ public class CM_CHAT_MESSAGE_PUBLIC extends AionClientPacket
 	{
 		log.info(String.format("Public Message: %s, Type: %s", message, type));
 
-		Player player = getConnection().getActivePlayer();
-
+		final Player player = getConnection().getActivePlayer();
+		
 		for(ChatHandler chatHandler : chatHandlers)
 		{
 			ChatHandlerResponse response = chatHandler.handleChatMessage(type, message, player);
@@ -100,6 +105,17 @@ public class CM_CHAT_MESSAGE_PUBLIC extends AionClientPacket
 
 			message = response.getMessage();
 		}
-		PacketSendUtility.broadcastPacket(player, new SM_MESSAGE(player, message, type), true);
+		
+		//Send packet to everyone not blocked
+		
+		PacketSendUtility.broadcastPacket(player, new SM_MESSAGE(player, message, type), true, new ObjectFilter<Player>(){
+
+			@Override
+			public boolean acceptObject(Player object)
+			{
+				return !object.getBlockList().contains(player.getObjectId());
+			}
+			
+		});
 	}
 }

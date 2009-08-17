@@ -84,7 +84,30 @@ public class SM_SYSTEM_MESSAGE extends AionServerPacket
 	 * The character is not on your Friends List.
 	 */
 	public static final SM_SYSTEM_MESSAGE BUDDYLIST_NOT_IN_LIST = new SM_SYSTEM_MESSAGE(1300889);
+	
+	/**
+	 * You cannot block a character who is currently on your Friends List.
+	 * @return
+	 */
+	public static SM_SYSTEM_MESSAGE BLOCKLIST_NO_BUDDY = new SM_SYSTEM_MESSAGE(1300891);
+	/**
+	 * Character already in block list
+	 */
+	public static SM_SYSTEM_MESSAGE BLOCKLIST_ALREADY_BLOCKED = new SM_SYSTEM_MESSAGE(1300894);
 
+	/**
+	 * The character is not blocked.
+	 */
+	public static SM_SYSTEM_MESSAGE BLOCKLIST_NOT_BLOCKED = new SM_SYSTEM_MESSAGE(1300897);
+	
+	/**
+	 * %0 has blocked you.
+	 */
+	public static SM_SYSTEM_MESSAGE YOU_ARE_BLOCKED_BY(String blocker)
+	{
+		return new SM_SYSTEM_MESSAGE(1300628, blocker);
+	}
+	
 	/**
 	 * Your accumulated play time is %0 hour(s) %1 minute(s). Your accumulated rest time is %2 hour(s) %3 minute(s).
 	 * 

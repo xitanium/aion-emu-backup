@@ -34,7 +34,6 @@ public abstract class FriendListDAO implements DAO
 	@Override
 	public String getClassName()
 	{
-		// TODO Auto-generated method stub
 		return FriendListDAO.class.getName();
 	}
 	/**
