@@ -52,8 +52,8 @@ public class SM_UNKF5 extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeD(buf, player.getWorldId());// worldid+instanceid?
 		writeD(buf, player.getWorldId());
+		writeD(buf, player.getWorldId());//world + chnl
 		writeD(buf, 0x00);// unk
 		writeC(buf, 0x00);// unk
 		writeF(buf, player.getX());// x

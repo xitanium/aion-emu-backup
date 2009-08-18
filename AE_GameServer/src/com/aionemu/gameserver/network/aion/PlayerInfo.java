@@ -105,7 +105,7 @@ public abstract class PlayerInfo extends AionServerPacket
 		writeF(buf, playerAppearance.getHeight());
 		int raceSex = 100000 + raceId * 2 + genderId;
 		writeD(buf, raceSex);
-		writeD(buf, pbd.getPosition().getMapId());// 220010000)mapid for preloading map
+		writeD(buf, pbd.getPosition().getMapId());//mapid for preloading map
 		writeF(buf, pbd.getPosition().getX());
 		writeF(buf, pbd.getPosition().getY());
 		writeF(buf, pbd.getPosition().getZ());

@@ -23,6 +23,7 @@ import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 import com.aionemu.gameserver.network.aion.Version;
+import com.aionemu.gameserver.utils.gametime.GameTimeManager;
 
 /**
  * In this packet Server is sending User Info?
@@ -58,7 +59,7 @@ public class SM_STATS_INFO extends AionServerPacket
 		
 		writeD(buf, player.getObjectId());
 
-		writeD(buf, 52910559);// unk 52910559 32759DF
+		writeD(buf, GameTimeManager.getGameTime().getTime()); // Minutes since 1/1/00 00:00:00
 
 		writeH(buf, 91);// current power [confirmed]
 		writeH(buf, 90);// current health [confirmed]

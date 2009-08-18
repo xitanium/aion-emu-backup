@@ -86,11 +86,11 @@ public class AionPacketHandlerFactory
 		addPacket(new CM_L2AUTH_LOGIN_CHECK(Version.Chiness ? 0xB9 : 0xBF), State.CONNECTED);
 		addPacket(new CM_VERSION_CHECK(Version.Chiness ? 0x4c : 0x50), State.CONNECTED);
 		addPacket(new CM_TIME_CHECK(Version.Chiness ? 0x3e : 0x42), State.CONNECTED, State.AUTHED, State.IN_GAME);
-		addPacket(new CM_SET_NOTE(0x1A), State.IN_GAME);
+		addPacket(new CM_SET_NOTE(Version.Chiness? -1 : 0x1A), State.IN_GAME);
 		addPacket(new CM_TARGET_SELECT(Version.Chiness ? 0x33 : 0x31), State.IN_GAME);
-		addPacket(new CM_SHOW_FRIENDLIST(Version.Chiness ? -1 : 0xE6), State.IN_GAME);
-		addPacket(new CM_SHOW_BLOCKLIST(Version.Chiness ? -1 : 0xA8), State.IN_GAME);
-		addPacket(new CM_SEARCH_STATUS(Version.Chiness ? -1 : 0xF0), State.IN_GAME);
+		addPacket(new CM_SHOW_FRIENDLIST(Version.Chiness ? 0xE2 : 0xE6), State.IN_GAME);
+		addPacket(new CM_SHOW_BLOCKLIST(Version.Chiness ? 0xA4 : 0xA8), State.IN_GAME);
+		addPacket(new CM_SEARCH_STATUS(Version.Chiness ? 0xEC : 0xF0), State.IN_GAME);
 		addPacket(new CM_RESTORE_CHARACTER(Version.Chiness ? 0xB5 : 0xBB), State.AUTHED);
 		addPacket(new CM_QUIT(Version.Chiness ? 0x4F : 0x4D), State.AUTHED, State.IN_GAME);
 		addPacket(new CM_QUESTION_RESPONSE(Version.Chiness ? -1 : 0x22), State.IN_GAME);
@@ -104,7 +104,7 @@ public class AionPacketHandlerFactory
 		addPacket(new CM_MAC_ADDRESS(Version.Chiness ? 0x91 : 0x97), State.CONNECTED, State.AUTHED, State.IN_GAME);
 		addPacket(new CM_LOGIN_OUT(Version.Chiness ? 0x4E : 0x52), State.AUTHED, State.IN_GAME);
 		addPacket(new CM_LEVEL_READY(Version.Chiness ? 0x45 : 0x4B), State.IN_GAME);
-		addPacket(new CM_FRIEND_STATUS(Version.Chiness ? -1 : 0xAA), State.IN_GAME);
+		addPacket(new CM_FRIEND_STATUS(Version.Chiness ? 0xA6 : 0xAA), State.IN_GAME);
 		addPacket(new CM_FRIEND_DEL(Version.Chiness ? -1 : 0xE0), State.IN_GAME);
 		addPacket(new CM_FRIEND_ADD(Version.Chiness ? -1 : 0xE1), State.IN_GAME);
 		addPacket(new CM_ENTER_WORLD(Version.Chiness ? 0x44 : 0x48), State.AUTHED);
