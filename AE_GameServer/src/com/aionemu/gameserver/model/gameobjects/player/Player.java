@@ -44,7 +44,7 @@ public class Player extends Creature
 	private FriendList			friendList;
 	private BlockList			blockList;
 	private ResponseRequester	requester;
-	private boolean				lfg = false;
+	private boolean lookingForGroup = false;
 	
 	/** When player enters game its char is in kind of "protection" state, when is blinking etc */
 	private boolean				protectionActive;
@@ -54,9 +54,6 @@ public class Player extends Creature
 	 */
 	private AionConnection		clientConnection;
 
-	/**
-	 * @param objId
-	 */
 	public Player(PlayerController controller, PlayerCommonData plCommonData, PlayerAppearance appereance)
 	{
 		super(plCommonData.getPlayerObjId(), controller, plCommonData.getPosition());
@@ -148,18 +145,18 @@ public class Player extends Creature
 	 * Is this player looking for a group
 	 * @return
 	 */
-	public boolean isLFG()
+	public boolean isLookingForGroup()
 	{
-		return lfg;
+		return lookingForGroup;
 	}
 	
 	/**
 	 * Sets whether or not this player is looking for a group
-	 * @param lfg
+	 * @param lookingForGroup
 	 */
-	public void setLFG(boolean lfg)
+	public void setLookingForGroup(boolean lookingForGroup)
 	{
-		this.lfg = lfg;
+		this.lookingForGroup = lookingForGroup;
 	}
 	
 	/**

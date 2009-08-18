@@ -20,10 +20,7 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.model.gameobjects.player.BlockedPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
-import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_BLOCK_LIST;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_BLOCK_RESPONSE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.services.SocialService;
 import com.google.inject.Inject;
@@ -73,7 +70,7 @@ public class CM_BLOCK_DEL extends AionClientPacket
 		}
 		else 
 		{
-			if (!socialService.delBlockedUser(activePlayer, target.getObjId()))
+			if (!socialService.deleteBlockedUser(activePlayer, target.getObjId()))
 			{
 				log.debug("Could not unblock " + targetName + " from " + activePlayer.getName() + " blocklist. Check database setup.");
 			}

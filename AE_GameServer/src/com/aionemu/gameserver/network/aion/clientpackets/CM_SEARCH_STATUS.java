@@ -49,6 +49,6 @@ public class CM_SEARCH_STATUS extends AionClientPacket
 	@Override
 	public void runImpl()
 	{
-		getConnection().getActivePlayer().setLFG(statusCode == 2);
+		getConnection().getActivePlayer().setLookingForGroup(statusCode == 2);
 	}
 }

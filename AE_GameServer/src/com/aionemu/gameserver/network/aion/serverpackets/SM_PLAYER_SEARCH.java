@@ -61,7 +61,7 @@ public class SM_PLAYER_SEARCH extends AionServerPacket
 			writeC(buf, player.getGender().getGenderId());
 			writeC(buf, player.getLevel());
 			//TODO: When groups finish, send 3 here if in group
-			writeC(buf, player.isLFG() ? 0x02 : 0x00); // Status. 2 = LFG, 3 = In group, others = solo
+			writeC(buf, player.isLookingForGroup() ? 0x02 : 0x00); // Status. 2 = LFG, 3 = In group, others = solo
 			writeS(buf, player.getName());
 			byte[] unknown = new byte[44 - (player.getName().length()*2 +2)]; // What on earth is this nonsense?
 			writeB(buf, unknown);

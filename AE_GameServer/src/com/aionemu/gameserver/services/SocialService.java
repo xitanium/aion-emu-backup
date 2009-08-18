@@ -82,7 +82,7 @@ public class SocialService
 	 * 			ID of player to unblock
 	 * @return Success
 	 */
-	public boolean delBlockedUser(Player player, int blockedUserId)
+	public boolean deleteBlockedUser(Player player, int blockedUserId)
 	{
 		if (DAOManager.getDAO(BlockListDAO.class).delBlockedUser(player.getObjectId(), blockedUserId))
 		{
@@ -155,9 +155,8 @@ public class SocialService
 	 * <ul><li>Note: Does not send notification packets, and does not send new list packet</ul></li>
 	 * @param deleter Player deleting a friend
 	 * @param exFriend2Id Object ID of the friend he is deleting	
-	 * @return Success
 	 */
-	public void delFriends(Player deleter, int exFriend2Id)
+	public void deleteFriend(Player deleter, int exFriend2Id)
 	{
 		
 		//If the DAO is successful

@@ -83,7 +83,7 @@ public class CM_PLAYER_SEARCH extends AionClientPacket
 			Player player = it.next();
 			if (player.getFriendList().getStatus() == Status.OFFLINE)
 				continue;
-			else if (lfgOnly && !player.isLFG())
+			else if (lfgOnly && !player.isLookingForGroup())
 				continue;
 			else if (!name.isEmpty() && !player.getName().toLowerCase().contains(name.toLowerCase()))
 				continue;

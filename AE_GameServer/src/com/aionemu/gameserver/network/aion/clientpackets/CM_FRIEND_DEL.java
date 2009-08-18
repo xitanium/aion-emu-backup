@@ -67,7 +67,7 @@ public class CM_FRIEND_DEL extends AionClientPacket
 		}
 		else
 		{
-			socialService.delFriends(activePlayer, target.getOid());
+			socialService.deleteFriend(activePlayer, target.getOid());
 			
 			
 		}
