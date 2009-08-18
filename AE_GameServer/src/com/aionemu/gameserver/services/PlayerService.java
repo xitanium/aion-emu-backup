@@ -17,6 +17,10 @@
 
 package com.aionemu.gameserver.services;
 
+import java.sql.Timestamp;
+
+import org.apache.log4j.Logger;
+
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.configs.CacheConfig;
 import com.aionemu.gameserver.configs.Config;
@@ -29,7 +33,6 @@ import com.aionemu.gameserver.dao.PlayerMacrossesDAO;
 import com.aionemu.gameserver.dataholders.PlayerInitialData;
 import com.aionemu.gameserver.dataholders.PlayerInitialData.LocationData;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
-import com.aionemu.gameserver.model.gameobjects.player.Friend;
 import com.aionemu.gameserver.model.gameobjects.player.MacroList;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerAppearance;
@@ -45,9 +48,6 @@ import com.aionemu.gameserver.world.KnownList;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.world.WorldPosition;
 import com.google.inject.Inject;
-import org.apache.log4j.Logger;
-
-import java.sql.Timestamp;
 
 /**
  * 
@@ -67,13 +67,6 @@ public class PlayerService
 	private World						world;
 	private PlayerInitialData           playerInitialData;
 
-	// DAOs
-	private PlayerDAO					playerDAO		= DAOManager.getDAO(PlayerDAO.class);
-	private PlayerMacrossesDAO			macrosesDAO		= DAOManager.getDAO(PlayerMacrossesDAO.class);
-	private PlayerAppearanceDAO			appereanceDAO	= DAOManager.getDAO(PlayerAppearanceDAO.class);
-	private FriendListDAO				friendsDAO		= DAOManager.getDAO(FriendListDAO.class);
-	private BlockListDAO				blocksDAO		= DAOManager.getDAO(BlockListDAO.class);
-	
 
 	@Inject
 	public PlayerService(@IDFactoryAionObject IDFactory aionObjectsIDFactory, World world, PlayerInitialData playerInitialData)
@@ -92,7 +85,7 @@ public class PlayerService
 	 */
 	public boolean isFreeName(String name)
 	{
-		return !playerDAO.isNameUsed(name);
+		return !DAOManager.getDAO(PlayerDAO.class).isNameUsed(name);
 	}
 
 	/**
@@ -116,7 +109,7 @@ public class PlayerService
 	 */
 	public boolean storeNewPlayer(Player player, String accountName, int accountId)
 	{
-		return playerDAO.saveNewPlayer(player.getCommonData(), accountId, accountName) && appereanceDAO.store(player);
+		return DAOManager.getDAO(PlayerDAO.class).saveNewPlayer(player.getCommonData(), accountId, accountName) && DAOManager.getDAO(PlayerAppearanceDAO.class).store(player);
 	}
 
 	/**
@@ -126,7 +119,7 @@ public class PlayerService
 	 */
 	public void storePlayer(Player player)
 	{
-		playerDAO.storePlayer(player);
+		DAOManager.getDAO(PlayerDAO.class).storePlayer(player);
 	}
 
 	/**
@@ -141,15 +134,15 @@ public class PlayerService
 		if(player != null)
 			return player;
 
-		PlayerCommonData pcd = playerDAO.loadPlayerCommonData(playerObjId, world);
-		PlayerAppearance appereance = appereanceDAO.load(playerObjId);
-		MacroList macroses = macrosesDAO.restoreMacrosses(playerObjId);
+		PlayerCommonData pcd = DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonData(playerObjId, world);
+		PlayerAppearance appereance = DAOManager.getDAO(PlayerAppearanceDAO.class).load(playerObjId);
+		MacroList macroses = DAOManager.getDAO(PlayerMacrossesDAO.class).restoreMacrosses(playerObjId);
 
 		player = new Player(new PlayerController(), pcd, appereance);
 		player.setMacroList(macroses);
 		player.setKnownlist(new KnownList(player));
-		player.setFriendList(friendsDAO.load(player, world));
-		player.setBlockList(blocksDAO.load(player,world));;
+		player.setFriendList(DAOManager.getDAO(FriendListDAO.class).load(player, world));
+		player.setBlockList(DAOManager.getDAO(BlockListDAO.class).load(player,world));
 		
 		if(CacheConfig.CACHE_PLAYERS)
 			playerCache.put(playerObjId, player);	
@@ -176,9 +169,7 @@ public class PlayerService
 		// TODO: starting skills
 		// TODO: starting items;
 
-		Player player = new Player(new PlayerController(), playerCommonData, playerAppearance);
-
-		return player;
+		return new Player(new PlayerController(), playerCommonData, playerAppearance);
 	}
 
 	/**
@@ -261,7 +252,7 @@ public class PlayerService
 	 */
 	void deletePlayerFromDB(int playerId)
 	{
-		playerDAO.deletePlayer(playerId);
+		DAOManager.getDAO(PlayerDAO.class).deletePlayer(playerId);
 	}
 
 	/**
@@ -272,7 +263,7 @@ public class PlayerService
 	 */
 	private void storeDeletionTime(PlayerAccountData accData)
 	{
-		playerDAO.updateDeletionTime(accData.getPlayerCommonData().getPlayerObjId(), accData.getDeletionDate());
+		DAOManager.getDAO(PlayerDAO.class).updateDeletionTime(accData.getPlayerCommonData().getPlayerObjId(), accData.getDeletionDate());
 	}
 
 	/**
@@ -282,7 +273,7 @@ public class PlayerService
 	 */
 	public void storeCreationTime(int objectId, Timestamp creationDate)
 	{
-		playerDAO.storeCreationTime(objectId, creationDate);
+		DAOManager.getDAO(PlayerDAO.class).storeCreationTime(objectId, creationDate);
 	}
 
 	/**
@@ -299,7 +290,7 @@ public class PlayerService
 	{
 		if(player.getMacroList().addMacro(macroOrder, macroXML))
 		{
-			macrosesDAO.addMacro(player.getObjectId(), macroOrder, macroXML);
+			DAOManager.getDAO(PlayerMacrossesDAO.class).addMacro(player.getObjectId(), macroOrder, macroXML);
 		}
 	}
 
@@ -315,7 +306,7 @@ public class PlayerService
 	{
 		if(player.getMacroList().removeMacro(macroOrder))
 		{
-			macrosesDAO.deleteMacro(player.getObjectId(), macroOrder);
+			DAOManager.getDAO(PlayerMacrossesDAO.class).deleteMacro(player.getObjectId(), macroOrder);
 		}
 	}
 	
@@ -327,5 +318,4 @@ public class PlayerService
 	{
 		return playerCache.get(playerObjectId);
 	}
-	
 }

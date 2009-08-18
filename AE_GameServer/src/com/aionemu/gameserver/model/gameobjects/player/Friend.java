@@ -16,8 +16,6 @@
  */
 package com.aionemu.gameserver.model.gameobjects.player;
 
-import java.sql.Timestamp;
-
 import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.player.FriendList.Status;
 

@@ -20,6 +20,7 @@ package mysql5;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
 
@@ -42,7 +43,7 @@ public class MySQL5PlayerAppearanceDAO extends PlayerAppearanceDAO
 	
 	private CacheMap<Integer, PlayerAppearance> cache = CacheMapFactory.createCacheMap("Appereance", "appereance");
 	
-	private Object paLock = new Object();
+	private ReentrantLock lock = new ReentrantLock();
 	/**
 	 * {@inheritDoc}
 	 */
@@ -121,13 +122,17 @@ public class MySQL5PlayerAppearanceDAO extends PlayerAppearanceDAO
 
 		if(success)
 		{
-			synchronized(paLock)
-			{
+			try{
+				lock.lock();
 				PlayerAppearance cached = cache.get(playerId);
-				if(cached != null)
+				if (cached != null)
 					return cached;
 				cache.put(playerId, pa);
 				return pa;
+			}
+			finally
+			{
+				lock.unlock();
 			}
 		}
 		else
@@ -140,8 +145,7 @@ public class MySQL5PlayerAppearanceDAO extends PlayerAppearanceDAO
 	@Override
 	public boolean store(final int id, final PlayerAppearance pa)
 	{
-		if(!cache.contains(id))
-			cache.put(id, pa);
+		cache.put(id, pa);
 		
 		return DB.insertUpdate("REPLACE INTO player_appearance ("
 			+ "player_id, face, hair, deco, tattoo, skin_rgb, hair_rgb, lip_rgb, face_shape,"

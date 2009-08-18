@@ -16,8 +16,6 @@
  */
 package com.aionemu.gameserver.services;
 
-import org.apache.log4j.Logger;
-
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.dao.BlockListDAO;
 import com.aionemu.gameserver.dao.FriendListDAO;
@@ -40,14 +38,8 @@ import com.google.inject.Inject;
  */
 public class SocialService
 {
-	private static Logger	log 			= Logger.getLogger(SocialService.class);
 	private World 			world;
 	private PlayerService	playerService;
-	
-	//Daos
-	private FriendListDAO				friendsDAO		= DAOManager.getDAO(FriendListDAO.class);
-	private BlockListDAO				blocksDAO		= DAOManager.getDAO(BlockListDAO.class);
-	private PlayerDAO					playerDAO		= DAOManager.getDAO(PlayerDAO.class);
 	
 	@Inject
 	public SocialService(World world, PlayerService playerService)
@@ -61,13 +53,13 @@ public class SocialService
 	 * <ul><li>Does not send packets</li></ul>
 	 * 
 	 * @param player
-	 * @param targetObjectId
+	 * @param blockedPlayer
 	 * @param reason
 	 * @return Success
 	 */
 	public boolean addBlockedUser(Player player, Player blockedPlayer, String reason)
 	{
-		if (blocksDAO.addBlockedUser(player.getObjectId(),	blockedPlayer.getObjectId(), reason))
+		if (DAOManager.getDAO(BlockListDAO.class).addBlockedUser(player.getObjectId(),	blockedPlayer.getObjectId(), reason))
 		{
 			player.getBlockList().add(new BlockedPlayer(blockedPlayer.getCommonData(),reason));
 			
@@ -92,13 +84,13 @@ public class SocialService
 	 */
 	public boolean delBlockedUser(Player player, int blockedUserId)
 	{
-		if (blocksDAO.delBlockedUser(player.getObjectId(), blockedUserId))
+		if (DAOManager.getDAO(BlockListDAO.class).delBlockedUser(player.getObjectId(), blockedUserId))
 		{
 			player.getBlockList().remove(blockedUserId);
 			player.getClientConnection()
 				.sendPacket(new SM_BLOCK_RESPONSE(
 								SM_BLOCK_RESPONSE.UNBLOCK_SUCCESSFUL,
-								playerDAO.loadPlayerCommonData(blockedUserId, world).getName()
+								DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonData(blockedUserId, world).getName()
 							));
 			
 			player.getClientConnection()
@@ -112,8 +104,8 @@ public class SocialService
 	 * Sets the reason for blocking a user
 	 * @param player
 	 * 			Player whos block list is to be edited
-	 * @param blockedUserId 
-	 * 			Object ID of the user to set the reason of
+	 * @param target
+	 * 			Whom to block
 	 * @param reason
 	 * 			Reason to set
 	 * @return Success - May be false if the reason was the same and therefore not edited
@@ -123,7 +115,7 @@ public class SocialService
 		
 		if (!target.getReason().equals(reason))
 		{
-			if (blocksDAO.setReason(player.getObjectId(), target.getObjId(), reason))
+			if (DAOManager.getDAO(BlockListDAO.class).setReason(player.getObjectId(), target.getObjId(), reason))
 			{
 				target.setReason(reason);
 				player.getClientConnection()
@@ -142,7 +134,7 @@ public class SocialService
 	 */
 	public void makeFriends(Player friend1, Player friend2)
 	{
-		friendsDAO.addFriends(friend1, friend2);
+		DAOManager.getDAO(FriendListDAO.class).addFriends(friend1, friend2);
 
 		friend1.getFriendList().addFriend( new Friend(friend2.getCommonData()));
 		friend2.getFriendList().addFriend( new Friend(friend1.getCommonData()));	
@@ -161,13 +153,13 @@ public class SocialService
 	/**
 	 * Deletes two players from eachothers friend lists, and updates the database
 	 * <ul><li>Note: Does not send notification packets, and does not send new list packet</ul></li>
-	 * @param exFriend1 Object ID
-	 * @param exFriend2 Object ID
+	 * @param exFriend1Id Object ID
+	 * @param exFriend2Id Object ID
 	 * @return Success
 	 */
 	public void delFriends(int exFriend1Id, int exFriend2Id)
 	{
-		friendsDAO.delFriends(exFriend1Id, exFriend2Id);
+		DAOManager.getDAO(FriendListDAO.class).delFriends(exFriend1Id, exFriend2Id);
 		
 		Player friend1Player = playerService.getCachedPlayer(exFriend1Id);
 		Player friend2Player = playerService.getCachedPlayer(exFriend2Id);
@@ -188,7 +180,7 @@ public class SocialService
 					.sendPacket(new SM_FRIEND_LIST());
 				friend1Player.getClientConnection()
 					.sendPacket(new SM_FRIEND_RESPONSE(
-									playerDAO.loadPlayerCommonData(exFriend2Id, world).getName(),
+									DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonData(exFriend2Id, world).getName(),
 									SM_FRIEND_RESPONSE.TARGET_REMOVED));
 			}
 		}
@@ -199,6 +191,7 @@ public class SocialService
 			
 			if (friend2Player.isOnline())
 			{
+				// TODO: Fixme: Possible NPE if friend1Player is null.
 				friend2Player.getClientConnection()
 				.sendPacket(new SM_FRIEND_NOTIFY(SM_FRIEND_NOTIFY.DELETED, friend1Player.getName()));
 				friend2Player.getClientConnection().sendPacket(new SM_FRIEND_LIST());
