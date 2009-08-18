@@ -83,8 +83,8 @@ public class CM_PLAY extends AionClientPacket
 				con.sendPacket(new SM_PLAY_FAIL(AionAuthResponse.SERVER_DOWN));
 			// else if(serv gm only)
 			// con.sendPacket(new SM_PLAY_FAIL(AionAuthResponse.GM_ONLY));
-			// else if(serv full)
-			// con.sendPacket(new SM_PLAY_FAIL(AionAuthResponse.SERVER_FULL));
+			else if(gsi.isFull())
+				con.sendPacket(new SM_PLAY_FAIL(AionAuthResponse.SERVER_FULL));
 			else
 			{
 				con.setJoinedGs();

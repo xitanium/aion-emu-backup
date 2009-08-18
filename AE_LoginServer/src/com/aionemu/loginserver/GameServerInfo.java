@@ -269,6 +269,11 @@ public class GameServerInfo
 		accountsOnGameServer.put(acc.getId(), acc);
 	}
 
+    /**
+     * Get Account object from account on GameServer list.
+     * @param accountId
+     * @return Account object if account is on this game server or null.
+     */
     public final Account getAccountFromGameServer(int accountId)
     {
         return accountsOnGameServer.get(accountId);
@@ -280,6 +285,25 @@ public class GameServerInfo
 	public void clearAccountsOnGameServer()
 	{
 		accountsOnGameServer.clear();
+	}
+
+	/**
+	 * Return number of online players connected to this GameServer.
+	 * 
+	 * @return number of online players
+	 */
+	public int getCurrentPlayers()
+	{
+		return accountsOnGameServer.size();
+	}
+
+	/**
+	 * Return true if server is full.
+	 * @return true if full.
+	 */
+	public boolean isFull()
+	{
+		return getCurrentPlayers() >= getMaxPlayers();
 	}
 
 	/**
