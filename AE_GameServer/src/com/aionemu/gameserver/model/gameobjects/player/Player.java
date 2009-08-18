@@ -157,7 +157,7 @@ public class Player extends Creature
 	 * Sets whether or not this player is looking for a group
 	 * @param lfg
 	 */
-	public synchronized void setLFG(boolean lfg)
+	public void setLFG(boolean lfg)
 	{
 		this.lfg = lfg;
 	}

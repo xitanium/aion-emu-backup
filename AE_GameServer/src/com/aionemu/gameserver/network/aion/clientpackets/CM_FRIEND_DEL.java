@@ -20,9 +20,6 @@ import org.apache.log4j.Logger;
 import com.aionemu.gameserver.model.gameobjects.player.Friend;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_LIST;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_NOTIFY;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_RESPONSE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.services.SocialService;
 import com.google.inject.Inject;
@@ -70,7 +67,7 @@ public class CM_FRIEND_DEL extends AionClientPacket
 		}
 		else
 		{
-			socialService.delFriends(activePlayer.getObjectId(), target.getOid());
+			socialService.delFriends(activePlayer, target.getOid());
 			
 			
 		}

@@ -151,53 +151,50 @@ public class SocialService
 	}
 	
 	/**
-	 * Deletes two players from eachothers friend lists, and updates the database
+	 * Deletes two players from eachother's friend lists, and updates the database
 	 * <ul><li>Note: Does not send notification packets, and does not send new list packet</ul></li>
-	 * @param exFriend1Id Object ID
-	 * @param exFriend2Id Object ID
+	 * @param deleter Player deleting a friend
+	 * @param exFriend2Id Object ID of the friend he is deleting	
 	 * @return Success
 	 */
-	public void delFriends(int exFriend1Id, int exFriend2Id)
+	public void delFriends(Player deleter, int exFriend2Id)
 	{
-		DAOManager.getDAO(FriendListDAO.class).delFriends(exFriend1Id, exFriend2Id);
 		
-		Player friend1Player = playerService.getCachedPlayer(exFriend1Id);
-		Player friend2Player = playerService.getCachedPlayer(exFriend2Id);
-		
-		if (friend1Player == null)
-			friend1Player = world.findPlayer(exFriend1Id);
-		if (friend2Player == null)
-			friend2Player = world.findPlayer(exFriend2Id);
-		
-		if (friend1Player != null)
+		//If the DAO is successful
+		if (DAOManager.getDAO(FriendListDAO.class).delFriends(deleter.getObjectId(), exFriend2Id))
 		{
-		
-			friend1Player.getFriendList().delFriend(exFriend2Id);
+			//Try to get the target player from the cache
+			Player friend2Player = playerService.getCachedPlayer(exFriend2Id);
+			//If the cache doesn't have this player, try to get him from the world
+			if (friend2Player == null)
+				friend2Player = world.findPlayer(exFriend2Id);
 			
-			if (friend1Player.isOnline())
+			String friend2Name = friend2Player != null ? friend2Player.getName() : 
+				DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonData(exFriend2Id, world).getName();
+			
+			//Delete from deleter's friend list and send packets
+			deleter.getFriendList().delFriend(exFriend2Id);
+			
+			deleter.getClientConnection()
+				.sendPacket(new SM_FRIEND_LIST());
+			deleter.getClientConnection()
+				.sendPacket(new SM_FRIEND_RESPONSE(
+								friend2Name,
+								SM_FRIEND_RESPONSE.TARGET_REMOVED));
+				
+			
+			if (friend2Player != null)
 			{
-				friend1Player.getClientConnection()
-					.sendPacket(new SM_FRIEND_LIST());
-				friend1Player.getClientConnection()
-					.sendPacket(new SM_FRIEND_RESPONSE(
-									DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonData(exFriend2Id, world).getName(),
-									SM_FRIEND_RESPONSE.TARGET_REMOVED));
+				friend2Player.getFriendList().delFriend(deleter.getObjectId());
+				
+				if (friend2Player.isOnline())
+				{
+					friend2Player.getClientConnection()
+						.sendPacket(new SM_FRIEND_NOTIFY(SM_FRIEND_NOTIFY.DELETED, deleter.getName()));	
+					friend2Player.getClientConnection().sendPacket(new SM_FRIEND_LIST());
+				}
 			}
 		}
-		
-		if (friend2Player != null)
-		{
-			friend2Player.getFriendList().delFriend(exFriend1Id);
-			
-			if (friend2Player.isOnline())
-			{
-				// TODO: Fixme: Possible NPE if friend1Player is null.
-				friend2Player.getClientConnection()
-				.sendPacket(new SM_FRIEND_NOTIFY(SM_FRIEND_NOTIFY.DELETED, friend1Player.getName()));
-				friend2Player.getClientConnection().sendPacket(new SM_FRIEND_LIST());
-			}
-		}
-	
 		
 	}
 }
