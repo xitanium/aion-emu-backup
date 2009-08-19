@@ -43,7 +43,7 @@ public class SM_SYSTEM_MESSAGE extends AionServerPacket
 	 */
 	public static SM_SYSTEM_MESSAGE CURRENT_LOCATION(int worldId, float x, float y, float z)
 	{
-		return new SM_SYSTEM_MESSAGE(230038, x, y, z);
+		return new SM_SYSTEM_MESSAGE(230038,worldId, x, y, z);
 	}
 	
 	/**
