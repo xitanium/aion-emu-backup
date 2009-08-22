@@ -22,11 +22,11 @@ public final class ExitCode {
 	/**
 	 * Indicates that server successfully finished it's work and should be restarted
 	 */
-	public static final int CODE_RESTART = 1;
+	public static final int CODE_RESTART = 2;
 
 	/**
 	 * Indicates that error happened in server and it's need to shutdown.<br>
 	 * Shit happens :(
 	 */
-	public static final int CODE_ERROR = 2;
+	public static final int CODE_ERROR = 1;
 }
