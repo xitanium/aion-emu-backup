@@ -46,6 +46,7 @@ public class FloatTransformer implements PropertyTransformer<Float>
 	 * @throws TransformationException
 	 *             if something went wrong
 	 */
+	@Override
 	public Float transform(String value, Field field) throws TransformationException
 	{
 		try

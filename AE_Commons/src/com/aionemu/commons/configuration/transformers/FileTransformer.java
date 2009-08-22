@@ -44,17 +44,10 @@ public class FileTransformer implements PropertyTransformer<File>
 	 * @param field
 	 *            value will be assigned to this field
 	 * @return File object that represents string
-	 * @throws TransformationException
 	 */
+	@Override
 	public File transform(String value, Field field) throws TransformationException
 	{
-		try
-		{
-			return new File(value);
-		}
-		catch (Exception e)
-		{
-			throw new TransformationException(e);
-		}
+		return new File(value);
 	}
 }

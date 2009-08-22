@@ -46,20 +46,13 @@ public class ShortTransformer implements PropertyTransformer<Short>
 	 * @throws TransformationException
 	 *             if something went wrong
 	 */
+	@Override
 	public Short transform(String value, Field field) throws TransformationException
 	{
 
 		try
 		{
-			value = value.toLowerCase();
-			if (value.startsWith("0x"))
-			{
-				return Short.parseShort(value, 16);
-			}
-			else
-			{
-				return Short.parseShort(value);
-			}
+			return Short.decode(value);
 		}
 		catch (Exception e)
 		{

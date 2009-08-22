@@ -47,6 +47,7 @@ public class BooleanTransformer implements PropertyTransformer<Boolean>
 	 * @throws TransformationException
 	 *             if something goes wrong
 	 */
+	@Override
 	public Boolean transform(String value, Field field) throws TransformationException
 	{
 

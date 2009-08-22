@@ -46,18 +46,9 @@ public class LongTransformer implements PropertyTransformer<Long>
 	 */
 	public Long transform(String value, Field field) throws TransformationException
 	{
-
 		try
 		{
-			value = value.toLowerCase();
-			if (value.startsWith("0x"))
-			{
-				return Long.parseLong(value, 16);
-			}
-			else
-			{
-				return Long.parseLong(value);
-			}
+			return Long.decode(value);
 		}
 		catch (Exception e)
 		{

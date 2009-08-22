@@ -52,6 +52,7 @@ public class InetSocketAddressTransformer implements PropertyTransformer<InetSoc
 	 * @throws TransformationException
 	 *             if somehting went wrong
 	 */
+	@Override
 	public InetSocketAddress transform(String value, Field field) throws TransformationException
 	{
 

@@ -55,6 +55,7 @@ public class EnumTransformer implements PropertyTransformer<Enum<?>>
 	 * @throws TransformationException
 	 *             if somehting went wrong
 	 */
+	@Override
 	@SuppressWarnings( { "unchecked" })
 	public Enum<?> transform(String value, Field field) throws TransformationException
 	{

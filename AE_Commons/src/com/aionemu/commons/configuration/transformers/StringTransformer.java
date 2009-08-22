@@ -46,6 +46,7 @@ public class StringTransformer implements PropertyTransformer<String>
 	 * @throws TransformationException
 	 *             never thrown
 	 */
+	@Override
 	public String transform(String value, Field field) throws TransformationException
 	{
 		return value;

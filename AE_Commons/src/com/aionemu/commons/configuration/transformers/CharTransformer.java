@@ -44,6 +44,7 @@ public class CharTransformer implements PropertyTransformer<Character>
 	 * @throws TransformationException
 	 *             if something went wrong
 	 */
+	@Override
 	public Character transform(String value, Field field) throws TransformationException
 	{
 

@@ -49,18 +49,9 @@ public class ByteTransformer implements PropertyTransformer<Byte>
 	 */
 	public Byte transform(String value, Field field) throws TransformationException
 	{
-
 		try
 		{
-			value = value.toLowerCase();
-			if (value.startsWith("0x"))
-			{
-				return Byte.parseByte(value, 16);
-			}
-			else
-			{
-				return Byte.parseByte(value);
-			}
+			return Byte.decode(value);
 		}
 		catch (Exception e)
 		{

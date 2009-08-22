@@ -50,15 +50,7 @@ public class IntegerTransformer implements PropertyTransformer<Integer>
 	{
 		try
 		{
-			value = value.toLowerCase();
-			if (value.startsWith("0x"))
-			{
-				return Integer.parseInt(value, 16);
-			}
-			else
-			{
-				return Integer.parseInt(value);
-			}
+			return Integer.decode(value);
 		}
 		catch (Exception e)
 		{

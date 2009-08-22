@@ -46,6 +46,7 @@ public class DoubleTransformer implements PropertyTransformer<Double>
 	 * @throws TransformationException
 	 *             if something went wrong
 	 */
+	@Override
 	public Double transform(String value, Field field) throws TransformationException
 	{
 
