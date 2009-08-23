@@ -139,7 +139,7 @@ public class ClassUtils
 		Class parent = clazz.getSuperclass();
 		if (parent != null)
 		{
-			return getAnnotationFromSubclassOrInterface(parent, null);
+			return getAnnotationFromSubclassOrInterface(parent, annotation);
 		}
 
 		return null;
