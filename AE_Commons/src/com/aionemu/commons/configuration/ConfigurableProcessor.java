@@ -172,6 +172,7 @@ public class ConfigurableProcessor
 		catch (Exception e)
 		{
 			log.error("Can't transform field " + f.getName() + " of class " + f.getDeclaringClass(), e);
+			throw new RuntimeException(e);
 		}
 		f.setAccessible(oldAccessible);
 	}

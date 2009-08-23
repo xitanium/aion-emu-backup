@@ -33,6 +33,9 @@ import com.aionemu.commons.scripting.scriptmanager.ScriptContextCreationListener
 import com.aionemu.commons.scripting.scriptmanager.ScriptManager;
 import com.aionemu.commons.scripting.scriptmanager.ScriptManagerReloadListener;
 import com.aionemu.commons.services.ScriptService;
+import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.Binder;
 
 /**
  * This class manages {@link DAO} implementations, it resolves valid implementation for current database.<br>
@@ -68,6 +71,11 @@ public class DAOManager {
 	private final DatabaseConfig databaseConfig;
 
 	/**
+	 * Parent injection module for guice
+	 */
+	private final Injector injector;
+
+	/**
 	 * ScriptService that will be used to load DAOs
 	 */
 	private ScriptService scriptService;
@@ -75,11 +83,13 @@ public class DAOManager {
 	/**
 	 * Creates new DAOManager
 	 *
+	 * @param injector Guice injection modules
 	 * @param databaseInfo   information about database that is used
 	 * @param databaseConfig database config that is used
 	 * @param scriptService  scripting service to use, usually it's a sigleton
 	 */
-	public DAOManager(DatabaseInfo databaseInfo, DatabaseConfig databaseConfig, ScriptService scriptService) {
+	public DAOManager(Injector injector, DatabaseInfo databaseInfo, DatabaseConfig databaseConfig, ScriptService scriptService) {
+		this.injector = injector;
 		this.scriptService = scriptService;
 		this.databaseInfo = databaseInfo;
 		this.databaseConfig = databaseConfig;
@@ -112,7 +122,7 @@ public class DAOManager {
 
 			@Override
 			public void beforeReload() {
-				// TODO: clear guice injection module?
+				// Do nothing
 			}
 
 			@Override
@@ -126,11 +136,26 @@ public class DAOManager {
 	}
 
 	/**
-	 * Injecting dependencies to DAO's using Guice
+	 * Injecting dependencies to DAO's using Guice.<br>
+	 * It's done by creating child injector. It inherrits all parent's injections + we add bindings of daos.<br>
+	 * Child injector is not stored anywhere, so it should be garbage collected.<br>
+	 * Such approach gives us easy way to reload DAOs using common approach via ScriptManager/ScriptService
 	 */
 	protected void injectDependecies() {
+
+		Injector childInjector = injector.createChildInjector(new Module(){
+
+			@SuppressWarnings({"unchecked"})
+			@Override
+			public void configure(Binder binder) {
+				for(Class c : daoMap.keySet()){
+					binder.bind(c).toInstance(getDAO(c));
+				}
+			}
+		});
+
 		for (DAO dao : daoMap.values()) {
-			// TODO: inject dependencies by guice here
+			childInjector.injectMembers(dao);
 		}
 	}
 
