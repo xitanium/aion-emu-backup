@@ -15,32 +15,33 @@
  * along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aionemu.commons.database.dao;
+package com.aionemu.commons.database.dao.scriptloader;
 
-import com.aionemu.commons.database.PersistentObject;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
 
 /**
- * This class represents basic DAO.<br>
- * DAO implementation must match the set of conditions, check the
- * {@link com.aionemu.commons.database.dao.scriptloader.DAOLoader#getSuitableClasses(Class[])} for details.<br>
- * DAO subclass must have public no-arg constructor, in other case {@link InstantiationException} will be thrown by
- * {@link com.aionemu.commons.database.dao.DAOManager}
- * 
+ * Annotation that means that marked class is valid DAO impl
+ *
  * @author SoulKeeper
  */
-public interface DAO<T extends PersistentObject<?>>
-{
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface DAOInfo {
 
 	/**
-	 * Generic SAVE action
-	 * @param object object to save
+	 * Returns base DAO class
+	 * @return base DAO class
 	 */
-	public void save(T object);
+	public Class<? extends com.aionemu.commons.database.dao.DAO> baseClass();
 
 	/**
-	 * Generic LOAD action
-	 * @param id - primary key
-	 * @return loads object by primary key
+	 * List of supported databases
+	 * @return list of supported databases by this DAO
 	 */
-	public T load(Object id);
+	public SupportedDB[] supportedDBs();
 }

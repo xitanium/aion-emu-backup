@@ -22,51 +22,138 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import static com.aionemu.commons.database.DatabaseFactory.getDatabaseMajorVersion;
-import static com.aionemu.commons.database.DatabaseFactory.getDatabaseMinorVersion;
-import static com.aionemu.commons.database.DatabaseFactory.getDatabaseName;
+import com.aionemu.commons.callbacks.EnhancedObject;
+import com.aionemu.commons.database.DatabaseConfig;
+import com.aionemu.commons.database.DatabaseInfo;
+import com.aionemu.commons.database.dao.cache.Cache;
+import com.aionemu.commons.database.dao.cache.CacheManager;
+import com.aionemu.commons.database.dao.scriptloader.DAOLoader;
+import com.aionemu.commons.scripting.ScriptContext;
+import com.aionemu.commons.scripting.scriptmanager.ContextCreationListener;
+import com.aionemu.commons.scripting.scriptmanager.ScriptManager;
+import com.aionemu.commons.services.ScriptService;
 
 /**
- * This class manages {@link DAO} implementations, it resolves valid implementation for current database
- * 
+ * This class manages {@link DAO} implementations, it resolves valid implementation for current database.<br>
+ * In the end of use {@link #shutdown()} method should be called.
+ *
  * @author SoulKeeper
  */
-public class DAOManager
-{
+public class DAOManager {
 
 	/**
 	 * Logger for DAOManager class
 	 */
-	private static final Logger				log		= Logger.getLogger(DAOManager.class);
+	private static final Logger log = Logger.getLogger(DAOManager.class);
 
 	/**
 	 * Collection of registered DAOs
 	 */
-	private static final Map<String, DAO>	daoMap	= new HashMap<String, DAO>();
+	private final Map<Class<? extends DAO>, DAO> daoMap = new HashMap<Class<? extends DAO>, DAO>();
+
+	/**
+	 * Cache for DAO's
+	 */
+	private final CacheManager cacheManager = new CacheManager();
+
+	/**
+	 * Information about used database
+	 */
+	private final DatabaseInfo databaseInfo;
+
+	/**
+	 * DatabaseConfig object reference
+	 */
+	private final DatabaseConfig databaseConfig;
+
+	/**
+	 * ScriptService that will be used to load DAOs
+	 */
+	private ScriptService scriptService;
+
+	/**
+	 * Creates new DAOManager
+	 *
+	 * @param databaseInfo   information about database that is used
+	 * @param databaseConfig database config that is used
+	 * @param scriptService  scripting service to use, usually it's a sigleton
+	 */
+	public DAOManager(DatabaseInfo databaseInfo, DatabaseConfig databaseConfig, ScriptService scriptService) {
+		this.scriptService = scriptService;
+		this.databaseInfo = databaseInfo;
+		this.databaseConfig = databaseConfig;
+
+		initDAOs();
+		injectDependecies();
+	}
+
+	/**
+	 * Initializes DAOs
+	 */
+	protected void initDAOs() {
+		ScriptManager sm = new ScriptManager();
+		EnhancedObject eo = (EnhancedObject) sm;
+		eo.addCallback(new ContextCreationListener() {
+			@Override
+			protected void contextCreated(ScriptContext context) {
+				if (context.getParentScriptContext() == null) {
+					context.setClassListener(new DAOLoader(DAOManager.this));
+				}
+			}
+		});
+		try {
+			sm.load(databaseConfig.getScriptContextDescriptor());
+		} catch (Exception e) {
+			throw new RuntimeException("Can't initialize database factory", e);
+		}
+
+		scriptService.addScriptManager(sm, databaseConfig.getScriptContextDescriptor());
+	}
+
+	/**
+	 * Injecting dependencies to DAO's using Guice
+	 */
+	protected void injectDependecies() {
+		for (DAO dao : daoMap.values()) {
+			// TODO: inject here
+		}
+	}
+
+	/**
+	 * Should be called in case of shutdown of DAOManager
+	 */
+	public void shutdown() {
+		ScriptService ss;
+		synchronized (this) {
+			ss = scriptService;
+			scriptService = null;
+		}
+
+		if (ss == null) {
+			log.error("Attempt to shutdown DAOManager for two times?");
+			return;
+		}
+
+		ss.unload(databaseConfig.getScriptContextDescriptor());
+	}
 
 	/**
 	 * Returns DAO implementation by DAO class. Typical usage:
-	 * 
+	 * <p/>
 	 * <pre>
 	 * AccountDAO	dao	= DAOManager.getDAO(AccountDAO.class);
 	 * </pre>
-	 * 
-	 * @param clazz
-	 *            Abstract DAO class implementation of which was registered
-	 * @param <T>
-	 *            Subclass of DAO
+	 *
+	 * @param clazz Base DAO class implementation of which was registered
+	 * @param <T>   Subclass of DAO
 	 * @return DAO implementation
-	 * @throws DAONotFoundException
-	 *             if DAO implementation not found
+	 * @throws DAONotFoundException if DAO implementation not found
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends DAO> T getDAO(Class<T> clazz) throws DAONotFoundException
-	{
+	public <T extends DAO> T getDAO(Class<T> clazz) throws DAONotFoundException {
+		DAO result = daoMap.get(clazz);
 
-		DAO result = daoMap.get(clazz.getName());
-
-		if (result == null)
-		{
+		if (result == null) {
 			String s = "DAO for class " + clazz.getName() + " not implemented";
 			log.error(s);
 			throw new DAONotFoundException(s);
@@ -77,69 +164,83 @@ public class DAOManager
 
 	/**
 	 * Registers {@link DAO}.<br>
-	 * First it creates new instance of DAO, then invokes {@link DAO#supports(String, int, int)} <br>. If the result
-	 * was possitive - it associates DAO instance with {@link com.aionemu.commons.database.dao.DAO#getClassName()} <br>
-	 * If another DAO was registed - {@link com.aionemu.commons.database.dao.DAOAlreadyRegisteredException} will be
-	 * thrown
-	 * 
-	 * @param daoClass
-	 *            DAO implementation
-	 * @throws DAOAlreadyRegisteredException
-	 *             if DAO is already registered
-	 * @throws IllegalAccessException
-	 *             if something went wrong during instantiation of DAO
-	 * @throws InstantiationException
-	 *             if something went wrong during instantiation of DAO
+	 * First it checks if current DB is supported by calling {@link DAOUtils#isDBSupportedByDAO(Class, DatabaseInfo)}, after that method
+	 * ckecks if another DAO isn't in use already. If not - dao is successfully registered.
+	 *
+	 * @param clazz DAO implementation
+	 * @throws DAOAlreadyRegisteredException if DAO is already registered
+	 * @throws IllegalAccessException		if something went wrong during instantiation of DAO
+	 * @throws InstantiationException		if something went wrong during instantiation of DAO
 	 */
-	public static void registerDAO(Class<? extends DAO> daoClass) throws DAOAlreadyRegisteredException,
-		IllegalAccessException, InstantiationException
-	{
-		DAO dao = daoClass.newInstance();
-
-		if (!dao.supports(getDatabaseName(), getDatabaseMajorVersion(), getDatabaseMinorVersion()))
-		{
+	public void registerDAO(Class<? extends DAO> clazz) throws DAOAlreadyRegisteredException,
+			IllegalAccessException, InstantiationException {
+		if (!DAOUtils.isDBSupportedByDAO(clazz, databaseInfo)) {
+			log.debug("DAO " + clazz.getName() + " skipped, " + databaseInfo + " is not supported.");
 			return;
 		}
 
-		synchronized (DAOManager.class)
-		{
-			DAO oldDao = daoMap.get(dao.getClassName());
-			if (oldDao != null)
-			{
+		Class<? extends DAO> baseClass = DAOUtils.getBaseClass(clazz);
+
+		synchronized (this) {
+			DAO oldDao = daoMap.get(baseClass);
+			if (oldDao != null) {
 				StringBuilder sb = new StringBuilder();
-				sb.append("DAO with className ").append(dao.getClassName()).append(" is used by ");
+				sb.append("DAO with className ").append(baseClass).append(" is used by ");
 				sb.append(oldDao.getClass().getName()).append(". Can't override with ");
-				sb.append(daoClass.getName()).append(".");
+				sb.append(clazz.getName()).append(".");
 				String s = sb.toString();
 				log.error(s);
 				throw new DAOAlreadyRegisteredException(s);
-			}
-			else
-			{
-				daoMap.put(dao.getClassName(), dao);
+			} else {
+				if(DAOUtils.isCacheable(clazz)){
+					daoMap.put(baseClass, cacheManager.wrap(clazz.newInstance()));
+				} else {
+					daoMap.put(baseClass, clazz.newInstance());
+				}
+				log.info("Using DAO " + clazz.getName() + " for " + databaseInfo);
 			}
 		}
 	}
 
 	/**
 	 * Unregisters DAO class
-	 * 
-	 * @param daoClass
-	 *            DAO implementation to unregister
+	 *
+	 * @param daoClass DAO implementation to unregister
 	 */
-	@SuppressWarnings( { "unchecked" })
-	public static void unregisterDAO(Class<? extends DAO> daoClass)
-	{
-		synchronized (DAOManager.class)
-		{
-			for (DAO dao : daoMap.values())
-			{
-				if (dao.getClass() == daoClass)
-				{
-					daoMap.remove(dao.getClassName());
+	@SuppressWarnings({"unchecked"})
+	public void unregisterDAO(Class<? extends DAO> daoClass) {
+		Class<? extends DAO> baseClass = DAOUtils.getBaseClass(daoClass);
+
+		synchronized (this) {
+			for (DAO dao : daoMap.values()) {
+				Class clazz;
+				if(dao instanceof Cache){
+					clazz = ((Cache)dao).getDAO().getClass();
+				} else {
+					clazz = dao.getClass();
+				}
+				if (clazz == daoClass) {
+					daoMap.remove(baseClass);
+					if(dao instanceof Cache){
+						cacheManager.removeWrapping(daoClass);
+					}
 					break;
 				}
 			}
 		}
+	}
+
+	/**
+	 * Just a check to ensure correct shutdown on DAO Manager
+	 *
+	 * @throws Throwable
+	 */
+	@Override
+	protected void finalize() throws Throwable {
+		if (scriptService != null) {
+			log.error("DAOManager was garbage collected, but shutdown wasn't called. Forcing shutdown.");
+			shutdown();
+		}
+		super.finalize();
 	}
 }

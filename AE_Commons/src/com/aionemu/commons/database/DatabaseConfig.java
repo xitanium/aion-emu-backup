@@ -18,14 +18,12 @@
 package com.aionemu.commons.database;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.commons.configuration.ConfigurableProcessor;
 import com.aionemu.commons.configuration.Property;
-import com.aionemu.commons.utils.PropertiesUtils;
+import com.aionemu.commons.configuration.ConfigurableProcessor;
 
 /**
  * This class holds all configuration of database
@@ -38,72 +36,130 @@ public class DatabaseConfig
 	/**
 	 * Logger for database config
 	 */
-	private static final Logger	log			= Logger.getLogger(DatabaseConfig.class);
-
-	/**
-	 * Config file location
-	 */
-	public static final String	CONFIG_FILE	= "config/database.properties";
+	private static final Logger	log	= Logger.getLogger(DatabaseConfig.class);
 
 	/**
 	 * Default database url.
 	 */
 	@Property(key = "database.url", defaultValue = "jdbc:mysql://localhost:3306/aion_emu")
-	public static String		DATABASE_URL;
+	public String				url;
 
 	/**
 	 * Name of database Driver
 	 */
 	@Property(key = "database.driver", defaultValue = "com.mysql.jdbc.Driver")
-	public static String		DATABASE_DRIVER;
+	public String				driver;
 
 	/**
 	 * Default database user
 	 */
 	@Property(key = "database.user", defaultValue = "root")
-	public static String		DATABASE_USER;
+	public String				user;
 
 	/**
 	 * Default database password
 	 */
 	@Property(key = "database.password", defaultValue = "root")
-	public static String		DATABASE_PASSWORD;
+	public String				password;
 
 	/**
 	 * Minimum amount of connections that are always active
 	 */
 	@Property(key = "database.connections.min", defaultValue = "2")
-	public static int			DATABASE_CONNECTIONS_MIN;
+	public int					minConnections;
 
 	/**
 	 * Maximum amount of connections that are allowed to use
 	 */
 	@Property(key = "database.connections.max", defaultValue = "10")
-	public static int			DATABASE_CONNECTIONS_MAX;
+	public int					maxConnections;
 
 	/**
 	 * Location of database script context descriptor
 	 */
-	@Property(key = "database.scriptcontext.descriptor", defaultValue = "./data/scripts/system/database/database.xml")
-	public static File			DATABASE_SCRIPTCONTEXT_DESCRIPTOR;
+	@Property(key = "database.scriptcontext.descriptor", defaultValue = "./data/scripts/system/database.xml")
+	public File					scriptContextDescriptor;
 
-	/**
-	 * Loads database configuration
-	 */
-	public static void load()
+	public DatabaseConfig(Properties props)
 	{
-
-		Properties p;
 		try
 		{
-			p = PropertiesUtils.load(CONFIG_FILE);
+			ConfigurableProcessor.process(this, props);
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			log.fatal("Can't load database configuration...");
-			throw new Error("Can't load " + CONFIG_FILE, e);
+			log.error("Exceiption while processing properties", e);
+			throw new RuntimeException(e);
 		}
+	}
 
-		ConfigurableProcessor.process(DatabaseConfig.class, p);
+	/**
+	 * Returns database url
+	 * 
+	 * @return database url
+	 */
+	public String getUrl()
+	{
+		return url;
+	}
+
+	/**
+	 * Returns database driver class name
+	 * 
+	 * @return database driver class name
+	 */
+	public String getDriver()
+	{
+		return driver;
+	}
+
+	/**
+	 * Returns database user
+	 * 
+	 * @return database user
+	 */
+	public String getUser()
+	{
+		return user;
+	}
+
+	/**
+	 * Returns database password
+	 * 
+	 * @return database password
+	 */
+	public String getPassword()
+	{
+		return password;
+	}
+
+	/**
+	 * Retursn minimal amount of connections that will be used
+	 * 
+	 * @return minimal amount of connections
+	 */
+	public int getMinConnections()
+	{
+		return minConnections;
+	}
+
+	/**
+	 * Returns maximal amount of connections that will be used @ the same time
+	 * 
+	 * @return maximal amout of connections
+	 */
+	public int getMaxConnections()
+	{
+		return maxConnections;
+	}
+
+	/**
+	 * Returns pointer to script context descriptor
+	 * 
+	 * @return pointer to script context descriptor
+	 */
+	public File getScriptContextDescriptor()
+	{
+		return scriptContextDescriptor;
 	}
 }

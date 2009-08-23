@@ -15,32 +15,27 @@
  * along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aionemu.commons.database.dao;
+package com.aionemu.commons.database.dao.cache;
 
-import com.aionemu.commons.database.PersistentObject;
+import com.aionemu.commons.database.dao.DAO;
 
 /**
- * This class represents basic DAO.<br>
- * DAO implementation must match the set of conditions, check the
- * {@link com.aionemu.commons.database.dao.scriptloader.DAOLoader#getSuitableClasses(Class[])} for details.<br>
- * DAO subclass must have public no-arg constructor, in other case {@link InstantiationException} will be thrown by
- * {@link com.aionemu.commons.database.dao.DAOManager}
- * 
+ * Basic Interface for cacheable DAO<br>.
+ * Cache implementation should implement this and DAO child that is going to be cached.
+ *
  * @author SoulKeeper
  */
-public interface DAO<T extends PersistentObject<?>>
-{
+public interface Cache<T extends DAO> {
 
 	/**
-	 * Generic SAVE action
-	 * @param object object to save
+	 * Returns DAO instance that is used by cahce
+	 * @return DAO instance
 	 */
-	public void save(T object);
+	public T getDAO();
 
 	/**
-	 * Generic LOAD action
-	 * @param id - primary key
-	 * @return loads object by primary key
+	 * Sets DAO instance that cahe will use
+	 * @param daoInstance DAO isntance
 	 */
-	public T load(Object id);
+	public void setDAO(T daoInstance);
 }
