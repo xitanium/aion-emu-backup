@@ -45,7 +45,7 @@ import com.aionemu.commons.callbacks.Enhancable;
  *      sm.shutdown();
  * </pre>
  *
- * {@link ScriptContext} object creation listener can be added by using {@link ContextCreationListener}
+ * {@link ScriptContext} object creation listener can be added by using {@link ScriptContextCreationListener}
  * 
  * @author SoulKeeper
  */
@@ -99,7 +99,7 @@ public class ScriptManager
 	 * @throws Exception
 	 *             if can't create context
 	 */
-	@Enhancable(callback = ContextCreationListener.class)
+	@Enhancable(callback = ScriptContextCreationListener.class)
 	private ScriptContext createContext(ScriptInfo si, ScriptContext parent) throws Exception
 	{
 		ScriptContext context = ScriptContextFactory.getScriptContext(si.getRoot(), parent);
@@ -139,6 +139,7 @@ public class ScriptManager
 	/**
 	 * Reloads all contexes
 	 */
+	@Enhancable(callback = ScriptManagerReloadListener.class)
 	public synchronized void reload()
 	{
 		for (ScriptContext context : contexts)

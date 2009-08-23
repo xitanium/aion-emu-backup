@@ -19,34 +19,39 @@ package com.aionemu.commons.scripting.scriptmanager;
 
 import com.aionemu.commons.callbacks.Callback;
 import com.aionemu.commons.callbacks.CallbackResult;
-import com.aionemu.commons.scripting.ScriptContext;
 
 /**
- * ScriptContext creation listener for ScriptManager
+ * ScriptManager reload listener
  *
  * @author SoulKeeper
  */
-public abstract class ContextCreationListener implements Callback{
+public abstract class ScriptManagerReloadListener implements Callback {
+
 
 	@Override
 	public final CallbackResult beforeCall(Object obj, Object[] args) {
+		beforeReload();
 		return CallbackResult.newContinue();
 	}
 
 	@Override
 	public final CallbackResult afterCall(Object obj, Object[] args, Object methodResult) {
-		contextCreated((ScriptContext) methodResult);
+		afterReload();
 		return CallbackResult.newContinue();
 	}
 
 	/**
-	 * Invoked when new contexts was created
-	 * @param context object that was created
+	 * Invoked before {@link ScriptManager#reload()} execution
 	 */
-	protected abstract void contextCreated(ScriptContext context);
+	public abstract void beforeReload();
+
+	/**
+	 * Invoked after {@link ScriptManager#reload()} execution
+	 */
+	public abstract void afterReload();
 
 	@Override
-	public final Class getBaseClass() {
-		return ContextCreationListener.class;
+	public Class getBaseClass() {
+		return ScriptManagerReloadListener.class;
 	}
 }

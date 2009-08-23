@@ -29,8 +29,9 @@ import com.aionemu.commons.database.dao.cache.Cache;
 import com.aionemu.commons.database.dao.cache.CacheManager;
 import com.aionemu.commons.database.dao.scriptloader.DAOLoader;
 import com.aionemu.commons.scripting.ScriptContext;
-import com.aionemu.commons.scripting.scriptmanager.ContextCreationListener;
+import com.aionemu.commons.scripting.scriptmanager.ScriptContextCreationListener;
 import com.aionemu.commons.scripting.scriptmanager.ScriptManager;
+import com.aionemu.commons.scripting.scriptmanager.ScriptManagerReloadListener;
 import com.aionemu.commons.services.ScriptService;
 
 /**
@@ -93,7 +94,7 @@ public class DAOManager {
 	protected void initDAOs() {
 		ScriptManager sm = new ScriptManager();
 		EnhancedObject eo = (EnhancedObject) sm;
-		eo.addCallback(new ContextCreationListener() {
+		eo.addCallback(new ScriptContextCreationListener() {
 			@Override
 			protected void contextCreated(ScriptContext context) {
 				if (context.getParentScriptContext() == null) {
@@ -107,6 +108,20 @@ public class DAOManager {
 			throw new RuntimeException("Can't initialize database factory", e);
 		}
 
+		eo.addCallback(new ScriptManagerReloadListener() {
+
+			@Override
+			public void beforeReload() {
+				// TODO: clear guice injection module?
+			}
+
+			@Override
+			public void afterReload() {
+				// dependencies has to be reinjected
+				injectDependecies();
+			}
+		});
+
 		scriptService.addScriptManager(sm, databaseConfig.getScriptContextDescriptor());
 	}
 
@@ -115,7 +130,7 @@ public class DAOManager {
 	 */
 	protected void injectDependecies() {
 		for (DAO dao : daoMap.values()) {
-			// TODO: inject here
+			// TODO: inject dependencies by guice here
 		}
 	}
 
