@@ -122,6 +122,29 @@ public class CacheManager
 			return null;
 		}
 
+		log.debug("Cache Hit! Class: " + clazz.getName() + ", id: " + id);
 		return res;
+	}
+
+	@SuppressWarnings( { "unchecked" })
+	public synchronized void remove(Class<? extends PersistentObject> clazz, Object id)
+	{
+		CacheMap directCache = cache.get(clazz);
+		if (directCache == null)
+		{
+			log.debug("Can't find cache for class " + clazz.getName());
+			return;
+		}
+
+		PersistentObject res = (PersistentObject) directCache.get(id);
+		if (res == null)
+		{
+			log.debug("Can't find cached object of class " + clazz.getName() + " with id " + id);
+		}
+		else
+		{
+			directCache.remove(id);
+			log.debug("Cache Hit! Class: " + clazz.getName() + ", id: " + id);
+		}
 	}
 }

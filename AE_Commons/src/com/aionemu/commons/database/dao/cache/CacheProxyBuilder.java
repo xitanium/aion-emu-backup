@@ -20,9 +20,12 @@ package com.aionemu.commons.database.dao.cache;
 import java.lang.reflect.Method;
 
 import com.aionemu.commons.database.dao.DAO;
+import com.aionemu.commons.database.dao.scriptloader.CachedClass;
+import com.aionemu.commons.utils.ClassUtils;
 
-import javassist.util.proxy.ProxyFactory;
 import javassist.util.proxy.MethodFilter;
+import javassist.util.proxy.ProxyFactory;
+import javassist.util.proxy.MethodHandler;
 
 /**
  * @author SoulKeeper
@@ -51,14 +54,16 @@ public class CacheProxyBuilder
 			@Override
 			public boolean isHandled(Method m)
 			{
-				return (m.getName().equals("save") || m.getName().equals("load"));
+				return (m.getName().equals("save") || m.getName().equals("load") || m.getName().equals("remove"));
 			}
 		});
 
-		pf.setHandler(new CachingMethodHandler(cacheManager));
+		Class<? extends AbstractCachingMethodHandler> mh = ClassUtils.getAnnotationFromSubclassOrInterface(superClass,
+			CachedClass.class).handler();
 
 		try
 		{
+			pf.setHandler((MethodHandler) mh.getConstructors()[0].newInstance(cacheManager));
 			return (T) pf.createClass().newInstance();
 		}
 		catch (Exception e)

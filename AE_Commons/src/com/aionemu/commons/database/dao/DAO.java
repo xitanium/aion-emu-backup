@@ -26,7 +26,7 @@ import com.aionemu.commons.database.PersistentObject;
  * DAO subclass must have public no-arg constructor, in other case {@link InstantiationException} will be thrown by
  * {@link com.aionemu.commons.database.dao.DAOManager}<br>
  * 
- * DAO implementation should contain only two methods: save and load.
+ * DAO implementation should contain only three methods: save, load and remove.
  * 
  * @author SoulKeeper
  */
@@ -49,4 +49,12 @@ public interface DAO<T extends PersistentObject<?>>
 	 * @return loads object by primary key
 	 */
 	public T load(Object id);
+
+	/**
+	 * Removes PersistentObject by id from DB.
+	 * 
+	 * @param id
+	 *            Object primary key
+	 */
+	public void remove(Object id);
 }

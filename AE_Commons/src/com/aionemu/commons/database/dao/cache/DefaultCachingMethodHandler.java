@@ -25,25 +25,17 @@ import com.aionemu.commons.database.PersistentObject;
 import com.aionemu.commons.database.dao.DAO;
 import com.aionemu.commons.database.dao.DAOUtils;
 
-import javassist.util.proxy.MethodHandler;
-
 /**
  * InvocationHandler that is used to build dynamic Proxies
  * 
  * @author SoulKeeper
  */
-public class CachingMethodHandler implements MethodHandler
+public class DefaultCachingMethodHandler extends AbstractCachingMethodHandler
 {
-
 	/**
 	 * Logger
 	 */
-	private static final Logger	log	= Logger.getLogger(CachingMethodHandler.class);
-
-	/**
-	 * CacheManager that is used to store caches
-	 */
-	private final CacheManager	cacheManager;
+	private static final Logger	log	= Logger.getLogger(DefaultCachingMethodHandler.class);
 
 	/**
 	 * Creates new instance
@@ -51,9 +43,9 @@ public class CachingMethodHandler implements MethodHandler
 	 * @param cacheManager
 	 *            cacheManager that is used to cache objects
 	 */
-	public CachingMethodHandler(CacheManager cacheManager)
+	public DefaultCachingMethodHandler(CacheManager cacheManager)
 	{
-		this.cacheManager = cacheManager;
+		super(cacheManager);
 	}
 
 	/**
@@ -66,7 +58,7 @@ public class CachingMethodHandler implements MethodHandler
 		if (thisMethod.getName().equals("save"))
 		{
 			PersistentObject po = (PersistentObject) args[0];
-			((DAO) self).save(po);
+			proceed.invoke(self, args);
 			cacheManager.save(po);
 			return null;
 		}
@@ -78,7 +70,7 @@ public class CachingMethodHandler implements MethodHandler
 			Object result = cacheManager.get(poClazz, primaryKey);
 			if (result == null)
 			{
-				result = ((DAO) self).load(primaryKey);
+				result = proceed.invoke(self, args);
 				if (result != null)
 				{
 					cacheManager.save((PersistentObject<?>) result);
@@ -89,6 +81,14 @@ public class CachingMethodHandler implements MethodHandler
 				}
 			}
 			return result;
+		}
+		else if (thisMethod.getName().equals("remove"))
+		{
+			proceed.invoke(self, args);
+			Class<? extends PersistentObject> poClazz = DAOUtils.getCacheClass((Class<? extends DAO>) self.getClass()
+				.getSuperclass());
+			cacheManager.remove(poClazz, args[0]);
+			return null;
 		}
 
 		throw new RuntimeException("This exception should be never thrown");

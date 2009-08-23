@@ -25,6 +25,8 @@ import java.lang.annotation.Target;
 import java.lang.annotation.Inherited;
 
 import com.aionemu.commons.database.PersistentObject;
+import com.aionemu.commons.database.dao.cache.AbstractCachingMethodHandler;
+import com.aionemu.commons.database.dao.cache.DefaultCachingMethodHandler;
 
 /**
  * Marker annotation for DAO's that should be cached.<br>
@@ -50,4 +52,11 @@ public @interface CachedClass
 	 * @return class that works as DAO cache
 	 */
 	Class<? extends PersistentObject> value();
+
+	/**
+	 * Default method handler for runtime generated proxies for DAO's. Should be used with care.
+	 * 
+	 * @return MehtodHandler class implementation
+	 */
+	Class<? extends AbstractCachingMethodHandler> handler() default DefaultCachingMethodHandler.class;
 }
