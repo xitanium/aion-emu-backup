@@ -46,12 +46,12 @@ public class ScriptClassLoaderImpl extends ScriptClassLoader
 	/**
 	 * Logger
 	 */
-	private static final Logger					log					= Logger.getLogger(ScriptClassLoaderImpl.class);
+	private static final Logger		log	= Logger.getLogger(ScriptClassLoaderImpl.class);
 
 	/**
 	 * ClassFileManager that is related to this ClassLoader
 	 */
-	private final ClassFileManager				classFileManager;
+	private final ClassFileManager	classFileManager;
 
 	/**
 	 * Creates new ScriptClassLoader with given ClassFileManger
@@ -200,7 +200,8 @@ public class ScriptClassLoaderImpl extends ScriptClassLoader
 	 * {@inheritDoc}
 	 */
 	@Override
-	public byte[] getByteCode(String className) {
+	public byte[] getByteCode(String className)
+	{
 		BinaryClass bc = getClassFileManager().getCompiledClasses().get(className);
 		byte[] b = new byte[bc.getBytes().length];
 		System.arraycopy(bc.getBytes(), 0, b, 0, b.length);
@@ -211,9 +212,11 @@ public class ScriptClassLoaderImpl extends ScriptClassLoader
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Class<?> getDefinedClass(String name) {
+	public Class<?> getDefinedClass(String name)
+	{
 		BinaryClass bc = classFileManager.getCompiledClasses().get(name);
-		if(bc == null){
+		if (bc == null)
+		{
 			return null;
 		}
 
@@ -224,10 +227,12 @@ public class ScriptClassLoaderImpl extends ScriptClassLoader
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setDefinedClass(String name, Class<?> clazz) {
+	public void setDefinedClass(String name, Class<?> clazz)
+	{
 		BinaryClass bc = classFileManager.getCompiledClasses().get(name);
 
-		if(bc == null){
+		if (bc == null)
+		{
 			throw new IllegalArgumentException("Attempt to set defined class for class that was not compiled?");
 		}
 

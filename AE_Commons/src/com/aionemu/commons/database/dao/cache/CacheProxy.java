@@ -18,13 +18,12 @@
 package com.aionemu.commons.database.dao.cache;
 
 /**
- * Used if can't wrap
- *
+ * 
+ * Just a marker interface for easy checks.<br>
+ * Should be never implemented directly.
+ * 
  * @author SoulKeeper
  */
-public class CacheWrappingException extends CacheException{
-
-	public CacheWrappingException(String dao, String cache, Throwable cause){
-		super("Can't assign cache of class " + cache + " to class " + dao, cause);
-	}
+public interface CacheProxy
+{
 }

@@ -82,7 +82,7 @@ public interface ScriptCompiler
 
 	/**
 	 * Returns array of supported file types. This files will be threated as source files.
-	 *
+	 * 
 	 * @return array of supported file types.
 	 */
 	public String[] getSupportedFileTypes();

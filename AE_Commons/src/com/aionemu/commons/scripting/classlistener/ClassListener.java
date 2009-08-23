@@ -20,22 +20,25 @@ package com.aionemu.commons.scripting.classlistener;
 /**
  * This interface implements listener that is called post class load/before class unload.<br>
  * Default implementation is: {@link DefaultClassListener}
- *
+ * 
  * @author SoulKeeper
  */
-public interface ClassListener {
+public interface ClassListener
+{
 
 	/**
 	 * This method is invoked after classes were loaded. As areguments are passes all loaded classes
-	 *
-	 * @param classes classes that were loaded
+	 * 
+	 * @param classes
+	 *            classes that were loaded
 	 */
 	public void postLoad(Class<?>... classes);
 
 	/**
 	 * This method is invoked before class unloading. As argument are passes all loaded classes
-	 *
-	 * @param classes classes that were loaded
+	 * 
+	 * @param classes
+	 *            classes that were loaded
 	 */
 	public void preUnload(Class<?>... classes);
 }

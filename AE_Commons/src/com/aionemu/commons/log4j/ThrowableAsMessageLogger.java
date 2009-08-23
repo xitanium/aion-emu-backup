@@ -27,8 +27,9 @@ import org.apache.log4j.Priority;
  * org.apache.log4j.Logger#log(Throwable)
  * </pre>
  * 
- * <p/> In such cases this logger will take message from throwable and set it as message. Throwable will be threated as
- * real throwable, so no stacktraces would be lost.
+ * <p/>
+ * In such cases this logger will take message from throwable and set it as message. Throwable will be threated as real
+ * throwable, so no stacktraces would be lost.
  * 
  * @author SoulKeeper
  */

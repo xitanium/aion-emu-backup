@@ -25,22 +25,25 @@ import java.lang.annotation.ElementType;
 
 /**
  * Annotation that means that marked class is valid DAO impl
- *
+ * 
  * @author SoulKeeper
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface DAOInfo {
+public @interface DAOInfo
+{
 
 	/**
 	 * Returns base DAO class
+	 * 
 	 * @return base DAO class
 	 */
 	public Class<? extends com.aionemu.commons.database.dao.DAO> baseClass();
 
 	/**
 	 * List of supported databases
+	 * 
 	 * @return list of supported databases by this DAO
 	 */
 	public SupportedDB[] supportedDBs();

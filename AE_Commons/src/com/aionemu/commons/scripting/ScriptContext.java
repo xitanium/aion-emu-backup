@@ -109,17 +109,18 @@ public interface ScriptContext
 
 	/**
 	 * Sets the class listener for this script context.
-	 *
-	 * @param cl class listener
+	 * 
+	 * @param cl
+	 *            class listener
 	 */
 	public void setClassListener(ClassListener cl);
 
 	/**
 	 * Returns class listener associated with this ScriptContext.<br>
 	 * If it's null - returns parent classListener.<br>
-	 * If parent is null and classListener is null - it will set {@link com.aionemu.commons.scripting.classlistener.DefaultClassListener}
-	 * as class listener and return it
-	 *
+	 * If parent is null and classListener is null - it will set
+	 * {@link com.aionemu.commons.scripting.classlistener.DefaultClassListener} as class listener and return it
+	 * 
 	 * @return Associated class listener
 	 */
 	public ClassListener getClassListener();
@@ -127,14 +128,15 @@ public interface ScriptContext
 	/**
 	 * Sets compiler class name for this script context.<br>
 	 * Compiler is not inherrited by children.<br>
-	 *
-	 * @param className compiler class name
+	 * 
+	 * @param className
+	 *            compiler class name
 	 */
 	public void setCompilerClassName(String className);
 
 	/**
 	 * Returns compiler class name that will be used for this script context.
-	 *
+	 * 
 	 * @return compiler class name that will be used for tis script context
 	 */
 	public String getCompilerClassName();

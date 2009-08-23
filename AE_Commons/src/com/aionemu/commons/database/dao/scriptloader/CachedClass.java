@@ -22,22 +22,32 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.lang.annotation.Inherited;
 
-import com.aionemu.commons.database.dao.cache.Cache;
+import com.aionemu.commons.database.PersistentObject;
 
 /**
  * Marker annotation for DAO's that should be cached.<br>
- *
+ * Please not that this annotation can be placed directly on class, on parent class or on interface.<br>
+ * Also plase note that only the following methods are affected by cache:<br>
+ * <ul>
+ * <li>{@link com.aionemu.commons.database.dao.DAO#load(Object)}</li>
+ * <li>{@link com.aionemu.commons.database.dao.DAO#save(com.aionemu.commons.database.PersistentObject)}</li>
+ * </ul>
+ * 
  * @author SoulKeeper
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface CacheClass {
+@Inherited
+public @interface CachedClass
+{
 
 	/**
 	 * Class that works as DAO cache
+	 * 
 	 * @return class that works as DAO cache
 	 */
-	Class<? extends Cache> value();
+	Class<? extends PersistentObject> value();
 }

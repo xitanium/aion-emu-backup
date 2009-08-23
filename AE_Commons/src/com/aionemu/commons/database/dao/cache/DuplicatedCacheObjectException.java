@@ -17,25 +17,24 @@
 
 package com.aionemu.commons.database.dao.cache;
 
-import com.aionemu.commons.database.dao.DAO;
-
 /**
- * Basic Interface for cacheable DAO<br>.
- * Cache implementation should implement this and DAO child that is going to be cached.
- *
+ * This exception is thrown in case of cache duplication
+ * 
  * @author SoulKeeper
  */
-public interface Cache<T extends DAO> {
+public class DuplicatedCacheObjectException extends CacheException
+{
 
 	/**
-	 * Returns DAO instance that is used by cahce
-	 * @return DAO instance
+	 * Creates new instance of Eception
+	 * 
+	 * @param id
+	 *            Object id
+	 * @param clazz
+	 *            Object class
 	 */
-	public T getDAO();
-
-	/**
-	 * Sets DAO instance that cahe will use
-	 * @param daoInstance DAO isntance
-	 */
-	public void setDAO(T daoInstance);
+	public DuplicatedCacheObjectException(Object id, Class clazz)
+	{
+		super("Dublicated object in cache with id " + id + " of class " + clazz.getName());
+	}
 }

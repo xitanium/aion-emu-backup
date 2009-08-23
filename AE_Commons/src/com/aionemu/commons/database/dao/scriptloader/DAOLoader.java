@@ -29,43 +29,53 @@ import com.aionemu.commons.scripting.classlistener.ClassListener;
 import com.aionemu.commons.utils.ClassUtils;
 
 /**
- *
+ * 
  * DAOLoader for database script context
- *
+ * 
  * @author SoulKeeper
  */
-public class DAOLoader implements ClassListener {
+public class DAOLoader implements ClassListener
+{
 
 	/**
 	 * Logger
 	 */
-	private static final Logger log = Logger.getLogger(DAOLoader.class);
+	private static final Logger	log	= Logger.getLogger(DAOLoader.class);
 
 	/**
 	 * DAOManager that will be used to register/unregister classes
 	 */
-	private final DAOManager daoManager;
+	private final DAOManager	daoManager;
 
 	/**
 	 * Creates new instance of DAOLoader
-	 * @param daoManager daomanager that will be used to register/unregister DAO classes
+	 * 
+	 * @param daoManager
+	 *            daomanager that will be used to register/unregister DAO classes
 	 */
-	public DAOLoader(DAOManager daoManager) {
+	public DAOLoader(DAOManager daoManager)
+	{
 		this.daoManager = daoManager;
 	}
 
 	/**
 	 * Registers suitable DAOs in DAOManager
-	 * @param classes classes that were loaded
+	 * 
+	 * @param classes
+	 *            classes that were loaded
 	 */
 	@Override
-	public void postLoad(Class<?>... classes) {
+	public void postLoad(Class<?>... classes)
+	{
 
-		for (Class<? extends DAO> c : getSuitableClasses(classes)) {
-			try {
+		for (Class<? extends DAO> c : getSuitableClasses(classes))
+		{
+			try
+			{
 				daoManager.registerDAO(c);
 			}
-			catch (Exception e) {
+			catch (Exception e)
+			{
 				throw new RuntimeException(e);
 			}
 		}
@@ -73,11 +83,15 @@ public class DAOLoader implements ClassListener {
 
 	/**
 	 * Unregisters suitable DAO's from DAOManager
-	 * @param classes classes that were loaded
+	 * 
+	 * @param classes
+	 *            classes that were loaded
 	 */
 	@Override
-	public void preUnload(Class<?>... classes) {
-		for (Class<? extends DAO> c : getSuitableClasses(classes)) {
+	public void preUnload(Class<?>... classes)
+	{
+		for (Class<? extends DAO> c : getSuitableClasses(classes))
+		{
 			daoManager.unregisterDAO(c);
 		}
 	}
@@ -93,35 +107,43 @@ public class DAOLoader implements ClassListener {
 	 * <li>Class doesn't have {@link DisabledDAO} annotation present</li>
 	 * <li>Class is marked with {@link DAOInfo} annotation</li>
 	 * </ul>
-	 *
-	 * @param classes array of classes to check
+	 * 
+	 * @param classes
+	 *            array of classes to check
 	 * @return list of DAO classes to load/unload
 	 */
-	@SuppressWarnings({"unchecked"})
-	private static Set<Class<? extends DAO>> getSuitableClasses(Class<?>[] classes) {
+	@SuppressWarnings( { "unchecked" })
+	private static Set<Class<? extends DAO>> getSuitableClasses(Class<?>[] classes)
+	{
 		Set<Class<? extends DAO>> result = new HashSet<Class<? extends com.aionemu.commons.database.dao.DAO>>();
-		for (Class clazz : classes) {
-			if (!ClassUtils.isSubclass(clazz, DAO.class)) {
+		for (Class clazz : classes)
+		{
+			if (!ClassUtils.isSubclass(clazz, DAO.class))
+			{
 				log.debug("Class " + clazz.getName() + " skipped, reason: Is not DAO subclass");
 				continue;
 			}
 
-			if (Modifier.isAbstract(clazz.getModifiers()) || Modifier.isInterface(clazz.getModifiers())) {
+			if (Modifier.isAbstract(clazz.getModifiers()) || Modifier.isInterface(clazz.getModifiers()))
+			{
 				log.debug("Class " + clazz.getName() + " skipped, reason: Is abstract or interface");
 				continue;
 			}
 
-			if (!Modifier.isPublic(clazz.getModifiers())) {
+			if (!Modifier.isPublic(clazz.getModifiers()))
+			{
 				log.debug("Class " + clazz.getName() + " skipped, reason: Is not public");
 				continue;
 			}
 
-			if (clazz.isAnnotationPresent(DisabledDAO.class)) {
+			if (clazz.isAnnotationPresent(DisabledDAO.class))
+			{
 				log.debug("Class " + clazz.getName() + " skipped, reason: Is disabled");
 				continue;
 			}
 
-			if (!clazz.isAnnotationPresent(DAOInfo.class)){
+			if (!clazz.isAnnotationPresent(DAOInfo.class))
+			{
 				log.debug("Class " + clazz.getName() + " skipped, reason: Has no annotation DAOInfo present");
 				continue;
 			}

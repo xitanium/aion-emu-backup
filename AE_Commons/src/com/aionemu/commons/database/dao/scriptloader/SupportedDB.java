@@ -29,34 +29,40 @@ import java.lang.annotation.ElementType;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface SupportedDB {
+public @interface SupportedDB
+{
 
 	/**
 	 * Database name, for instance, MySQL Server Community Edition v 5.1. will be "MySQL"
+	 * 
 	 * @return databae name
 	 */
 	String name();
 
 	/**
 	 * Database major version, for instance, MySQL Server Community Edition v 5.1. will be "5"
+	 * 
 	 * @return major version
 	 */
 	int majorVersion();
 
 	/**
 	 * Database minor version, for instance, MySQL Server Community Edition v 5.1. will be "1"
+	 * 
 	 * @return minor version
 	 */
 	int minorVersion() default 0;
 
 	/**
 	 * Comparator that should be used to compare database versions.
+	 * 
 	 * @return comparator
 	 */
 	ComparatorType majorVersionComparator() default ComparatorType.GREATER_OR_EQUAL;
 
 	/**
 	 * Comparator that should be usedto compare database versions
+	 * 
 	 * @return comparator
 	 */
 	ComparatorType minorVersionComparator() default ComparatorType.GREATER_OR_EQUAL;

@@ -18,24 +18,30 @@
 package com.aionemu.commons.database.dao.cache;
 
 /**
- * Generic cache exception
- *
+ * 
+ * Generic CacheException class
+ * 
  * @author SoulKeeper
  */
-public abstract class CacheException extends RuntimeException {
+public class CacheException extends RuntimeException
+{
 
-	protected CacheException() {
+	public CacheException()
+	{
 	}
 
-	protected CacheException(String message) {
+	public CacheException(String message)
+	{
 		super(message);
 	}
 
-	protected CacheException(String message, Throwable cause) {
+	public CacheException(String message, Throwable cause)
+	{
 		super(message, cause);
 	}
 
-	protected CacheException(Throwable cause) {
+	public CacheException(Throwable cause)
+	{
 		super(cause);
 	}
 }

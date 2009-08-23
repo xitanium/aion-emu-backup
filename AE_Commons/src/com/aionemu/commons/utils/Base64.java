@@ -9,40 +9,50 @@ import java.util.Arrays;
  * 1000 bytes) and 2-3 times as fast on larger arrays (10000 - 1000000 bytes) compared to
  * <code>sun.misc.Encoder()/Decoder()</code>.<br>
  * <br>
- * <p/> On byte arrays the encoder is about 20% faster than Jakarta Commons Base64 Codec for encode and about 50% faster
- * for decoding large arrays. This implementation is about twice as fast on very small arrays (&lt 30 bytes). If
+ * <p/>
+ * On byte arrays the encoder is about 20% faster than Jakarta Commons Base64 Codec for encode and about 50% faster for
+ * decoding large arrays. This implementation is about twice as fast on very small arrays (&lt 30 bytes). If
  * source/destination is a <code>String</code> this version is about three times as fast due to the fact that the
- * Commons Codec result has to be recoded to a <code>String</code> from <code>byte[]</code>, which is very
- * expensive.<br>
+ * Commons Codec result has to be recoded to a <code>String</code> from <code>byte[]</code>, which is very expensive.<br>
  * <br>
- * <p/> This encode/decode algorithm doesn't create any temporary arrays as many other codecs do, it only allocates the
+ * <p/>
+ * This encode/decode algorithm doesn't create any temporary arrays as many other codecs do, it only allocates the
  * resulting array. This produces less garbage and it is possible to handle arrays twice as large as algorithms that
  * create a temporary array. (E.g. Jakarta Commons Codec). It is unknown whether Sun's
  * <code>sun.misc.Encoder()/Decoder()</code> produce temporary arrays but since performance is quite low it probably
  * does.<br>
  * <br>
- * <p/> The encoder produces the same output as the Sun one except that the Sun's encoder appends a trailing line
- * separator if the last character isn't a pad. Unclear why but it only adds to the length and is probably a side
- * effect. Both are in conformance with RFC 2045 though.<br>
+ * <p/>
+ * The encoder produces the same output as the Sun one except that the Sun's encoder appends a trailing line separator
+ * if the last character isn't a pad. Unclear why but it only adds to the length and is probably a side effect. Both are
+ * in conformance with RFC 2045 though.<br>
  * Commons codec seem to always att a trailing line separator.<br>
  * <br>
- * <p/> <b>Note!</b> The encode/decode method pairs (types) come in three versions with the <b>exact</b> same
- * algorithm and thus a lot of code redundancy. This is to not create any temporary arrays for transcoding to/from
- * different format types. The methods not used can simply be commented out.<br>
+ * <p/>
+ * <b>Note!</b> The encode/decode method pairs (types) come in three versions with the <b>exact</b> same algorithm and
+ * thus a lot of code redundancy. This is to not create any temporary arrays for transcoding to/from different format
+ * types. The methods not used can simply be commented out.<br>
  * <br>
- * <p/> There is also a "fast" version of all decode methods that works the same way as the normal ones, but har a few
+ * <p/>
+ * There is also a "fast" version of all decode methods that works the same way as the normal ones, but har a few
  * demands on the decoded input. Normally though, these fast verions should be used if the source if the input is known
  * and it hasn't bee tampered with.<br>
  * <br>
- * <p/> If you find the code useful or you find a bug, please send me a note at base64 @ miginfocom . com. <p/> Licence
- * (BSD): ============== <p/> Copyright (c) 2004, Mikael Grev, MiG InfoCom AB. (base64 @ miginfocom . com) All rights
- * reserved. <p/> Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met: Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer. Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials
- * provided with the distribution. Neither the name of the MiG InfoCom AB nor the names of its contributors may be used
- * to endorse or promote products derived from this software without specific prior written permission. <p/> THIS
- * SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * <p/>
+ * If you find the code useful or you find a bug, please send me a note at base64 @ miginfocom . com.
+ * <p/>
+ * Licence (BSD): ==============
+ * <p/>
+ * Copyright (c) 2004, Mikael Grev, MiG InfoCom AB. (base64 @ miginfocom . com) All rights reserved.
+ * <p/>
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+ * following conditions are met: Redistributions of source code must retain the above copyright notice, this list of
+ * conditions and the following disclaimer. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation and/or other materials provided with the
+ * distribution. Neither the name of the MiG InfoCom AB nor the names of its contributors may be used to endorse or
+ * promote products derived from this software without specific prior written permission.
+ * <p/>
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
@@ -194,10 +204,11 @@ public class Base64
 
 	/**
 	 * Decodes a BASE64 encoded char array that is known to be resonably well formatted. The method is about twice as
-	 * fast as {@link #decode(char[])}. The preconditions are:<br> + The array must have a line length of 76 chars OR
-	 * no line separators at all (one line).<br> + Line separator must be "\r\n", as specified in RFC 2045 + The array
-	 * must not contain illegal characters within the encoded string<br> + The array CAN have illegal characters at the
-	 * beginning and end, those will be dealt with appropriately.<br>
+	 * fast as {@link #decode(char[])}. The preconditions are:<br>
+	 * + The array must have a line length of 76 chars OR no line separators at all (one line).<br>
+	 * + Line separator must be "\r\n", as specified in RFC 2045 + The array must not contain illegal characters within
+	 * the encoded string<br>
+	 * + The array CAN have illegal characters at the beginning and end, those will be dealt with appropriately.<br>
 	 * 
 	 * @param sArr
 	 *            The source array. Length 0 will return an empty array. <code>null</code> will throw an exception.
@@ -389,10 +400,11 @@ public class Base64
 
 	/**
 	 * Decodes a BASE64 encoded byte array that is known to be resonably well formatted. The method is about twice as
-	 * fast as {@link #decode(byte[])}. The preconditions are:<br> + The array must have a line length of 76 chars OR
-	 * no line separators at all (one line).<br> + Line separator must be "\r\n", as specified in RFC 2045 + The array
-	 * must not contain illegal characters within the encoded string<br> + The array CAN have illegal characters at the
-	 * beginning and end, those will be dealt with appropriately.<br>
+	 * fast as {@link #decode(byte[])}. The preconditions are:<br>
+	 * + The array must have a line length of 76 chars OR no line separators at all (one line).<br>
+	 * + Line separator must be "\r\n", as specified in RFC 2045 + The array must not contain illegal characters within
+	 * the encoded string<br>
+	 * + The array CAN have illegal characters at the beginning and end, those will be dealt with appropriately.<br>
 	 * 
 	 * @param sArr
 	 *            The source array. Length 0 will return an empty array. <code>null</code> will throw an exception.
@@ -479,10 +491,10 @@ public class Base64
 	}
 
 	/**
-	 * Decodes a BASE64 encoded <code>String</code>. All illegal characters will be ignored and can handle both
-	 * strings with and without line separators.<br>
-	 * <b>Note!</b> It can be up to about 2x the speed to call <code>decode(str.toCharArray())</code> instead. That
-	 * will create a temporary array though. This version will use <code>str.charAt(i)</code> to iterate the string.
+	 * Decodes a BASE64 encoded <code>String</code>. All illegal characters will be ignored and can handle both strings
+	 * with and without line separators.<br>
+	 * <b>Note!</b> It can be up to about 2x the speed to call <code>decode(str.toCharArray())</code> instead. That will
+	 * create a temporary array though. This version will use <code>str.charAt(i)</code> to iterate the string.
 	 * 
 	 * @param str
 	 *            The source string. <code>null</code> or length 0 will return an empty array.
@@ -544,10 +556,11 @@ public class Base64
 
 	/**
 	 * Decodes a BASE64 encoded string that is known to be resonably well formatted. The method is about twice as fast
-	 * as {@link #decode(String)}. The preconditions are:<br> + The array must have a line length of 76 chars OR no
-	 * line separators at all (one line).<br> + Line separator must be "\r\n", as specified in RFC 2045 + The array
-	 * must not contain illegal characters within the encoded string<br> + The array CAN have illegal characters at the
-	 * beginning and end, those will be dealt with appropriately.<br>
+	 * as {@link #decode(String)}. The preconditions are:<br>
+	 * + The array must have a line length of 76 chars OR no line separators at all (one line).<br>
+	 * + Line separator must be "\r\n", as specified in RFC 2045 + The array must not contain illegal characters within
+	 * the encoded string<br>
+	 * + The array CAN have illegal characters at the beginning and end, those will be dealt with appropriately.<br>
 	 * 
 	 * @param s
 	 *            The source string. Length 0 will return an empty array. <code>null</code> will throw an exception.

@@ -19,10 +19,11 @@ package com.aionemu.commons.utils.collections.cachemap;
 
 /**
  * Types of cachemap that should be used
- *
+ * 
  * @author SoulKeeper
  */
-public enum CacheMapType {
+public enum CacheMapType
+{
 
 	/**
 	 * Means that {@link com.aionemu.commons.utils.collections.cachemap.SoftCacheMap} should be used

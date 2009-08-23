@@ -44,9 +44,12 @@ abstract class AbstractCacheMap<K, V> implements CacheMap<K, V>
 	protected final ReferenceQueue<V>		refQueue	= new ReferenceQueue<V>();
 
 	/**
-	 * @param cacheName, used only for logging
-	 * @param valueName, used only for logging
-	 * @param log logger
+	 * @param cacheName
+	 *            , used only for logging
+	 * @param valueName
+	 *            , used only for logging
+	 * @param log
+	 *            logger
 	 */
 	AbstractCacheMap(String cacheName, String valueName, Logger log)
 	{
@@ -61,14 +64,14 @@ abstract class AbstractCacheMap<K, V> implements CacheMap<K, V>
 	{
 		cleanQueue();
 
-		if(cacheMap.containsKey(key))
+		if (cacheMap.containsKey(key))
 			throw new IllegalArgumentException("Key: " + key + " already exists in map");
 
 		Reference<V> entry = newReference(key, value, refQueue);
 
 		cacheMap.put(key, entry);
 
-		if(log.isDebugEnabled())
+		if (log.isDebugEnabled())
 			log.debug(cacheName + " : added " + valueName + " for key: " + key);
 	}
 
@@ -80,12 +83,12 @@ abstract class AbstractCacheMap<K, V> implements CacheMap<K, V>
 
 		Reference<V> reference = cacheMap.get(key);
 
-		if(reference == null)
+		if (reference == null)
 			return null;
 
 		V res = reference.get();
 
-		if(res != null && log.isDebugEnabled())
+		if (res != null && log.isDebugEnabled())
 			log.debug(cacheName + " : obtained " + valueName + " for key: " + key);
 
 		return res;

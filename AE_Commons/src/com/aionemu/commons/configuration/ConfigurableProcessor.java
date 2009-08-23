@@ -39,8 +39,8 @@ public class ConfigurableProcessor
 	 * here.<br>
 	 * If object(new Something()) is submitted, object fields are parsed. (non-static)<br>
 	 * If class is submitted(Sotmething.class), static fields are parsed.<br>
-	 * <p/> This method is not designed to throw any exceptions, however there will be a log record if something goes
-	 * wrong.
+	 * <p/>
+	 * This method is not designed to throw any exceptions, however there will be a log record if something goes wrong.
 	 * 
 	 * @param object
 	 *            Class or Object that has {@link Property} annotations.
@@ -143,8 +143,9 @@ public class ConfigurableProcessor
 	/**
 	 * This method takes {@link Property} annotation and does sets value according to annotation property. For this
 	 * reason {@link #getFieldValue(java.lang.reflect.Field, java.util.Properties[])} can be called, however if method
-	 * sees that there is no need - field can remain with it's initial value. <p/> Also this method is capturing and
-	 * logging all {@link Exception} that are thrown by underlying methods.
+	 * sees that there is no need - field can remain with it's initial value.
+	 * <p/>
+	 * Also this method is capturing and logging all {@link Exception} that are thrown by underlying methods.
 	 * 
 	 * @param f
 	 *            field that is going to be processed

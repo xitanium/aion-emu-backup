@@ -52,6 +52,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 
 	/**
 	 * Constructs a new client packet with specified id. ByteBuffer must be later set with setBuffer method.
+	 * 
 	 * @param opcode
 	 *            packet opcode.
 	 */
@@ -59,9 +60,10 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	{
 		super(PacketType.CLIENT, opcode);
 	}
-	
+
 	/**
 	 * Attach ByteBuffer to this packet.
+	 * 
 	 * @param buf
 	 */
 	public void setBuffer(ByteBuffer buf)

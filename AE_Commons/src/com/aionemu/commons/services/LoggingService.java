@@ -33,10 +33,12 @@ import com.aionemu.commons.log4j.ThrowableAsMessageAwareFactory;
 import com.aionemu.commons.log4j.exceptions.Log4jInitializationError;
 
 /**
- * This class represents simple wrapper for loggers that initializes logging system. <p/>
+ * This class represents simple wrapper for loggers that initializes logging system.
+ * <p/>
  * 
  * Default {@link org.apache.log4j.spi.LoggerFactory} can by configured by system property
- * {@value #LOGGER_FACTORY_CLASS_PROPERTY} <p/>
+ * {@value #LOGGER_FACTORY_CLASS_PROPERTY}
+ * <p/>
  * 
  * Default logger factory is {@link com.aionemu.commons.log4j.ThrowableAsMessageAwareFactory}
  * 
@@ -129,10 +131,12 @@ public class LoggingService
 	}
 
 	/**
-	 * This method uses some reflection to hack default log4j log facrory. <p/>
+	 * This method uses some reflection to hack default log4j log facrory.
+	 * <p/>
 	 * 
 	 * Log4j uses this Hierarchy for loggers that don't have exact name match and element categoryFactory for loggers
-	 * with names that matches specified names in log4j.xml. <p/>
+	 * with names that matches specified names in log4j.xml.
+	 * <p/>
 	 * 
 	 * See log4j.xml for detailed description of Log4j behaviour.
 	 */

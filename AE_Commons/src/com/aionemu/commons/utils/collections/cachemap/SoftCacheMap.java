@@ -64,10 +64,10 @@ class SoftCacheMap<K, V> extends AbstractCacheMap<K, V> implements CacheMap<K, V
 	protected synchronized void cleanQueue()
 	{
 		SoftEntry en;
-		while((en = (SoftEntry) refQueue.poll()) != null)
+		while ((en = (SoftEntry) refQueue.poll()) != null)
 		{
 			K key = en.getKey();
-			if(log.isDebugEnabled())
+			if (log.isDebugEnabled())
 				log.debug(cacheName + " : cleaned up " + valueName + " for key: " + key);
 			cacheMap.remove(key);
 		}

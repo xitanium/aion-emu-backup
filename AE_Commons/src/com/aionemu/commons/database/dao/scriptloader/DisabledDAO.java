@@ -25,11 +25,12 @@ import java.lang.annotation.Documented;
 
 /**
  * Marker annotation that is used to mark disabled DAO's so they will be ignored by {@link DAOLoader}
- *
+ * 
  * @author SoulKeeper
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface DisabledDAO {
+public @interface DisabledDAO
+{
 }

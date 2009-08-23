@@ -23,39 +23,48 @@ import com.aionemu.commons.configuration.Property;
 import com.aionemu.commons.configuration.ConfigurableProcessor;
 
 /**
- * Configurator for {@link com.aionemu.commons.utils.collections.cachemap.CacheMap}}
- *
+ * Configurator for {@link com.aionemu.commons.utils.collections.cachemap.CacheMap}
+ * 
  * @author SoulKeeper
  */
-public class CacheMapConfig {
+public class CacheMapConfig
+{
 
 	/**
 	 * What type of chachemap shoudl be used
 	 */
 	@Property(key = "cachemap.type", defaultValue = "SOFT")
-	public CacheMapType type;
+	public CacheMapType	type;
 
 	/**
 	 * Creates new CacheMap using given properties
-	 * @param props properties to use
+	 * 
+	 * @param props
+	 *            properties to use
 	 */
-	public CacheMapConfig(Properties props){
+	public CacheMapConfig(Properties props)
+	{
 		ConfigurableProcessor.process(this, props);
 	}
 
 	/**
 	 * Returns what type of cahcemap should be used
+	 * 
 	 * @return type of cachemap that should be used
 	 */
-	public CacheMapType getType() {
+	public CacheMapType getType()
+	{
 		return type;
 	}
 
 	/**
 	 * Sets a cachemap that should be used
-	 * @param type cachemap type
+	 * 
+	 * @param type
+	 *            cachemap type
 	 */
-	public void setType(CacheMapType type) {
+	public void setType(CacheMapType type)
+	{
 		this.type = type;
 	}
 }

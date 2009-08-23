@@ -17,16 +17,14 @@
 
 package com.aionemu.commons.database.dao.cache;
 
-import com.aionemu.commons.database.dao.DAO;
-
 /**
- * This annotation means that cache can't be created
- *
  * @author SoulKeeper
  */
-public class CacheCreationException extends CacheException{
+public class CacheCreationException extends CacheException
+{
 
-	public CacheCreationException(Class<? extends DAO> clazz , Throwable cause) {
-		super("Failed to create cache for class " + clazz.getName(), cause);
+	public CacheCreationException(Class clazz, Throwable e)
+	{
+		super("Can't create cache for class: " + clazz.getName(), e);
 	}
 }

@@ -22,20 +22,22 @@ import com.aionemu.commons.callbacks.CallbackResult;
 
 /**
  * ScriptManager reload listener
- *
+ * 
  * @author SoulKeeper
  */
-public abstract class ScriptManagerReloadListener implements Callback {
-
+public abstract class ScriptManagerReloadListener implements Callback
+{
 
 	@Override
-	public final CallbackResult beforeCall(Object obj, Object[] args) {
+	public final CallbackResult beforeCall(Object obj, Object[] args)
+	{
 		beforeReload();
 		return CallbackResult.newContinue();
 	}
 
 	@Override
-	public final CallbackResult afterCall(Object obj, Object[] args, Object methodResult) {
+	public final CallbackResult afterCall(Object obj, Object[] args, Object methodResult)
+	{
 		afterReload();
 		return CallbackResult.newContinue();
 	}
@@ -51,7 +53,8 @@ public abstract class ScriptManagerReloadListener implements Callback {
 	public abstract void afterReload();
 
 	@Override
-	public Class getBaseClass() {
+	public Class getBaseClass()
+	{
 		return ScriptManagerReloadListener.class;
 	}
 }

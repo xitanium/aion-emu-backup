@@ -17,74 +17,111 @@
 
 package com.aionemu.commons.database.dao.cache;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import com.aionemu.commons.database.dao.DAO;
-import com.aionemu.commons.database.dao.DAOUtils;
+import org.apache.log4j.Logger;
+
+import com.aionemu.commons.database.PersistentObject;
+import com.aionemu.commons.utils.collections.cachemap.CacheMap;
+import com.aionemu.commons.utils.collections.cachemap.CacheMapFactory;
 
 /**
- * Generic class for managing caches
- *
  * @author SoulKeeper
  */
-public class CacheManager {
+public class CacheManager
+{
 
 	/**
-	 * Cache holder
+	 * Logger
 	 */
-	private final Map<Class<? extends DAO>, Cache> cache = new HashMap<Class<? extends DAO>, Cache>();
+	private static final Logger																	log	= Logger
+																										.getLogger(CacheManager.class);
 
 	/**
-	 * Returns cache instance of DAO class
-	 * @param daoClass dao class
-	 * @return cahce instance
+	 * Cache storage
 	 */
-	public Cache getCache(Class<? extends DAO> daoClass) {
-		Class<? extends DAO> baseClass = DAOUtils.getBaseClass(daoClass);
-		Cache c = cache.get(baseClass);
-		if (c == null) {
-			try {
-				Class<? extends Cache> cacheClass = DAOUtils.getCacheClass(daoClass);
-				c = cacheClass.newInstance();
-				cache.put(baseClass, c);
-			} catch (Exception e) {
-				throw new CacheCreationException(daoClass, e);
+	private final Map<Class<? extends PersistentObject>, CacheMap<Object, PersistentObject>>	cache;
+
+	/**
+	 * Factory to create cache classes
+	 */
+	private final CacheMapFactory																cacheMapFactory;
+
+	/**
+	 * CacheManager constructor
+	 * 
+	 * @param cacheMapFactory
+	 *            cacheMapFactory to create CaheInstances
+	 */
+	public CacheManager(CacheMapFactory cacheMapFactory)
+	{
+		this.cacheMapFactory = cacheMapFactory;
+		cache = new ConcurrentHashMap<Class<? extends PersistentObject>, CacheMap<Object, PersistentObject>>();
+	}
+
+	/**
+	 * Saves object in cache.
+	 * 
+	 * @param obj
+	 *            object to store
+	 * @throws DuplicatedCacheObjectException
+	 *             if another object with same id is already cached
+	 */
+	public synchronized void save(PersistentObject<?> obj) throws DuplicatedCacheObjectException
+	{
+		CacheMap<Object, PersistentObject> directCache = cache.get(obj.getClass());
+
+		if (directCache == null)
+		{
+			log.debug("Creating cache for class " + obj.getClass().getName());
+
+			directCache = cacheMapFactory.createCacheMap(obj.getId().getClass().getName(), obj.getClass().getName());
+			cache.put(obj.getClass(), directCache);
+		}
+
+		if (directCache.contains(obj.getId()))
+		{
+			PersistentObject anotherObject = directCache.get(obj);
+
+			// reference check to make sure that objects are the same
+			if (anotherObject != obj)
+			{
+				throw new DuplicatedCacheObjectException(obj.getId(), obj.getClass());
 			}
 		}
-
-		return c;
+		else
+		{
+			directCache.put(obj.getId(), obj);
+		}
 	}
 
 	/**
-	 * Wraps Cache isntance with DAO class. Cahce should also implement DAO
-	 * @param daoInstance DAO intance
-	 * @param <T> DAO type
-	 * @return Chache class that implements daoInstance and wraps it
+	 * Returns cached instance of class or null if not found
+	 * 
+	 * @param clazz
+	 *            Class of cached object
+	 * @param id
+	 *            identifier of cached object
+	 * @return chached instance or null
 	 */
-	@SuppressWarnings({"unchecked"})
-	public <T extends DAO> T wrap(T daoInstance) {
-		DAO result;
-		Cache c = null;
-		try {
-			c = getCache(daoInstance.getClass());
-			c.setDAO(daoInstance);
-			result = (DAO) c;
-		}
-		catch (Exception e) {
-			throw new CacheWrappingException(daoInstance.getClass().getName(), c != null ? c.getClass().getName() : "none", e);
+	@SuppressWarnings( { "unchecked" })
+	public PersistentObject get(Class<? extends PersistentObject> clazz, Object id)
+	{
+		CacheMap directCache = cache.get(clazz);
+		if (directCache == null)
+		{
+			log.debug("Can't find cache for class " + clazz.getName());
+			return null;
 		}
 
-		return (T) result;
-	}
+		PersistentObject res = (PersistentObject) directCache.get(id);
+		if (res == null)
+		{
+			log.debug("Can't find cached object of class " + clazz.getName() + " with id " + id);
+			return null;
+		}
 
-	/**
-	 * Remowes DAO instance from Cache instance
-	 * @param daoClass Cache of that class should be cleared from DAO
-	 */
-	@SuppressWarnings({"unchecked"})
-	public void removeWrapping(Class<? extends DAO> daoClass) {
-		Cache c = getCache(DAOUtils.getBaseClass(daoClass));
-		c.setDAO(null);
+		return res;
 	}
 }

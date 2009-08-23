@@ -60,10 +60,10 @@ import java.util.NoSuchElementException;
 public class IteratorIterator<V> implements Iterator<V>
 {
 	/** 1st Level iterator */
-	private Iterator<? extends Iterable<V>>	    firstLevelIterator;
-	
+	private Iterator<? extends Iterable<V>>	firstLevelIterator;
+
 	/** 2nd level iterator */
-	private Iterator<V>						    secondLevelIterator;
+	private Iterator<V>						secondLevelIterator;
 
 	/**
 	 * Constructor of <tt>IteratorIterator</tt>
@@ -82,10 +82,10 @@ public class IteratorIterator<V> implements Iterator<V>
 	@Override
 	public boolean hasNext()
 	{
-		if(secondLevelIterator != null && secondLevelIterator.hasNext())
+		if (secondLevelIterator != null && secondLevelIterator.hasNext())
 			return true;
 
-		while(firstLevelIterator.hasNext())
+		while (firstLevelIterator.hasNext())
 		{
 			Iterable<V> iterable = firstLevelIterator.next();
 
@@ -93,7 +93,7 @@ public class IteratorIterator<V> implements Iterator<V>
 			{
 				secondLevelIterator = iterable.iterator();
 
-				if(secondLevelIterator.hasNext())
+				if (secondLevelIterator.hasNext())
 					return true;
 			}
 		}

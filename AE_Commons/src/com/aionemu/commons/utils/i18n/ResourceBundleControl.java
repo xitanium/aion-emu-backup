@@ -31,7 +31,9 @@ import java.util.ResourceBundle;
 
 /**
  * This class allows us to read ResourceBundles with custom encodings, so we don't have write \\uxxxx symbols and use
- * utilities like native2ascii to convert files. <p/> <br>
+ * utilities like native2ascii to convert files.
+ * <p/>
+ * <br>
  * 
  * Usage: For instance we want to load resource bundle "test" from current deirectory and use english locale. If locale
  * not found, we will use default file (and ignore default locale).
@@ -95,7 +97,7 @@ public class ResourceBundleControl extends ResourceBundle.Control
 		{
 			try
 			{
-				@SuppressWarnings({"unchecked"})
+				@SuppressWarnings( { "unchecked" })
 				Class<? extends ResourceBundle> bundleClass = (Class<? extends ResourceBundle>) loader
 					.loadClass(bundleName);
 

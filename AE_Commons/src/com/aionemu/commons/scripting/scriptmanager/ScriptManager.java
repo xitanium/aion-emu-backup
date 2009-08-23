@@ -44,7 +44,7 @@ import com.aionemu.commons.callbacks.Enhancable;
  *      ...
  *      sm.shutdown();
  * </pre>
- *
+ * 
  * {@link ScriptContext} object creation listener can be added by using {@link ScriptContextCreationListener}
  * 
  * @author SoulKeeper

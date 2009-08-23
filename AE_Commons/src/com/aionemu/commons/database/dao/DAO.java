@@ -24,7 +24,9 @@ import com.aionemu.commons.database.PersistentObject;
  * DAO implementation must match the set of conditions, check the
  * {@link com.aionemu.commons.database.dao.scriptloader.DAOLoader#getSuitableClasses(Class[])} for details.<br>
  * DAO subclass must have public no-arg constructor, in other case {@link InstantiationException} will be thrown by
- * {@link com.aionemu.commons.database.dao.DAOManager}
+ * {@link com.aionemu.commons.database.dao.DAOManager}<br>
+ * 
+ * DAO implementation should contain only two methods: save and load.
  * 
  * @author SoulKeeper
  */
@@ -33,13 +35,17 @@ public interface DAO<T extends PersistentObject<?>>
 
 	/**
 	 * Generic SAVE action
-	 * @param object object to save
+	 * 
+	 * @param object
+	 *            object to save
 	 */
 	public void save(T object);
 
 	/**
 	 * Generic LOAD action
-	 * @param id - primary key
+	 * 
+	 * @param id
+	 *            - primary key
 	 * @return loads object by primary key
 	 */
 	public T load(Object id);

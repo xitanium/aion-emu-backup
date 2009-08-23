@@ -18,44 +18,57 @@
 package com.aionemu.commons.database.dao;
 
 import com.aionemu.commons.database.DatabaseInfo;
-import com.aionemu.commons.database.dao.cache.Cache;
-import com.aionemu.commons.database.dao.scriptloader.CacheClass;
+import com.aionemu.commons.database.PersistentObject;
+import com.aionemu.commons.database.dao.scriptloader.CachedClass;
 import com.aionemu.commons.database.dao.scriptloader.DAOInfo;
 import com.aionemu.commons.database.dao.scriptloader.SupportedDB;
+import com.aionemu.commons.utils.ClassUtils;
 
 /**
  * DAO utility class
- *
+ * 
  * @author SoulKeeper
  */
-public class DAOUtils {
+public class DAOUtils
+{
 
 	/**
 	 * Checks if DAO supports current DB
-	 *
-	 * @param clazz DAO class
-	 * @param databaseInfo Information about DB
+	 * 
+	 * @param clazz
+	 *            DAO class
+	 * @param databaseInfo
+	 *            Information about DB
 	 * @return true if supports, false in other case
-	 * @throws IllegalArgumentException if DAO class is not marked with {@link com.aionemu.commons.database.dao.scriptloader.DAOInfo} annotation
+	 * @throws IllegalArgumentException
+	 *             if DAO class is not marked with {@link com.aionemu.commons.database.dao.scriptloader.DAOInfo}
+	 *             annotation
 	 */
-	public static boolean isDBSupportedByDAO(Class<? extends DAO> clazz, DatabaseInfo databaseInfo) {
-		if (!clazz.isAnnotationPresent(DAOInfo.class)) {
-			throw new IllegalArgumentException("Class " + clazz.getName() + " should be marked with @DAOInfo annotation");
+	public static boolean isDBSupportedByDAO(Class<? extends DAO> clazz, DatabaseInfo databaseInfo)
+	{
+		if (!clazz.isAnnotationPresent(DAOInfo.class))
+		{
+			throw new IllegalArgumentException("Class " + clazz.getName()
+				+ " should be marked with @DAOInfo annotation");
 		}
 
 		DAOInfo info = clazz.getAnnotation(DAOInfo.class);
 		SupportedDB[] databases = info.supportedDBs();
 
-		for (SupportedDB db : databases) {
-			if (!db.name().equals(databaseInfo.getProductName())) {
+		for (SupportedDB db : databases)
+		{
+			if (!db.name().equals(databaseInfo.getProductName()))
+			{
 				continue;
 			}
 
-			if (!db.majorVersionComparator().compare(db.majorVersion(), databaseInfo.getMajorVersion())) {
+			if (!db.majorVersionComparator().compare(db.majorVersion(), databaseInfo.getMajorVersion()))
+			{
 				continue;
 			}
 
-			if (!db.minorVersionComparator().compare(db.minorVersion(), databaseInfo.getMinorVersion())) {
+			if (!db.minorVersionComparator().compare(db.minorVersion(), databaseInfo.getMinorVersion()))
+			{
 				continue;
 			}
 
@@ -67,14 +80,19 @@ public class DAOUtils {
 
 	/**
 	 * Returns base class for dao class.
-	 *
-	 * @param clazz class to check
+	 * 
+	 * @param clazz
+	 *            class to check
 	 * @return base class for dao
-	 * @throws IllegalArgumentException if argument is not marked with {@link DAOInfo} annotation
+	 * @throws IllegalArgumentException
+	 *             if argument is not marked with {@link DAOInfo} annotation
 	 */
-	public static Class<? extends DAO> getBaseClass(Class<? extends DAO> clazz) {
-		if (!clazz.isAnnotationPresent(DAOInfo.class)) {
-			throw new IllegalArgumentException("Class " + clazz.getName() + " should be marked with @DAOInfo annotation");
+	public static Class<? extends DAO> getBaseClass(Class<? extends DAO> clazz)
+	{
+		if (!clazz.isAnnotationPresent(DAOInfo.class))
+		{
+			throw new IllegalArgumentException("Class " + clazz.getName()
+				+ " should be marked with @DAOInfo annotation");
 		}
 
 		return clazz.getAnnotation(DAOInfo.class).baseClass();
@@ -82,25 +100,34 @@ public class DAOUtils {
 
 	/**
 	 * Returns cache class for DAO class
-	 *
-	 * @param clazz class to check
+	 * 
+	 * @param clazz
+	 *            class to check
 	 * @return cache class
-	 * @throws IllegalArgumentException if argument is not marked with {@link com.aionemu.commons.database.dao.scriptloader.CacheClass} annotation
+	 * @throws IllegalArgumentException
+	 *             if argument is not marked with {@link com.aionemu.commons.database.dao.scriptloader.CachedClass}
+	 *             annotation
 	 */
-	public static Class<? extends Cache> getCacheClass(Class<? extends DAO> clazz) {
-		if (!clazz.isAnnotationPresent(CacheClass.class)) {
-			throw new IllegalArgumentException("Class " + clazz.getName() + " should be marked with @CacheClass annotation");
+	public static Class<? extends PersistentObject> getCacheClass(Class<? extends DAO> clazz)
+	{
+		if (!isCacheable(clazz))
+		{
+			throw new IllegalArgumentException("Class or it's sublcass/interface " + clazz.getName()
+				+ " should be marked with @CachedClass annotation");
 		}
 
-		return clazz.getAnnotation(CacheClass.class).value();
+		return ClassUtils.getAnnotationFromSubclassOrInterface(clazz, CachedClass.class).value();
 	}
 
 	/**
-	 * Reutrns true if {@link com.aionemu.commons.database.dao.scriptloader.CacheClass} annotation is present
-	 * @param clazz class to check
+	 * Reutrns true if {@link com.aionemu.commons.database.dao.scriptloader.CachedClass} annotation is present
+	 * 
+	 * @param clazz
+	 *            class to check
 	 * @return true of dao is cacheable, false otherwise
 	 */
-	public static boolean isCacheable(Class<? extends DAO> clazz){
-		return clazz.isAnnotationPresent(CacheClass.class);
+	public static boolean isCacheable(Class<? extends DAO> clazz)
+	{
+		return ClassUtils.getAnnotationFromSubclassOrInterface(clazz, CachedClass.class) != null;
 	}
 }

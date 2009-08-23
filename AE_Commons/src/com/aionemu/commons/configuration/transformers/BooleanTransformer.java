@@ -23,8 +23,10 @@ import com.aionemu.commons.configuration.PropertyTransformer;
 import com.aionemu.commons.configuration.TransformationException;
 
 /**
- * This class implements basic boolean transfromer. <p/> Boolean can be represented by "true/false" (case doen't matter)
- * or "1/0". In other cases {@link com.aionemu.commons.configuration.TransformationException} is thrown
+ * This class implements basic boolean transfromer.
+ * <p/>
+ * Boolean can be represented by "true/false" (case doen't matter) or "1/0". In other cases
+ * {@link com.aionemu.commons.configuration.TransformationException} is thrown
  * 
  * @author SoulKeeper
  */

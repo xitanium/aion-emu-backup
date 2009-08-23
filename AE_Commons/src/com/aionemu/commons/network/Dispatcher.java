@@ -71,8 +71,8 @@ public abstract class Dispatcher extends Thread
 	}
 
 	/**
-	 * Add connection to pendingClose list, so this connection will be closed by this <code>Dispatcher</code> as soon
-	 * as possible.
+	 * Add connection to pendingClose list, so this connection will be closed by this <code>Dispatcher</code> as soon as
+	 * possible.
 	 * 
 	 * @param con
 	 * 

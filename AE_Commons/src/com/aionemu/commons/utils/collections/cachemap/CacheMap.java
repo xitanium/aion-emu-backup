@@ -17,9 +17,10 @@
 package com.aionemu.commons.utils.collections.cachemap;
 
 /**
- * This interface represents a Map structure for cache usage. 
+ * This interface represents a Map structure for cache usage.
+ * 
  * @author Luno
- *
+ * 
  */
 public interface CacheMap<K, V>
 {
@@ -31,29 +32,36 @@ public interface CacheMap<K, V>
 	 * <font color='red'><b>NOTICE:</b> </font> if there is already a value with given id in the map,
 	 * {@link IllegalArgumentException} will be thrown.
 	 * 
-	 * @param key map key
-	 * @param value map value
+	 * @param key
+	 *            map key
+	 * @param value
+	 *            map value
 	 */
 	public void put(K key, V value);
 
 	/**
 	 * Returns cached value correlated to given key.
 	 * 
-	 * @param key map key
+	 * @param key
+	 *            map key
 	 * @return value or null
 	 */
 	public V get(K key);
-	
+
 	/**
 	 * Checks whether this map contains a value related to given key.
-	 * @param key map key
+	 * 
+	 * @param key
+	 *            map key
 	 * @return true if contains, false in other case
 	 */
 	public boolean contains(K key);
-	
+
 	/**
 	 * Removes an entry from the map, that has given key.
-	 * @param key map key
+	 * 
+	 * @param key
+	 *            map key
 	 */
 	public void remove(K key);
 }

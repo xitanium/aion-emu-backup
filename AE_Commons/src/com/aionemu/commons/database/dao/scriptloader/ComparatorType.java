@@ -19,16 +19,19 @@ package com.aionemu.commons.database.dao.scriptloader;
 
 /**
  * Type of comparator that should be used to compare DB versions
- *
+ * 
  * @author SoulKeeper
  */
-public enum ComparatorType {
+public enum ComparatorType
+{
 
 	/**
 	 * <
 	 */
-	LESS {
-		public boolean compare(int a, int b) {
+	LESS
+	{
+		public boolean compare(int a, int b)
+		{
 			return a < b;
 		}
 	},
@@ -36,8 +39,10 @@ public enum ComparatorType {
 	/**
 	 * <=
 	 */
-	LESS_OR_EQUAL {
-		public boolean compare(int a, int b) {
+	LESS_OR_EQUAL
+	{
+		public boolean compare(int a, int b)
+		{
 			return a <= b;
 		}
 	},
@@ -45,8 +50,10 @@ public enum ComparatorType {
 	/**
 	 * ==
 	 */
-	EQUAL {
-		public boolean compare(int a, int b) {
+	EQUAL
+	{
+		public boolean compare(int a, int b)
+		{
 			return a == b;
 		}
 	},
@@ -54,8 +61,10 @@ public enum ComparatorType {
 	/**
 	 * >=
 	 */
-	GREATER_OR_EQUAL {
-		public boolean compare(int a, int b) {
+	GREATER_OR_EQUAL
+	{
+		public boolean compare(int a, int b)
+		{
 			return a >= b;
 		}
 	},
@@ -63,20 +72,25 @@ public enum ComparatorType {
 	/**
 	 * >
 	 */
-	GREATER {
-		public boolean compare(int a, int b) {
+	GREATER
+	{
+		public boolean compare(int a, int b)
+		{
 			return a > b;
 		}
 	};
 
 	/**
 	 * Retrns true if 'a <ENUM ACTION> b'
-	 *
-	 * @param a first integer
-	 * @param b second integer
+	 * 
+	 * @param a
+	 *            first integer
+	 * @param b
+	 *            second integer
 	 * @return result
 	 */
-	public boolean compare(int a, int b) {
+	public boolean compare(int a, int b)
+	{
 		throw new UnsupportedOperationException("This exception should be never thrown");
 	}
 }
