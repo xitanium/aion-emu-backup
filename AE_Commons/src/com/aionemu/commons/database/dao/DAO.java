@@ -30,7 +30,7 @@ import com.aionemu.commons.database.PersistentObject;
  * 
  * @author SoulKeeper
  */
-public interface DAO<T extends PersistentObject<?>>
+public interface DAO<TYPE extends PersistentObject<?>, ID_TYPE>
 {
 
 	/**
@@ -39,7 +39,7 @@ public interface DAO<T extends PersistentObject<?>>
 	 * @param object
 	 *            object to save
 	 */
-	public void save(T object);
+	public void save(TYPE object);
 
 	/**
 	 * Generic LOAD action
@@ -48,7 +48,7 @@ public interface DAO<T extends PersistentObject<?>>
 	 *            - primary key
 	 * @return loads object by primary key
 	 */
-	public T load(Object id);
+	public TYPE load(ID_TYPE id);
 
 	/**
 	 * Removes PersistentObject by id from DB.
@@ -56,5 +56,5 @@ public interface DAO<T extends PersistentObject<?>>
 	 * @param id
 	 *            Object primary key
 	 */
-	public void remove(Object id);
+	public void remove(ID_TYPE id);
 }
