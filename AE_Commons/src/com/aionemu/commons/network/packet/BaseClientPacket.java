@@ -60,7 +60,6 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Constructs a new client packet with specified id. ByteBuffer must be later set with setBuffer method.
-	 * 
 	 * @param opcode
 	 *            packet opcode.
 	 */
@@ -68,10 +67,9 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 	{
 		super(PacketType.CLIENT, opcode);
 	}
-
+	
 	/**
 	 * Attach ByteBuffer to this packet.
-	 * 
 	 * @param buf
 	 */
 	public void setBuffer(ByteBuffer buf)

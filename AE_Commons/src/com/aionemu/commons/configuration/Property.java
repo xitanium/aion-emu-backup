@@ -68,8 +68,7 @@ public @interface Property
 	 * {@link com.aionemu.commons.configuration.transformers.InetSocketAddressTransformer}</li>
 	 * <li>{@link java.util.regex.Pattern} by {@link com.aionemu.commons.configuration.transformers.PatternTransformer}
 	 * </ul>
-	 * <p/>
-	 * If your value is one of this types - just leave this field empty
+	 * <p/> If your value is one of this types - just leave this field empty
 	 * 
 	 * @return returns class that will be used to transform value
 	 */

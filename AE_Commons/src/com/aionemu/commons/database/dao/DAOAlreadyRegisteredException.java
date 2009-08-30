@@ -24,7 +24,7 @@ package com.aionemu.commons.database.dao;
  */
 public class DAOAlreadyRegisteredException extends DAOException
 {
-	private static final long	serialVersionUID	= -4966845154050833016L;
+	private static final long serialVersionUID = -4966845154050833016L;
 
 	/**
 	 * {@inheritDoc}

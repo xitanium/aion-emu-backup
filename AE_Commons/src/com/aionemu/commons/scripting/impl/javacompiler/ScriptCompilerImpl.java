@@ -253,12 +253,11 @@ public class ScriptCompilerImpl implements ScriptCompiler
 
 	/**
 	 * Only java files are supported by java compiler
-	 * 
 	 * @return "java";
 	 */
 	@Override
 	public String[] getSupportedFileTypes()
 	{
-		return new String[] { "java" };
+		return new String[]{"java"};
 	}
 }

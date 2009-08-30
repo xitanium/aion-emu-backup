@@ -35,12 +35,12 @@ public class VirtualClassURLStreamHandler extends URLStreamHandler
 	/**
 	 * Script Handler protocol for classes compiled from source
 	 */
-	public static final String		HANDLER_PROTOCOL	= "aescript://";
+	public static final String			HANDLER_PROTOCOL	= "aescript://";
 
 	/**
 	 * Script class loader that loaded those classes
 	 */
-	private final ScriptClassLoader	cl;
+	private final ScriptClassLoader cl;
 
 	/**
 	 * Creates new instance of url stream handler with given classloader

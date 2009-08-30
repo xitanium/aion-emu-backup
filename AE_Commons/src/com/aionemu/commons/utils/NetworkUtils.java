@@ -26,8 +26,8 @@ public class NetworkUtils
 	 * 
 	 * @param pattern
 	 *            *.*.*.* , 192.168.1.0-255 , *
-	 * @param address
-	 *            - 192.168.1.1<BR>
+	 * @param address -
+	 *            192.168.1.1<BR>
 	 *            <code>address = 10.2.88.12  pattern = *.*.*.*   result: true<BR>
 	 *                address = 10.2.88.12  pattern = *   result: true<BR>
 	 *                address = 10.2.88.12  pattern = 10.2.88.12-13   result: true<BR>

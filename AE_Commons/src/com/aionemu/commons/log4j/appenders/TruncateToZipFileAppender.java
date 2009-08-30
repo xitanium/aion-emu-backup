@@ -36,9 +36,7 @@ import com.aionemu.commons.log4j.exceptions.AppenderInitializationError;
 /**
  * This class is appender that zips old file instead of appending it.<br>
  * File is recognized as old if it's lastModified() is < JVM startup time.<br>
- * So we can have per-run appending.
- * <p/>
- * <br>
+ * So we can have per-run appending.<p/> <br>
  * 
  * Unfortunaltely, UNIX systems doesn't support file creation date, so we have to use lastModified(), windows only
  * solution is not good.
@@ -60,16 +58,12 @@ public class TruncateToZipFileAppender extends FileAppender
 
 	/**
 	 * <p>
-	 * Sets and <i>opens</i> the file where the log output will go. The specified file must be writable.
-	 * <p/>
+	 * Sets and <i>opens</i> the file where the log output will go. The specified file must be writable. <p/>
 	 * <p>
-	 * If there was already an opened file, then the previous file is closed first.
-	 * <p/>
+	 * If there was already an opened file, then the previous file is closed first. <p/>
 	 * <p>
 	 * <b>Do not use this method directly. To configure a FileAppender or one of its subclasses, set its properties one
-	 * by one and then call activateOptions.</b>
-	 * <p/>
-	 * <br>
+	 * by one and then call activateOptions.</b> <p/> <br>
 	 * Truncation is done by {@link #truncate(java.io.File)}
 	 * 
 	 * @param fileName

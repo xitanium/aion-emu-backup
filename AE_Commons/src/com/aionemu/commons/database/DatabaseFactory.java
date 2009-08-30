@@ -1,217 +1,260 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
- * aion-emu is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  aion-emu is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * aion-emu is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  aion-emu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aionemu.commons.database;
+
+// Common SQL
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.Driver;
 import java.sql.SQLException;
-import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.ConnectionFactory;
-import org.apache.commons.dbcp.DriverConnectionFactory;
+import org.apache.commons.dbcp.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
 import org.apache.commons.dbcp.PoolingDataSource;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.log4j.Logger;
 
+import com.aionemu.commons.scripting.scriptmanager.ScriptManager;
+
 /**
+ * <b>Database Factory</b><br>
+ * <br>
+ * This file is used for creating a pool of connections for the server.<br>
+ * It utilizes database.properties and creates a pool of connections and automatically recycles them when closed.<br>
+ * <br>
+ * DB.java utilizes the class.<br>
+ * <br>
+ * <p/> This class depends on file {@value com.aionemu.commons.database.DatabaseConfig#CONFIG_FILE}.
+ * 
+ * @author Disturbing
  * @author SoulKeeper
  */
 public class DatabaseFactory
 {
 
 	/**
-	 * Logger
+	 * Logger for this class
 	 */
-	private static final Logger	log	= Logger.getLogger(DatabaseFactory.class);
+	private static final Logger			log				= Logger.getLogger(DatabaseFactory.class);
 
 	/**
-	 * Database config link
+	 * This script manager is responsible for loading {@link com.aionemu.commons.database.dao.DAO} implementations
 	 */
-	private DatabaseConfig		databaseConfig;
+	private static final ScriptManager	scriptManager	= new ScriptManager();
 
 	/**
-	 * Database datasource
+	 * Data Source Generates all Connections This vaiable is also used as indicator for "initalized" state of
+	 * DatabaseFactory
 	 */
-	private DataSource			dataSource;
+	private static DataSource			dataSource;
 
 	/**
-	 * Connection pool
+	 * Connection Pool holds all connections - Idle or Active
 	 */
-	private GenericObjectPool	genericObjectPool;
+	private static GenericObjectPool	connectionPool;
 
 	/**
-	 * Database information
-	 */
-	private DatabaseInfo		databaseInfo;
-
-	/**
-	 * Constructor
+	 * Returns name of the database that is used
 	 * 
-	 * @param config
-	 *            database config
+	 * For isntance, MySQL returns "MySQL"
 	 */
-	public DatabaseFactory(DatabaseConfig config)
-	{
-		this(config, DatabaseFactory.class.getClassLoader());
-	}
+	private static String				databaseName;
 
 	/**
-	 * Constructor, can be used if in some weird case driver uses another classloader than default one
-	 * 
-	 * @param config
-	 *            database config
-	 * @param classLoader
-	 *            driver classloader
+	 * Retursn major version that is used For instance, MySQL 5.0.51 community edition returns 5
 	 */
-	public DatabaseFactory(DatabaseConfig config, ClassLoader classLoader)
+	private static int					databaseMajorVersion;
+
+	/**
+	 * Retursn minor version that is used For instance, MySQL 5.0.51 community edition returns 0
+	 */
+	private static int					databaseMinorVersion;
+
+	/**
+	 * Initializes DatabaseFactory.
+	 */
+	public synchronized static void init()
 	{
-		this.databaseConfig = config;
-		Driver driver;
+		if (dataSource != null)
+		{
+			return;
+		}
+
+		DatabaseConfig.load();
+
 		try
 		{
-			driver = (Driver) Class.forName(config.getDriver(), true, classLoader).newInstance();
+			java.lang.Class.forName(DatabaseConfig.DATABASE_DRIVER).newInstance();
 		}
 		catch (Exception e)
 		{
-			log.error("Can't inialize driver class", e);
-			throw new RuntimeException(e);
+			log.fatal("Error obtaining DB driver", e);
+			throw new Error("DB Driver doesnt exist!");
 		}
 
-		init(driver);
-	}
+		connectionPool = new GenericObjectPool();
 
-	/**
-	 * Initializes database factory
-	 * 
-	 * @param driver
-	 *            Driver that will be used
-	 */
-	protected void init(Driver driver)
-	{
-		Properties props = new Properties();
-		props.setProperty("user", databaseConfig.getUser());
-		props.setProperty("password", databaseConfig.getPassword());
+		if (DatabaseConfig.DATABASE_CONNECTIONS_MIN > DatabaseConfig.DATABASE_CONNECTIONS_MAX)
+		{
+			log.error("Please check your database configuration. Minimum amount of connections is > maximum");
+			DatabaseConfig.DATABASE_CONNECTIONS_MAX = DatabaseConfig.DATABASE_CONNECTIONS_MIN;
+		}
 
-		ConnectionFactory cf = new DriverConnectionFactory(driver, databaseConfig.getUrl(), props);
+		connectionPool.setMaxIdle(DatabaseConfig.DATABASE_CONNECTIONS_MIN);
+		connectionPool.setMaxActive(DatabaseConfig.DATABASE_CONNECTIONS_MAX);
 
-		genericObjectPool = new GenericObjectPool();
-		genericObjectPool.setMaxActive(databaseConfig.getMaxConnections());
-		genericObjectPool.setMinIdle(databaseConfig.getMinConnections());
-
-		new PoolableConnectionFactory(cf, genericObjectPool, null, null, false, true);
-
-		dataSource = new PoolingDataSource(genericObjectPool);
-
-		Connection c = null;
 		try
 		{
-			c = getConnection();
+			dataSource = setupDataSource();
+			Connection c = getConnection();
 			DatabaseMetaData dmd = c.getMetaData();
-			databaseInfo = new DatabaseInfo(dmd.getDatabaseProductName(), dmd.getDatabaseMajorVersion(), dmd
-				.getDatabaseMinorVersion());
+			databaseName = dmd.getDatabaseProductName();
+			databaseMajorVersion = dmd.getDatabaseMajorVersion();
+			databaseMinorVersion = dmd.getDatabaseMinorVersion();
+			c.close();
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			throw new RuntimeException("Can't initialize DatabaseFactory", e);
+			log.fatal("Error with connection string: " + DatabaseConfig.DATABASE_URL, e);
+			throw new Error("DatabaseFactory not initialized!");
 		}
-		finally
+
+		try
 		{
-			if (c != null)
-			{
-				try
-				{
-					c.close();
-				}
-				catch (SQLException e)
-				{
-					log.error("Can't close SQL connection", e);
-				}
-			}
+			scriptManager.load(DatabaseConfig.DATABASE_SCRIPTCONTEXT_DESCRIPTOR);
 		}
+		catch (Exception e)
+		{
+			String err = "Can't load database script context: " + DatabaseConfig.DATABASE_SCRIPTCONTEXT_DESCRIPTOR;
+			log.fatal(err);
+			throw new Error(err, e);
+		}
+
+		log.info("Successfully connected to database");
 	}
 
 	/**
-	 * Creates connection
+	 * Sets up Connection Factory and Pool
 	 * 
-	 * @return Connection object
-	 * @throws SQLException
-	 *             if something went wrong
+	 * @return DataSource configured datasource
+	 * @throws Exception
+	 *             if initialization failed
 	 */
-	public Connection getConnection() throws SQLException
+	private static DataSource setupDataSource() throws Exception
+	{
+		// Create Connection Factory
+		ConnectionFactory conFactory = new DriverManagerConnectionFactory(DatabaseConfig.DATABASE_URL,
+			DatabaseConfig.DATABASE_USER, DatabaseConfig.DATABASE_PASSWORD);
+
+		// Makes Connection Factory Pool-able (Wrapper for two objects)
+		new PoolableConnectionFactory(conFactory, connectionPool, null, null, false, true);
+
+		// Create data source to utilize Factory and Pool
+		return new PoolingDataSource(connectionPool);
+	}
+
+	/**
+	 * Returns an active connection from pool. This function utilizes the dataSource which grabs an object from the
+	 * ObjectPool within its limits. The GenericObjectPool.borrowObject()' function utilized in
+	 * 'DataSource.getConnection()' does not allow any connections to be returned as null, thus a null check is not
+	 * needed. Throws SQLException in case of a Failed Connection
+	 * 
+	 * @return Connection pooled connection
+	 * @throws java.sql.SQLException
+	 *             if can't get connection
+	 */
+	static Connection getConnection() throws SQLException
 	{
 		return dataSource.getConnection();
 	}
 
 	/**
-	 * Destroys database factory object, connection pool and datasource.<br>
-	 * Destroying destroyed database factory makes no effect
+	 * Returns number of active connections in the pool.
+	 * 
+	 * @return int Active DB Connections
 	 */
-	public void destroy()
+	public int getActiveConnections()
 	{
-		synchronized (this)
-		{
-			if (dataSource == null)
-			{
-				return;
-			}
-
-			log.info("Destroying datasource...");
-
-			try
-			{
-				genericObjectPool.close();
-				genericObjectPool.clear();
-			}
-			catch (Exception e)
-			{
-				log.error("Can't close generic object pool");
-				throw new RuntimeException(e);
-			}
-			dataSource = null;
-		}
+		return connectionPool.getNumActive();
 	}
 
 	/**
-	 * Returns database information
+	 * Returns number of Idle connections. Idle connections represent the number of instances in Database Connections
+	 * that have once been connected and now are closed and ready for re-use. The 'getConnection' function will grab
+	 * idle connections before creating new ones.
 	 * 
-	 * @return database information
+	 * @return int Idle DB Connections
 	 */
-	public DatabaseInfo getDatabaseInfo()
+	public int getIdleConnections()
 	{
-		return databaseInfo;
+		return connectionPool.getNumIdle();
 	}
 
 	/**
-	 * 
-	 * @throws Throwable
+	 * Shuts down pool and closes connections
 	 */
-	@Override
-	protected void finalize() throws Throwable
+	public static synchronized void shutdown()
 	{
-		if (dataSource != null)
+		try
 		{
-			log.warn("DatabseFactory waas garbage collected, but not manually destroyed. Forcing destruction");
-			destroy();
+			connectionPool.close();
 		}
-		super.finalize();
+		catch (Exception e)
+		{
+			log.warn("Failed to shutdown DatabaseFactory", e);
+		}
+
+		// set datasource to null so we can call init() once more...
+		dataSource = null;
+
+		// init shutdown on loaded scripts
+		scriptManager.shutdown();
+	}
+
+	/**
+	 * Returns database name. For instance MySQL 5.0.51 community edition returns MySQL
+	 * 
+	 * @return database name that is used.
+	 */
+	public static String getDatabaseName()
+	{
+		return databaseName;
+	}
+
+	/**
+	 * Returns database version. For instance MySQL 5.0.51 community edition returns 5
+	 * 
+	 * @return database major version
+	 */
+	public static int getDatabaseMajorVersion()
+	{
+		return databaseMajorVersion;
+	}
+
+	/**
+	 * Returns database minor version. For instance MySQL 5.0.51 community edition reutnrs 0
+	 * 
+	 * @return database minor version
+	 */
+	public static int getDatabaseMinorVersion()
+	{
+		return databaseMinorVersion;
 	}
 }

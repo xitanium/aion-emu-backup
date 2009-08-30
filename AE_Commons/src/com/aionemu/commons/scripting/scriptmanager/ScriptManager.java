@@ -30,7 +30,6 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.commons.scripting.ScriptContext;
 import com.aionemu.commons.scripting.ScriptContextFactory;
-import com.aionemu.commons.callbacks.Enhancable;
 
 /**
  * Class that represents managers of script contexes. It loads, reloads and unload script contexes. In the future it may
@@ -44,8 +43,6 @@ import com.aionemu.commons.callbacks.Enhancable;
  *      ...
  *      sm.shutdown();
  * </pre>
- * 
- * {@link ScriptContext} object creation listener can be added by using {@link ScriptContextCreationListener}
  * 
  * @author SoulKeeper
  */
@@ -99,7 +96,6 @@ public class ScriptManager
 	 * @throws Exception
 	 *             if can't create context
 	 */
-	@Enhancable(callback = ScriptContextCreationListener.class)
 	private ScriptContext createContext(ScriptInfo si, ScriptContext parent) throws Exception
 	{
 		ScriptContext context = ScriptContextFactory.getScriptContext(si.getRoot(), parent);
@@ -139,7 +135,6 @@ public class ScriptManager
 	/**
 	 * Reloads all contexes
 	 */
-	@Enhancable(callback = ScriptManagerReloadListener.class)
 	public synchronized void reload()
 	{
 		for (ScriptContext context : contexts)

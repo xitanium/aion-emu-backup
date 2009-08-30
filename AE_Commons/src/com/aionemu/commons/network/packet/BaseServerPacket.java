@@ -27,9 +27,8 @@ public abstract class BaseServerPacket extends BasePacket
 {
 	/**
 	 * Constructs a new server packet with specified id.
-	 * 
-	 * @param opcode
-	 *            packet opcode.
+	 *
+	 * @param opcode packet opcode.
 	 */
 	protected BaseServerPacket(int opcode)
 	{
@@ -44,7 +43,7 @@ public abstract class BaseServerPacket extends BasePacket
 	{
 		super(PacketType.SERVER);
 	}
-
+	
 	/**
 	 * Write int to buffer.
 	 * 

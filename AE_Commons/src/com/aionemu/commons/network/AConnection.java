@@ -26,8 +26,8 @@ import com.aionemu.commons.options.Assertion;
 
 /**
  * Class that represent Connection with server socket. Connection is created by <code>ConnectionFactory</code> and
- * attached to <code>SelectionKey</code> key. Selection key is registered to one of Dispatchers <code>Selector</code> to
- * handle io read and write.
+ * attached to <code>SelectionKey</code> key. Selection key is registered to one of Dispatchers <code>Selector</code>
+ * to handle io read and write.
  * 
  * @author -Nemesiss-
  */

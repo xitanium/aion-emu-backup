@@ -89,18 +89,18 @@ public class JavaAgentEnhancer implements ClassFileTransformer
 		try
 		{
 			// no need to scan whole jvm boot classpath
-			if (loader == null)
+			if(loader == null)
 			{
 				return null;
 			}
 
 			// classes from jvm ext dir, no need to modify
-			if (loader.getClass().getName().equals("sun.misc.Launcher$ExtClassLoader"))
+			if(loader.getClass().getName().equals("sun.misc.Launcher$ExtClassLoader"))
 			{
 				return null;
 			}
 
-			// actual class transformation
+			//actual class transformation
 			return transformClass(loader, classfileBuffer);
 		}
 		catch (Exception e)
@@ -110,7 +110,7 @@ public class JavaAgentEnhancer implements ClassFileTransformer
 			log.fatal(e1);
 
 			// if it is a class from core (not a script) - terminate server
-			// noinspection ConstantConditions
+			//noinspection ConstantConditions
 			if (loader.getClass().getName().equals("sun.misc.Launcher$AppClassLoader"))
 			{
 				Runtime.getRuntime().halt(ExitCode.CODE_ERROR);

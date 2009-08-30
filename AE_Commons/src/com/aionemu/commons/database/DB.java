@@ -146,17 +146,12 @@ public final class DB
 	/** Logger */
 	protected static final Logger	log	= Logger.getLogger(DB.class.getName());
 
-	private final DatabaseFactory	databaseFactory;
-
 	/**
-	 * Constructor
-	 * 
-	 * @param databaseFactory
-	 *            Database Factory object
+	 * Empty Constructor
 	 */
-	public DB(DatabaseFactory databaseFactory)
+	private DB()
 	{
-		this.databaseFactory = databaseFactory;
+
 	}
 
 	/**
@@ -166,7 +161,7 @@ public final class DB
 	 * @param reader
 	 * @return boolean Success
 	 */
-	public boolean select(String query, ReadStH reader)
+	public static boolean select(String query, ReadStH reader)
 	{
 		return select(query, reader, null);
 	}
@@ -179,7 +174,7 @@ public final class DB
 	 * @param errMsg
 	 * @return boolean Success
 	 */
-	public boolean select(String query, ReadStH reader, String errMsg)
+	public static boolean select(String query, ReadStH reader, String errMsg)
 	{
 		Connection con = null;
 		PreparedStatement stmt = null;
@@ -187,7 +182,7 @@ public final class DB
 
 		try
 		{
-			con = databaseFactory.getConnection();
+			con = DatabaseFactory.getConnection();
 			stmt = con.prepareStatement(query);
 			if (reader instanceof ParamReadStH)
 				((ParamReadStH) reader).setParams(stmt);
@@ -226,7 +221,7 @@ public final class DB
 	 * @param query
 	 * @return boolean Success
 	 */
-	public boolean insertUpdate(String query)
+	public static boolean insertUpdate(String query)
 	{
 		return insertUpdate(query, null, null);
 	}
@@ -239,7 +234,7 @@ public final class DB
 	 * @param errMsg
 	 * @return success
 	 */
-	public boolean insertUpdate(String query, String errMsg)
+	public static boolean insertUpdate(String query, String errMsg)
 	{
 		return insertUpdate(query, null, errMsg);
 	}
@@ -252,7 +247,7 @@ public final class DB
 	 * @param batch
 	 * @return boolean Success
 	 */
-	public boolean insertUpdate(String query, IUStH batch)
+	public static boolean insertUpdate(String query, IUStH batch)
 	{
 		return insertUpdate(query, batch, null);
 	}
@@ -267,14 +262,14 @@ public final class DB
 	 * @param errMsg
 	 * @return boolean Success
 	 */
-	public boolean insertUpdate(String query, IUStH batch, String errMsg)
+	public static boolean insertUpdate(String query, IUStH batch, String errMsg)
 	{
 		Connection con = null;
 		PreparedStatement stmt = null;
 
 		try
 		{
-			con = databaseFactory.getConnection();
+			con = DatabaseFactory.getConnection();
 			stmt = con.prepareStatement(query);
 			if (batch != null)
 				batch.handleInsertUpdate(stmt);
@@ -309,6 +304,19 @@ public final class DB
 	}
 
 	/**
+	 * Begins new transaction
+	 * 
+	 * @return new Transaction object
+	 * @throws java.sql.SQLException
+	 *             if was unable to create transaction
+	 */
+	public static Transaction beginTransaction() throws SQLException
+	{
+		Connection con = DatabaseFactory.getConnection();
+		return new Transaction(con);
+	}
+
+	/**
 	 * Creates PreparedStatement with given sql string.<br>
 	 * Statemens are created with {@link java.sql.ResultSet#TYPE_FORWARD_ONLY} and
 	 * {@link java.sql.ResultSet#CONCUR_READ_ONLY}
@@ -317,7 +325,7 @@ public final class DB
 	 *            SQL querry
 	 * @return Prepared statement if ok or null if error happend while creating
 	 */
-	public PreparedStatement prepareStatement(String sql)
+	public static PreparedStatement prepareStatement(String sql)
 	{
 		return prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 	}
@@ -338,13 +346,13 @@ public final class DB
 	 *            <code>ResultSet.CONCUR_UPDATABLE</code>
 	 * @return Prepared Statement if ok or null if error happened while creating
 	 */
-	public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency)
+	public static PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency)
 	{
 		Connection c = null;
 		PreparedStatement ps = null;
 		try
 		{
-			c = databaseFactory.getConnection();
+			c = DatabaseFactory.getConnection();
 			ps = c.prepareStatement(sql, resultSetType, resultSetConcurrency);
 		}
 		catch (Exception e)

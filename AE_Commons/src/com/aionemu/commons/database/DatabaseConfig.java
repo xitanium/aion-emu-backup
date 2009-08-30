@@ -18,12 +18,14 @@
 package com.aionemu.commons.database;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.commons.configuration.Property;
 import com.aionemu.commons.configuration.ConfigurableProcessor;
+import com.aionemu.commons.configuration.Property;
+import com.aionemu.commons.utils.PropertiesUtils;
 
 /**
  * This class holds all configuration of database
@@ -36,130 +38,72 @@ public class DatabaseConfig
 	/**
 	 * Logger for database config
 	 */
-	private static final Logger	log	= Logger.getLogger(DatabaseConfig.class);
+	private static final Logger	log			= Logger.getLogger(DatabaseConfig.class);
+
+	/**
+	 * Config file location
+	 */
+	public static final String	CONFIG_FILE	= "config/database.properties";
 
 	/**
 	 * Default database url.
 	 */
 	@Property(key = "database.url", defaultValue = "jdbc:mysql://localhost:3306/aion_emu")
-	public String				url;
+	public static String		DATABASE_URL;
 
 	/**
 	 * Name of database Driver
 	 */
 	@Property(key = "database.driver", defaultValue = "com.mysql.jdbc.Driver")
-	public String				driver;
+	public static String		DATABASE_DRIVER;
 
 	/**
 	 * Default database user
 	 */
 	@Property(key = "database.user", defaultValue = "root")
-	public String				user;
+	public static String		DATABASE_USER;
 
 	/**
 	 * Default database password
 	 */
 	@Property(key = "database.password", defaultValue = "root")
-	public String				password;
+	public static String		DATABASE_PASSWORD;
 
 	/**
 	 * Minimum amount of connections that are always active
 	 */
 	@Property(key = "database.connections.min", defaultValue = "2")
-	public int					minConnections;
+	public static int			DATABASE_CONNECTIONS_MIN;
 
 	/**
 	 * Maximum amount of connections that are allowed to use
 	 */
 	@Property(key = "database.connections.max", defaultValue = "10")
-	public int					maxConnections;
+	public static int			DATABASE_CONNECTIONS_MAX;
 
 	/**
 	 * Location of database script context descriptor
 	 */
-	@Property(key = "database.scriptcontext.descriptor", defaultValue = "./data/scripts/system/database.xml")
-	public File					scriptContextDescriptor;
+	@Property(key = "database.scriptcontext.descriptor", defaultValue = "./data/scripts/system/database/database.xml")
+	public static File			DATABASE_SCRIPTCONTEXT_DESCRIPTOR;
 
-	public DatabaseConfig(Properties props)
+	/**
+	 * Loads database configuration
+	 */
+	public static void load()
 	{
+
+		Properties p;
 		try
 		{
-			ConfigurableProcessor.process(this, props);
+			p = PropertiesUtils.load(CONFIG_FILE);
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
-			log.error("Exceiption while processing properties", e);
-			throw new RuntimeException(e);
+			log.fatal("Can't load database configuration...");
+			throw new Error("Can't load " + CONFIG_FILE, e);
 		}
-	}
 
-	/**
-	 * Returns database url
-	 * 
-	 * @return database url
-	 */
-	public String getUrl()
-	{
-		return url;
-	}
-
-	/**
-	 * Returns database driver class name
-	 * 
-	 * @return database driver class name
-	 */
-	public String getDriver()
-	{
-		return driver;
-	}
-
-	/**
-	 * Returns database user
-	 * 
-	 * @return database user
-	 */
-	public String getUser()
-	{
-		return user;
-	}
-
-	/**
-	 * Returns database password
-	 * 
-	 * @return database password
-	 */
-	public String getPassword()
-	{
-		return password;
-	}
-
-	/**
-	 * Retursn minimal amount of connections that will be used
-	 * 
-	 * @return minimal amount of connections
-	 */
-	public int getMinConnections()
-	{
-		return minConnections;
-	}
-
-	/**
-	 * Returns maximal amount of connections that will be used @ the same time
-	 * 
-	 * @return maximal amout of connections
-	 */
-	public int getMaxConnections()
-	{
-		return maxConnections;
-	}
-
-	/**
-	 * Returns pointer to script context descriptor
-	 * 
-	 * @return pointer to script context descriptor
-	 */
-	public File getScriptContextDescriptor()
-	{
-		return scriptContextDescriptor;
+		ConfigurableProcessor.process(DatabaseConfig.class, p);
 	}
 }

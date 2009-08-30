@@ -37,12 +37,12 @@ public class NioServer
 	/**
 	 * Logger for NioServer
 	 */
-	private static final Logger				log					= Logger.getLogger(NioServer.class.getName());
+	private static final Logger				log				= Logger.getLogger(NioServer.class.getName());
 
 	/**
 	 * The channels on which we'll accept connections
 	 */
-	private final List<SelectionKey>		serverChannelKeys	= new ArrayList<SelectionKey>();
+	private final List<SelectionKey>	serverChannelKeys	= new ArrayList<SelectionKey>();
 
 	/**
 	 * Dispatcher that will accept connections
@@ -62,18 +62,18 @@ public class NioServer
 	 */
 	private final DisconnectionThreadPool	dcPool;
 
-	private int								readWriteThreads;
-	private ServerCfg[]						cfgs;
-
+	private int readWriteThreads;
+	private ServerCfg[] cfgs;
+	
 	/**
 	 * Constructor.
 	 * 
-	 * @param readWriteThreads
-	 *            - number of threads that will be used for handling read and write.
-	 * @param dcPool
-	 *            - ThreadPool on witch Disconnection tasks will be executed.
-	 * @param cfgs
-	 *            - Server Configurations
+	 * @param readWriteThreads -
+	 *            number of threads that will be used for handling read and write.
+	 * @param dcPool -
+	 *            ThreadPool on witch Disconnection tasks will be executed.
+	 * @param cfgs -
+	 *            Server Configurations
 	 */
 	public NioServer(int readWriteThreads, DisconnectionThreadPool dcPool, ServerCfg... cfgs)
 	{
@@ -126,8 +126,7 @@ public class NioServer
 				/**
 				 * Register the server socket channel, indicating an interest in accepting new connections
 				 */
-				SelectionKey acceptKey = getAcceptDispatcher().register(serverChannel, SelectionKey.OP_ACCEPT,
-					new Acceptor(cfg.factory, this));
+				SelectionKey acceptKey = getAcceptDispatcher().register(serverChannel, SelectionKey.OP_ACCEPT, new Acceptor(cfg.factory, this));
 				serverChannelKeys.add(acceptKey);
 			}
 		}
@@ -137,7 +136,6 @@ public class NioServer
 			throw new Error("NioServer Initialization Error!");
 		}
 	}
-
 	/**
 	 * @return Accept Dispatcher.
 	 */

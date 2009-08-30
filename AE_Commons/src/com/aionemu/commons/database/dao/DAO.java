@@ -1,5 +1,5 @@
 /*
- * This file is part of aion-emu <aion-emu.com>.
+ * This file is part of aion-emu.
  *
  * aion-emu is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,44 +17,37 @@
 
 package com.aionemu.commons.database.dao;
 
-import com.aionemu.commons.database.PersistentObject;
-
 /**
- * This class represents basic DAO.<br>
- * DAO implementation must match the set of conditions, check the
- * {@link com.aionemu.commons.database.dao.scriptloader.DAOLoader#getSuitableClasses(Class[])} for details.<br>
+ * This class represents basic DAO. It should be subclasses by abstract class and that class has to implement method
+ * {@link #getClassName()}.<br>
+ * This class must return {@link Class#getName()}, {@link #getClassName()} should be final.<br>
  * DAO subclass must have public no-arg constructor, in other case {@link InstantiationException} will be thrown by
- * {@link com.aionemu.commons.database.dao.DAOManager}<br>
- * 
- * DAO implementation should contain only three methods: save, load and remove.
+ * {@link com.aionemu.commons.database.dao.DAOManager}
  * 
  * @author SoulKeeper
  */
-public interface DAO<TYPE extends PersistentObject<?>, ID_TYPE>
+public interface DAO
 {
 
 	/**
-	 * Generic SAVE action
+	 * Unique identifier for DAO class, all subclasses must have same identifiers. Must return {@link Class#getName()}
+	 * of abstract class
 	 * 
-	 * @param object
-	 *            object to save
+	 * @return identifier of DAO class
 	 */
-	public void save(TYPE object);
+	public String getClassName();
 
 	/**
-	 * Generic LOAD action
+	 * Returns true if DAO implementation supports database or false if not. Database information is provided by
+	 * {@link java.sql.DatabaseMetaData}
 	 * 
-	 * @param id
-	 *            - primary key
-	 * @return loads object by primary key
+	 * @param databaseName
+	 *            name of database
+	 * @param majorVersion
+	 *            major version of database
+	 * @param minorVersion
+	 *            minor version of database
+	 * @return true if database is supported or false in other case
 	 */
-	public TYPE load(ID_TYPE id);
-
-	/**
-	 * Removes PersistentObject by id from DB.
-	 * 
-	 * @param id
-	 *            Object primary key
-	 */
-	public void remove(ID_TYPE id);
+	public boolean supports(String databaseName, int majorVersion, int minorVersion);
 }

@@ -62,7 +62,7 @@ public class ScriptInfo
 	 * Default compiler class name.
 	 */
 	@XmlElement(name = "compiler")
-	private String				compilerClass	= ScriptCompilerImpl.class.getName();
+	private String compilerClass = ScriptCompilerImpl.class.getName();
 
 	/**
 	 * Returns root of script context
@@ -129,7 +129,7 @@ public class ScriptInfo
 
 	/**
 	 * Returns compiler class name
-	 * 
+	 *
 	 * @return name of compiler class
 	 */
 	public String getCompilerClass()
@@ -139,9 +139,9 @@ public class ScriptInfo
 
 	/**
 	 * Sets compiler class name
-	 * 
+	 *
 	 * @param compilerClass
-	 *            name of compiler class
+	 * 						name of compiler class
 	 */
 	public void setCompilerClass(String compilerClass)
 	{

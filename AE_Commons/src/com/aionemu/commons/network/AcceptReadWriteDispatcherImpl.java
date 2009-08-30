@@ -37,7 +37,8 @@ public class AcceptReadWriteDispatcherImpl extends Dispatcher
 	private final List<AConnection>	pendingClose	= new ArrayList<AConnection>();
 
 	/**
-	 * Constructor that accept <code>String</code> name and <code>DisconnectionThreadPool</code> dcPool as parameter.
+	 * Constructor that accept <code>String</code> name and <code>DisconnectionThreadPool</code> dcPool as
+	 * parameter.
 	 * 
 	 * @param name
 	 * @param dcPool
@@ -95,8 +96,8 @@ public class AcceptReadWriteDispatcherImpl extends Dispatcher
 	}
 
 	/**
-	 * Add connection to pendingClose list, so this connection will be closed by this <code>Dispatcher</code> as soon as
-	 * possible.
+	 * Add connection to pendingClose list, so this connection will be closed by this <code>Dispatcher</code> as soon
+	 * as possible.
 	 * 
 	 * @see com.aionemu.commons.network.Dispatcher#closeConnection(com.aionemu.commons.network.AConnection)
 	 */

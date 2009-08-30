@@ -38,7 +38,7 @@ public class ScriptService
 	/**
 	 * Logger
 	 */
-	private static final Logger				log	= Logger.getLogger(ScriptService.class);
+	private static final Logger						log	= Logger.getLogger(ScriptService.class);
 
 	/**
 	 * Container for ScriptManagers, sorted by file
@@ -160,15 +160,13 @@ public class ScriptService
 	/**
 	 * Adds script manager to script service.<br>
 	 * Should be used if scriptManager uses custom loading logic for scripts.
-	 * 
-	 * @param scriptManager
-	 *            Script manager object
-	 * @param file
-	 *            script descriptor file
+	 *
+	 * @param scriptManager Script manager object
+	 * @param file script descriptor file
 	 */
 	public void addScriptManager(ScriptManager scriptManager, File file)
 	{
-		if (map.containsKey(file))
+		if(map.containsKey(file))
 		{
 			throw new IllegalArgumentException("ScriptManager by file " + file + " is already loaded.");
 		}

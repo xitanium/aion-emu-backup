@@ -17,8 +17,6 @@
 
 package com.aionemu.commons.utils;
 
-import java.lang.annotation.Annotation;
-
 /**
  * This class contains utilities that are used when we are working with classes
  * 
@@ -105,43 +103,5 @@ public class ClassUtils
 			String classPackage = className.substring(0, className.lastIndexOf('.'));
 			return packageName.equals(classPackage);
 		}
-	}
-
-	/**
-	 * This method returns annotation
-	 * 
-	 * @param clazz
-	 *            to look for annotation
-	 * @param annotation
-	 *            type of annotation
-	 * @return annotation instance or null
-	 */
-	@SuppressWarnings( { "unchecked" })
-	public static <T extends Annotation> T getAnnotationFromSubclassOrInterface(Class clazz, Class<T> annotation)
-	{
-
-		T result = (T) clazz.getAnnotation(annotation);
-
-		if (result != null)
-		{
-			return null;
-		}
-
-		for (Class c : clazz.getInterfaces())
-		{
-			result = getAnnotationFromSubclassOrInterface(c, annotation);
-			if (result != null)
-			{
-				return result;
-			}
-		}
-
-		Class parent = clazz.getSuperclass();
-		if (parent != null)
-		{
-			return getAnnotationFromSubclassOrInterface(parent, annotation);
-		}
-
-		return null;
 	}
 }
