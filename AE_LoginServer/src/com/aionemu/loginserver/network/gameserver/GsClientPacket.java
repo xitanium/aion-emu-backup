@@ -26,16 +26,12 @@ import java.nio.ByteBuffer;
  * 
  * @author -Nemesiss-
  */
-public abstract class GsClientPacket extends BaseClientPacket
+public abstract class GsClientPacket extends BaseClientPacket<GsConnection>
 {
 	/**
 	 * Logger for this class.
 	 */
 	private static final Logger	log	= Logger.getLogger(GsClientPacket.class);
-	/**
-	 * Owner of this packet.
-	 */
-	private final GsConnection	client;
 
 	/**
 	 * Creates new packet instance. 
@@ -47,7 +43,7 @@ public abstract class GsClientPacket extends BaseClientPacket
 	protected GsClientPacket(ByteBuffer buf, GsConnection client, int opcode)
 	{
 		super(buf, opcode);
-		this.client = client;
+		setConnection(client);
 	}
 
 	/**
@@ -64,14 +60,6 @@ public abstract class GsClientPacket extends BaseClientPacket
 		{
 			log.warn("error handling gs (" + getConnection().getIP() + ") message " + this, e);
 		}
-	}
-
-	/**
-	 * @return Connection that is owner of this packet.
-	 */
-	public final GsConnection getConnection()
-	{
-		return client;
 	}
 
 	/**

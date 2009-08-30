@@ -100,7 +100,7 @@ public class GsConnection extends AConnection
 		log.info("recived packet: " + pck);
 
 		if (pck != null && pck.read())
-			ThreadPoolManager.getInstance().executeAionPacket(pck);
+			ThreadPoolManager.getInstance().executeGsPacket(pck);
 
 		return true;
 	}

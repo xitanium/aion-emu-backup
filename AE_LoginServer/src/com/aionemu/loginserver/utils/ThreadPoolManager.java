@@ -53,11 +53,6 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 	 * STPE for disconnection tasks
 	 */
 	private ScheduledThreadPoolExecutorAE	disconnectionScheduledThreadPool;
-
-	/**
-	 * TPE for execution of aion client packets
-	 */
-	private ThreadPoolExecutor				aionPacketsThreadPool;
 	/**
 	 * TPE for execution of gameserver client packets
 	 */
@@ -83,10 +78,6 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 		disconnectionScheduledThreadPool = new ScheduledThreadPoolExecutorAE(4, new PriorityThreadFactory(
 			"ScheduledThreadPool", Thread.NORM_PRIORITY));
 		disconnectionScheduledThreadPool.setRemoveOnCancelPolicy(true);
-
-		aionPacketsThreadPool = new ThreadPoolExecutor(6, 8, 15L, TimeUnit.SECONDS,
-			new LinkedBlockingQueue<Runnable>(),
-			new PriorityThreadFactory("Aion Packet Pool", Thread.NORM_PRIORITY + 1));
 
 		gameServerPacketsThreadPool = new ThreadPoolExecutor(4, Integer.MAX_VALUE, 5L, TimeUnit.SECONDS,
 			new LinkedBlockingQueue<Runnable>(), new PriorityThreadFactory("Game Server Packet Pool",
@@ -142,16 +133,6 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 		{
 			return null;
 		}
-	}
-
-	/**
-	 * Executes Runnable - Aion Client packet.
-	 * 
-	 * @param pkt
-	 */
-	public void executeAionPacket(Runnable pkt)
-	{
-		aionPacketsThreadPool.execute(pkt);
 	}
 
 	/**
@@ -249,10 +230,8 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 		try
 		{
 			scheduledThreadPool.shutdown();
-			aionPacketsThreadPool.shutdown();
 			gameServerPacketsThreadPool.shutdown();
 			scheduledThreadPool.awaitTermination(2, TimeUnit.SECONDS);
-			aionPacketsThreadPool.awaitTermination(2, TimeUnit.SECONDS);
 			gameServerPacketsThreadPool.awaitTermination(2, TimeUnit.SECONDS);
 			log.info("All ThreadPools are now stopped");
 		}

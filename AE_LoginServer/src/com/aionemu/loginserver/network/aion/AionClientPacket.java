@@ -27,16 +27,12 @@ import java.nio.ByteBuffer;
  * 
  * @author -Nemesiss-
  */
-public abstract class AionClientPacket extends BaseClientPacket
+public abstract class AionClientPacket extends BaseClientPacket<AionConnection>
 {
 	/**
 	 * Logger for this class.
 	 */
 	private static final Logger		log	= Logger.getLogger(AionClientPacket.class);
-	/**
-	 * Owner of this packet.
-	 */
-	private final AionConnection	client;
 
 	/**
 	 * Constructs new client packet.
@@ -48,7 +44,7 @@ public abstract class AionClientPacket extends BaseClientPacket
 	protected AionClientPacket(ByteBuffer buf, AionConnection client, int opcode)
 	{
 		super(buf, opcode);
-		this.client = client;
+		setConnection(client);
 	}
 
 	/**
@@ -76,14 +72,6 @@ public abstract class AionClientPacket extends BaseClientPacket
 
 			log.error("error handling client (" + name + ") message " + this, e);
 		}
-	}
-
-	/**
-	 * @return Connection that is owner of this packet.
-	 */
-	public final AionConnection getConnection()
-	{
-		return client;
 	}
 
 	/**
