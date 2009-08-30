@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.commons.network.packet;
+package com.aionemu.commons.network;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -26,14 +26,17 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
 
+import com.aionemu.commons.network.packet.BaseClientPacket;
+
 /**
  * Packet Processor responsible for executing packets in correct order with respecting rules: - 1 packet / client at one
  * time. - execute packets in received order.
  * 
  * @author -Nemesiss-
+ * @param <T> AConnection - owner of client packets.
  * 
  */
-public class PacketProcessor
+public class PacketProcessor<T extends AConnection>
 {
 	/**
 	 * Logger for PacketProcessor
@@ -61,7 +64,7 @@ public class PacketProcessor
 	/**
 	 * Queue of packet that will be executed in correct order.
 	 */
-	private final List<BaseClientPacket>	packets				= new LinkedList<BaseClientPacket>();
+	private final List<BaseClientPacket<T>>	packets				= new LinkedList<BaseClientPacket<T>>();
 
 	/**
 	 * Working threads.
@@ -148,7 +151,7 @@ public class PacketProcessor
 	 * @param packet
 	 *            that will be executed.
 	 */
-	public final void executePacket(BaseClientPacket packet)
+	public final void executePacket(BaseClientPacket<T> packet)
 	{
 		lock.lock();
 		try
@@ -168,18 +171,18 @@ public class PacketProcessor
 	 * 
 	 * @return first available BaseClientPacket
 	 */
-	private final BaseClientPacket getFirstAviable()
+	private final BaseClientPacket<T> getFirstAviable()
 	{
 		for (;;)
 		{
 			while (packets.isEmpty())
 				notEmpty.awaitUninterruptibly();
 
-			ListIterator<BaseClientPacket> it = packets.listIterator();
+			ListIterator<BaseClientPacket<T>> it = packets.listIterator();
 			while (it.hasNext())
 			{
-				BaseClientPacket packet = it.next();
-				if (packet.tryLockConnection())
+				BaseClientPacket<T> packet = it.next();
+				if (packet.getConnection().tryLockConnection())
 				{
 					it.remove();
 					return packet;
@@ -204,14 +207,14 @@ public class PacketProcessor
 		@Override
 		public void run()
 		{
-			BaseClientPacket packet = null;
+			BaseClientPacket<T> packet = null;
 			for (;;)
 			{
 				lock.lock();
 				try
 				{
 					if (packet != null)
-						packet.unlockConnection();
+						packet.getConnection().unlockConnection();
 
 					/* thread killed */
 					if (Thread.interrupted())

@@ -18,32 +18,35 @@ package com.aionemu.commons.network.packet;
 
 import org.apache.log4j.Logger;
 
+import com.aionemu.commons.network.AConnection;
+
 import java.nio.ByteBuffer;
 
 /**
  * Base class for every Client Packet
- *
+ * 
  * @author -Nemesiss-
+ * @param <T>
+ *            AConnection - owner of this client packet.
  */
-public abstract class BaseClientPacket extends BasePacket implements Runnable
+public abstract class BaseClientPacket<T extends AConnection> extends BasePacket implements Runnable
 {
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger	log		= Logger.getLogger(BaseClientPacket.class);
+	private static final Logger	log	= Logger.getLogger(BaseClientPacket.class);
+	/**
+	 * Owner of this packet.
+	 */
+	private T					client;
 	/**
 	 * ByteBuffer that contains this packet data
 	 */
 	private ByteBuffer			buf;
 
 	/**
-	 * Used only for PacketProcessor synchronization purpose
-	 */
-	private boolean				locked	= false;
-
-	/**
 	 * Constructs a new client packet with specified id and data buffer.
-	 *
+	 * 
 	 * @param buf
 	 *            packet data container.
 	 * @param opcode
@@ -57,7 +60,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 
 	/**
 	 * Constructs a new client packet with specified id. ByteBuffer must be later set with setBuffer method.
-	 *
+	 * 
 	 * @param opcode
 	 *            packet opcode.
 	 */
@@ -68,7 +71,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 
 	/**
 	 * Attach ByteBuffer to this packet.
-	 *
+	 * 
 	 * @param buf
 	 */
 	public void setBuffer(ByteBuffer buf)
@@ -77,13 +80,23 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	}
 
 	/**
+	 * Attach client connection to this packet.
+	 * 
+	 * @param client
+	 */
+	public void setConnection(T client)
+	{
+		this.client = client;
+	}
+
+	/**
 	 * This method reads data from a packet buffer. If the error occurred while reading data, the connection is closed.
-	 *
+	 * 
 	 * @return <code>true</code> if reading was successful, otherwise <code>false</code>
-	 *
+	 * 
 	 * @see com.aionemu.commons.network.AConnection#processData(java.nio.ByteBuffer)
 	 * @see com.aionemu.commons.network.Dispatcher#parse(com.aionemu.commons.network.AConnection, java.nio.ByteBuffer)
-	 *
+	 * 
 	 */
 	public final boolean read()
 	{
@@ -118,7 +131,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 
 	/**
 	 * Read int from this packet buffer.
-	 *
+	 * 
 	 * @return int
 	 */
 	protected final int readD()
@@ -136,7 +149,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 
 	/**
 	 * Read byte from this packet buffer.
-	 *
+	 * 
 	 * @return int
 	 */
 	protected final int readC()
@@ -154,7 +167,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 
 	/**
 	 * Read short from this packet buffer.
-	 *
+	 * 
 	 * @return int
 	 */
 	protected final int readH()
@@ -172,7 +185,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 
 	/**
 	 * Read double from this packet buffer.
-	 *
+	 * 
 	 * @return double
 	 */
 	protected final double readDF()
@@ -190,7 +203,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 
 	/**
 	 * Read double from this packet buffer.
-	 *
+	 * 
 	 * @return double
 	 */
 	protected final float readF()
@@ -208,7 +221,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 
 	/**
 	 * Read long from this packet buffer.
-	 *
+	 * 
 	 * @return long
 	 */
 	protected final long readQ()
@@ -226,7 +239,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 
 	/**
 	 * Read String from this packet buffer.
-	 *
+	 * 
 	 * @return String
 	 */
 	protected final String readS()
@@ -247,7 +260,7 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 
 	/**
 	 * Read n bytes from this packet buffer, n = length.
-	 *
+	 * 
 	 * @param length
 	 * @return byte[]
 	 */
@@ -271,23 +284,10 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	protected abstract void runImpl();
 
 	/**
-	 * Used only for PacketProcessor synchronization purpose. Return true if locked successful - if wasn't locked
-	 * before.
-	 *
-	 * @return locked
+	 * @return Connection that is owner of this packet.
 	 */
-	boolean tryLockConnection()
+	public final T getConnection()
 	{
-		if (locked)
-			return false;
-		return locked = true;
-	}
-
-	/**
-	 * Used only for PacketProcessor synchronization purpose. Unlock this connection.
-	 */
-	void unlockConnection()
-	{
-		locked = false;
+		return client;
 	}
 }

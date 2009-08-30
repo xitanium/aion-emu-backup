@@ -76,6 +76,11 @@ public abstract class AConnection
 	private final String		ip;
 
 	/**
+	 * Used only for PacketProcessor synchronization purpose
+	 */
+	private boolean				locked	= false;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param sc
@@ -202,6 +207,27 @@ public abstract class AConnection
 	public final String getIP()
 	{
 		return ip;
+	}
+
+	/**
+	 * Used only for PacketProcessor synchronization purpose. Return true if locked successful - if wasn't locked
+	 * before.
+	 * 
+	 * @return locked
+	 */
+	boolean tryLockConnection()
+	{
+		if (locked)
+			return false;
+		return locked = true;
+	}
+
+	/**
+	 * Used only for PacketProcessor synchronization purpose. Unlock this connection.
+	 */
+	void unlockConnection()
+	{
+		locked = false;
 	}
 
 	/**
