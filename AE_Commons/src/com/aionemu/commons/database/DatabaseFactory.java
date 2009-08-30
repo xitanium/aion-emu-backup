@@ -26,7 +26,6 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.ConnectionFactory;
 import org.apache.commons.dbcp.DriverManagerConnectionFactory;
-import org.apache.commons.dbcp.PoolableConnectionFactory;
 import org.apache.commons.dbcp.PoolingDataSource;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.log4j.Logger;
@@ -60,7 +59,7 @@ public class DatabaseFactory
 	private static final ScriptManager	scriptManager	= new ScriptManager();
 
 	/**
-	 * Data Source Generates all Connections This vaiable is also used as indicator for "initalized" state of
+	 * Data Source Generates all Connections This variable is also used as indicator for "initialized" state of
 	 * DatabaseFactory
 	 */
 	private static DataSource			dataSource;
@@ -120,6 +119,9 @@ public class DatabaseFactory
 		connectionPool.setMaxIdle(DatabaseConfig.DATABASE_CONNECTIONS_MIN);
 		connectionPool.setMaxActive(DatabaseConfig.DATABASE_CONNECTIONS_MAX);
 
+		/* test if connection is still valid before returning */
+		connectionPool.setTestOnBorrow(true);
+
 		try
 		{
 			dataSource = setupDataSource();
@@ -164,7 +166,9 @@ public class DatabaseFactory
 			DatabaseConfig.DATABASE_USER, DatabaseConfig.DATABASE_PASSWORD);
 
 		// Makes Connection Factory Pool-able (Wrapper for two objects)
-		new PoolableConnectionFactory(conFactory, connectionPool, null, null, false, true);
+		// We are using our own implementation of PoolableConnectionFactory that use 1.6 Connection.isValid(timeout) for
+		// validation check instead dbcp manual query.
+		new PoolableConnectionFactoryAE(conFactory, connectionPool, null, 1, false, true);
 
 		// Create data source to utilize Factory and Pool
 		return new PoolingDataSource(connectionPool);

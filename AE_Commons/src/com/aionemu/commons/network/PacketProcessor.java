@@ -101,6 +101,9 @@ public class PacketProcessor<T extends AConnection>
 
 		if (minThreads != maxThreads)
 			startCheckerThread();
+
+		for(int i = 0; i < minThreads; i++)
+			newThread();
 	}
 
 	/**
