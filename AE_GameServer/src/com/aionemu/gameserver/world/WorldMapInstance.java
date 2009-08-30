@@ -25,16 +25,16 @@ import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 
 /**
  * World map instance object.
- * 
+ *
  * @author -Nemesiss-
- * 
+ *
  */
 public class WorldMapInstance
 {
 	/**
 	 * Size of region
 	 */
-	public static final int				regionSize		= 50;
+	public static final int				regionSize		= 500;
 	/**
 	 * Max world size - actually it must be some value bigger than world size. Used only for id generation.
 	 */
@@ -47,14 +47,10 @@ public class WorldMapInstance
 	 * List of active regions.
 	 */
 	private final Map<Integer, MapRegion>	regions			= new HashMap<Integer, MapRegion>();
-	/**
-	 * Read write lock.
-	 */
-	private ReadWriteLock rwl = new  ReentrantReadWriteLock();
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param parent
 	 */
 	WorldMapInstance(WorldMap parent)
@@ -64,7 +60,7 @@ public class WorldMapInstance
 
 	/**
 	 * Return World map id.
-	 * 
+	 *
 	 * @return world map id
 	 */
 	public int getMapId()
@@ -74,7 +70,7 @@ public class WorldMapInstance
 
 	/**
 	 * Returns WorldMap witch is parent of this instance
-	 * 
+	 *
 	 * @return parent
 	 */
 	public WorldMap getParent()
@@ -84,9 +80,9 @@ public class WorldMapInstance
 
 	/**
 	 * Returns MapRegion that contains coordinates of VisibleObject. If the region doesn't exist, it's created.
-	 * 
+	 *
 	 * @param object
-	 * 
+	 *
 	 * @return a MapRegion
 	 */
 	MapRegion getRegion(VisibleObject object)
@@ -96,7 +92,7 @@ public class WorldMapInstance
 
 	/**
 	 * Returns MapRegion that contains given x,y coordinates. If the region doesn't exist, it's created.
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @return a MapRegion
@@ -121,7 +117,7 @@ public class WorldMapInstance
 
 	/**
 	 * Calculate region id from cords.
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @return region id.
@@ -133,7 +129,7 @@ public class WorldMapInstance
 
 	/**
 	 * Create new MapRegion and add link to neighbours.
-	 * 
+	 *
 	 * @param regionId
 	 * @return newly created map region
 	 */
@@ -145,9 +141,9 @@ public class WorldMapInstance
 		int rx = regionId / maxWorldSize;
 		int ry = regionId % maxWorldSize;
 
-		for(int x = rx - 2; x <= rx + 2; x++)
+		for(int x = rx - 1; x <= rx + 1; x++)
 		{
-			for(int y = ry - 2; y <= ry + 2; y++)
+			for(int y = ry - 1; y <= ry + 1; y++)
 			{
 				if(x == rx && y == ry)
 					continue;
@@ -165,20 +161,11 @@ public class WorldMapInstance
 	}
 
 	/**
-	 * Returs {@link World} instance to which belongs this WorldMapInstance 
+	 * Returs {@link World} instance to which belongs this WorldMapInstance
 	 * @return World
 	 */
 	public World getWorld()
 	{
 		return getParent().getWorld();
-	}
-
-	/**
-	 * Return ReadWriteLock
-	 * @return rwl
-	 */
-	public ReadWriteLock getLock()
-	{
-		return  rwl;
 	}
 }
