@@ -21,20 +21,18 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.AConnection;
 import com.aionemu.commons.network.Dispatcher;
+import com.aionemu.commons.network.PacketProcessor;
 import com.aionemu.gameserver.model.account.Account;
-import com.aionemu.gameserver.model.account.PlayerAccountData;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.Crypt;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_KEY;
 import com.aionemu.gameserver.network.loginserver.LoginServer;
 import com.aionemu.gameserver.services.PlayerService;
-import com.aionemu.gameserver.utils.ThreadPoolManager;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -48,7 +46,11 @@ public class AionConnection extends AConnection
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger	log	= Logger.getLogger(AionConnection.class);
+	private static final Logger								log			= Logger.getLogger(AionConnection.class);
+	/**
+	 * PacketProcessor for executing packets.
+	 */
+	private final static PacketProcessor<AionConnection>	processor	= new PacketProcessor<AionConnection>(1, 8);
 
 	/**
 	 * Possible states of AionConnection
@@ -157,7 +159,7 @@ public class AionConnection extends AConnection
 		 * Execute packet only if packet exist (!= null) and read was ok.
 		 */
 		if(pck != null && pck.read())
-			ThreadPoolManager.getInstance().executeAionPacket(pck);
+			processor.executePacket(pck);
 
 		return true;
 	}

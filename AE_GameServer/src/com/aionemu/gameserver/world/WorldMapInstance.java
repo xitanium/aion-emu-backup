@@ -18,6 +18,8 @@ package com.aionemu.gameserver.world;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 
@@ -32,7 +34,7 @@ public class WorldMapInstance
 	/**
 	 * Size of region
 	 */
-	private static final int				regionSize		= 500;
+	public static final int				regionSize		= 50;
 	/**
 	 * Max world size - actually it must be some value bigger than world size. Used only for id generation.
 	 */
@@ -45,6 +47,10 @@ public class WorldMapInstance
 	 * List of active regions.
 	 */
 	private final Map<Integer, MapRegion>	regions			= new HashMap<Integer, MapRegion>();
+	/**
+	 * Read write lock.
+	 */
+	private ReadWriteLock rwl = new  ReentrantReadWriteLock();
 
 	/**
 	 * Constructor.
@@ -139,9 +145,9 @@ public class WorldMapInstance
 		int rx = regionId / maxWorldSize;
 		int ry = regionId % maxWorldSize;
 
-		for(int x = rx - 1; x <= rx + 1; x++)
+		for(int x = rx - 2; x <= rx + 2; x++)
 		{
-			for(int y = ry - 1; y <= ry + 1; y++)
+			for(int y = ry - 2; y <= ry + 2; y++)
 			{
 				if(x == rx && y == ry)
 					continue;
@@ -165,5 +171,14 @@ public class WorldMapInstance
 	public World getWorld()
 	{
 		return getParent().getWorld();
+	}
+
+	/**
+	 * Return ReadWriteLock
+	 * @return rwl
+	 */
+	public ReadWriteLock getLock()
+	{
+		return  rwl;
 	}
 }

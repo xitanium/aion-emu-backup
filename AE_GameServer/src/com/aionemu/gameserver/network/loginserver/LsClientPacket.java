@@ -16,8 +16,6 @@
  */
 package com.aionemu.gameserver.network.loginserver;
 
-import java.nio.ByteBuffer;
-
 import org.apache.log4j.Logger;
 
 import com.aionemu.commons.network.packet.BaseClientPacket;
@@ -26,32 +24,12 @@ import com.aionemu.commons.network.packet.BaseClientPacket;
  * @author -Nemesiss-
  * 
  */
-public abstract class LsClientPacket extends BaseClientPacket implements Cloneable
+public abstract class LsClientPacket extends BaseClientPacket<LoginServerConnection> implements Cloneable
 {
 	/**
 	 * Logger for this class.
 	 */
 	private static final Logger		log	= Logger.getLogger(LsClientPacket.class);
-	/**
-	 * Owner of this packet.
-	 */
-	private LoginServerConnection	client;
-
-	/**
-	 * Constructs new client packet with specified opcode.
-	 * 
-	 * @param buf
-	 *            packet data
-	 * @param client
-	 *            packet owner
-	 * @param opcode
-	 *            packet id
-	 */
-	protected LsClientPacket(ByteBuffer buf, LoginServerConnection client, int opcode)
-	{
-		super(buf, opcode);
-		this.client = client;
-	}
 
 	/**
 	 * Constructs new client packet with specified opcode. If using this constructor, user must later manually set
@@ -63,16 +41,6 @@ public abstract class LsClientPacket extends BaseClientPacket implements Cloneab
 	protected LsClientPacket(int opcode)
 	{
 		super(opcode);
-	}
-
-	/**
-	 * Attaches connection object to this packet.
-	 * 
-	 * @param connection
-	 */
-	public void setConnection(LoginServerConnection connection)
-	{
-		this.client = connection;
 	}
 
 	/**
@@ -88,14 +56,6 @@ public abstract class LsClientPacket extends BaseClientPacket implements Cloneab
 		{
 			log.warn("error handling ls (" + getConnection().getIP() + ") message " + this, e);
 		}
-	}
-
-	/**
-	 * @return Connection that is owner of this packet.
-	 */
-	public final LoginServerConnection getConnection()
-	{
-		return client;
 	}
 
 	/**

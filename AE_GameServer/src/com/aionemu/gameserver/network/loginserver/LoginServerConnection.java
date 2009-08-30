@@ -111,7 +111,7 @@ public class LoginServerConnection extends AConnection
 		 * Execute packet only if packet exist (!= null) and read was ok.
 		 */
 		if(pck != null && pck.read())
-			ThreadPoolManager.getInstance().executeAionPacket(pck);
+			ThreadPoolManager.getInstance().executeLsPacket(pck);
 
 		return true;
 	}

@@ -45,7 +45,6 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 	private ScheduledThreadPoolExecutorAE	scheduledThreadPool;
 	private ScheduledThreadPoolExecutorAE	disconnectionScheduledThreadPool;
 
-	private ThreadPoolExecutor				aionPacketsThreadPool;
 	private ThreadPoolExecutor				loginServerPacketsThreadPool;
 
 	/**
@@ -68,10 +67,6 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 		disconnectionScheduledThreadPool = new ScheduledThreadPoolExecutorAE(4, new PriorityThreadFactory(
 			"ScheduledThreadPool", Thread.NORM_PRIORITY));
 		// disconnectionScheduledThreadPool.setRemoveOnCancelPolicy(true);
-
-		aionPacketsThreadPool = new ThreadPoolExecutor(6, 8, 15L, TimeUnit.SECONDS,
-			new LinkedBlockingQueue<Runnable>(),
-			new PriorityThreadFactory("Aion Packet Pool", Thread.NORM_PRIORITY + 1));
 
 		loginServerPacketsThreadPool = new ThreadPoolExecutor(4, Integer.MAX_VALUE, 5L, TimeUnit.SECONDS,
 			new LinkedBlockingQueue<Runnable>(), new PriorityThreadFactory("Login Server Packet Pool",
@@ -110,11 +105,6 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 		{
 			return null;
 		}
-	}
-
-	public void executeAionPacket(Runnable pkt)
-	{
-		aionPacketsThreadPool.execute(pkt);
 	}
 
 	public void executeLsPacket(Runnable pkt)
@@ -175,11 +165,6 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 			t.setUncaughtExceptionHandler(new ThreadUncaughtExceptionHandler());
 			return t;
 		}
-
-		public ThreadGroup getGroup()
-		{
-			return group;
-		}
 	}
 
 	/**
@@ -190,10 +175,8 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 		try
 		{
 			scheduledThreadPool.shutdown();
-			aionPacketsThreadPool.shutdown();
 			loginServerPacketsThreadPool.shutdown();
 			scheduledThreadPool.awaitTermination(2, TimeUnit.SECONDS);
-			aionPacketsThreadPool.awaitTermination(2, TimeUnit.SECONDS);
 			loginServerPacketsThreadPool.awaitTermination(2, TimeUnit.SECONDS);
 			log.info("All ThreadPools are now stopped");
 		}

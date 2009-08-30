@@ -27,16 +27,12 @@ import com.aionemu.commons.network.packet.BaseClientPacket;
  * 
  * @author -Nemesiss-
  */
-public abstract class AionClientPacket extends BaseClientPacket implements Cloneable
+public abstract class AionClientPacket extends BaseClientPacket<AionConnection> implements Cloneable
 {
 	/**
 	 * Logger for this class.
 	 */
 	private static final Logger	log	= Logger.getLogger(AionClientPacket.class);
-	/**
-	 * Owner of this packet.
-	 */
-	private AionConnection		client;
 
 	/**
 	 * Constructs new client packet instance.
@@ -48,10 +44,11 @@ public abstract class AionClientPacket extends BaseClientPacket implements Clone
 	 * @param opcode
 	 *            packet id
 	 */
+	@Deprecated
 	protected AionClientPacket(ByteBuffer buf, AionConnection client, int opcode)
 	{
 		super(buf, opcode);
-		this.client = client;
+		setConnection(client);
 	}
 
 	/**
@@ -64,16 +61,6 @@ public abstract class AionClientPacket extends BaseClientPacket implements Clone
 	protected AionClientPacket(int opcode)
 	{
 		super(opcode);
-	}
-
-	/**
-	 * Attach client connection to this packet.
-	 * 
-	 * @param client
-	 */
-	public void setConnection(AionConnection client)
-	{
-		this.client = client;
 	}
 
 	/**
@@ -93,14 +80,6 @@ public abstract class AionClientPacket extends BaseClientPacket implements Clone
 
 			log.error("error handling client (" + name + ") message " + this, e);
 		}
-	}
-
-	/**
-	 * @return Connection that is owner of this packet.
-	 */
-	public final AionConnection getConnection()
-	{
-		return client;
 	}
 
 	/**
