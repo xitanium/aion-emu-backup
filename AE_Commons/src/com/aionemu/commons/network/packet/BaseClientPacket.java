@@ -30,11 +30,16 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger	log	= Logger.getLogger(BaseClientPacket.class);
+	private static final Logger	log		= Logger.getLogger(BaseClientPacket.class);
 	/**
 	 * ByteBuffer that contains this packet data
 	 */
 	private ByteBuffer			buf;
+
+	/**
+	 * Used only for PacketProcessor synchronization purpose
+	 */
+	private boolean				locked	= false;
 
 	/**
 	 * Constructs a new client packet with specified id and data buffer.
@@ -264,4 +269,25 @@ public abstract class BaseClientPacket extends BasePacket implements Runnable
 	 * Execute this packet action.
 	 */
 	protected abstract void runImpl();
+
+	/**
+	 * Used only for PacketProcessor synchronization purpose. Return true if locked successful - if wasn't locked
+	 * before.
+	 * 
+	 * @return locked
+	 */
+	boolean tryLockConnection()
+	{
+		if (locked)
+			return false;
+		return locked = true;
+	}
+
+	/**
+	 * Used only for PacketProcessor synchronization purpose. Unlock this connection.
+	 */
+	public void unlockConnection()
+	{
+		locked = false;
+	}
 }
