@@ -224,10 +224,10 @@ public class NioServer
 		}
 
 		notifyServerClose();
-		/** Wait 60s */
+		/** Wait 5s */
 		try
 		{
-			Thread.sleep(60000);
+			Thread.sleep(5000);
 		}
 		catch (Throwable t)
 		{
