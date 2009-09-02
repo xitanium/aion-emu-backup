@@ -40,7 +40,6 @@ public class ConfigurableProcessor
 	 * If object(new Something()) is submitted, object fields are parsed. (non-static)<br>
 	 * If class is submitted(Sotmething.class), static fields are parsed.<br>
 	 * <p/>
-	 * This method is not designed to throw any exceptions, however there will be a log record if something goes wrong.
 	 * 
 	 * @param object
 	 *            Class or Object that has {@link Property} annotations.
@@ -130,7 +129,9 @@ public class ConfigurableProcessor
 				// Final fields should not be processed
 				if (Modifier.isFinal(f.getModifiers()))
 				{
-					log.error("Attempt to proceed final field " + f.getName() + " of class " + clazz.getName());
+					RuntimeException re = new RuntimeException("Attempt to proceed final field " + f.getName() + " of class " + clazz.getName());
+					log.error(re);
+					throw re;
 				}
 				else
 				{
@@ -172,8 +173,9 @@ public class ConfigurableProcessor
 		}
 		catch (Exception e)
 		{
-			log.error("Can't transform field " + f.getName() + " of class " + f.getDeclaringClass(), e);
-			throw new RuntimeException(e);
+			RuntimeException re = new RuntimeException("Can't transform field " + f.getName() + " of class " + f.getDeclaringClass(), e);
+			log.error(re);
+			throw re;
 		}
 		f.setAccessible(oldAccessible);
 	}
