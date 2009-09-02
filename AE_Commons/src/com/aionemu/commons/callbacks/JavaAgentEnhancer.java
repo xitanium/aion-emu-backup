@@ -6,12 +6,12 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
 import java.lang.reflect.Modifier;
 import java.security.ProtectionDomain;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
 
@@ -89,18 +89,18 @@ public class JavaAgentEnhancer implements ClassFileTransformer
 		try
 		{
 			// no need to scan whole jvm boot classpath
-			if(loader == null)
+			if (loader == null)
 			{
 				return null;
 			}
 
 			// classes from jvm ext dir, no need to modify
-			if(loader.getClass().getName().equals("sun.misc.Launcher$ExtClassLoader"))
+			if (loader.getClass().getName().equals("sun.misc.Launcher$ExtClassLoader"))
 			{
 				return null;
 			}
 
-			//actual class transformation
+			// actual class transformation
 			return transformClass(loader, classfileBuffer);
 		}
 		catch (Exception e)
@@ -110,7 +110,7 @@ public class JavaAgentEnhancer implements ClassFileTransformer
 			log.fatal(e1);
 
 			// if it is a class from core (not a script) - terminate server
-			//noinspection ConstantConditions
+			// noinspection ConstantConditions
 			if (loader.getClass().getName().equals("sun.misc.Launcher$AppClassLoader"))
 			{
 				Runtime.getRuntime().halt(ExitCode.CODE_ERROR);
@@ -379,11 +379,11 @@ public class JavaAgentEnhancer implements ClassFileTransformer
 		ClassPool cp = clazz.getClassPool();
 		CtField cbField = new CtField(cp.get(List.class.getName()), FIELD_NAME_CALLBACKS, clazz);
 		cbField.setModifiers(Modifier.PRIVATE);
-		clazz.addField(cbField, CtField.Initializer.byExpr("new " + HashMap.class.getName() + "();"));
+		clazz.addField(cbField, CtField.Initializer.byExpr("new " + ConcurrentHashMap.class.getName() + "();"));
 
-		CtField cblField = new CtField(cp.get(ReentrantReadWriteLock.class.getName()), FIELD_NAME_CALLBACKS_LOCK, clazz);
+		CtField cblField = new CtField(cp.get(ReentrantLock.class.getName()), FIELD_NAME_CALLBACKS_LOCK, clazz);
 		cblField.setModifiers(Modifier.PRIVATE);
-		clazz.addField(cblField, CtField.Initializer.byExpr("new " + ReentrantReadWriteLock.class.getName() + "();"));
+		clazz.addField(cblField, CtField.Initializer.byExpr("new " + ReentrantLock.class.getName() + "();"));
 	}
 
 	/**
@@ -403,7 +403,7 @@ public class JavaAgentEnhancer implements ClassFileTransformer
 
 		CtClass callbackClass = cp.get(Callback.class.getName());
 		CtClass mapClass = cp.get(Map.class.getName());
-		CtClass reentrantReadWriteLockClass = cp.get(ReentrantReadWriteLock.class.getName());
+		CtClass reentrantReadWriteLockClass = cp.get(ReentrantLock.class.getName());
 
 		CtMethod method = new CtMethod(CtClass.voidType, "addCallback", new CtClass[] { callbackClass }, clazz);
 		method.setModifiers(Modifier.PUBLIC);

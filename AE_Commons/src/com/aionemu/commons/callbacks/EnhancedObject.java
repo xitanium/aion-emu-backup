@@ -19,11 +19,19 @@ package com.aionemu.commons.callbacks;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Generic interface for all enhanced object.<br>
- * <font color="red">NEVER IMPLEMENT THIS CLASS MANUALLY!!!</font>
+ * <font color="red">NEVER IMPLEMENT THIS CLASS MANUALLY!!!</font> <br>
+ * <br>
+ * <b>Thread safety, concurrency, deadlocks:</b><br>
+ * It's allowed to remove/add listeners from listeners.<br>
+ * Listeners are stored in the {@link java.util.concurrent.CopyOnWriteArrayList}, so their behavior is similiar.<br>
+ * Briefly speaking, if you will try to remove/add a listener from another listener - the current ivocation won't be
+ * affected, current implementation allocates all listeners that are going to be invoked before execution.<br>
+ * <br> {@link Callback#beforeCall(Object, Object[])} and {@link Callback#afterCall(Object, Object[], Object)} are threated
+ * as separate invocations, so adding/removing listener in beforeCall will affect afterCall.
  * 
  * @author SoulKeeper
  */
@@ -31,7 +39,7 @@ public interface EnhancedObject
 {
 
 	/**
-	 * Adds callback to this object.<br>
+	 * Adds callback to this object.<br> {@link com.aionemu.commons.callbacks.EnhancedObject concurrency description}
 	 * 
 	 * @param callback
 	 *            instance of callback to add
@@ -40,7 +48,7 @@ public interface EnhancedObject
 	public void addCallback(Callback callback);
 
 	/**
-	 * Removes callback from this object
+	 * Removes callback from this object.<br> {@link com.aionemu.commons.callbacks.EnhancedObject concurrency description}
 	 * 
 	 * @param callback
 	 *            instance of callback to remove
@@ -60,5 +68,5 @@ public interface EnhancedObject
 	 * 
 	 * @return lock that is used to ensure thread safety
 	 */
-	public ReentrantReadWriteLock getCallbackLock();
+	public ReentrantLock getCallbackLock();
 }

@@ -17,9 +17,9 @@
 
 package com.aionemu.commons.callbacks;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -60,12 +60,12 @@ public class CallbackHelper
 		try
 		{
 			Map<Class<? extends Callback>, List<Callback>> cbMap = object.getCallbacks();
-			object.getCallbackLock().writeLock().lock();
+			object.getCallbackLock().lock();
 
 			List<Callback> list = cbMap.get(callback.getBaseClass());
 			if (list == null)
 			{
-				list = new ArrayList<Callback>();
+				list = new CopyOnWriteArrayList<Callback>();
 				cbMap.put(callback.getBaseClass(), list);
 			}
 
@@ -90,7 +90,7 @@ public class CallbackHelper
 		}
 		finally
 		{
-			object.getCallbackLock().writeLock().unlock();
+			object.getCallbackLock().unlock();
 		}
 	}
 
@@ -106,7 +106,7 @@ public class CallbackHelper
 	{
 		try
 		{
-			object.getCallbackLock().writeLock().lock();
+			object.getCallbackLock().lock();
 
 			Map<Class<? extends Callback>, List<Callback>> cbMap = object.getCallbacks();
 
@@ -126,7 +126,7 @@ public class CallbackHelper
 		}
 		finally
 		{
-			object.getCallbackLock().writeLock().unlock();
+			object.getCallbackLock().unlock();
 		}
 	}
 
@@ -141,46 +141,32 @@ public class CallbackHelper
 	 *            args of method
 	 * @return {@link Callback#beforeCall(Object, Object[])}
 	 */
-	@SuppressWarnings( { "unchecked" })
+	@SuppressWarnings( { "unchecked", "UnusedDeclaration" })
 	public static CallbackResult<?> beforeCall(EnhancedObject obj, Class callbackClass, Object... args)
 	{
+		List<Callback> list = obj.getCallbacks().get(callbackClass);
+
+		if (list == null || list.isEmpty())
+		{
+			return CallbackResult.newContinue();
+		}
 
 		CallbackResult<?> cr = null;
 
-		try
+		for (Callback c : list)
 		{
-			obj.getCallbackLock().readLock().lock();
-			Map<Class<? extends Callback>, List<Callback>> cbMap = obj.getCallbacks();
-			List<Callback> list = cbMap.get(callbackClass);
-
-			if (list == null || list.isEmpty())
+			try
 			{
-				return CallbackResult.newContinue();
-			}
-
-			// Direct access is faster for ArrayList, do not change to foreach loop
-			for (int i = 0, n = list.size(); i < n; i++)
-			{
-				Callback c = list.get(i);
-
-				try
+				cr = c.beforeCall(obj, args);
+				if (cr.isBlockingCallbacks())
 				{
-					cr = c.beforeCall(obj, args);
-					if (cr.isBlockingCallbacks())
-					{
-						break;
-					}
-				}
-				catch (Throwable t)
-				{
-					log.error("Uncaught exception in callback", t);
+					break;
 				}
 			}
-
-		}
-		finally
-		{
-			obj.getCallbackLock().readLock().unlock();
+			catch (Throwable t)
+			{
+				log.error("Uncaught exception in callback", t);
+			}
 		}
 
 		return cr == null ? CallbackResult.newContinue() : cr;
@@ -199,46 +185,32 @@ public class CallbackHelper
 	 *            method invokation result
 	 * @return {@link Callback#afterCall(Object, Object[], Object)}
 	 */
-	@SuppressWarnings( { "unchecked" })
+	@SuppressWarnings( { "unchecked", "UnusedDeclaration" })
 	public static CallbackResult<?> afterCall(EnhancedObject obj, Class callbackClass, Object[] args, Object result)
 	{
+		List<Callback> list = obj.getCallbacks().get(callbackClass);
+
+		if (list == null || list.isEmpty())
+		{
+			return CallbackResult.newContinue();
+		}
 
 		CallbackResult<?> cr = null;
 
-		try
+		for (Callback c : list)
 		{
-			obj.getCallbackLock().readLock().lock();
-			Map<Class<? extends Callback>, List<Callback>> cbMap = obj.getCallbacks();
-			List<Callback> list = cbMap.get(callbackClass);
-
-			if (list == null || list.isEmpty())
+			try
 			{
-				return CallbackResult.newContinue();
-			}
-
-			// Direct access is faster for ArrayList, do not change to foreach loop
-			for (int i = 0, n = list.size(); i < n; i++)
-			{
-				Callback c = list.get(i);
-
-				try
+				cr = c.afterCall(obj, args, result);
+				if (cr.isBlockingCallbacks())
 				{
-					cr = c.afterCall(obj, args, result);
-					if (cr.isBlockingCallbacks())
-					{
-						break;
-					}
-				}
-				catch (Throwable t)
-				{
-					log.error("Uncaught exception in callback", t);
+					break;
 				}
 			}
-
-		}
-		finally
-		{
-			obj.getCallbackLock().readLock().unlock();
+			catch (Throwable t)
+			{
+				log.error("Uncaught exception in callback", t);
+			}
 		}
 
 		return cr == null ? CallbackResult.newContinue() : cr;
