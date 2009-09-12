@@ -47,6 +47,7 @@ public class ByteTransformer implements PropertyTransformer<Byte>
 	 * @throws TransformationException
 	 *             if something went wrong
 	 */
+	@Override
 	public Byte transform(String value, Field field) throws TransformationException
 	{
 		try

@@ -44,6 +44,7 @@ public class LongTransformer implements PropertyTransformer<Long>
 	 * @throws TransformationException
 	 *             if something went wrong
 	 */
+	@Override
 	public Long transform(String value, Field field) throws TransformationException
 	{
 		try

@@ -178,7 +178,7 @@ public abstract class AConnection
 				}
 				closed = true;
 			}
-			catch (IOException e)
+			catch (IOException ignored)
 			{
 			}
 		}

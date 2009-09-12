@@ -111,7 +111,7 @@ public abstract class Dispatcher extends Thread
 
 				synchronized (gate)
 				{
-				};
+				}
 			}
 			catch (Exception e)
 			{
@@ -237,7 +237,7 @@ public abstract class Dispatcher extends Thread
 	 *            Buffer with packet data
 	 * @return True if packet was parsed.
 	 */
-	private final boolean parse(AConnection con, ByteBuffer buf)
+	private boolean parse(AConnection con, ByteBuffer buf)
 	{
 		short sz = 0;
 		try

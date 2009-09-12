@@ -257,7 +257,7 @@ public class NioServer
 	/**
 	 * Calls onServerClose method for all active connections.
 	 */
-	private final void notifyServerClose()
+	private void notifyServerClose()
 	{
 		if (readWriteDispatchers != null)
 		{
@@ -285,7 +285,7 @@ public class NioServer
 	/**
 	 * Close all active connections.
 	 */
-	private final void closeAll()
+	private void closeAll()
 	{
 		if (readWriteDispatchers != null)
 		{

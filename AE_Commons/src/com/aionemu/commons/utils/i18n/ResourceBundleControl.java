@@ -110,7 +110,7 @@ public class ResourceBundleControl extends ResourceBundle.Control
 					throw new ClassCastException(bundleClass.getName() + " cannot be cast to ResourceBundle");
 				}
 			}
-			catch (ClassNotFoundException e)
+			catch (ClassNotFoundException ignored)
 			{
 			}
 		}
@@ -124,6 +124,7 @@ public class ResourceBundleControl extends ResourceBundle.Control
 			try
 			{
 				stream = AccessController.doPrivileged(new PrivilegedExceptionAction<InputStream>() {
+					@Override
 					public InputStream run() throws IOException
 					{
 						InputStream is = null;

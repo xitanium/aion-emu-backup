@@ -174,7 +174,7 @@ public class PacketProcessor<T extends AConnection>
 	 * 
 	 * @return first available BaseClientPacket
 	 */
-	private final BaseClientPacket<T> getFirstAviable()
+	private BaseClientPacket<T> getFirstAviable()
 	{
 		for (;;)
 		{

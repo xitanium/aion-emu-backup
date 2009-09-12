@@ -46,6 +46,7 @@ public class IntegerTransformer implements PropertyTransformer<Integer>
 	 * @throws TransformationException
 	 *             if something went wrong
 	 */
+	@Override
 	public Integer transform(String value, Field field) throws TransformationException
 	{
 		try

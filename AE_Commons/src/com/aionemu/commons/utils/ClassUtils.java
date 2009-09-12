@@ -56,7 +56,7 @@ public class ClassUtils
 			}
 			if (b.isInterface())
 			{
-				Class interfaces[] = x.getInterfaces();
+				Class[] interfaces = x.getInterfaces();
 				for (Class anInterface : interfaces)
 				{
 					if (isSubclass(anInterface, b))

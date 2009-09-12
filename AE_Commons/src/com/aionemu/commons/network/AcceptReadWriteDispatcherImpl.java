@@ -113,12 +113,12 @@ public class AcceptReadWriteDispatcherImpl extends Dispatcher
 	/**
 	 * Process Pending Close connections.
 	 */
-	private final void processPendingClose()
+	private void processPendingClose()
 	{
 		synchronized (pendingClose)
 		{
-			for (int i = 0; i < pendingClose.size(); i++)
-				closeConnectionImpl(pendingClose.get(i));
+			for (AConnection connection : pendingClose)
+				closeConnectionImpl(connection);
 			pendingClose.clear();
 		}
 	}
