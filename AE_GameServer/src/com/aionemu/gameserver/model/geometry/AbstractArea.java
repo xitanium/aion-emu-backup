@@ -165,6 +165,7 @@ public abstract class AbstractArea implements Area
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int getMinZ()
 	{
 		return minZ;
@@ -173,6 +174,7 @@ public abstract class AbstractArea implements Area
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int getMaxZ()
 	{
 		return maxZ;

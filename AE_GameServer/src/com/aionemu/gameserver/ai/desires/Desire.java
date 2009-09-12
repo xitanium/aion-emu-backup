@@ -45,6 +45,7 @@ public interface Desire extends Comparable<Desire>
 	 * 
 	 * @return hashcode for this object
 	 */
+	@Override
 	int hashCode();
 
 	/**
@@ -54,6 +55,7 @@ public interface Desire extends Comparable<Desire>
 	 *            another object to compare with
 	 * @return result of object comparation
 	 */
+	@Override
 	boolean equals(Object obj);
 
 	/**

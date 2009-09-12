@@ -139,7 +139,7 @@ public class Crypt
 	 * @param buf
 	 * @return true if packet is correctly decoded
 	 */
-	private final boolean validateClientPacket(ByteBuffer buf)
+	private boolean validateClientPacket(ByteBuffer buf)
 	{
 		return buf.get(0) == ~buf.get(2) && buf.get(1) == staticClientPacketCode;
 	}
@@ -203,7 +203,7 @@ public class Crypt
 	 * @param op
 	 * @return obfuscated opcodec
 	 */
-	public static final byte encodeOpcodec(int op)
+	public static byte encodeOpcodec(int op)
 	{
 		return (byte) ((op + 0xAE) ^ 0xEE);
 	}

@@ -91,6 +91,7 @@ public class DataInjectionModule extends AbstractModule
 	{
 		return datamanager.PLAYER_EXPERIENCE_TABLE;
 	}
+	
 	@Provides
 	@Singleton
 	ChatHandlers provideChatHandlers()
@@ -99,14 +100,12 @@ public class DataInjectionModule extends AbstractModule
 	}
 
 	@Provides
-	@Singleton
 	PlayerStatsData providePlayerStatsData(DataManager datamanager)
 	{
 		return datamanager.PLAYER_STATS_DATA;
 	}
 
 	@Provides
-	@Singleton
 	PlayerInitialData providePlayerInitialData(DataManager datamanager)
 	{
 		return datamanager.PLAYER_INITIAL_DATA;

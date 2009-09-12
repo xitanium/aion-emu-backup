@@ -24,6 +24,7 @@ package com.aionemu.gameserver.utils.idfactory;
  */
 public class IDFactoryError extends Error
 {
+	private static final long serialVersionUID = 6945059882804355687L;
 
 	/**
 	 * {@inheritDoc}
