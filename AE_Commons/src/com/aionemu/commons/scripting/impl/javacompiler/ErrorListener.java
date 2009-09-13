@@ -48,12 +48,11 @@ public class ErrorListener implements DiagnosticListener<JavaFileObject>
 	public void report(Diagnostic<? extends JavaFileObject> diagnostic)
 	{
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("Compier Error Report Start").append("\n");
-		buffer.append("errcode:").append(diagnostic.getCode()).append("\n");
-		buffer.append("line   :").append(diagnostic.getLineNumber()).append("\n");
-		buffer.append("column :").append(diagnostic.getColumnNumber()).append("\n");
-		buffer.append("message:").append(diagnostic.getMessage(Locale.getDefault())).append("\n");
-		buffer.append("Compier Error Report End");
+		buffer.append("Java Compiler ").append(diagnostic.getKind()).append(": ")
+				.append(diagnostic.getMessage(Locale.ENGLISH)).append("\n")
+				.append("Source: ").append(diagnostic.getSource().getName()).append("\n")
+				.append("Line: ").append(diagnostic.getLineNumber()).append("\n")
+				.append("Column: ").append(diagnostic.getColumnNumber());
 		log.error(buffer.toString());
 	}
 }
