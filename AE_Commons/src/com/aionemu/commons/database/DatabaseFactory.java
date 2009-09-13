@@ -100,7 +100,7 @@ public class DatabaseFactory
 
 		try
 		{
-			java.lang.Class.forName(DatabaseConfig.DATABASE_DRIVER).newInstance();
+			DatabaseConfig.DATABASE_DRIVER.newInstance();
 		}
 		catch (Exception e)
 		{
@@ -260,5 +260,13 @@ public class DatabaseFactory
 	public static int getDatabaseMinorVersion()
 	{
 		return databaseMinorVersion;
+	}
+
+	/**
+	 * Default constructor.
+	 */
+	private DatabaseFactory()
+	{
+		//
 	}
 }

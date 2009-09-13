@@ -34,6 +34,7 @@ import com.aionemu.commons.configuration.transformers.LongTransformer;
 import com.aionemu.commons.configuration.transformers.ShortTransformer;
 import com.aionemu.commons.configuration.transformers.StringTransformer;
 import com.aionemu.commons.configuration.transformers.PatternTransformer;
+import com.aionemu.commons.configuration.transformers.ClassTransformer;
 import com.aionemu.commons.utils.ClassUtils;
 
 /**
@@ -137,6 +138,10 @@ public class PropertyTransformerFactory
 			else if (clazzToTransform == Pattern.class)
 			{
 				return PatternTransformer.SHARED_INSTANCE;
+			}
+			else if (clazzToTransform == Class.class)
+			{
+				return ClassTransformer.SHARED_INSTANCE;
 			}
 			else
 			{

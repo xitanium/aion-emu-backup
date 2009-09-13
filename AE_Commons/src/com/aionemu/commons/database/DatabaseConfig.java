@@ -55,7 +55,7 @@ public class DatabaseConfig
 	 * Name of database Driver
 	 */
 	@Property(key = "database.driver", defaultValue = "com.mysql.jdbc.Driver")
-	public static String		DATABASE_DRIVER;
+	public static Class<?>		DATABASE_DRIVER;
 
 	/**
 	 * Default database user
