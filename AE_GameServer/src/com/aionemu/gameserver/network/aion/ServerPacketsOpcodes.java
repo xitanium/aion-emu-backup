@@ -60,7 +60,6 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_UNK5E.class, Version.Chiness ? 0x5e : -1, idSet);
 		addPacketOpcode(SM_UNK32.class, Version.Chiness ? 0x32 : -1, idSet);
 		addPacketOpcode(SM_UNK17.class, Version.Chiness ? 0x17 : -1, idSet);
-		addPacketOpcode(SM_UNK15.class, Version.Chiness ? 0x15 : -1, idSet);
 		addPacketOpcode(SM_UNK0C.class, Version.Chiness ? 0x0C : 0xFC, idSet);
 		addPacketOpcode(SM_UNK0A.class, Version.Chiness ? 0x0A : -1, idSet);
 		addPacketOpcode(SM_VERSION_CHECK.class, Version.Chiness ? 0xF6 : 0xFE, idSet);
