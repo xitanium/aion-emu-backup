@@ -30,6 +30,7 @@ import com.aionemu.gameserver.spawnengine.SpawnEngine;
 import com.aionemu.gameserver.utils.chathandlers.ChatHandlers;
 import com.aionemu.gameserver.utils.chathandlers.ChatHandlersFactory;
 import com.aionemu.gameserver.world.World;
+import com.aionemu.commons.services.ScriptService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
@@ -66,6 +67,8 @@ public class DataInjectionModule extends AbstractModule
 		bind(AccountService.class).in(Scopes.SINGLETON);
 		// binds SocialService as singleton
 		bind(SocialService.class).in(Scopes.SINGLETON);
+		// binds ScriptService as singleton
+		bind(ScriptService.class).in(Scopes.SINGLETON);
 	}
 
 	@Provides

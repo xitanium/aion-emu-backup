@@ -15,7 +15,7 @@
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aionemu.gameserver.utils.chathandlers.admincommands;
+package com.aionemu.gameserver.utils.chathandlers;
 
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 
@@ -28,7 +28,7 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
  */
 public abstract class AdminCommand
 {
-	private String	commandName;
+	private final String	commandName;
 
 	protected AdminCommand(String commandName)
 	{
@@ -81,5 +81,5 @@ public abstract class AdminCommand
 	 * @param admin
 	 * @param params
 	 */
-	public abstract void executeCommand(Player admin, String... params);
+	public abstract void executeCommand(Player admin, String[] params);
 }

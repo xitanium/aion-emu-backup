@@ -89,6 +89,8 @@ public class GameServer
 		GameTimeManager.startClock();
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownHook()));
+
+		//gs.injector.getInstance(com.aionemu.gameserver.utils.chathandlers.ChatHandlers.class);
 	}
 
 	/**
