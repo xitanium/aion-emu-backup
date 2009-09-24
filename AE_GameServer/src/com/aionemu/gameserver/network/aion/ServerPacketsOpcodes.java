@@ -40,6 +40,7 @@ public class ServerPacketsOpcodes
 
 		addPacketOpcode(SM_CUSTOM_PACKET.class, 99999, idSet); // fake packet
 		
+		addPacketOpcode(SM_WEATHER.class, Version.Chiness ? -1 : 0x42, idSet); // weather
 		addPacketOpcode(SM_UNKF5.class, Version.Chiness ? 0xF5 : 0x26, idSet);
 		addPacketOpcode(SM_UNKEF.class, Version.Chiness ? 0xef : -1, idSet);
 		addPacketOpcode(SM_UNKE7.class, Version.Chiness ? 0xe7 : -1, idSet);

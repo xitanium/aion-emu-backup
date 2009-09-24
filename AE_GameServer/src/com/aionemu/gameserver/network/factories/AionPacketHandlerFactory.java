@@ -57,6 +57,7 @@ import com.aionemu.gameserver.network.aion.clientpackets.CM_SHOW_FRIENDLIST;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_TARGET_SELECT;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_TIME_CHECK;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_VERSION_CHECK;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_TERRITORY;
 //import com.aionemu.gameserver.network.aion.clientpackets.CM_ATTACK;
 import com.google.inject.Injector;
 
@@ -121,7 +122,7 @@ public class AionPacketHandlerFactory
 		addPacket(new CM_BLOCK_SET_REASON(Version.Chiness ? -1 : 0x9D),State.IN_GAME);
 		addPacket(new CM_BLOCK_DEL(Version.Chiness ? -1 : 0xA9), State.IN_GAME);
 		addPacket(new CM_BLOCK_ADD(Version.Chiness ? -1 : 0xAE), State.IN_GAME);
-		
+		addPacket(new CM_TERRITORY(Version.Chiness ? -1 : 0x4A), State.IN_GAME);
 	}
 
 	public AionPacketHandler getPacketHandler()
