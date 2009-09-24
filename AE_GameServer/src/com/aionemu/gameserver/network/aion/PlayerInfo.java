@@ -57,7 +57,11 @@ public abstract class PlayerInfo extends AionServerPacket
 		writeD(buf, playerAppearance.getVoice());
 		writeD(buf, playerAppearance.getSkinRGB());
 		writeD(buf, playerAppearance.getHairRGB());
+		
+		// 1.5.x EyeColor before LipColor
+		writeD(buf,1); // EyeColor fixed for testing
 		writeD(buf, playerAppearance.getLipRGB());
+		
 		writeC(buf, playerAppearance.getFace());
 		writeC(buf, playerAppearance.getHair());
 		writeC(buf, playerAppearance.getDeco());
@@ -88,6 +92,11 @@ public abstract class PlayerInfo extends AionServerPacket
 		writeC(buf, playerAppearance.getChinJut());
 		writeC(buf, playerAppearance.getEarShape());
 		writeC(buf, playerAppearance.getHeadSize());
+		// 1.5.x 0x00, shoulderSize, armLength, legLength (BYTE) after HeadSize
+		writeC(buf, 0x00); // 0x00
+		writeC(buf, 0x01); // shoulderSize
+		writeC(buf, 0x01); // armLength
+		writeC(buf, 0x01); // legLength		
 		writeC(buf, playerAppearance.getNeck());
 		writeC(buf, playerAppearance.getNeckLength());
 		writeC(buf, playerAppearance.getShoulders());
