@@ -1,0 +1,37 @@
+***************
+*** 16,21 ****
+   */
+  package com.aionemu.gameserver.network.aion.serverpackets;
+  
+  import com.aionemu.gameserver.network.aion.AionServerPacket;
+  
+  /**
+--- 16,24 ----
+   */
+  package com.aionemu.gameserver.network.aion.serverpackets;
+  
++ import java.nio.ByteBuffer;
++ 
++ import com.aionemu.gameserver.network.aion.AionConnection;
+  import com.aionemu.gameserver.network.aion.AionServerPacket;
+  
+  /**
+***************
+*** 28,31 ****
+  {
+  	//Don't be fooled with empty class :D
+  	//This packet is just sending opcode, without any content
+  }
+--- 31,42 ----
+  {
+  	//Don't be fooled with empty class :D
+  	//This packet is just sending opcode, without any content
++ 	
++ 		// 1.5.x sending 2 bytes
++ 	@Override
++ 	protected void writeImpl(AionConnection con, ByteBuffer buf)
++ 	{		
++ 		writeC(buf, 0x00);
++ 		writeC(buf, 0x00);
++ 	}	
+  }
