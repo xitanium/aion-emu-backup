@@ -30,6 +30,7 @@ import com.aionemu.gameserver.dao.FriendListDAO;
 import com.aionemu.gameserver.dao.PlayerAppearanceDAO;
 import com.aionemu.gameserver.dao.PlayerDAO;
 import com.aionemu.gameserver.dao.PlayerMacrossesDAO;
+import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
 import com.aionemu.gameserver.dataholders.PlayerInitialData;
 import com.aionemu.gameserver.dataholders.PlayerInitialData.LocationData;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
@@ -66,14 +67,17 @@ public class PlayerService
 	private IDFactory					aionObjectsIDFactory;
 	private World						world;
 	private PlayerInitialData           playerInitialData;
+	private PlayerExperienceTable       playerExperienceTable;
 
 
 	@Inject
-	public PlayerService(@IDFactoryAionObject IDFactory aionObjectsIDFactory, World world, PlayerInitialData playerInitialData)
+	public PlayerService(@IDFactoryAionObject IDFactory aionObjectsIDFactory, World world, PlayerInitialData playerInitialData, PlayerExperienceTable playerExperienceTable)
 	{
 		this.aionObjectsIDFactory = aionObjectsIDFactory;
 		this.world = world;
 		this.playerInitialData = playerInitialData;
+		this.playerExperienceTable = playerExperienceTable;
+		log.debug("player experience table : "+playerExperienceTable.getMaxLevel()+" levels");
 	}
 
 	/**
@@ -122,6 +126,14 @@ public class PlayerService
 		DAOManager.getDAO(PlayerDAO.class).storePlayer(player);
 	}
 
+	public PlayerExperienceTable getPlayerExperienceTable ()
+	{
+		if (this.playerExperienceTable==null) {
+			throw new IllegalStateException("player experience table not set");
+		}
+		return this.playerExperienceTable;
+	}
+	
 	/**
 	 * Returns the player with given objId (if such player exists)
 	 * 
@@ -138,6 +150,11 @@ public class PlayerService
 		PlayerAppearance appereance = DAOManager.getDAO(PlayerAppearanceDAO.class).load(playerObjId);
 		MacroList macroses = DAOManager.getDAO(PlayerMacrossesDAO.class).restoreMacrosses(playerObjId);
 
+		if (this.playerExperienceTable == null)
+		{
+			throw new IllegalStateException ("player experience table not set");
+		}
+		pcd.setPlayerExperienceTable(this.playerExperienceTable);
 		player = new Player(new PlayerController(), pcd, appereance);
 		player.setMacroList(macroses);
 		player.setKnownlist(new KnownList(player));
@@ -165,6 +182,11 @@ public class PlayerService
 		WorldPosition position = world.createPosition(ld.getMapId(), ld.getX(), ld.getY(), ld.getZ(), ld.getHeading());
 
 		playerCommonData.setPosition(position);
+		if (this.playerExperienceTable == null)
+		{
+			throw new IllegalStateException ("player experience table not set");
+		}
+		playerCommonData.setPlayerExperienceTable(this.playerExperienceTable);
 
 		// TODO: starting skills
 		// TODO: starting items;

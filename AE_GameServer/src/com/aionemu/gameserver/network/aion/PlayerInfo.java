@@ -119,7 +119,7 @@ public abstract class PlayerInfo extends AionServerPacket
 		writeF(buf, pbd.getPosition().getY());
 		writeF(buf, pbd.getPosition().getZ());
 		writeD(buf, 0);// unk 0x6f
-		writeD(buf, 1);// lvl confirmed
+		writeD(buf, pbd.getLevel());// lvl confirmed
 		writeD(buf, 0);// unk -1 -1 = played 0 = neverplayed
 		writeD(buf, 0);// unk 0
 		writeD(buf, 0);// unk 41549824 can be 0

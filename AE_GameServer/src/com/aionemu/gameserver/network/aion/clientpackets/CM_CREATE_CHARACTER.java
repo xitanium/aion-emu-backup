@@ -99,6 +99,8 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		// just for sure...
 		//log.info("76 == " + (getRemainingBytes()));
 
+		playerCommonData.setPlayerExperienceTable(playerService.getPlayerExperienceTable());
+		playerCommonData.setLevel(1);
 		playerCommonData.setGender(readD() == 0 ? Gender.MALE : Gender.FEMALE);
 		playerCommonData.setRace(readD() == 0 ? Race.ELYOS : Race.ASMODIANS);
 		playerCommonData.setPlayerClass(PlayerClass.getPlayerClassById((byte) readD()));

@@ -75,6 +75,7 @@ CREATE TABLE `player_macrosses` (
 CREATE TABLE `players` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
+  `exp` bigint(20) NOT NULL,
   `account_id` int(11) NOT NULL, 
   `account_name` varchar(50) NOT NULL,
   `x` float NOT NULL,

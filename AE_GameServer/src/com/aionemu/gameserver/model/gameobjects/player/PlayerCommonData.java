@@ -17,9 +17,17 @@
 package com.aionemu.gameserver.model.gameobjects.player;
 
 import java.sql.Timestamp;
+
+import org.apache.log4j.Logger;
+
+import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
 import com.aionemu.gameserver.model.Gender;
 import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.Race;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_INFO;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATS_INFO;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_EXP;
+import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.WorldPosition;
 
 /**
@@ -34,7 +42,8 @@ public class PlayerCommonData
 	private Race			race;
 	private String			name;
 	private PlayerClass		playerClass;
-	private int				level;
+	private int				level = 1;
+	private long            exp = 0;
 	private boolean			admin;
 	private Gender			gender;
 	private Timestamp		lastOnline;
@@ -42,6 +51,8 @@ public class PlayerCommonData
 	private String 			note;
 	
 	private WorldPosition	position;
+	private PlayerExperienceTable playerExperienceTable;
+	private static Logger				log				= Logger.getLogger(PlayerCommonData.class);
 
 	public PlayerCommonData(int objId)
 	{
@@ -128,13 +139,93 @@ public class PlayerCommonData
 	
 	public int getLevel()
 	{
-		//TODO: Real level
-		return 1;
+		return level;
 	}
 	
 	public void setLevel(int level)
 	{
-		this.level = level;
+		if (playerExperienceTable==null) {
+			log.debug("player experience table not set, level set to "+level);
+		} else
+		{
+			log.debug("player experience table : "+playerExperienceTable.getMaxLevel()+" levels");
+		}
+		if (level <= playerExperienceTable.getMaxLevel())
+		{
+			this.level = level;
+			this.setExp(playerExperienceTable.getStartExpForLevel(level));
+			if (this.getPlayer()!=null) {
+				PacketSendUtility.sendPacket(this.getPlayer(), new SM_STATS_INFO(this.getPlayer()));
+			}
+		}
+	}
+	
+	public long getExpShown()
+	{
+		return this.exp-playerExperienceTable.getStartExpForLevel(this.level);
+	}
+	 	
+	public long getExpNeed()
+	{
+		if (this.level == playerExperienceTable.getMaxLevel())
+		{
+			return 0;
+		}
+		return playerExperienceTable.getStartExpForLevel(this.level+1)-playerExperienceTable.getStartExpForLevel(this.level);
+	}
+	
+	public void setExp(long exp)
+	{
+		if (playerExperienceTable==null) {
+			log.debug("player experience table null, exp set to "+exp);
+			this.exp = exp;
+			return;
+		} else {
+			log.debug("player experience table : "+playerExperienceTable.getMaxLevel()+" levels");
+		}
+		int maxLevel = playerExperienceTable.getMaxLevel();
+		long maxExp = playerExperienceTable.getStartExpForLevel(maxLevel);
+		long origexp = exp;
+		try {
+			if (exp > maxExp)
+			{
+				exp = maxExp;
+			}
+			int level = 1;
+			while (exp >= playerExperienceTable.getStartExpForLevel(level+1) && level != maxLevel)
+			{
+				level++;
+			}
+			if (level != this.level)
+			{
+				this.setLevel(level);
+				this.exp = exp;
+			}
+			else
+			{
+				this.exp = exp;
+				if (this.getPlayer()!=null) {
+					PacketSendUtility.sendPacket(
+						this.getPlayer(),
+						new SM_STATUPDATE_EXP(
+							this.getExpShown(),
+							0,
+							this.getExpNeed()
+						)
+					);
+					PacketSendUtility.broadcastPacket(this.getPlayer(), new SM_PLAYER_INFO(this.getPlayer(), false), false);
+				}
+			}
+		}
+		catch (IllegalArgumentException e)
+		{
+			throw new IllegalArgumentException ("the given experience "+origexp+" is higher than possible max "+maxExp);
+		}
+	}
+	
+	public long getExp()
+	{
+		return this.exp;
 	}
 	
 	public String getNote()
@@ -173,4 +264,15 @@ public class PlayerCommonData
 		}
 		return null;
 	}
+	
+	public void setPlayerExperienceTable (PlayerExperienceTable playerExperienceTable)
+	{
+		if (this.playerExperienceTable != null) {
+			log.debug("player table already set with "+this.playerExperienceTable.getMaxLevel()+" levels");
+		} else {
+			this.playerExperienceTable = playerExperienceTable;
+			log.debug("experience table set ("+playerExperienceTable.getMaxLevel()+" levels)");
+		}
+	}
+	
 }

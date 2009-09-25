@@ -20,6 +20,7 @@ import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.AionPacketHandler;
 import com.aionemu.gameserver.network.aion.Version;
 import com.aionemu.gameserver.network.aion.AionConnection.State;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_ATTACK;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_BLOCK_ADD;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_BLOCK_DEL;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_BLOCK_SET_REASON;
@@ -83,7 +84,7 @@ public class AionPacketHandlerFactory
 	public AionPacketHandlerFactory(Injector injector)
 	{
 		this.injector = injector;
-		//addPacket(new CM_ATTACK(Version.Chiness ? -1 : 0x8A), State.IN_GAME); // maybe 0x13
+		addPacket(new CM_ATTACK(Version.Chiness ? -1 : 0x8A), State.IN_GAME); // maybe 0x13
 		addPacket(new CM_RECONNECT_AUTH(Version.Chiness ? 0x9B : 0x21), State.AUTHED);
 		addPacket(new CM_L2AUTH_LOGIN_CHECK(Version.Chiness ? 0xB9 : 0x7F), State.CONNECTED);
 		addPacket(new CM_VERSION_CHECK(Version.Chiness ? 0x4c : 0xEA), State.CONNECTED);

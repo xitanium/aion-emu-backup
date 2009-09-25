@@ -15,8 +15,9 @@
 *  You should have received a copy of the GNU General Public License
 *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.aionemu.gameserver.utils.chathandlers.admincommands;
- 
+
+package admincommands;
+
 import java.util.Iterator;
  
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -36,7 +37,7 @@ public class Announce extends AdminCommand
          * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.model.gameobjects.player.Player, java.lang.String[])
          */
         @Override
-        public void executeCommand(Player admin, String... params)
+        public void executeCommand(Player admin, String[] params)
         {       
                 if (params.length == 0) {
                         PacketSendUtility.sendMessage(admin, "//announce <message>");
