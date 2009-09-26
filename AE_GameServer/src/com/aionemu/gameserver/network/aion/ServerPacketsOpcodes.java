@@ -68,7 +68,7 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_STATUPDATE_MP.class, Version.Chiness ? -1 : 0x14, idSet);
 		addPacketOpcode(SM_STATUPDATE_HP.class, Version.Chiness ? -1 : 0x12, idSet);
 		addPacketOpcode(SM_STATUPDATE_EXP.class, Version.Chiness ? -1 : 0x23, idSet); // 1.5.x unknown
-		addPacketOpcode(SM_STATUPDATE_DP.class, Version.Chiness ? -1 : 0x21, idSet); // 0x17
+		addPacketOpcode(SM_STATUPDATE_DP.class, Version.Chiness ? -1 : 0x17, idSet); // 0x17
 		addPacketOpcode(SM_STATS_INFO.class, Version.Chiness ? 0x29 : 0xF8, idSet);
 		addPacketOpcode(SM_SKILL_LIST.class, Version.Chiness ? 0x1D : 0x45, idSet); // 0x45
 		addPacketOpcode(SM_RESTORE_CHARACTER.class, Version.Chiness ? 0xC1 : 0xE2, idSet);
@@ -105,6 +105,9 @@ public class ServerPacketsOpcodes
 		//addPacketOpcode(SM_VIRTUAL_AUTH.class, Version.Chiness ? 0xD4 : 0xE4, idSet);
 		//addPacketOpcode(SM_WAITING_LIST.class, Version.Chiness ? -1 : 0x18, idSet);
 		addPacketOpcode(SM_ATTACK.class, Version.Chiness ? -1 : 0xFC, idSet);		
+		addPacketOpcode(SM_DIALOG.class, Version.Chiness ? -1 : 0x21, idSet);//1.5.x @@@
+		addPacketOpcode(SM_DIALOG_WINDOW.class, Version.Chiness ? -1 : 0x35, idSet);//1.5.x @@@
+		addPacketOpcode(SM_BUYLIST.class, Version.Chiness ? -1 : 0xF4, idSet);   //1.5.x 
 	}
 
 	static int getOpcode(Class<? extends AionServerPacket> packetClass)

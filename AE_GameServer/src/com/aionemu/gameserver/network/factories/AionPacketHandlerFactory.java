@@ -29,8 +29,10 @@ import com.aionemu.gameserver.network.aion.clientpackets.CM_CHAT_MESSAGE_PUBLIC;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_CHAT_MESSAGE_WHISPER;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_CHECK_NICKNAME;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_CLIENT_COMMAND_LOC;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_CLOSE_DIALOG;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_CREATE_CHARACTER;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_DELETE_CHARACTER;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_DIALOG_SELECT;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_EMOTION;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_ENTER_WORLD;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_FRIEND_ADD;
@@ -54,6 +56,7 @@ import com.aionemu.gameserver.network.aion.clientpackets.CM_RESTORE_CHARACTER;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_SEARCH_STATUS;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_SET_NOTE;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_SHOW_BLOCKLIST;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_SHOW_DIALOG;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_SHOW_FRIENDLIST;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_TARGET_SELECT;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_TIME_CHECK;
@@ -124,6 +127,9 @@ public class AionPacketHandlerFactory
 		addPacket(new CM_BLOCK_DEL(Version.Chiness ? -1 : 0xA9), State.IN_GAME);
 		addPacket(new CM_BLOCK_ADD(Version.Chiness ? -1 : 0xAE), State.IN_GAME);
 		addPacket(new CM_TERRITORY(Version.Chiness ? -1 : 0x4A), State.IN_GAME);
+		addPacket(new CM_SHOW_DIALOG(Version.Chiness ? -1 : 0x9E), State.IN_GAME);
+		addPacket(new CM_DIALOG_SELECT(Version.Chiness ? -1 : 0xA0), State.IN_GAME);
+		addPacket(new CM_CLOSE_DIALOG(Version.Chiness ? -1 :0x9f ), State.IN_GAME);//0x9F
 	}
 
 	public AionPacketHandler getPacketHandler()
