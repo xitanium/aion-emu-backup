@@ -93,10 +93,10 @@ public class CM_ATTACK extends AionClientPacket
 		{
 			maxexp = player.getmaxExp();
 			exp = player.getExp() + 50;
-			player.setExp(exp);
 			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,13,playerobjid), true);
 			PacketSendUtility.broadcastPacket(player, new SM_LOOT_STATUS(targetObjectId,0), true);
-			sendPacket(new SM_STATUPDATE_EXP(exp,0,maxexp));
+			player.setExp(exp);
+			//sendPacket(new SM_STATUPDATE_EXP(exp,0,maxexp));
 			
 			Random generator = new Random();
 			int randomKinah = generator.nextInt(50)+1;
