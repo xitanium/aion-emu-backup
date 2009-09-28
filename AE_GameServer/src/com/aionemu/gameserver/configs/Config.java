@@ -121,6 +121,7 @@ public class Config
 
 			ConfigurableProcessor.process(Config.class, props);
 			ConfigurableProcessor.process(CacheConfig.class, props);
+			ConfigurableProcessor.process(Rates.class, props);
 		}
 		catch(Exception e)
 		{
