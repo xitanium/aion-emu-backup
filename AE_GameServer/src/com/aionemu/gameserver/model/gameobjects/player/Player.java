@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.model.gameobjects.player;
 
+import java.util.Iterator;
+
 import com.aionemu.commons.callbacks.Enhancable;
 import com.aionemu.gameserver.controllers.PlayerController;
 import com.aionemu.gameserver.model.Gender;
@@ -300,7 +302,15 @@ public class Player extends Creature
 	@Enhancable(callback = PlayerLoggedInListener.class)
 	public void onLoggedIn()
 	{
-
+		if (this.getCommonData().isAdmin()) {
+			Iterator<Player> iter = this.getActiveRegion().getWorld().getPlayersIterator();
+			StringBuilder sbMessage = new StringBuilder("<Annonce> [>>>MJ] "+this.getName()+" vient de se connecter");
+			
+			String sMessage = sbMessage.toString().trim();
+			while (iter.hasNext()) {
+				PacketSendUtility.sendMessage(iter.next(), sMessage);
+			}
+		}
 	}
 
 	/**
@@ -313,6 +323,14 @@ public class Player extends Creature
 	@Enhancable(callback = PlayerLoggedOutListener.class)
 	public void onLoggedOut()
 	{
-
+		if (this.getCommonData().isAdmin()) {
+			Iterator<Player> iter = this.getActiveRegion().getWorld().getPlayersIterator();
+			StringBuilder sbMessage = new StringBuilder("<Annonce> [<<<MJ] "+this.getName()+" vient de quitter le serveur");
+			
+			String sMessage = sbMessage.toString().trim();
+			while (iter.hasNext()) {
+				PacketSendUtility.sendMessage(iter.next(), sMessage);
+			}
+		}
 	}
 }

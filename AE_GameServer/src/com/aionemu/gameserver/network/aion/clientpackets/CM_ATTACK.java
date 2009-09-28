@@ -17,6 +17,7 @@
 package com.aionemu.gameserver.network.aion.clientpackets;
 
 import java.util.Random;
+import java.util.UUID;
 
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
@@ -30,6 +31,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_EXP;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.World;
+import com.sun.xml.internal.fastinfoset.algorithm.HexadecimalEncodingAlgorithm;
 /**
  * 
  * @author alexa026, Avol, ATracer
@@ -91,17 +93,21 @@ public class CM_ATTACK extends AionClientPacket
 		sendPacket(new SM_ATTACK_STATUS(targetObjectId,attackno));
 		if (attackno % 5 == 0 && attackno != 0) //this one is still funny, will be removed soon
 		{
+			World world = player.getActiveRegion().getWorld();
+			Npc npc = (Npc) world.findAionObject(targetObjectId);
 			//maxexp = player.getCommonData().getExpNeed();
 			//maxexp = player.getmaxExp();
-			exp = player.getCommonData().getExp() + 50;
+			Random generator = new Random();
+			exp = player.getCommonData().getExp() + npc.getLevel()*55;
 			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,13,playerobjid), true);
 			PacketSendUtility.broadcastPacket(player, new SM_LOOT_STATUS(targetObjectId,0), true);
 			player.getCommonData().setExp(exp);
 			//sendPacket(new SM_STATUPDATE_EXP(exp,0,maxexp));
 			
-			Random generator = new Random();
 			int randomKinah = generator.nextInt(50)+1;
-			int randomUniqueId = generator.nextInt(99999999)+generator.nextInt(99999999)+99999999+99999999; // To prevent replacement of other item.
+			
+			int randomUniqueId = UUID.randomUUID().hashCode();
+			//int randomUniqueId = generator.nextInt(99999999)+generator.nextInt(99999999)+99999999+99999999; // To prevent replacement of other item.
 
 			Inventory kina = new Inventory();
 			kina.getKinahFromDb(playerobjid);
@@ -113,8 +119,6 @@ public class CM_ATTACK extends AionClientPacket
 			
 			//schedule decay task
 			//TODO move to npc fully
-			World world = player.getActiveRegion().getWorld();
-			Npc npc = (Npc) world.findAionObject(targetObjectId);
 			npc.onDie();
 
 		}
