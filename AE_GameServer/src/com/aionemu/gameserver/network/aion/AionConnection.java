@@ -149,7 +149,7 @@ public class AionConnection extends AConnection
 		if((crypt==null)||!crypt.decrypt(data))
 		{
 			log.warn("Decrypt fail!");
-			// return false;
+			return false;
 		}
 
 		AionClientPacket pck = aionPacketHandler.handle(data, this);
