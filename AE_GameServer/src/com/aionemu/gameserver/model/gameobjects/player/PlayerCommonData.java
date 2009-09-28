@@ -210,13 +210,13 @@ public class PlayerCommonData
 		return level;
 	}
 	
-	public void setLevel(int level)
+	private void setLevel(int level)
 	{
 		log.info("NEW LEVEL: "+level);
 		if (level <= DataManager.PLAYER_EXPERIENCE_TABLE.getMaxLevel())
 		{
 			this.level = level;
-			this.setExp(DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level));
+			//this.setExp(DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level));
 			if(this.getPlayer()!=null)
 				PacketSendUtility.sendPacket(this.getPlayer(), new SM_STATS_INFO(this.getPlayer()));
 		}
