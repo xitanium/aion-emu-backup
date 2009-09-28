@@ -304,11 +304,13 @@ public class Player extends Creature
 	{
 		if (this.getCommonData().isAdmin()) {
 			Iterator<Player> iter = this.getActiveRegion().getWorld().getPlayersIterator();
-			StringBuilder sbMessage = new StringBuilder("<Annonce> [>>>MJ] "+this.getName()+" vient de se connecter");
+			if (iter!=null) {
+				StringBuilder sbMessage = new StringBuilder("<Annonce> [>>>MJ] "+this.getName()+" vient de se connecter");
 			
-			String sMessage = sbMessage.toString().trim();
-			while (iter.hasNext()) {
-				PacketSendUtility.sendMessage(iter.next(), sMessage);
+				String sMessage = sbMessage.toString().trim();
+				while (iter.hasNext()) {
+					PacketSendUtility.sendMessage(iter.next(), sMessage);
+				}
 			}
 		}
 	}
@@ -325,11 +327,13 @@ public class Player extends Creature
 	{
 		if (this.getCommonData().isAdmin()) {
 			Iterator<Player> iter = this.getActiveRegion().getWorld().getPlayersIterator();
-			StringBuilder sbMessage = new StringBuilder("<Annonce> [<<<MJ] "+this.getName()+" vient de quitter le serveur");
+			if (iter!=null) {
+				StringBuilder sbMessage = new StringBuilder("<Annonce> [<<<MJ] "+this.getName()+" vient de quitter le serveur");
 			
-			String sMessage = sbMessage.toString().trim();
-			while (iter.hasNext()) {
-				PacketSendUtility.sendMessage(iter.next(), sMessage);
+				String sMessage = sbMessage.toString().trim();
+				while (iter.hasNext()) {
+					PacketSendUtility.sendMessage(iter.next(), sMessage);
+				}
 			}
 		}
 	}
