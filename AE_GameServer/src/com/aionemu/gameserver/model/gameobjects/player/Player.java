@@ -30,6 +30,8 @@ import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
+import com.aionemu.gameserver.world.MapRegion;
+import com.aionemu.gameserver.world.World;
 
 /**
  * This class is representing Player object, it contains all needed data.
@@ -303,13 +305,19 @@ public class Player extends Creature
 	public void onLoggedIn()
 	{
 		if (this.getCommonData().isAdmin()) {
-			Iterator<Player> iter = this.getActiveRegion().getWorld().getPlayersIterator();
-			if (iter!=null) {
-				StringBuilder sbMessage = new StringBuilder("<Annonce> [>>>MJ] "+this.getName()+" vient de se connecter");
-			
-				String sMessage = sbMessage.toString().trim();
-				while (iter.hasNext()) {
-					PacketSendUtility.sendMessage(iter.next(), sMessage);
+			MapRegion mapRegion = this.getActiveRegion();
+			if (mapRegion!=null) {
+				World world = mapRegion.getWorld();
+				if (world!=null) {
+					Iterator<Player> iter = world.getPlayersIterator();
+					if (iter!=null) {
+						StringBuilder sbMessage = new StringBuilder("<Annonce> [>>>MJ] "+this.getName()+" vient de se connecter");
+					
+						String sMessage = sbMessage.toString().trim();
+						while (iter.hasNext()) {
+							PacketSendUtility.sendMessage(iter.next(), sMessage);
+						}
+					}
 				}
 			}
 		}
@@ -326,13 +334,19 @@ public class Player extends Creature
 	public void onLoggedOut()
 	{
 		if (this.getCommonData().isAdmin()) {
-			Iterator<Player> iter = this.getActiveRegion().getWorld().getPlayersIterator();
-			if (iter!=null) {
-				StringBuilder sbMessage = new StringBuilder("<Annonce> [<<<MJ] "+this.getName()+" vient de quitter le serveur");
-			
-				String sMessage = sbMessage.toString().trim();
-				while (iter.hasNext()) {
-					PacketSendUtility.sendMessage(iter.next(), sMessage);
+			MapRegion mapRegion = this.getActiveRegion();
+			if (mapRegion!=null) {
+				World world = mapRegion.getWorld();
+				if (world!=null) {
+					Iterator<Player> iter = world.getPlayersIterator();
+					if (iter!=null) {
+						StringBuilder sbMessage = new StringBuilder("<Annonce> [<<<MJ] "+this.getName()+" est sorti du jeu");
+					
+						String sMessage = sbMessage.toString().trim();
+						while (iter.hasNext()) {
+							PacketSendUtility.sendMessage(iter.next(), sMessage);
+						}
+					}
 				}
 			}
 		}
