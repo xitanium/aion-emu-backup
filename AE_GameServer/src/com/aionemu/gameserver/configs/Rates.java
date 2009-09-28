@@ -15,7 +15,7 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 public class Rates
 {
 	/**
-	 * Récupère les paramètres du fichier de configuration
+	 * Recupere les parametres du fichier de configuration
 	 *	
 	 */
 	@Property(key = "xp", defaultValue = "1")
