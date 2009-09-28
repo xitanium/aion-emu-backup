@@ -118,15 +118,17 @@ public class PlayerCommonData
 		else
 		{
 			this.exp = exp;
-			PacketSendUtility.sendPacket(
-				this.getPlayer(),
-				new SM_STATUPDATE_EXP(
-					this.getExpShown(),
-					0,
-					this.getExpNeed()
-				)
-			);
-			PacketSendUtility.broadcastPacket(this.getPlayer(), new SM_PLAYER_INFO(this.getPlayer(), false), false);
+			if (this.getPlayer()!=null) {
+				PacketSendUtility.sendPacket(
+					this.getPlayer(),
+					new SM_STATUPDATE_EXP(
+						this.getExpShown(),
+						0,
+						this.getExpNeed()
+					)
+				);
+				PacketSendUtility.broadcastPacket(this.getPlayer(), new SM_PLAYER_INFO(this.getPlayer(), false), false);
+			}
 		}
 	}
 
