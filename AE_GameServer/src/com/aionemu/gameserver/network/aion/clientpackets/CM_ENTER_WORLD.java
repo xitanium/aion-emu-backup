@@ -17,33 +17,41 @@
 
 package com.aionemu.gameserver.network.aion.clientpackets;
 
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.aionemu.commons.database.DB;
+import com.aionemu.commons.database.IUStH;
+import com.aionemu.commons.database.ParamReadStH;
+
+import java.util.Random;
 import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.model.ChatType;
 import com.aionemu.gameserver.model.account.AccountTime;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.AionConnection;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_ENTER_WORLD_CHECK;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_GAME_TIME;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_MACRO_LIST;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_MESSAGE;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_SKILL_LIST;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_STATS_INFO;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
-import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
+import com.aionemu.gameserver.network.aion.serverpackets.*;
+import com.aionemu.gameserver.network.aion.serverpackets.unk.*;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
+import org.apache.log4j.Logger;
 
 /**
  * In this packets aion client is asking if given char [by oid] may login into game [ie start playing].
  * 
- * @author -Nemesiss-
+ * @author -Nemesiss-, Avol
  * 
  */
 public class CM_ENTER_WORLD extends AionClientPacket
 {
+
+	private static final Logger	log	= Logger.getLogger(CM_ENTER_WORLD.class);
 	/**
 	 * Object Id of player that is entering world
 	 */
@@ -98,7 +106,7 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			 */
 			world.storeObject(player);
 
-			sendPacket(new SM_SKILL_LIST());
+			sendPacket(new SM_SKILL_LIST(player));
 
 			// sendPacket(new SM_UNK91());
 			// sendPacket(new SM_UNKC7());
@@ -112,7 +120,33 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			// sendPacket(new SM_UNK60());
 			// sendPacket(new SM_UNK17());
 			// sendPacket(new SM_UNK5E());
-			// sendPacket(new SM_INVENTORY_INFO());
+
+			sendPacket(new SM_INVENTORY_INFO());
+			
+//////////////////////////////LOAD INVENTORY FROM DB//////////////////////////////////////////////////////////////
+			Player player2 = getConnection().getActivePlayer();
+			int activePlayer = player2.getObjectId();
+
+			//items
+
+			Inventory items = new Inventory();
+			items.getInventoryFromDb(activePlayer);
+			int totalItemsCount = items.getItemsCount();
+			int row = 0;
+			while (totalItemsCount > 0) {
+				sendPacket(new SM_INVENTORY_UPDATE(items.getItemUniqueIdArray(row), items.getItemIdArray(row), items.getItemNameIdArray(row), items.getItemCountArray(row))); // give item
+				totalItemsCount = totalItemsCount-1;
+				row+=1;
+			}
+			// kinah
+
+			Inventory kinah2 = new Inventory();
+			kinah2.getKinahFromDb(activePlayer);
+			int kinah = kinah2.getKinahCount();
+			int uniquedeId = 0;
+			sendPacket(new SM_INVENTORY_UPDATE(uniquedeId, 182400001, 2211143, kinah));
+			
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// sendPacket(new SM_UNKD3());
 
 			/*
@@ -156,8 +190,8 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			// sendPacket(new SM_UNK97());
 			// sendPacket(new SM_UNK8D());
 			
-			sendPacket(new SM_MESSAGE(0, null, "Welcome to " + Config.SERVER_NAME
-				+ " server\npowered by aion-emu software\ndeveloped by aion-emu.com team.\nCopyright 2009", null,
+			sendPacket(new SM_MESSAGE(0, null, "Bienvenue sur " + Config.SERVER_NAME
+				+ " serveur\ndevelopper par la Team onyxia.\nCopyright 2009", null,
 				ChatType.ANNOUNCEMENTS));
 			
 			playerService.playerLoggedIn(player);

@@ -66,7 +66,6 @@ public abstract class AionClientPacket extends BaseClientPacket<AionConnection> 
 	/**
 	 * run runImpl catching and logging Throwable.
 	 */
-	@Override
 	public final void run()
 	{
 		try

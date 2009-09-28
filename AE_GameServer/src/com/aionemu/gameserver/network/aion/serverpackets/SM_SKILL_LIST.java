@@ -17,7 +17,10 @@
 package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
+import java.util.Map;
 
+import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.player.SkillList;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
@@ -29,20 +32,39 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
  */
 public class SM_SKILL_LIST extends AionServerPacket
 {
+
+	private Player player;
+
+
+	/**
+ 	 * Constructs new <tt>SM_SKILL_LIST </tt> packet
+ 	 */
+
+	public SM_SKILL_LIST(Player player)
+ 	{
+		this.player = player;
+ 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeH(buf, 1);// skills list size
-		// for skills
-		// {
-		writeH(buf, 3);// id (3001)
-		writeD(buf, 1);// lvl
-		writeD(buf, 0);// use time? [s]
-		writeC(buf, 0);// unk
-		// }
+
+		final int size = player.getSkillList().getSize();
+		writeH(buf, size);//skills list size
+		
+		if (size > 0)
+		{
+			for (Map.Entry<Integer, Integer> entry : player.getSkillList().entrySet())
+			{
+				writeH(buf, entry.getKey());//id
+				writeD(buf, entry.getValue());//lvl
+				writeD(buf, 0);//use time? [s]
+				writeC(buf, 0);//unk
+			}
+		}
 		writeD(buf, 0);// unk
 
 	}

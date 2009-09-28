@@ -75,45 +75,36 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 	@Override
 	protected void readImpl()
 	{
-		log.info("Remaining: " + getRemainingBytes());
 		int playOk2 = readD(); // ignored for now
-
 		String someShit = readS(); // something + accointId
 
 		playerCommonData = new PlayerCommonData(aionObjectsIDFactory.nextId());
-
 		String name = readS();
-		log.info("Name (" + name.length() + "): '" + name + "'");
 
 		playerCommonData.setName(name);
 		// just for sure...
 		//log.info((42 - name.length() * 2) + " == " + (getRemainingBytes() - 76));
 
-		//byte[] shit = readB(getRemainingBytes() - 76); // some shit?
 		byte[] shit = readB(42 - (name.length() * 2)); // some shit? 1.5.x
-		
+
 		/*
 		 * int i = 1; for(byte b : shit) log.info("["+i+++"]="+b);
 		 */
 
 		// just for sure...
 		//log.info("76 == " + (getRemainingBytes()));
-
-		playerCommonData.setPlayerExperienceTable(playerService.getPlayerExperienceTable());
 		playerCommonData.setLevel(1);
 		playerCommonData.setGender(readD() == 0 ? Gender.MALE : Gender.FEMALE);
 		playerCommonData.setRace(readD() == 0 ? Race.ELYOS : Race.ASMODIANS);
 		playerCommonData.setPlayerClass(PlayerClass.getPlayerClassById((byte) readD()));
-		
+
 		playerAppearance = new PlayerAppearance();
 
 		playerAppearance.setVoice(readD());
 		playerAppearance.setSkinRGB(readD());
 		playerAppearance.setHairRGB(readD());
-
 		log.info("EyesColor: " + readD()); //playerAppearance.setEyeRGB(readD()); 1.5.x add EyeColor
 		playerAppearance.setLipRGB(readD());
-		
 		playerAppearance.setFace(readC());
 		playerAppearance.setHair(readC());
 		playerAppearance.setDeco(readC());
@@ -154,7 +145,9 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		playerAppearance.setNeck(readC());
 		playerAppearance.setNeckLength(readC());
 
-		log.info("ShoulderSize: " + readC()); //playerAppearance.setShoulders(readC()); 1.5.x May be Shoulders
+		//playerAppearance.setShoulders(readC());
+		log.info("ShoulderSize: " + readC()); // 1.5.x May be Shoulders
+		
 		playerAppearance.setTorso(readC());
 		playerAppearance.setChest(readC()); // only woman
 		playerAppearance.setWaist(readC());
@@ -172,7 +165,7 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		log.info ("LegLength: " + readC()); // 1.5.x add LegLength
 		playerAppearance.setShoulders(readC()); // 1.5.x May be ShoulderSize
 		byte unk2 = (byte) readC(); // always 0
-		readC(); 
+		readC();
 		playerAppearance.setHeight(readF());
 	}
 

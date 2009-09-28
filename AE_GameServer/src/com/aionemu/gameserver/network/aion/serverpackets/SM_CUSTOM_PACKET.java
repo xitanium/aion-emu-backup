@@ -29,7 +29,7 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
  * 
  * @author Luno
  * 
- * @see admincommands.SendFakeServerPacket
+ * @see com.aionemu.gameserver.utils.chathandlers.admincommands.SendFakeServerPacket
  */
 public class SM_CUSTOM_PACKET extends AionServerPacket
 {

@@ -23,6 +23,7 @@ import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedInListener;
 import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedOutListener;
+import com.aionemu.gameserver.model.gameobjects.player.SkillList;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
 import com.aionemu.gameserver.services.PlayerService;
@@ -34,6 +35,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  * 
  * @author -Nemesiss-
  * @author SoulKeeper
+ * @author alexa026
  * 
  */
 public class Player extends Creature
@@ -41,10 +43,17 @@ public class Player extends Creature
 	private PlayerAppearance	playerAppearance;
 	private PlayerCommonData	playerCommonData;
 	private MacroList			macroList;
+	private SkillList			skillList;
 	private FriendList			friendList;
 	private BlockList			blockList;
 	private ResponseRequester	requester;
 	private boolean lookingForGroup = false;
+	
+	public long currentExp = 0;
+	public long maxExp = 1000;
+	public int itemId = 0; 
+	public int itemNameId = 0; 
+	public int atcount = 1;
 	
 	/** When player enters game its char is in kind of "protection" state, when is blinking etc */
 	private boolean				protectionActive;
@@ -132,6 +141,16 @@ public class Player extends Creature
 		this.macroList = macroList;
 	}
 
+	public SkillList getSkillList()
+	{
+		return skillList;
+	}
+
+	public void setSkillList(SkillList skillList)
+	{
+		this.skillList = skillList;
+	}
+
 	/**
 	 * Gets this players Friend List
 	 * @return
@@ -178,6 +197,56 @@ public class Player extends Creature
 	{
 		this.blockList = list;
 	}
+	
+	public void setExp(Long e)
+			{
+				this.currentExp = e;
+			}
+			
+			public long getExp()
+			{
+				return currentExp;
+			}
+			
+			public void setItemId(int e)
+			{
+				this.itemId = e;
+			}
+
+			public void setItemNameId(int e)
+			{
+				this.itemNameId = e;
+			}
+			
+			public int getItemId()
+			{
+					return itemId;
+			}
+
+			public int getItemNameId()
+			{
+					return itemNameId;
+			}
+			
+			public void setatcount(int e)
+			{
+				this.atcount = e;
+			}
+			
+			public int getatcount()
+			{
+					return atcount;
+			}
+			
+			public void setmaxExp(Long e)
+			{
+				this.maxExp = e;
+			}
+			
+			public long getmaxExp()
+			{
+				return maxExp;
+			}
 	/**
 	 * Gets the ResponseRequester for this player
 	 * @return
@@ -216,8 +285,9 @@ public class Player extends Creature
 	@Override
 	public byte getLevel()
 	{
-		return 1;
+		return (byte)playerCommonData.getLevel();
 	}
+
 
 	/**
 	 * This method is called when player logs into the game. It's main responsibility is to call all registered

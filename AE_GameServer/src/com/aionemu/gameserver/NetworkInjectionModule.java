@@ -76,7 +76,6 @@ public class NetworkInjectionModule extends AbstractModule
 	{
 		return new LsPacketHandlerFactory(injector).getPacketHandler();
 	}
-	
 	@Provides
 	@Singleton
 	NioServer provideNioServer(ConnectionFactory connectionFactory)

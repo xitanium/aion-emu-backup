@@ -27,9 +27,9 @@ import com.aionemu.commons.database.DB;
 import com.aionemu.commons.database.IUStH;
 import com.aionemu.commons.database.ParamReadStH;
 import com.aionemu.gameserver.dao.PlayerSkillListDAO;
-import com.aionemu.gameserver.model.gameobjects.player.SkillList;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
+import com.aionemu.gameserver.model.gameobjects.player.SkillList;
 
 /**
  * Created on: 15.07.2009 19:33:07
@@ -42,7 +42,7 @@ public class MySQL5PlayerSkillListDAO extends PlayerSkillListDAO
 	public static final String INSERT_QUERY = "INSERT INTO `player_skills` (`player_id`, `skillId`, `skillLevel`) VALUES (?,?,?)";
 	public static final String DELETE_QUERY = "DELETE FROM `player_skills` WHERE `player_id`=?";
 	public static final String SELECT_QUERY = "SELECT `skillId`, `skillLevel` FROM `player_skills` WHERE `player_id`=?";
-	public static final String SELECT_SKILL_TREE = "SELECT `skillId`, `skillLevel` FROM `skill_trees` WHERE `class_id`=? AND `min_level`=?";
+	public static final String SELECT_SKILL_TREE = "SELECT `skillId`, `skillLevel` FROM `skill_trees` WHERE `class_id`=? AND `min_level`<=?";
 
 	/**
 	 * Add a skill information into database
@@ -89,7 +89,7 @@ public class MySQL5PlayerSkillListDAO extends PlayerSkillListDAO
 				DB.insertUpdate(INSERT_QUERY, new IUStH() {
 					@Override
 					public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
-					{
+				{
 						stmt.setInt(1, pcd.getPlayerObjId());
 						stmt.setInt(2, id);
 						stmt.setInt(3, lv);

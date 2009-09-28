@@ -32,11 +32,11 @@ public class Crypt
 	/**
 	 * Second byte of client packet must be equal to this
 	 */
-	public final static byte	staticClientPacketCode	= Version.Chiness ? 0x5A : 0x5D; // 1.5.x
+	public final static byte	staticClientPacketCode	= Version.Chiness ? 0x5A : 0x5D;
 	/**
 	 * Second byte of server packet must be equal to this
 	 */
-	public final static byte	staticServerPacketCode	= Version.Chiness ? 0x5D : 0x54; // 1.5.x (0x44 should work too)
+	public final static byte	staticServerPacketCode	= Version.Chiness ? 0x5D : 0x44;// 1.5.x (0x54 works too)
 	/**
 	 * Static xor key
 	 */
@@ -139,7 +139,7 @@ public class Crypt
 	 * @param buf
 	 * @return true if packet is correctly decoded
 	 */
-	private boolean validateClientPacket(ByteBuffer buf)
+	private final boolean validateClientPacket(ByteBuffer buf)
 	{
 		return buf.get(0) == ~buf.get(2) && buf.get(1) == staticClientPacketCode;
 	}
@@ -203,7 +203,7 @@ public class Crypt
 	 * @param op
 	 * @return obfuscated opcodec
 	 */
-	public static byte encodeOpcodec(int op)
+	public static final byte encodeOpcodec(int op)
 	{
 		return (byte) ((op + 0xAE) ^ 0xEE);
 	}

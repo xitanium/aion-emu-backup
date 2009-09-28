@@ -113,7 +113,7 @@ public class CM_CHAT_MESSAGE_PUBLIC extends AionClientPacket
 			@Override
 			public boolean acceptObject(Player object)
 			{
-				return !object.getBlockList().contains(object.getObjectId());
+				return !object.getBlockList().contains(player.getObjectId());
 			}
 			
 		});

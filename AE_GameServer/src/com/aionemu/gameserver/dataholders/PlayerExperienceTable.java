@@ -46,7 +46,7 @@ public class PlayerExperienceTable
 	public long getStartExpForLevel(int level)
 	{
 		if(level > experience.length)
-			throw new IllegalArgumentException("The given level "+level+" is higher than possible max "+experience.length);
+			throw new IllegalArgumentException("The given level is higher than possible max");
 
 		return level > experience.length ? 0 : experience[level - 1];
 	}

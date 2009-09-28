@@ -40,7 +40,7 @@ public class SetExp extends AdminCommand
 	 * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.gameobjects.player.Player, java.lang.String[])
 	 */
 	@Override
-	public void executeCommand(Player admin, String[] params)
+	public void executeCommand(Player admin, String... params)
 	{
 		if(params == null || params.length < 1)
 		{
@@ -63,21 +63,16 @@ public class SetExp extends AdminCommand
 		}
 
 		Creature cre = admin.getTarget();
-		try {
-			if(cre instanceof Player)
-			{
-				Player player = (Player)cre;
-				player.getCommonData().setExp(exp);
-			}
-			else
-			{
-				admin.getCommonData().setExp(exp);
-			}
-			PacketSendUtility.sendMessage(admin, "Set your exp to " + exp);
-		}
-		catch (IllegalArgumentException e)
+		if(cre instanceof Player)
 		{
-			PacketSendUtility.sendMessage(admin, e.getMessage());
+			Player player = (Player)cre;
+			player.getCommonData().setExp(exp);
 		}
+		else
+		{
+			admin.getCommonData().setExp(exp);
+		}
+
+		PacketSendUtility.sendMessage(admin, "Set your exp to " + exp);
 	}
 }

@@ -31,8 +31,7 @@ public class SM_PONG extends AionServerPacket
 {
 	//Don't be fooled with empty class :D
 	//This packet is just sending opcode, without any content
-	
-		// 1.5.x sending 2 bytes
+	// 1.5.x sending 2 bytes
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{		

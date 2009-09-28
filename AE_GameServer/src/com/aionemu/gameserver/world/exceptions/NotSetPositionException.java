@@ -25,8 +25,6 @@ package com.aionemu.gameserver.world.exceptions;
  */
 public class NotSetPositionException extends RuntimeException
 {
-	private static final long serialVersionUID = 8006663927062423048L;
-
 	/**
 	 * Constructs an <code>NotSetPositionException</code> with no detail message.
 	 */

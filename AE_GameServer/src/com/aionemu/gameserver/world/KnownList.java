@@ -105,7 +105,7 @@ public class KnownList implements Iterable<VisibleObject>
 	 * 
 	 * @param object
 	 */
-	private void add(VisibleObject object)
+	private final void add(VisibleObject object)
 	{
 		/**
 		 * object is not known.
@@ -119,7 +119,7 @@ public class KnownList implements Iterable<VisibleObject>
 	 * 
 	 * @param object
 	 */
-	private void del(VisibleObject object)
+	private final void del(VisibleObject object)
 	{
 		/**
 		 * object was known.

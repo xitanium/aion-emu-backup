@@ -134,7 +134,7 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 			disconnectionScheduledThreadPool.shutdown();
 			disconnectionScheduledThreadPool.awaitTermination(6, TimeUnit.MINUTES);
 		}
-		catch(Exception ignored)
+		catch(Exception e)
 		{
 		}
 	}
@@ -157,7 +157,6 @@ public class ThreadPoolManager implements DisconnectionThreadPool
 		 * (non-Javadoc)
 		 * @see java.util.concurrent.ThreadFactory#newThread(java.lang.Runnable)
 		 */
-		@Override
 		public Thread newThread(Runnable r)
 		{
 			Thread t = new Thread(group, r);

@@ -46,7 +46,6 @@ public abstract class LsClientPacket extends BaseClientPacket<LoginServerConnect
 	/**
 	 * run runImpl catching and logging Throwable.
 	 */
-	@Override
 	public final void run()
 	{
 		try

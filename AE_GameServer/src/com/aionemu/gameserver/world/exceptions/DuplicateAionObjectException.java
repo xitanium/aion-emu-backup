@@ -25,8 +25,6 @@ package com.aionemu.gameserver.world.exceptions;
  */
 public class DuplicateAionObjectException extends RuntimeException
 {
-	private static final long serialVersionUID = -2031489557355197834L;
-
 	/**
 	 * Constructs an <code>DuplicateAionObjectException</code> with no detail message.
 	 */

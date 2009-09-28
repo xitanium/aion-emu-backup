@@ -19,8 +19,8 @@ package admincommands;
 
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 import com.aionemu.gameserver.utils.PacketSendUtility;
+import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
 
@@ -45,11 +45,11 @@ public class GoTo extends AdminCommand
 	/**
 	 * {@inheritDoc}
 	 */
-	public void executeCommand(Player admin, String[] params)
+	public void executeCommand(Player admin, String... params)
 	{
 		if(params == null || params.length < 1)
 		{
-			PacketSendUtility.sendMessage(admin, "syntax //goto WorldName");
+			PacketSendUtility.sendMessage(admin, "syntax //goto NomDuLieu");
 			return;
 		}
     
@@ -384,7 +384,7 @@ public class GoTo extends AdminCommand
 		admin.setProtectionActive(true);
 		PacketSendUtility.sendPacket(admin, new SM_UNKF5(admin));
 		PacketSendUtility.sendMessage(admin, "Teleported to LF Prison");
-		}
+    	}
 		
 		else if(params[0].equals("prison2"))
     {
@@ -423,6 +423,6 @@ public class GoTo extends AdminCommand
 		}
 		
 		else 
-		PacketSendUtility.sendMessage(admin, "This is not a valid PLaceID!");
+		PacketSendUtility.sendMessage(admin, "Target location was not found");
 	}
-}
+}

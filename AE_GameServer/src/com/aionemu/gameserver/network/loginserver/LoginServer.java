@@ -118,7 +118,7 @@ public class LoginServer
 				 */
 				Thread.sleep(10 * 1000);
 			}
-			catch(Exception ignored)
+			catch(Exception e)
 			{
 			}
 		}
