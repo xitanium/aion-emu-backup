@@ -146,7 +146,7 @@ public class AionConnection extends AConnection
 	@Override
 	protected final boolean processData(ByteBuffer data)
 	{
-		if(!crypt.decrypt(data))
+		if((crypt==null)||!crypt.decrypt(data))
 		{
 			log.warn("Decrypt fail!");
 			// return false;
