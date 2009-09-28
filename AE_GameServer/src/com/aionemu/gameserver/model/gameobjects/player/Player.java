@@ -198,14 +198,14 @@ public class Player extends Creature
 		this.blockList = list;
 	}
 	
-	public void setExp(Long e)
-			{
-				this.currentExp = e;
-			}
-			
+//	public void setExp(Long e)
+//			{
+//				this.currentExp = e;
+//			}
+//			
 			public long getExp()
 			{
-				return currentExp;
+				return this.getCommonData().getExp();
 			}
 			
 			public void setItemId(int e)
@@ -238,15 +238,15 @@ public class Player extends Creature
 					return atcount;
 			}
 			
-			public void setmaxExp(Long e)
-			{
-				this.maxExp = e;
-			}
+			//public void setmaxExp(Long e)
+			//{
+			//	this.maxExp = e;
+			//}
 			
-			public long getmaxExp()
-			{
-				return maxExp;
-			}
+			//public long getmaxExp()
+			//{
+			//	return maxExp;
+			//}
 	/**
 	 * Gets the ResponseRequester for this player
 	 * @return

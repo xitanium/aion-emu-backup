@@ -91,11 +91,12 @@ public class CM_ATTACK extends AionClientPacket
 		sendPacket(new SM_ATTACK_STATUS(targetObjectId,attackno));
 		if (attackno % 5 == 0 && attackno != 0) //this one is still funny, will be removed soon
 		{
-			maxexp = player.getmaxExp();
-			exp = player.getExp() + 50;
+			//maxexp = player.getCommonData().getExpNeed();
+			//maxexp = player.getmaxExp();
+			exp = player.getCommonData().getExp() + 50;
 			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,13,playerobjid), true);
 			PacketSendUtility.broadcastPacket(player, new SM_LOOT_STATUS(targetObjectId,0), true);
-			player.setExp(exp);
+			player.getCommonData().setExp(exp);
 			//sendPacket(new SM_STATUPDATE_EXP(exp,0,maxexp));
 			
 			Random generator = new Random();
