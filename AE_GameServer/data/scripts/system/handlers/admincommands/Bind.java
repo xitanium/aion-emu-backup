@@ -58,7 +58,7 @@ public class Bind extends AdminCommand
 			float x = worldPosition.getX();
 			float y = worldPosition.getY();
 			float z = worldPosition.getZ();
-			int worldId = player.getObjectId();
+			int worldId = player.getPosition().getMapId();
 			world.despawn(player);
 			world.setPosition(player, worldId, x, y, z, admin.getHeading());
 			player.setProtectionActive(true);
