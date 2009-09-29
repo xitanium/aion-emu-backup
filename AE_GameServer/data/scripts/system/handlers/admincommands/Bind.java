@@ -58,15 +58,14 @@ public class Bind extends AdminCommand
 			float x = worldPosition.getX();
 			float y = worldPosition.getY();
 			float z = worldPosition.getZ();
-			int worldId = player.getPosition().getMapId();
+			int worldId = worldPosition.getMapId();
 			world.despawn(player);
 			world.setPosition(player, worldId, x, y, z, admin.getHeading());
-			player.setProtectionActive(true);
 			PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
 			PacketSendUtility.sendMessage(admin, "Binded "+player.getName()+" here ");
-			world.spawn(player);
-			player.setProtectionActive(false);
 			PacketSendUtility.sendMessage(player, "[MJ] "+admin.getName()+" bind you");
+		} else {
+			PacketSendUtility.sendMessage(admin, "Cannot bind "+player.getName());
 		}
 
 	}
