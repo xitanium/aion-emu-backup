@@ -31,6 +31,7 @@ import com.aionemu.gameserver.utils.ThreadPoolManager;
 import com.aionemu.gameserver.utils.ThreadUncaughtExceptionHandler;
 import com.aionemu.gameserver.utils.Util;
 import com.aionemu.gameserver.utils.gametime.GameTimeManager;
+import com.aionemu.gameserver.world.World;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -88,7 +89,7 @@ public class GameServer
 		gs.startServers();
 		GameTimeManager.startClock();
 		
-		Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownHook()));
+		Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownHook(gs.injector.getInstance(World.class))));
 
 		//gs.injector.getInstance(com.aionemu.gameserver.utils.chathandlers.ChatHandlers.class);
 	}
