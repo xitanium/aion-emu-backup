@@ -22,6 +22,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.world.WorldPosition;
+import com.google.inject.Inject;
 
 /**
  * @author xavier
@@ -34,7 +35,8 @@ public class Bind extends AdminCommand
 	/**
 	 * @param commandName
 	 */
-	protected Bind(World world)
+	@Inject
+	public Bind(World world)
 	{
 		super("bind");
 		this.world = world;
