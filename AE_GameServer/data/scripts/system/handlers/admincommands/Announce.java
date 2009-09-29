@@ -43,7 +43,7 @@ public class Announce extends AdminCommand
                 }
                 else {
                         Iterator<Player> iter = admin.getActiveRegion().getWorld().getPlayersIterator();
-                        StringBuilder sbMessage = new StringBuilder("<Annonce> ");
+                        StringBuilder sbMessage = new StringBuilder("<Annonce> ("+admin.getName()+") ");
                         
                         for (String p : params)
                                 sbMessage.append(p + " ");

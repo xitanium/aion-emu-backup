@@ -217,8 +217,18 @@ public class PlayerCommonData
 		{
 			this.level = level;
 			//this.setExp(DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level));
-			if(this.getPlayer()!=null)
+			
+			if(this.getPlayer()!=null) {
+				PacketSendUtility.sendPacket(
+					this.getPlayer(),
+					new SM_STATUPDATE_EXP(
+						this.getExpShown(),
+						0,
+						this.getExpNeed()
+					)
+				);
 				PacketSendUtility.sendPacket(this.getPlayer(), new SM_STATS_INFO(this.getPlayer()));
+			}
 		}
 	}
 	

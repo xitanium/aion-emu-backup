@@ -16,6 +16,8 @@
  */
 package admincommands;
 
+import java.util.Iterator;
+
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -49,21 +51,32 @@ public class Bind extends AdminCommand
 	public void executeCommand(Player admin, String[] params)
 	{
 		if (params == null || params.length != 1) {
-			PacketSendUtility.sendMessage(admin, "syntax //bind player");
+			PacketSendUtility.sendMessage(admin, "syntax //bind [all|player]");
 			return;
+		}
+		WorldPosition worldPosition = admin.getPosition();
+		float x = worldPosition.getX();
+		float y = worldPosition.getY();
+		float z = worldPosition.getZ();
+		int worldId = worldPosition.getMapId();
+		if (params[0].equalsIgnoreCase("all")) {
+			Iterator<Player> iter = admin.getActiveRegion().getWorld().getPlayersIterator();
+			while (iter.hasNext()) {
+				Player player = iter.next();
+				PacketSendUtility.sendMessage(player, "[MJ] ("+admin.getName()+") will bind you !");
+				world.despawn(player);
+				world.setPosition(player, worldId, x, y, z, admin.getHeading());
+				PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
+			}
+			PacketSendUtility.sendMessage(admin, "Binded all active players");
 		}
 		Player player = world.findPlayer(params[0]);
 		if (player != null) {
-			WorldPosition worldPosition = admin.getPosition();
-			float x = worldPosition.getX();
-			float y = worldPosition.getY();
-			float z = worldPosition.getZ();
-			int worldId = worldPosition.getMapId();
 			world.despawn(player);
 			world.setPosition(player, worldId, x, y, z, admin.getHeading());
 			PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
 			PacketSendUtility.sendMessage(admin, "Binded "+player.getName()+" here ");
-			PacketSendUtility.sendMessage(player, "[MJ] "+admin.getName()+" bind you");
+			PacketSendUtility.sendMessage(player, "[MJ] ("+admin.getName()+") bind you");
 		} else {
 			PacketSendUtility.sendMessage(admin, "Cannot bind "+params[0]);
 		}

@@ -107,7 +107,7 @@ public class SM_MESSAGE extends AionServerPacket
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
 		boolean canRead = true;
-		if(race != null)
+		if ((!con.getActivePlayer().getCommonData().isAdmin())&&(race != null))
 		{
 			canRead = race.equals(con.getActivePlayer().getCommonData().getRace());
 		}
