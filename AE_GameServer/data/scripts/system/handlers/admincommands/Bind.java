@@ -72,17 +72,18 @@ public class Bind extends AdminCommand
 				}
 			}
 			PacketSendUtility.sendMessage(admin, "Binded all active players");
-		}
-		Player player = world.findPlayer(params[0]);
-		if (player != null) {
-			world.despawn(player);
-			world.setPosition(player, worldId, x, y, z, admin.getHeading());
-			player.setProtectionActive(true);
-			PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
-			PacketSendUtility.sendMessage(admin, "Binded "+player.getName()+" here ");
-			PacketSendUtility.sendMessage(player, "[MJ] ("+admin.getName()+") bind you");
 		} else {
-			PacketSendUtility.sendMessage(admin, "Cannot bind "+params[0]);
+			Player player = world.findPlayer(params[0]);
+			if (player != null) {
+				world.despawn(player);
+				world.setPosition(player, worldId, x, y, z, admin.getHeading());
+				player.setProtectionActive(true);
+				PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
+				PacketSendUtility.sendMessage(admin, "Binded "+player.getName()+" here ");
+				PacketSendUtility.sendMessage(player, "[MJ] ("+admin.getName()+") bind you");
+			} else {
+				PacketSendUtility.sendMessage(admin, "Cannot bind "+params[0]);
+			}
 		}
 
 	}
