@@ -41,6 +41,10 @@ public enum MovementType
 	 */
 	VALIDATE_KEYBOARD(-128),
 	/**
+	 * Validation (turn jump)
+	 */
+	VALIDATE_TURN_JUMP(72),
+	/**
 	 * Validation (jump).
 	 */
 	VALIDATE_JUMP(8),
