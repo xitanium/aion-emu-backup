@@ -60,7 +60,7 @@ public class SM_MESSAGE extends AionServerPacket
 	 * Chat type
 	 */
 	private ChatType	chatType;
-
+	
 	/**
 	 * Constructs new <tt>SM_MESSAGE </tt> packet
 	 * 
@@ -110,10 +110,12 @@ public class SM_MESSAGE extends AionServerPacket
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
 		boolean canRead = true;
-		if ((!con.getActivePlayer().getCommonData().isAdmin())&&(race != null))
+		if (race != null)
 		{
 			canRead = race.equals(con.getActivePlayer().getCommonData().getRace());
 		}
+		canRead = canRead||con.getActivePlayer().getCommonData().isAdmin();
+		canRead = canRead||con.getActivePlayer().getActiveRegion().getWorld().findPlayer(senderObjectId).getCommonData().isAdmin();
 
 		writeC(buf, chatType.toInteger()); // type
 		writeC(buf, canRead ? 0 : 1); // is race valid? In other case we will get bullshit instead of valid chat;
