@@ -122,6 +122,7 @@ public class SM_MESSAGE extends AionServerPacket
 		writeC(buf, canRead ? 0 : 1); // is race valid? In other case we will get bullshit instead of valid chat;
 		writeD(buf, senderObjectId); // sender object id
 
+		log.info("[manual] senderName:"+senderName+",message:"+message);
 		switch(chatType)
 		{
 			case NORMAL: // normal chat
