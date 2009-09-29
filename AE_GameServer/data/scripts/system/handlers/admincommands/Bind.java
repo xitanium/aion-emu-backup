@@ -64,6 +64,8 @@ public class Bind extends AdminCommand
 			player.setProtectionActive(true);
 			PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
 			PacketSendUtility.sendMessage(admin, "Binded "+player.getName()+" here ");
+			world.spawn(player);
+			player.setProtectionActive(false);
 			PacketSendUtility.sendMessage(player, "[MJ] "+admin.getName()+" bind you");
 		}
 
