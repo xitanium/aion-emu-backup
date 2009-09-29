@@ -55,10 +55,10 @@ public class ShutdownHook implements Runnable
 	{
 		int i;
 		log.info("Starting AE GS shutdown sequence");
-		Iterator<Player> iter = world.getPlayersIterator();
 		for (i=0;i<10;i++) {
+			Iterator<Player> iter = world.getPlayersIterator();
 			while (iter.hasNext()) {
-				PacketSendUtility.sendMessage(iter.next(), "Server shutdown in "+i+" seconds...");
+				PacketSendUtility.sendMessage(iter.next(), "Server shutdown in "+(10-i)+" seconds...");
 			}
 			try
 			{
