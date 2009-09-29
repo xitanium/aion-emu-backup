@@ -115,7 +115,7 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_DIALOG.class, Version.Chiness ? -1 : 0x21, idSet);//1.5.x
 		addPacketOpcode(SM_DIALOG_WINDOW.class, Version.Chiness ? -1 : 0x35, idSet);//1.5.x
 		addPacketOpcode(SM_TRADE_REQUEST.class, Version.Chiness ? 0x4b : 0x4b, idSet); // trade window
-		//addPacketOpcode(SM_TRADE_CONFIRMATION.class, Version.Chiness ? -1 : 0x4F, idSet); // trade window confirmation
+		addPacketOpcode(SM_TRADE_CONFIRMATION.class, Version.Chiness ? -1 : 0x92, idSet); // trade window confirmation
 		
 		
 		//Unrecognized Opcodes:

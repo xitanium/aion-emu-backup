@@ -194,7 +194,7 @@ public class PlayerService
 	{
 		
 		player.getCommonData().setOnline(true);
-		log.info("player "+player.getName()+" logged in with id "+player.getObjectId()+" in map "+player.getActiveRegion().getMapId());
+		//log.info("player "+player.getName()+" logged in with id "+player.getObjectId()+" in map "+player.getActiveRegion().getMapId());
 		player.onLoggedIn();
 	}
 
