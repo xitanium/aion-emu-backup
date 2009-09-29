@@ -61,7 +61,6 @@ public class SM_MESSAGE extends AionServerPacket
 	 */
 	private ChatType	chatType;
 
-	private final Logger log = Logger.getLogger(SM_MESSAGE.class);
 	/**
 	 * Constructs new <tt>SM_MESSAGE </tt> packet
 	 * 
@@ -75,11 +74,10 @@ public class SM_MESSAGE extends AionServerPacket
 	public SM_MESSAGE(Player player, String message, ChatType chatType)
 	{
 		this.senderObjectId = player.getObjectId();
-		this.senderName = player.getName().replace("[MJ] ", "");
+		this.senderName = player.getName();
 		this.message = message;
 		this.race = player.getCommonData().getRace();
 		this.chatType = chatType;
-		log.info("[new] senderName:"+this.senderName+",message:"+this.message);
 	}
 
 	/**
@@ -103,7 +101,6 @@ public class SM_MESSAGE extends AionServerPacket
 		this.message = message;
 		this.race = race;
 		this.chatType = chatType;
-		log.info("[manual] senderName:"+this.senderName+",message:"+this.message);
 	}
 
 	/**
@@ -122,7 +119,6 @@ public class SM_MESSAGE extends AionServerPacket
 		writeC(buf, canRead ? 0 : 1); // is race valid? In other case we will get bullshit instead of valid chat;
 		writeD(buf, senderObjectId); // sender object id
 
-		log.info("[manual] senderName:"+senderName+",message:"+message);
 		switch(chatType)
 		{
 			case NORMAL: // normal chat
