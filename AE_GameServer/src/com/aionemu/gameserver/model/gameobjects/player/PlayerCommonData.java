@@ -149,9 +149,6 @@ public class PlayerCommonData
 
 	public void setName(String name)
 	{
-		if ((this.isAdmin())&&(!name.contains("[MJ]"))) {
-			name = "[MJ] "+name;
-		}
 		this.name = name;
 	}
 

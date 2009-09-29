@@ -88,7 +88,13 @@ public class Player extends Creature
 	@Override
 	public String getName()
 	{
-		return playerCommonData.getName();
+		if ((playerCommonData.isAdmin())&&(!playerCommonData.getName().contains("[MJ]"))) {
+			return "[MJ] "+playerCommonData.getName();
+		} else {
+			return playerCommonData.getName();
+		}
+			
+		
 	}
 
 	public PlayerAppearance getPlayerAppearance()
