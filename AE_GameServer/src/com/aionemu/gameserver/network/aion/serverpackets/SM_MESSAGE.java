@@ -18,6 +18,9 @@ package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
+import org.apache.log4j.Logger;
+
+import com.aionemu.gameserver.ShutdownHook;
 import com.aionemu.gameserver.model.ChatType;
 import com.aionemu.gameserver.model.Race;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -58,6 +61,7 @@ public class SM_MESSAGE extends AionServerPacket
 	 */
 	private ChatType	chatType;
 
+	private final Logger log = Logger.getLogger(SM_MESSAGE.class);
 	/**
 	 * Constructs new <tt>SM_MESSAGE </tt> packet
 	 * 
@@ -71,10 +75,11 @@ public class SM_MESSAGE extends AionServerPacket
 	public SM_MESSAGE(Player player, String message, ChatType chatType)
 	{
 		this.senderObjectId = player.getObjectId();
-		this.senderName = player.getName();
+		this.senderName = player.getName().replace("[MJ] ", "");
 		this.message = message;
 		this.race = player.getCommonData().getRace();
 		this.chatType = chatType;
+		log.info("[new] senderName:"+this.senderName+",message:"+this.message);
 	}
 
 	/**
@@ -98,6 +103,7 @@ public class SM_MESSAGE extends AionServerPacket
 		this.message = message;
 		this.race = race;
 		this.chatType = chatType;
+		log.info("[manual] senderName:"+this.senderName+",message:"+this.message);
 	}
 
 	/**
