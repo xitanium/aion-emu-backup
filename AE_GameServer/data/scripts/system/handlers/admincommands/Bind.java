@@ -65,7 +65,7 @@ public class Bind extends AdminCommand
 			PacketSendUtility.sendMessage(admin, "Binded "+player.getName()+" here ");
 			PacketSendUtility.sendMessage(player, "[MJ] "+admin.getName()+" bind you");
 		} else {
-			PacketSendUtility.sendMessage(admin, "Cannot bind "+player.getName());
+			PacketSendUtility.sendMessage(admin, "Cannot bind "+params[0]);
 		}
 
 	}
