@@ -141,9 +141,9 @@ public class MySQL5PlayerDAO extends PlayerDAO
 						preparedStatement.setString(12, pcd.getRace().toString());
 						preparedStatement.setString(13, pcd.getPlayerClass().toString());
 						preparedStatement.setBoolean(14, pcd.isAdmin());
-						preparedStatement.setInt(15, pcd.getPlayer().getHP());
-						preparedStatement.setInt(16, pcd.getPlayer().getMP());
-						preparedStatement.setInt(17, pcd.getPlayer().getDP());
+						preparedStatement.setInt(15, (pcd.getPlayer()!=null)?pcd.getPlayer().getHP():0);
+						preparedStatement.setInt(16, (pcd.getPlayer()!=null)?pcd.getPlayer().getMP():0);
+						preparedStatement.setInt(17, (pcd.getPlayer()!=null)?pcd.getPlayer().getDP():0);
 						preparedStatement.execute();
 					}
 				});
