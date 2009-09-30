@@ -61,7 +61,7 @@ public class SM_ATTACK extends AionServerPacket
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{		
 		Creature attacker = (Creature)world.findAionObject(attackerobjectid);
-		Creature target = attacker.getTarget();
+		Creature target = (Creature)world.findAionObject(targetObjectId);
 		Random generator = new Random();
 		int damages = (int)Math.round((attacker.getPower()-target.getBlock()/10)+(attacker.getLevel()-target.getLevel())*10)+generator.nextInt(10);
 		if (damages<0) {
