@@ -172,6 +172,7 @@ public class PlayerService
 	{
 		// TODO values should go from template
 		LocationData ld = playerInitialData.getSpawnLocation(playerCommonData.getRace());
+		Player player = null;
 
 		WorldPosition position = world.createPosition(ld.getMapId(), ld.getX(), ld.getY(), ld.getZ(), ld.getHeading());
 
@@ -180,7 +181,11 @@ public class PlayerService
 		// TODO: starting skills
 		// TODO: starting items;
 
-		return new Player(new PlayerController(), playerCommonData, playerAppearance);
+		player = new Player(new PlayerController(), playerCommonData, playerAppearance);
+		player.setHP(playerCommonData.getPlayer().getStats().getMaxHP());
+		player.setMP(playerCommonData.getPlayer().getStats().getMaxMP());
+		player.setDP(0);
+		return player;
 	}
 
 	/**
