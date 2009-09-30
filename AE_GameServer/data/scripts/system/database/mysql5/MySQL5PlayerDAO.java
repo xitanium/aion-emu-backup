@@ -87,7 +87,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 	@Override
 	public void storePlayer(final Player player)
 	{
-		DB.insertUpdate("UPDATE players SET name=?, exp=?, x=?, y=?, z=?, heading=?, world_id=?, player_class=?, last_online=?, admin=?, note=? WHERE id=?", new IUStH(){
+		DB.insertUpdate("UPDATE players SET name=?, exp=?, x=?, y=?, z=?, heading=?, world_id=?, player_class=?, last_online=?, admin=?, note=?, hp=?, mp=?, dp=? WHERE id=?", new IUStH(){
 			@Override
 			public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
 			{
@@ -105,6 +105,9 @@ public class MySQL5PlayerDAO extends PlayerDAO
 				stmt.setBoolean(10, player.getCommonData().isAdmin());
 				stmt.setString(11,player.getCommonData().getNote());
 				stmt.setInt(12, player.getObjectId());
+				stmt.setInt(13, player.getHP());
+				stmt.setInt(14, player.getMP());
+				stmt.setInt(15, player.getDP());
 				stmt.execute();
 			}
 		});
@@ -116,7 +119,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 	public boolean saveNewPlayer(final PlayerCommonData pcd, final int accountId, final String accountName)
 	{
 		boolean success = DB.insertUpdate(
-				"INSERT INTO players(id, `name`, exp, account_id, account_name, x, y, z, heading, world_id, gender, race, player_class , admin) " +
+				"INSERT INTO players(id, `name`, exp, account_id, account_name, x, y, z, heading, world_id, gender, race, player_class , admin, hp, mp, dp) " +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 				new IUStH(){
 					@Override
@@ -138,6 +141,9 @@ public class MySQL5PlayerDAO extends PlayerDAO
 						preparedStatement.setString(12, pcd.getRace().toString());
 						preparedStatement.setString(13, pcd.getPlayerClass().toString());
 						preparedStatement.setBoolean(14, pcd.isAdmin());
+						preparedStatement.setInt(15, pcd.getPlayer().getHP());
+						preparedStatement.setInt(16, pcd.getPlayer().getMP());
+						preparedStatement.setInt(17, pcd.getPlayer().getDP());
 						preparedStatement.execute();
 					}
 				});
@@ -187,6 +193,9 @@ public class MySQL5PlayerDAO extends PlayerDAO
 				cd.setAdmin(resultSet.getBoolean("admin"));
 				cd.setLastOnline(resultSet.getTimestamp("last_online"));
 				cd.setNote(resultSet.getString("note"));
+				cd.getPlayer().setHP(resultSet.getInt("hp"));
+				cd.getPlayer().setMP(resultSet.getInt("mp"));
+				cd.getPlayer().setDP(resultSet.getInt("dp"));
 				
 				float x = resultSet.getFloat("x");
 				float y = resultSet.getFloat("y");

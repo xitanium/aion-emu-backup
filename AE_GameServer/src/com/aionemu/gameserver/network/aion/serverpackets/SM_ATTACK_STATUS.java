@@ -18,9 +18,9 @@ package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
+import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import java.util.Random;
 
 /**
  * 
@@ -29,16 +29,15 @@ import java.util.Random;
  */
 public class SM_ATTACK_STATUS extends AionServerPacket
 {
-	private int	targetObjectId;
 	private int	attackno;
     private int remainHp;
+    private int targetObjId; 
 	
-	public SM_ATTACK_STATUS(int targetObjectId, int attackno)
+	public SM_ATTACK_STATUS(Creature target, int attackno)
 	{
-		this.targetObjectId = targetObjectId;
+		this.targetObjId = target.getObjectId();
 		this.attackno = attackno + 1;// empty
-
-		
+		this.remainHp = (target.getHP()<0)?0:target.getHP();
 	}
 
 	/**
@@ -48,20 +47,7 @@ public class SM_ATTACK_STATUS extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{		
-
-		remainHp = (100 - ((attackno % 5)*20));
-		if (remainHp == 100)
-		{
-			remainHp = 0;
-		}
-		if (attackno == 100)
-		{
-			Random generator = new Random();
-			int ran = generator.nextInt(18)+1;
-			remainHp = 100 - ran;
-		}
-		
-		writeD(buf, targetObjectId);
+		writeD(buf, targetObjId);
 		writeD(buf, 0);
 		writeC(buf, 5); // unknown?? type 5
 		writeH(buf, remainHp); // unknown remain hp??

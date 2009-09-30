@@ -61,6 +61,7 @@ public class SM_MESSAGE extends AionServerPacket
 	 */
 	private ChatType	chatType;
 	
+	private final Logger log = Logger.getLogger(ShutdownHook.class);
 	/**
 	 * Constructs new <tt>SM_MESSAGE </tt> packet
 	 * 
@@ -114,8 +115,21 @@ public class SM_MESSAGE extends AionServerPacket
 		{
 			canRead = race.equals(con.getActivePlayer().getCommonData().getRace());
 		}
-		canRead = canRead||con.getActivePlayer().getCommonData().isAdmin();
-		canRead = canRead||con.getActivePlayer().getActiveRegion().getWorld().findPlayer(senderObjectId).getCommonData().isAdmin();
+		if (canRead) {
+			log.info(con.getActivePlayer().getName()+" can read message "+message+" because he is of the same race");	
+		} else {
+			canRead = canRead||con.getActivePlayer().getCommonData().isAdmin();
+			if (canRead) {
+				log.info(con.getActivePlayer().getName()+" can read message "+message+" because he is admin");
+			} else {
+				if (con.getActivePlayer().getActiveRegion().getWorld().findPlayer(senderObjectId)!=null) {
+					canRead = canRead||con.getActivePlayer().getActiveRegion().getWorld().findPlayer(senderObjectId).getCommonData().isAdmin();
+					if (canRead) {
+						log.info(con.getActivePlayer().getName()+" can read message "+message+" because the message is from an admin");
+					}
+				}
+			}
+		}
 
 		writeC(buf, chatType.toInteger()); // type
 		writeC(buf, canRead ? 0 : 1); // is race valid? In other case we will get bullshit instead of valid chat;

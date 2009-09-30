@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.dataholders.DataManager;
+import com.aionemu.gameserver.dataholders.PlayerStatsData;
 import com.aionemu.gameserver.dataholders.StaticData;
 import com.aionemu.gameserver.model.Gender;
 import com.aionemu.gameserver.model.PlayerClass;
@@ -216,8 +217,7 @@ public class PlayerCommonData
 		if (level <= DataManager.PLAYER_EXPERIENCE_TABLE.getMaxLevel())
 		{
 			this.level = level;
-			//this.setExp(DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level));
-			
+			this.getPlayer().getStats().recomputeStats();
 			if(this.getPlayer()!=null) {
 				PacketSendUtility.sendPacket(
 					this.getPlayer(),

@@ -19,6 +19,7 @@ package com.aionemu.gameserver.network.aion.clientpackets;
 import java.util.Random;
 import java.util.UUID;
 
+import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -73,36 +74,31 @@ public class CM_ATTACK extends AionClientPacket
 	@Override
 	protected void runImpl()
 	{
-
-//PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player.getObjectId(), unknown, emotion), true);
-	
-
-
 		Player player = getConnection().getActivePlayer();
 		int playerobjid = player.getObjectId();
-		PacketSendUtility.broadcastPacket(player, new SM_ATTACK(playerobjid,targetObjectId,attackno,time,type), true);
+		PacketSendUtility.broadcastPacket(player, new SM_ATTACK(player.getActiveRegion().getWorld(),playerobjid,targetObjectId,attackno,time,type), true);
 
 		at = player.getatcount();
 		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,30,playerobjid), true);
 		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,19,playerobjid), true);
-		sendPacket(new SM_ATTACK(targetObjectId,playerobjid,at,time,type));
-		sendPacket(new SM_ATTACK_STATUS(playerobjid,99));
+		sendPacket(new SM_ATTACK(player.getActiveRegion().getWorld(),targetObjectId,playerobjid,at,time,type));
+		sendPacket(new SM_ATTACK_STATUS(player,99));
 	  	at = at + 1;
-	    	player.setatcount(at);
+	    player.setatcount(at);
 		
-		sendPacket(new SM_ATTACK_STATUS(targetObjectId,attackno));
-		if (attackno % 5 == 0 && attackno != 0) //this one is still funny, will be removed soon
+		sendPacket(new SM_ATTACK_STATUS((Creature)player.getActiveRegion().getWorld().findAionObject(targetObjectId),attackno));
+		if (((Creature)player.getActiveRegion().getWorld().findAionObject(targetObjectId)).getHP()<=0)
 		{
 			World world = player.getActiveRegion().getWorld();
-			Npc npc = (Npc) world.findAionObject(targetObjectId);
-			//maxexp = player.getCommonData().getExpNeed();
-			//maxexp = player.getmaxExp();
+			Creature npc = (Creature) world.findAionObject(targetObjectId);
 			Random generator = new Random();
-			exp = player.getCommonData().getExp() + npc.getLevel()*55;
+			exp = (int)Math.round(player.getCommonData().getExpNeed()*0.07)+(npc.getLevel()-player.getLevel())*10;
+			if (exp<=0) {
+				exp = generator.nextInt(10);
+			}
 			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,13,playerobjid), true);
 			PacketSendUtility.broadcastPacket(player, new SM_LOOT_STATUS(targetObjectId,0), true);
-			player.getCommonData().setExp(exp);
-			//sendPacket(new SM_STATUPDATE_EXP(exp,0,maxexp));
+			player.getCommonData().setExp(player.getCommonData().getExp()+exp);
 			
 			int randomKinah = generator.nextInt(50)+1;
 			

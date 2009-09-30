@@ -56,6 +56,9 @@ public class Npc extends Creature
 
 		this.template = spawn.getNpc();
 		this.spawn = spawn;
+		this.currentHP = template.getNpcStatsTemplate().getMaxHp();
+		this.currentMP = template.getNpcStatsTemplate().getMaxMp();
+		this.currentDP = 0;
 		controller.setOwner(this);
 	}
 
@@ -97,9 +100,89 @@ public class Npc extends Creature
 		return getTemplate().getLevel();
 	}
 	
+	public void setHP (int hp)
+	{
+		if (hp>=template.getNpcStatsTemplate().getMaxHp()) {
+			currentHP = template.getNpcStatsTemplate().getMaxHp();
+		} else {
+			currentHP = hp;
+		}
+	}
+	
 	public void onDie()
 	{
 		RespawnService.getInstance().scheduleRespawnTask(this);
 		DecayService.getInstance().scheduleDecayTask(this);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#setDP(int)
+	 */
+	@Override
+	public void setDP(int dp)
+	{
+		if (dp>this.getMaxDP()) {
+			this.currentDP = this.getMaxDP();
+		} else {
+			this.currentDP = dp;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#setMP(int)
+	 */
+	@Override
+	public void setMP(int mp)
+	{
+		if (this.currentMP>=this.getMaxMP()) {
+			this.currentMP = this.getMaxMP();
+		} else {
+			this.currentMP = mp;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getMaxDP()
+	 */
+	@Override
+	public int getMaxDP()
+	{
+		return 100;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getMaxHP()
+	 */
+	@Override
+	public int getMaxHP()
+	{
+		return template.getNpcStatsTemplate().getMaxHp();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getMaxMP()
+	 */
+	@Override
+	public int getMaxMP()
+	{
+		return template.getNpcStatsTemplate().getMaxMp();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getBlock()
+	 */
+	@Override
+	public int getBlock()
+	{
+		return template.getNpcStatsTemplate().getBlock();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getPower()
+	 */
+	@Override
+	public int getPower()
+	{
+		return template.getNpcStatsTemplate().getMainHandAttack()*5;
 	}
 }

@@ -83,7 +83,7 @@ public class CM_CASTSPELL extends AionClientPacket
 					 MovementType type = MovementType.getMovementTypeById((byte)0xE0);
 
 				sendPacket(new SM_MOVE((Creature) player.getTarget(),x,y,z,x2,y2,z2,player.getTarget().getHeading(),type));
-				sendPacket(new SM_ATTACK_STATUS(targetObjectId,12));
+				sendPacket(new SM_ATTACK_STATUS((Creature)player.getTarget(),12));
 				
 				//log.info(String.format("Attacking target with object id: %d", targetObjectId));
 				

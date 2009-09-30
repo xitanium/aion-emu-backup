@@ -176,7 +176,7 @@ public class PlayerService
 		WorldPosition position = world.createPosition(ld.getMapId(), ld.getX(), ld.getY(), ld.getZ(), ld.getHeading());
 
 		playerCommonData.setPosition(position);
-
+		
 		// TODO: starting skills
 		// TODO: starting items;
 

@@ -97,6 +97,9 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		playerCommonData.setGender(readD() == 0 ? Gender.MALE : Gender.FEMALE);
 		playerCommonData.setRace(readD() == 0 ? Race.ELYOS : Race.ASMODIANS);
 		playerCommonData.setPlayerClass(PlayerClass.getPlayerClassById((byte) readD()));
+		playerCommonData.getPlayer().setHP(playerCommonData.getPlayer().getStats().getMaxHP());
+		playerCommonData.getPlayer().setMP(playerCommonData.getPlayer().getStats().getMaxMP());
+		playerCommonData.getPlayer().setDP(0);
 
 		playerAppearance = new PlayerAppearance();
 

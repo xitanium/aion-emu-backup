@@ -46,19 +46,18 @@ public class Player extends Creature
 {
 	private PlayerAppearance	playerAppearance;
 	private PlayerCommonData	playerCommonData;
+	private PlayerStats			playerStats;
 	private MacroList			macroList;
 	private SkillList			skillList;
 	private FriendList			friendList;
 	private BlockList			blockList;
 	private ResponseRequester	requester;
-	private boolean lookingForGroup = false;
-	
-	public long currentExp = 0;
-	public long maxExp = 1000;
-	public int itemId = 0; 
-	public int itemNameId = 0; 
-	public int atcount = 1;
-	
+	private boolean				lookingForGroup	= false;
+
+	private int					itemId			= 0;
+	private int					itemNameId		= 0;
+	private int					atcount			= 1;
+
 	/** When player enters game its char is in kind of "protection" state, when is blinking etc */
 	private boolean				protectionActive;
 
@@ -73,9 +72,13 @@ public class Player extends Creature
 
 		this.playerCommonData = plCommonData;
 		this.playerAppearance = appereance;
-		
+		this.playerStats = new PlayerStats(this);
+		this.currentHP = playerStats.getMaxHP();
+		this.currentMP = playerStats.getMaxMP();
+		this.currentDP = 0;
+
 		this.requester = new ResponseRequester(this);
-		
+
 		controller.setOwner(this);
 
 	}
@@ -85,12 +88,20 @@ public class Player extends Creature
 		return playerCommonData;
 	}
 
+	public PlayerStats getStats()
+	{
+		return playerStats;
+	}
+
 	@Override
 	public String getName()
 	{
-		if ((playerCommonData.isAdmin())&&(!playerCommonData.getName().contains("*MJ*"))) {
-			return new String("*MJ* "+playerCommonData.getName());
-		} else {
+		if((playerCommonData.isAdmin()) && (!playerCommonData.getName().contains("*MJ*")))
+		{
+			return new String("*MJ* " + playerCommonData.getName());
+		}
+		else
+		{
 			return playerCommonData.getName();
 		}
 	}
@@ -161,124 +172,139 @@ public class Player extends Creature
 
 	/**
 	 * Gets this players Friend List
+	 * 
 	 * @return
 	 */
 	public FriendList getFriendList()
 	{
 		return friendList;
 	}
-	
+
 	/**
 	 * Is this player looking for a group
+	 * 
 	 * @return
 	 */
 	public boolean isLookingForGroup()
 	{
 		return lookingForGroup;
 	}
-	
+
 	/**
 	 * Sets whether or not this player is looking for a group
+	 * 
 	 * @param lookingForGroup
 	 */
 	public void setLookingForGroup(boolean lookingForGroup)
 	{
 		this.lookingForGroup = lookingForGroup;
 	}
-	
+
 	/**
 	 * Sets this players friend list. <br />
 	 * Remember to send the player the <tt>SM_FRIEND_LIST</tt> packet.
+	 * 
 	 * @param list
 	 */
 	public void setFriendList(FriendList list)
 	{
 		this.friendList = list;
 	}
-	
+
 	public BlockList getBlockList()
 	{
 		return blockList;
 	}
-	
+
 	public void setBlockList(BlockList list)
 	{
 		this.blockList = list;
 	}
+
+	public long getExp()
+	{
+		return this.getCommonData().getExp();
+	}
+
+	public void setHP (int hp) {
+		if (hp>=playerStats.getMaxHP()) {
+			this.currentHP = playerStats.getMaxHP();
+		} else {
+			this.currentHP = hp;
+		}
+	}
 	
-//	public void setExp(Long e)
-//			{
-//				this.currentExp = e;
-//			}
-//			
-			public long getExp()
-			{
-				return this.getCommonData().getExp();
-			}
-			
-			public void setItemId(int e)
-			{
-				this.itemId = e;
-			}
+	public void setMP (int mp) {
+		if (mp>=playerStats.getMaxMP()) {
+			this.currentMP = playerStats.getMaxMP();
+		} else {
+			this.currentMP = mp;
+		}
+	}
+		
+	public void setDP (int dp) {
+		if (dp>=playerStats.getMaxDP()) {
+			this.currentDP = playerStats.getMaxDP();
+		} else {
+			this.currentDP = dp;
+		}
+	}
+	
+	public void setItemId(int e)
+	{
+		this.itemId = e;
+	}
 
-			public void setItemNameId(int e)
-			{
-				this.itemNameId = e;
-			}
-			
-			public int getItemId()
-			{
-					return itemId;
-			}
+	public void setItemNameId(int e)
+	{
+		this.itemNameId = e;
+	}
 
-			public int getItemNameId()
-			{
-					return itemNameId;
-			}
-			
-			public void setatcount(int e)
-			{
-				this.atcount = e;
-			}
-			
-			public int getatcount()
-			{
-					return atcount;
-			}
-			
-			//public void setmaxExp(Long e)
-			//{
-			//	this.maxExp = e;
-			//}
-			
-			//public long getmaxExp()
-			//{
-			//	return maxExp;
-			//}
+	public int getItemId()
+	{
+		return itemId;
+	}
+
+	public int getItemNameId()
+	{
+		return itemNameId;
+	}
+
+	public void setatcount(int e)
+	{
+		this.atcount = e;
+	}
+
+	public int getatcount()
+	{
+		return atcount;
+	}
+
 	/**
 	 * Gets the ResponseRequester for this player
+	 * 
 	 * @return
 	 */
 	public ResponseRequester getResponseRequester()
 	{
 		return requester;
 	}
-	
+
 	public boolean isOnline()
 	{
 		return getClientConnection() != null;
 	}
-	
+
 	public PlayerClass getPlayerClass()
 	{
 		return playerCommonData.getPlayerClass();
 	}
-	
+
 	public Gender getGender()
 	{
 		return playerCommonData.getGender();
 	}
-	
+
 	/**
 	 * Return PlayerController of this Player Object.
 	 * 
@@ -293,9 +319,8 @@ public class Player extends Creature
 	@Override
 	public byte getLevel()
 	{
-		return (byte)playerCommonData.getLevel();
+		return (byte) playerCommonData.getLevel();
 	}
-
 
 	/**
 	 * This method is called when player logs into the game. It's main responsibility is to call all registered
@@ -308,17 +333,23 @@ public class Player extends Creature
 	@Enhancable(callback = PlayerLoggedInListener.class)
 	public void onLoggedIn()
 	{
-		if (this.getCommonData().isAdmin()) {
+		if(this.getCommonData().isAdmin())
+		{
 			MapRegion mapRegion = this.getActiveRegion();
-			if (mapRegion!=null) {
+			if(mapRegion != null)
+			{
 				World world = mapRegion.getWorld();
-				if (world!=null) {
+				if(world != null)
+				{
 					Iterator<Player> iter = world.getPlayersIterator();
-					if (iter!=null) {
-						StringBuilder sbMessage = new StringBuilder("<Annonce> [>>>MJ] "+this.getName()+" vient de se connecter");
-					
+					if(iter != null)
+					{
+						StringBuilder sbMessage = new StringBuilder("<Annonce> [>>>MJ] " + this.getName()
+							+ " vient de se connecter");
+
 						String sMessage = sbMessage.toString().trim();
-						while (iter.hasNext()) {
+						while(iter.hasNext())
+						{
 							PacketSendUtility.sendMessage(iter.next(), sMessage);
 						}
 					}
@@ -337,22 +368,82 @@ public class Player extends Creature
 	@Enhancable(callback = PlayerLoggedOutListener.class)
 	public void onLoggedOut()
 	{
-		if (this.getCommonData().isAdmin()) {
+		if(this.getCommonData().isAdmin())
+		{
 			MapRegion mapRegion = this.getActiveRegion();
-			if (mapRegion!=null) {
+			if(mapRegion != null)
+			{
 				World world = mapRegion.getWorld();
-				if (world!=null) {
+				if(world != null)
+				{
 					Iterator<Player> iter = world.getPlayersIterator();
-					if (iter!=null) {
-						StringBuilder sbMessage = new StringBuilder("<Annonce> [<<<MJ] "+this.getName()+" est sorti du jeu");
-					
+					if(iter != null)
+					{
+						StringBuilder sbMessage = new StringBuilder("<Annonce> [<<<MJ] " + this.getName()
+							+ " est sorti du jeu");
+
 						String sMessage = sbMessage.toString().trim();
-						while (iter.hasNext()) {
+						while(iter.hasNext())
+						{
 							PacketSendUtility.sendMessage(iter.next(), sMessage);
 						}
 					}
 				}
 			}
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getMaxDP()
+	 */
+	@Override
+	public int getMaxDP()
+	{
+		return playerStats.getMaxDP();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getMaxHP()
+	 */
+	@Override
+	public int getMaxHP()
+	{
+		return playerStats.getMaxHP();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getMaxMP()
+	 */
+	@Override
+	public int getMaxMP()
+	{
+		return playerStats.getMaxMP();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getBlock()
+	 */
+	@Override
+	public int getBlock()
+	{
+		return playerStats.getBlock();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getPower()
+	 */
+	@Override
+	public int getPower()
+	{
+		return playerStats.getPower();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#onDie()
+	 */
+	@Override
+	public void onDie()
+	{
+		// TODO Auto-generated method stub	
 	}
 }
