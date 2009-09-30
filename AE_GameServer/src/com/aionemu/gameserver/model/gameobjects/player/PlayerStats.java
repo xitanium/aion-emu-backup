@@ -16,8 +16,11 @@
  */
 package com.aionemu.gameserver.model.gameobjects.player;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
+import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * @author xavier
@@ -25,6 +28,7 @@ import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
  */
 public class PlayerStats
 {
+	private static Logger				log				= Logger.getLogger(AionServerPacket.class);
 	// static.
 	private int					power;
 	private int					health;
@@ -430,16 +434,21 @@ public class PlayerStats
 			* (player.getLevel() - 1) + 284);
 		Long lObj = new Long(maxhpc);
 		maxhp = lObj.intValue();
-
-		power = playerStatsTemplate.getPower() + (int) Math.round((player.getLevel() - 1) * 1.1688);
-		health = playerStatsTemplate.getHealth() + (int) Math.round((player.getLevel() - 1) * 1.1688);
-		agility = playerStatsTemplate.getAgility() + (int) Math.round((player.getLevel() - 1) * 1.1688);// change
-		accuracy = playerStatsTemplate.getAccuracy() + (int) Math.round((player.getLevel() - 1) * 1.1688); // change
-		knowledge = playerStatsTemplate.getKnowledge() + (int) Math.round((player.getLevel() - 1) * 1.1688); // change
-		will = playerStatsTemplate.getWill() + (int) Math.round((player.getLevel() - 1) * 1.1688); // change
-		mainHandAttack = playerStatsTemplate.getMainHandAttack() + (int) Math.round((player.getLevel() - 1) * 0.108); // change
-		mainHandCritRate = playerStatsTemplate.getMainHandCritRate() + (int) Math.round((player.getLevel() - 1) * 0.108); // change
-
+		if (this.playerStatsTemplate!=null) {
+			power = playerStatsTemplate.getPower() + (int) Math.round((player.getLevel() - 1) * 1.1688);
+			health = playerStatsTemplate.getHealth() + (int) Math.round((player.getLevel() - 1) * 1.1688);
+			agility = playerStatsTemplate.getAgility() + (int) Math.round((player.getLevel() - 1) * 1.1688);// change
+			accuracy = playerStatsTemplate.getAccuracy() + (int) Math.round((player.getLevel() - 1) * 1.1688); // change
+			knowledge = playerStatsTemplate.getKnowledge() + (int) Math.round((player.getLevel() - 1) * 1.1688); // change
+			will = playerStatsTemplate.getWill() + (int) Math.round((player.getLevel() - 1) * 1.1688); // change
+			mainHandAttack = playerStatsTemplate.getMainHandAttack() + (int) Math.round((player.getLevel() - 1) * 0.108); // change
+			mainHandCritRate = playerStatsTemplate.getMainHandCritRate() + (int) Math.round((player.getLevel() - 1) * 0.108); // change
+		} else {
+			log.info("playerStatsTemplate null for player "+player.getName()+":{class:"+player.getClass()+",level:"+player.getLevel());
+			power = health = agility = accuracy = knowledge = will = 100+(int) Math.round((player.getLevel() - 1) * 1.1688);
+			mainHandAttack = 18+(int) Math.round((player.getLevel() - 1) * 0.108);
+			mainHandCritRate = 6+(int) Math.round((player.getLevel() - 1) * 0.108);
+		}
 		evasionc = Math.round(agility * 3.1 - 248.5 + 12.4 * player.getLevel());
 		Long lObj2 = new Long(evasionc);
 		evasion = lObj2.intValue();
