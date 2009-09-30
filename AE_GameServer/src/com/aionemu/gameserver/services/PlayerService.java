@@ -182,8 +182,8 @@ public class PlayerService
 		// TODO: starting items;
 
 		player = new Player(new PlayerController(), playerCommonData, playerAppearance);
-		player.setHP(playerCommonData.getPlayer().getStats().getMaxHP());
-		player.setMP(playerCommonData.getPlayer().getStats().getMaxMP());
+		player.setHP(player.getStats().getMaxHP());
+		player.setMP(player.getStats().getMaxMP());
 		player.setDP(0);
 		return player;
 	}
