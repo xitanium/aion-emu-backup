@@ -284,6 +284,7 @@ public class PlayerStats
 	{
 		this.player = player;
 		this.playerStatsTemplate = DataManager.PLAYER_STATS_DATA.getTemplate(player);
+		this.recomputeStats();
 	}
 
 	/**
@@ -425,7 +426,6 @@ public class PlayerStats
 
 	public void recomputeStats()
 	{
-		PlayerCommonData pcd = player.getCommonData();
 		maxhpc = Math.round(1.1688 * (player.getLevel() - 1) * (player.getLevel() - 1) + 45.149
 			* (player.getLevel() - 1) + 284);
 		Long lObj = new Long(maxhpc);
