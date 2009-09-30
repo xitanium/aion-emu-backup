@@ -93,7 +93,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 			{
 				log.debug("[DAO: MySQL5PlayerDAO] storing player "+player.getObjectId()+" "+player.getName());
 				
-				stmt.setString(1, player.getName());
+				stmt.setString(1, player.getName().replace("*MJ* ",""));
 				stmt.setLong(2, player.getExp());
 				stmt.setFloat(3, player.getX());
 				stmt.setFloat(4, player.getY());
@@ -128,7 +128,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 						log.debug("[DAO: MySQL5PlayerDAO] saving new player: "+pcd.getPlayerObjId()+" "+pcd.getName());
 						
 						preparedStatement.setInt(1, pcd.getPlayerObjId());
-						preparedStatement.setString(2, pcd.getName());
+						preparedStatement.setString(2, pcd.getName().replace("*MJ* ", ""));
 						preparedStatement.setLong(3, pcd.getExp());
 						preparedStatement.setInt(4, accountId);
 						preparedStatement.setString(5, accountName);
@@ -185,7 +185,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 				
 				resultSet.next();
 				
-				cd.setName(resultSet.getString("name"));
+				cd.setName(resultSet.getString("name").replace("*MJ* ", ""));
 				cd.setExp(resultSet.getLong("exp"));
 				cd.setRace(Race.valueOf(resultSet.getString("race")));
 				cd.setGender(Gender.valueOf(resultSet.getString("gender")));

@@ -68,7 +68,7 @@ public class SM_ATTACK extends AionServerPacket
 		Creature target = (Creature)world.findAionObject(targetObjectId);
 		Random generator = new Random();
 		int damages = (int)Math.round((attacker.getPower()-target.getBlock()/10)+(attacker.getLevel()-target.getLevel())*10)+generator.nextInt(10);
-		log.info("attacker:{name:"+attacker.getName()+",power:"+attacker.getPower()+",block:"+attacker.getBlock()+",hp:"+attacker.getHP()+"},target:{name:"+target.getName()+",power:"+target.getPower()+",block:"+target.getBlock()+"hp:"+target.getHP()+"},damages:"+damages);
+		log.info("attacker:{name:"+attacker.getName()+",power:"+attacker.getPower()+",block:"+attacker.getBlock()+",hp:"+attacker.getHP()+"},target:{name:"+target.getName()+",power:"+target.getPower()+",block:"+target.getBlock()+",hp:"+target.getHP()+"},damages:"+damages);
 		if (damages<0) {
 			damages = generator.nextInt(10);
 		}

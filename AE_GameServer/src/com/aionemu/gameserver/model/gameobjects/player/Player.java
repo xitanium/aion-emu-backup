@@ -73,6 +73,7 @@ public class Player extends Creature
 		this.playerCommonData = plCommonData;
 		this.playerAppearance = appereance;
 		this.playerStats = new PlayerStats(this);
+		log.info("playerStats class: "+this.playerStats.getR)
 		this.currentHP = playerStats.getMaxHP();
 		this.currentMP = playerStats.getMaxMP();
 		this.currentDP = 0;
