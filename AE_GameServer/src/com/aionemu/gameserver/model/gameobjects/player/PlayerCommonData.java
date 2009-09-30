@@ -217,8 +217,8 @@ public class PlayerCommonData
 		if (level <= DataManager.PLAYER_EXPERIENCE_TABLE.getMaxLevel())
 		{
 			this.level = level;
-			this.getPlayer().getStats().recomputeStats();
 			if(this.getPlayer()!=null) {
+				this.getPlayer().getStats().recomputeStats();
 				PacketSendUtility.sendPacket(
 					this.getPlayer(),
 					new SM_STATUPDATE_EXP(
