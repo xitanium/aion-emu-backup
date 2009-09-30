@@ -193,9 +193,6 @@ public class MySQL5PlayerDAO extends PlayerDAO
 				cd.setAdmin(resultSet.getBoolean("admin"));
 				cd.setLastOnline(resultSet.getTimestamp("last_online"));
 				cd.setNote(resultSet.getString("note"));
-				cd.getPlayer().setHP(resultSet.getInt("hp"));
-				cd.getPlayer().setMP(resultSet.getInt("mp"));
-				cd.getPlayer().setDP(resultSet.getInt("dp"));
 				
 				float x = resultSet.getFloat("x");
 				float y = resultSet.getFloat("y");
