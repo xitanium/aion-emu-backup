@@ -101,8 +101,6 @@ public class CM_ATTACK extends AionClientPacket
 		{
 			int totalKinah = 0;
 			Random generator = new Random();
-			winner.setHP(winner.getMaxHP());
-			winner.setMP(winner.getMaxMP());
 			if (winner instanceof Player) {
 				Player pWinner = (Player)winner;
 				int lvlDiff = looser.getLevel()-pWinner.getLevel();
@@ -144,6 +142,8 @@ public class CM_ATTACK extends AionClientPacket
 			} else {
 				log.info("creature {name:"+winner.getName()+",id:"+winner.getObjectId()+",level:"+winner.getLevel()+"} won battle");
 			}
+			winner.setHP(winner.getMaxHP());
+			winner.setMP(winner.getMaxMP());
 			if (!(looser instanceof Player)) {
 				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(looser.getObjectId(),13,winner.getObjectId()), true);
 				PacketSendUtility.broadcastPacket(player, new SM_LOOT_STATUS(looser.getObjectId(),0), true);
