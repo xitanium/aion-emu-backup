@@ -459,15 +459,11 @@ public class Player extends Creature
 		final World world = this.getActiveRegion().getWorld();
 		this.getCommonData().setExp((int)Math.round(this.getCommonData().getExpNeed()*0.03));
 		this.setHP((int)Math.round(this.getMaxHP()*0.7));
-		ThreadPoolManager.getInstance().schedule(new Runnable () {
-			public void run () {
-				Player player = world.findPlayer(objId);
-				world.despawn(player);
-				player.setProtectionActive(true);
-//				world.updatePosition(player, player.getX(), player.getY(), player.getZ(), player.getHeading());
-				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(objId, 0x24, objId));
-				PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
-			}
-		}, 5000);
+		Player player = world.findPlayer(objId);
+		PacketSendUtility.sendMessage(player,"You died...");
+		world.despawn(player);
+		player.setProtectionActive(true);
+		world.updatePosition(player, player.getX(), player.getY(), player.getZ(), player.getHeading());
+		PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
 	}
 }
