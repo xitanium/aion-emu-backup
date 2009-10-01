@@ -38,6 +38,7 @@ public class SM_ATTACK_STATUS extends AionServerPacket
 		this.targetObjId = target.getObjectId();
 		this.attackno = attackno + 1;// empty
 		this.remainHp = (target.getHP()<0)?0:target.getHP();
+		this.remainHp = target.getHP()*100/target.getMaxHP();
 	}
 
 	/**

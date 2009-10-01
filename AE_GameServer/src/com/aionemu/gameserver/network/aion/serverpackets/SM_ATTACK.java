@@ -65,6 +65,7 @@ public class SM_ATTACK extends AionServerPacket
 	{		
 		Creature attacker = (Creature)world.findAionObject(attackerobjectid);
 		Creature target = (Creature)world.findAionObject(targetObjectId);
+		Random generator = new Random();
 		double rate = 1.0;
 		int levelDiff = (target.getLevel()-attacker.getLevel());
 		if (levelDiff>2) {
@@ -80,7 +81,7 @@ public class SM_ATTACK extends AionServerPacket
 				default: rate = 0.10;
 			}
 		}
-		int damages = (int)Math.round((attacker.getPower()-target.getBlock()/10)*rate);
+		int damages = (int)Math.round((attacker.getPower()-target.getBlock()/10)*rate)+generator.nextInt(10);
 		log.info("attacker:{name:"+attacker.getName()+",power:"+attacker.getPower()+",block:"+attacker.getBlock()+",hp:"+attacker.getHP()+"},target:{name:"+target.getName()+",power:"+target.getPower()+",block:"+target.getBlock()+",hp:"+target.getHP()+"},damages:"+damages);
 		attacker.setHP(attacker.getHP()-damages);
 		target.setHP(target.getHP()-damages);

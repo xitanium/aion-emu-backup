@@ -183,6 +183,6 @@ public class Npc extends Creature
 	@Override
 	public int getPower()
 	{
-		return template.getNpcStatsTemplate().getMainHandAttack()*3;
+		return template.getNpcStatsTemplate().getMainHandAttack();
 	}
 }

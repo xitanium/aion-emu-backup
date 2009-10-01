@@ -454,6 +454,5 @@ public class Player extends Creature
 	{
 		this.getCommonData().setExp((int)Math.round(this.getCommonData().getExpNeed()*0.03));
 		this.setHP((int)Math.round(this.getMaxHP()*0.7));
-		DecayService.getInstance().scheduleDecayTask(this);
 	}
 }
