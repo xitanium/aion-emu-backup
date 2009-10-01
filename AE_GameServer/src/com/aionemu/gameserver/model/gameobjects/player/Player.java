@@ -32,6 +32,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_DP;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_HP;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_MP;
+import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.services.DecayService;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.services.RespawnService;
@@ -460,9 +461,11 @@ public class Player extends Creature
 		this.setHP((int)Math.round(this.getMaxHP()*0.7));
 		ThreadPoolManager.getInstance().schedule(new Runnable () {
 			public void run () {
-				world.despawn(world.findPlayer(objId));
+				Player player = world.findPlayer(objId);
+				world.despawn(player);
 				world.findPlayer(objId).setProtectionActive(true);
-				world.updatePosition(world.findPlayer(objId), 0, 0, 0, world.findPlayer(objId).getHeading());
+				world.updatePosition(player, 0, 0, 0, player.getHeading());
+				PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
 			}
 		}, 5000);
 	}
