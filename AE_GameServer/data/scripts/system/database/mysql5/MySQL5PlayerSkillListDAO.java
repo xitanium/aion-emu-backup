@@ -43,6 +43,7 @@ public class MySQL5PlayerSkillListDAO extends PlayerSkillListDAO
 	public static final String DELETE_QUERY = "DELETE FROM `player_skills` WHERE `player_id`=?";
 	public static final String SELECT_QUERY = "SELECT `skillId`, `skillLevel` FROM `player_skills` WHERE `player_id`=?";
 	public static final String SELECT_SKILL_TREE = "SELECT `skillId`, `skillLevel` FROM `skill_trees` WHERE `class_id`=? AND `min_level`<=?";
+	public static final String CHECK_SKILL = "SELECT `skillId` FROM `player_skills` WHERE `player_id`=? AND `skillId`=? AND `skillLevel`=?";
 
 	/**
 	 * Add a skill information into database
@@ -85,15 +86,23 @@ public class MySQL5PlayerSkillListDAO extends PlayerSkillListDAO
 			{
 				final int id = rset.getInt("skillId");
 				final int lv = rset.getInt("skillLevel");
-				
-				DB.insertUpdate(INSERT_QUERY, new IUStH() {
-					@Override
-					public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
+			
+				DB.select(CHECK_SKILL, new ParamReadStH()
 				{
+					@Override
+					public void setParams(PreparedStatement stmt) throws SQLException
+					{
 						stmt.setInt(1, pcd.getPlayerObjId());
 						stmt.setInt(2, id);
 						stmt.setInt(3, lv);
-						stmt.execute();
+					}
+					
+					@Override
+					public void handleRead(ResultSet rset) throws SQLException
+					{
+						if (!rset.next()) {
+							addSkills(pcd.getPlayerObjId(), id, lv);
+						}
 					}
 				});
 			}
