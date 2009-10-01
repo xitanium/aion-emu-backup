@@ -464,7 +464,7 @@ public class Player extends Creature
 				Player player = world.findPlayer(objId);
 				world.despawn(player);
 				world.findPlayer(objId).setProtectionActive(true);
-				world.updatePosition(player, 0, 0, 0, player.getHeading());
+				world.updatePosition(player, player.getX(), player.getY(), player.getZ(), player.getHeading());
 				PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
 			}
 		}, 5000);
