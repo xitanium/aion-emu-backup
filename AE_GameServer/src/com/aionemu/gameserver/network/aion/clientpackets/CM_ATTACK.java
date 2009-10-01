@@ -145,7 +145,9 @@ public class CM_ATTACK extends AionClientPacket
 				log.info("creature {name:"+winner.getName()+",id:"+winner.getObjectId()+",level:"+winner.getLevel()+"} won battle");
 			}
 			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(looser.getObjectId(),13,winner.getObjectId()), true);
-			PacketSendUtility.broadcastPacket(player, new SM_LOOT_STATUS(looser.getObjectId(),0), true);
+			if (!(looser instanceof Player)) {
+				PacketSendUtility.broadcastPacket(player, new SM_LOOT_STATUS(looser.getObjectId(),0), true);
+			}
 			int randomUniqueId = UUID.randomUUID().hashCode();
 			sendPacket(new SM_INVENTORY_UPDATE(randomUniqueId, 182400001, 2211143, totalKinah));
 			looser.onDie();
