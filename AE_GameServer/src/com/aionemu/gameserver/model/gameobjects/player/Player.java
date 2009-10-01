@@ -27,6 +27,7 @@ import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedInL
 import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedOutListener;
 import com.aionemu.gameserver.model.gameobjects.player.SkillList;
 import com.aionemu.gameserver.network.aion.AionConnection;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_DP;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_HP;
@@ -35,6 +36,7 @@ import com.aionemu.gameserver.services.DecayService;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.services.RespawnService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
+import com.aionemu.gameserver.utils.ThreadPoolManager;
 import com.aionemu.gameserver.world.MapRegion;
 import com.aionemu.gameserver.world.World;
 
@@ -452,7 +454,14 @@ public class Player extends Creature
 	@Override
 	public void onDie()
 	{
+		final Player player = this;
+		final int objId = this.getObjectId();
 		this.getCommonData().setExp((int)Math.round(this.getCommonData().getExpNeed()*0.03));
 		this.setHP((int)Math.round(this.getMaxHP()*0.7));
+		ThreadPoolManager.getInstance().schedule(new Runnable () {
+			public void run () {
+				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(objId,30,objId), true);
+			}
+		}, 5000);
 	}
 }
