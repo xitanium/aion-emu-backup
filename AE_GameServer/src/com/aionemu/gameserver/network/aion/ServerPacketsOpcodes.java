@@ -65,7 +65,7 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_VERSION_CHECK.class, Version.Chiness ? 0xF6 : 0xF9, idSet);
 		addPacketOpcode(SM_SYSTEM_MESSAGE.class, Version.Chiness ? 0x2A : 0x30, idSet);
 		addPacketOpcode(SM_STATUPDATE_MP.class, Version.Chiness ? -1 : 0x14, idSet);
-		addPacketOpcode(SM_STATUPDATE_HP.class, Version.Chiness ? -1 : 0x12, idSet); //0x12//need opcode for 1.5.x client
+		addPacketOpcode(SM_STATUPDATE_HP.class, Version.Chiness ? -1 : 0x11, idSet); //0x12//need opcode for 1.5.x client
 		addPacketOpcode(SM_STATUPDATE_EXP.class, Version.Chiness ? -1 : 0x01, idSet); // 1.5.x
 		addPacketOpcode(SM_STATUPDATE_DP.class, Version.Chiness ? -1 : 0x17, idSet); // 0x17
 		addPacketOpcode(SM_STATS_INFO.class, Version.Chiness ? 0x29 : 0xF8, idSet);
