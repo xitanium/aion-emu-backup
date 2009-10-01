@@ -28,7 +28,12 @@ import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedOut
 import com.aionemu.gameserver.model.gameobjects.player.SkillList;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_DP;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_HP;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_MP;
+import com.aionemu.gameserver.services.DecayService;
 import com.aionemu.gameserver.services.PlayerService;
+import com.aionemu.gameserver.services.RespawnService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.MapRegion;
 import com.aionemu.gameserver.world.World;
@@ -232,6 +237,7 @@ public class Player extends Creature
 		} else {
 			this.currentHP = hp;
 		}
+		PacketSendUtility.broadcastPacket(this, new SM_STATUPDATE_HP(this.currentHP, playerStats.getMaxHP()),true);
 	}
 	
 	public void setMP (int mp) {
@@ -240,6 +246,7 @@ public class Player extends Creature
 		} else {
 			this.currentMP = mp;
 		}
+		PacketSendUtility.broadcastPacket(this, new SM_STATUPDATE_MP(this.currentMP, playerStats.getMaxMP()),true);
 	}
 		
 	public void setDP (int dp) {
@@ -248,6 +255,7 @@ public class Player extends Creature
 		} else {
 			this.currentDP = dp;
 		}
+		PacketSendUtility.broadcastPacket(this, new SM_STATUPDATE_DP(this.currentDP), true);
 	}
 	
 	public void setItemId(int e)
@@ -444,6 +452,9 @@ public class Player extends Creature
 	@Override
 	public void onDie()
 	{
-		// TODO Auto-generated method stub	
+		this.getCommonData().setExp((int)Math.round(this.getCommonData().getExpNeed()*0.03));
+		this.setHP((int)Math.round(this.getMaxHP()*0.7));
+		RespawnService.getInstance().scheduleRespawnTask(this);
+		DecayService.getInstance().scheduleDecayTask(this);
 	}
 }

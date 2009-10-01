@@ -19,6 +19,7 @@ package com.aionemu.gameserver.network.aion.clientpackets;
 import java.util.Random;
 import java.util.UUID;
 
+import com.aionemu.gameserver.configs.Rates;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
@@ -47,8 +48,6 @@ public class CM_ATTACK extends AionClientPacket
 	private int					attackno;
 	private int					time;
 	private int					type;
-	private long                exp;
-	private long                maxexp;
 	private int					at;
 
 	public CM_ATTACK(int opcode)
@@ -75,48 +74,81 @@ public class CM_ATTACK extends AionClientPacket
 	protected void runImpl()
 	{
 		Player player = getConnection().getActivePlayer();
-		int playerobjid = player.getObjectId();
-		PacketSendUtility.broadcastPacket(player, new SM_ATTACK(player.getActiveRegion().getWorld(),playerobjid,targetObjectId,attackno,time,type), true);
-
+		Creature target = (Creature)player.getActiveRegion().getWorld().findAionObject(targetObjectId);
+		PacketSendUtility.broadcastPacket((Player)player, new SM_ATTACK(player.getActiveRegion().getWorld(),player.getObjectId(),targetObjectId,attackno,time,type), true);
+		log.info("player {name:"+player.getName()+",level:"+player.getLevel()+"} launch attack {id:"+targetObjectId+",no:"+attackno+",time:"+time+",type:"+type+"}");
 		at = player.getatcount();
-		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,30,playerobjid), true);
-		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,19,playerobjid), true);
-		sendPacket(new SM_ATTACK(player.getActiveRegion().getWorld(),targetObjectId,playerobjid,at,time,type));
+		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,30,player.getObjectId()), true);
+		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,19,player.getObjectId()), true);
+		sendPacket(new SM_ATTACK(player.getActiveRegion().getWorld(),targetObjectId,player.getObjectId(),at,time,type));
 		sendPacket(new SM_ATTACK_STATUS(player,99));
 	  	at = at + 1;
 	    player.setatcount(at);
 		
-		sendPacket(new SM_ATTACK_STATUS((Creature)player.getActiveRegion().getWorld().findAionObject(targetObjectId),attackno));
-		if (((Creature)player.getActiveRegion().getWorld().findAionObject(targetObjectId)).getHP()<=0)
-		{
-			World world = player.getActiveRegion().getWorld();
-			Creature npc = (Creature) world.findAionObject(targetObjectId);
-			Random generator = new Random();
-			exp = (int)Math.round(player.getCommonData().getExpNeed()*0.07)+(npc.getLevel()-player.getLevel())*10;
-			if (exp<=0) {
-				exp = generator.nextInt(10);
+		sendPacket(new SM_ATTACK_STATUS(target,attackno));
+		Creature looser = null;
+		Creature winner = null;
+		if (player.getHP()<=0) {
+			looser = (Creature)player;
+			winner = target;
+		} else {
+			if (target.getHP()<=0) {
+				looser = target;
+				winner = (Creature)player;
 			}
-			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,13,playerobjid), true);
-			PacketSendUtility.broadcastPacket(player, new SM_LOOT_STATUS(targetObjectId,0), true);
-			player.getCommonData().setExp(player.getCommonData().getExp()+exp);
-			
-			int randomKinah = generator.nextInt(50)+1;
-			
+		}
+		if (looser!=null)
+		{
+			int totalKinah = 0;
+			Random generator = new Random();
+			if (winner instanceof Player) {
+				Player pWinner = (Player)winner;
+				int lvlDiff = looser.getLevel()-pWinner.getLevel();
+				double rate = 0.00;
+				if (lvlDiff<=-10) {
+					rate = 0.01;
+				} else {
+					if (lvlDiff>=4) {
+						rate = 1.20;
+					} else {
+						switch (lvlDiff) {
+							case -9: rate = 0.10; break;
+							case -8: rate = 0.20; break;
+							case -7: rate = 0.30; break;
+							case -6: rate = 0.40; break;
+							case -5: rate = 0.50; break;
+							case -4: if (generator.nextInt(2)==1) { rate = 0.60; } else { rate = 0.70; }; break;
+							case -3: rate = 0.90; break;
+							case -2:
+							case -1:
+							case 0: rate = 1.00; break;
+							case 1: rate = 1.05; break;
+							case 2: rate = 1.10; break;
+							case 3: rate = 1.15; break;
+						}
+					}
+				}
+				int exp = (int)Math.round(pWinner.getCommonData().getExpNeed()*0.07*rate*Rates.XP_RATE);
+				int dp = (int)Math.round(40*rate);
+				int randomKinah = generator.nextInt(50)+1;
+				Inventory kina = new Inventory();
+				kina.getKinahFromDb(pWinner.getObjectId());
+				int kinah = kina.getKinahCount();
+				kina.putKinahToDb(pWinner.getObjectId(), totalKinah);
+				totalKinah = kinah + randomKinah;
+				pWinner.getCommonData().setExp(player.getCommonData().getExp()+exp);
+				pWinner.setDP(player.getDP()+dp);
+				log.info("player {name:"+pWinner.getName()+",level:"+pWinner.getLevel()+"} win battle against level "+looser.getLevel()+", and gain :{xp:"+exp+",dp:"+dp+",kn:"+randomKinah+"}");
+			} else {
+				winner.setHP(winner.getMaxHP());
+				winner.setMP(winner.getMaxMP());
+				log.info("creature {name:"+winner.getName()+",id:"+winner.getObjectId()+",level:"+winner.getLevel()+"} won battle");
+			}
+			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(looser.getObjectId(),13,winner.getObjectId()), true);
+			PacketSendUtility.broadcastPacket(player, new SM_LOOT_STATUS(looser.getObjectId(),0), true);
 			int randomUniqueId = UUID.randomUUID().hashCode();
-			//int randomUniqueId = generator.nextInt(99999999)+generator.nextInt(99999999)+99999999+99999999; // To prevent replacement of other item.
-
-			Inventory kina = new Inventory();
-			kina.getKinahFromDb(playerobjid);
-			int kinah = kina.getKinahCount();
-			int totalKinah = kinah + randomKinah;
-			kina.putKinahToDb(playerobjid, totalKinah);
-			
 			sendPacket(new SM_INVENTORY_UPDATE(randomUniqueId, 182400001, 2211143, totalKinah));
-			
-			//schedule decay task
-			//TODO move to npc fully
-			npc.onDie();
-
+			looser.onDie();
 		}
 	}
 }

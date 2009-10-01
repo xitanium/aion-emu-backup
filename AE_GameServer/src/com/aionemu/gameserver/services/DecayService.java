@@ -19,6 +19,7 @@ package com.aionemu.gameserver.services;
 import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.model.gameobjects.Npc;
+import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -52,6 +53,20 @@ public class DecayService
 			}
 		}, DECAY_DEFAULT_DELAY);
 
+	}
+	
+	public void scheduleDecayTask(final Player player) {
+		final World world = player.getActiveRegion().getWorld();
+		//TODO separate thread executor for decay/spawns
+		// or schedule separate decay runnable service with queue 
+		ThreadPoolManager.getInstance().schedule(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				world.despawn(player);
+			}
+		}, DECAY_DEFAULT_DELAY);
 	}
 	
 	public static DecayService getInstance()

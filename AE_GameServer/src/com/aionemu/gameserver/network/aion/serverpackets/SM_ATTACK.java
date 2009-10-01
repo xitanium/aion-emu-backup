@@ -45,7 +45,6 @@ public class SM_ATTACK extends AionServerPacket
 	private int	attackno;
 	private int	time;
 	private int	type;
-	private static Logger				log				= Logger.getLogger(AionServerPacket.class);
 	
 	public SM_ATTACK(World world, int attackerobjectid ,int targetObjectId,int attackno,int time,int type)
 	{
@@ -66,12 +65,23 @@ public class SM_ATTACK extends AionServerPacket
 	{		
 		Creature attacker = (Creature)world.findAionObject(attackerobjectid);
 		Creature target = (Creature)world.findAionObject(targetObjectId);
-		Random generator = new Random();
-		int damages = (int)Math.round((attacker.getPower()-target.getBlock()/10)+(attacker.getLevel()-target.getLevel())*10)+generator.nextInt(10);
-		log.info("attacker:{name:"+attacker.getName()+",power:"+attacker.getPower()+",block:"+attacker.getBlock()+",hp:"+attacker.getHP()+"},target:{name:"+target.getName()+",power:"+target.getPower()+",block:"+target.getBlock()+",hp:"+target.getHP()+"},damages:"+damages);
-		if (damages<0) {
-			damages = generator.nextInt(10);
+		double rate = 1.0;
+		int levelDiff = (target.getLevel()-attacker.getLevel());
+		if (levelDiff>2) {
+			switch (levelDiff) {
+				case 3: rate = 0.90;
+				case 4: rate = 0.80;
+				case 5: rate = 0.70;
+				case 6: rate = 0.60;
+				case 7: rate = 0.50;
+				case 8: rate = 0.40;
+				case 9: rate = 0.30;
+				case 10: rate = 0.20;
+				default: rate = 0.10;
+			}
 		}
+		int damages = (int)Math.round((attacker.getPower()-target.getBlock()/10)*rate);
+		log.info("attacker:{name:"+attacker.getName()+",power:"+attacker.getPower()+",block:"+attacker.getBlock()+",hp:"+attacker.getHP()+"},target:{name:"+target.getName()+",power:"+target.getPower()+",block:"+target.getBlock()+",hp:"+target.getHP()+"},damages:"+damages);
 		attacker.setHP(attacker.getHP()-damages);
 		target.setHP(target.getHP()-damages);
 		//attacker

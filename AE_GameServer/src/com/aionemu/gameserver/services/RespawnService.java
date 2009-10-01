@@ -19,6 +19,7 @@ package com.aionemu.gameserver.services;
 import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.model.gameobjects.Npc;
+import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.templates.SpawnTemplate;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -34,6 +35,7 @@ public class RespawnService
 	private static final Logger log = Logger.getLogger(RespawnService.class);
 
 	private static final int RESPAWN_DEFAULT_DELAY = 80000;
+	private static final int RESPAWN_PLAYER_DEFAULT_DELAY = 5000;
 
 	private static RespawnService instance = new RespawnService();
 	
@@ -50,6 +52,22 @@ public class RespawnService
 				world.spawn(npc);	
 			}
 		}, RESPAWN_DEFAULT_DELAY);
+
+	}
+	
+	public void scheduleRespawnTask(final Player player)
+	{
+		final World world = player.getActiveRegion().getWorld();
+		//TODO separate thread executor for decay/spawns
+		// or schedule separate decay runnable service with queue 
+		ThreadPoolManager.getInstance().schedule(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				world.spawn(player);	
+			}
+		}, RESPAWN_PLAYER_DEFAULT_DELAY);
 
 	}
 	

@@ -18,6 +18,8 @@ package com.aionemu.gameserver.network.aion;
 
 import java.nio.ByteBuffer;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.commons.network.packet.BaseServerPacket;
 import com.aionemu.gameserver.network.Crypt;
 
@@ -28,6 +30,7 @@ import com.aionemu.gameserver.network.Crypt;
  */
 public abstract class AionServerPacket extends BaseServerPacket
 {
+	protected static Logger log	= Logger.getLogger(AionServerPacket.class);
 	/**
 	 * Constructs new server packet
 	 */

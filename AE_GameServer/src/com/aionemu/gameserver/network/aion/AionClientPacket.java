@@ -32,7 +32,7 @@ public abstract class AionClientPacket extends BaseClientPacket<AionConnection> 
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger	log	= Logger.getLogger(AionClientPacket.class);
+	protected static final Logger log = Logger.getLogger(AionClientPacket.class);
 
 	/**
 	 * Constructs new client packet instance.

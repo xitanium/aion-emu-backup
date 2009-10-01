@@ -174,7 +174,7 @@ public class Npc extends Creature
 	@Override
 	public int getBlock()
 	{
-		return template.getNpcStatsTemplate().getBlock();
+		return template.getNpcStatsTemplate().getBlock()*2/5;
 	}
 
 	/* (non-Javadoc)
