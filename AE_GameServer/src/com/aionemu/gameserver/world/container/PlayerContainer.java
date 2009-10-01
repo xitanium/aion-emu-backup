@@ -49,7 +49,7 @@ public class PlayerContainer implements Iterable<Player>
 	{
 		if(playersById.put(player.getObjectId(), player) != null)
 			throw new DuplicateAionObjectException();
-		if(playersByName.put(player.getName(), player) != null)
+		if(playersByName.put(player.getName().replace("*MJ* ", ""), player) != null)
 			throw new DuplicateAionObjectException();
 	}
 
@@ -61,7 +61,7 @@ public class PlayerContainer implements Iterable<Player>
 	public void remove(Player player)
 	{
 		playersById.remove(player.getObjectId());
-		playersByName.remove(player.getName());
+		playersByName.remove(player.getName().replace("*MJ* ", ""));
 	}
 
 	/**

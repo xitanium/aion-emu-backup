@@ -61,7 +61,7 @@ public class RevokeMJ extends AdminCommand
 		if ((admin.getTarget()!=null)&&(admin.getTarget() instanceof Player)) {
 			player = (Player)admin.getTarget();
 		} else {
-			player = world.findPlayer(params[0]);
+			player = world.findPlayer(params[0].replace("*MJ* ", ""));
 		}
 		if (player != null) {
 			world.despawn(player);

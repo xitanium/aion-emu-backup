@@ -73,7 +73,7 @@ public class Bind extends AdminCommand
 			}
 			PacketSendUtility.sendMessage(admin, "Binded all active players");
 		} else {
-			Player player = world.findPlayer(params[0]);
+			Player player = world.findPlayer(params[0].replace("*MJ* ", ""));
 			if (player != null) {
 				world.despawn(player);
 				world.setPosition(player, worldId, x, y, z, admin.getHeading());
