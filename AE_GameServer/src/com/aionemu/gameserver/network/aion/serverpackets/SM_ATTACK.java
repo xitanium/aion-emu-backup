@@ -83,7 +83,6 @@ public class SM_ATTACK extends AionServerPacket
 		}
 		int damages = (int)Math.round((attacker.getPower()-target.getBlock()/10)*rate)+generator.nextInt(10);
 		log.info("attacker:{name:"+attacker.getName()+",power:"+attacker.getPower()+",block:"+attacker.getBlock()+",hp:"+attacker.getHP()+"},target:{name:"+target.getName()+",power:"+target.getPower()+",block:"+target.getBlock()+",hp:"+target.getHP()+"},damages:"+damages);
-		attacker.setHP(attacker.getHP()-damages);
 		target.setHP(target.getHP()-damages);
 		//attacker
 		writeD(buf, attackerobjectid);
