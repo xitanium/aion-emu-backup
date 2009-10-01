@@ -462,9 +462,10 @@ public class Player extends Creature
 		ThreadPoolManager.getInstance().schedule(new Runnable () {
 			public void run () {
 				Player player = world.findPlayer(objId);
-//				world.despawn(player);
-//				world.findPlayer(objId).setProtectionActive(true);
+				world.despawn(player);
+				player.setProtectionActive(true);
 //				world.updatePosition(player, player.getX(), player.getY(), player.getZ(), player.getHeading());
+				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(objId, 0x24, objId));
 				PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
 			}
 		}, 5000);
