@@ -454,13 +454,15 @@ public class Player extends Creature
 	@Override
 	public void onDie()
 	{
-		final Player player = this;
 		final int objId = this.getObjectId();
+		final World world = this.getActiveRegion().getWorld();
 		this.getCommonData().setExp((int)Math.round(this.getCommonData().getExpNeed()*0.03));
 		this.setHP((int)Math.round(this.getMaxHP()*0.7));
 		ThreadPoolManager.getInstance().schedule(new Runnable () {
 			public void run () {
-				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(objId,30,objId), true);
+				world.despawn(world.findPlayer(objId));
+				world.findPlayer(objId).setProtectionActive(true);
+				world.updatePosition(world.findPlayer(objId), 0, 0, 0, world.findPlayer(objId).getHeading());
 			}
 		}, 5000);
 	}
