@@ -82,9 +82,6 @@ public class CM_MOVE extends AionClientPacket
 				world.updatePosition(player, x, y, z, heading);
 				break;
 			case MOVEMENT_STOP:
-				x2 = readF();
-				y2 = readF();
-				z2 = readF();
 				PacketSendUtility.broadcastPacket(player, new SM_MOVE(player, x, y, z, x2, y2, z2, heading, type), false);
 				world.updatePosition(player, x, y, z, heading);
 				break;

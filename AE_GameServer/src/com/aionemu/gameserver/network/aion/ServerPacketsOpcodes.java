@@ -110,9 +110,9 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_CASTSPELL_END.class, Version.Chiness ? -1 : 0x42, idSet);	//1.5.x 
 		addPacketOpcode(SM_INVENTORY_UPDATE.class, Version.Chiness ? -1 : 0x12, idSet);	//1.5.x 
 		addPacketOpcode(SM_LOOT_ITEMLIST.class, Version.Chiness ? -1 : 0xE7, idSet);	//1.5.x
-		addPacketOpcode(SM_UPDATE_ITEM.class, Version.Chiness ? -1 : 0x14, idSet);//1.5.x
-		addPacketOpcode(SM_LEVEL_UPDATE.class, Version.Chiness ? -1 : 0x3f, idSet);//1.5.x
-		addPacketOpcode(SM_FLY_TELEPORT.class, Version.Chiness ? -1 : 0xC2, idSet);//1.5.x
+		//addPacketOpcode(SM_UPDATE_ITEM.class, Version.Chiness ? -1 : 0x14, idSet);//1.5.x
+		//addPacketOpcode(SM_LEVEL_UPDATE.class, Version.Chiness ? -1 : 0x3f, idSet);//1.5.x
+		//addPacketOpcode(SM_FLY_TELEPORT.class, Version.Chiness ? -1 : 0xC2, idSet);//1.5.x
 		
 		addPacketOpcode(SM_BUYLIST.class, Version.Chiness ? -1 : 0xF4, idSet);   //1.5.x 
 		addPacketOpcode(SM_DIALOG.class, Version.Chiness ? -1 : 0x21, idSet);//1.5.x
