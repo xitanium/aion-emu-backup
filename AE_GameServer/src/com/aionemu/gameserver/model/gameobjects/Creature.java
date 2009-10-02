@@ -17,6 +17,8 @@
 package com.aionemu.gameserver.model.gameobjects;
 
 import com.aionemu.gameserver.controllers.CreatureController;
+import com.aionemu.gameserver.model.gameobjects.stats.GameStats;
+import com.aionemu.gameserver.model.gameobjects.stats.LifeStats;
 import com.aionemu.gameserver.world.WorldPosition;
 
 /**
@@ -27,10 +29,7 @@ import com.aionemu.gameserver.world.WorldPosition;
  */
 public abstract class Creature extends VisibleObject
 {
-	private Creature	target;
-	protected int currentHP = 0;
-	protected int currentMP = 0;
-	protected int currentDP = 0;
+	private Creature  target;
 
 	public Creature(int objId, CreatureController<? extends Creature> controller, WorldPosition position)
 	{
@@ -61,22 +60,27 @@ public abstract class Creature extends VisibleObject
 
 	public abstract byte getLevel();
 	
-	public int getHP() {
-		return this.currentHP;
-	}
-	public int getMP() {
-		return this.currentMP;
-	}
-	public int getDP() {
-		return this.currentDP;
-	}
-	public abstract int getMaxHP();
-	public abstract int getMaxMP();
-	public abstract int getMaxDP();
-	public abstract void setHP(int hp);
-	public abstract void setMP(int mp);
-	public abstract void setDP(int dp);
-	public abstract int getPower();
-	public abstract int getBlock();
-	public abstract void onDie();
+	public abstract LifeStats getLifeStats();
+	public abstract void setLifeStats (LifeStats lifeStats);
+	public abstract GameStats getGameStats();
+	public abstract void setGameStats (GameStats gameStats);
+	
+//	public int getHP() {
+//		return this.currentHP;
+//	}
+//	public int getMP() {
+//		return this.currentMP;
+//	}
+//	public int getDP() {
+//		return this.currentDP;
+//	}
+//	public abstract int getMaxHP();
+//	public abstract int getMaxMP();
+//	public abstract int getMaxDP();
+//	public abstract void setHP(int hp);
+//	public abstract void setMP(int mp);
+//	public abstract void setDP(int dp);
+//	public abstract int getPower();
+//	public abstract int getBlock();
+//	public abstract void onDie();
 }

@@ -1,5 +1,5 @@
-/**
- * This file is part of aion-unique <aion-unique.smfnew.com>.
+/*
+ * This file is part of aion-unique <aionunique.smfnew.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,51 +18,31 @@ package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.world.World;
-import com.google.inject.Inject;
 
 /**
  * 
  * @author alexa026
  * 
  */
-public class SM_ATTACK_STATUS extends AionServerPacket
+public class SM_FLY_TELEPORT extends AionServerPacket
 {
-    private int remainHp;
-    private int targetObjId;
-    @Inject
-    private World world;
+	private int teleportId;
 	
-	public SM_ATTACK_STATUS(Creature target, int hpPercentage)
+	public SM_FLY_TELEPORT(int targetObjectId, int teleportId)
 	{
-		this.targetObjId = target.getObjectId();
-		this.remainHp = hpPercentage;
-	}
-	
-	public SM_ATTACK_STATUS(int targetObjId, int hpPercentage)
-	{
-		Creature target = (Creature)world.findAionObject(targetObjId);
-		this.targetObjId = target.getObjectId();
-		this.remainHp = hpPercentage;
+		this.teleportId = teleportId;
 	}
 
 	/**
-	 * {@inheritDoc} ddchcc
-	 */
+	* {@inheritDoc}
+	*/
 	
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{		
-		writeD(buf, targetObjId);
-		writeD(buf, 0);
-		writeC(buf, 5); // unknown?? type 5
-		writeH(buf, remainHp); // unknown remain hp??
-		writeC(buf, 0); // unknown
-		writeC(buf, 0x94); // unknown
-		
-        
+		writeD(buf, 1);
+		writeD(buf, teleportId);
 	}	
 }

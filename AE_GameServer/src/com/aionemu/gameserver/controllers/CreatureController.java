@@ -37,4 +37,40 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 		if(object == getOwner().getTarget())
 			getOwner().setTarget(null);
 	}
+	
+	/**
+	 * Performs tasks on Creature death
+	 */
+	public void onDie () {
+		
+	}
+	
+	/**
+	 * Perform tasks on Creature respawn
+	 */
+	public void onRespawn () {
+		
+	}
+	
+	/**
+	 * Perform tasks when Creature was attacked
+	 */
+	public boolean onAttack (Creature creature) {
+		return true;
+	}
+	
+	/**
+	 * Perform drop operation
+	 */
+	public void doDrop () {
+		
+	}
+	
+	/**
+	 * Perform reward operation
+	 */
+	// TODO probably do reward on list of objects
+	public void doReward (Creature creature) {
+		
+	}
 }

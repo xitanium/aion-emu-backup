@@ -18,19 +18,8 @@ package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.gameserver.model.gameobjects.Creature;
-import com.aionemu.gameserver.model.gameobjects.Npc;
-import com.aionemu.gameserver.model.gameobjects.player.Player;
-import com.aionemu.gameserver.model.gameobjects.player.PlayerStats;
-import com.aionemu.gameserver.model.templates.stats.NpcStatsTemplate;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.services.PlayerService;
-import com.aionemu.gameserver.world.World;
-
-import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 /**
  * 
@@ -39,21 +28,21 @@ import org.apache.log4j.Logger;
  */
 public class SM_ATTACK extends AionServerPacket
 {
-	private World world;
 	private int attackerobjectid;
 	private int	targetObjectId;
 	private int	attackno;
 	private int	time;
 	private int	type;
+	private int damages;
 	
-	public SM_ATTACK(World world, int attackerobjectid ,int targetObjectId,int attackno,int time,int type)
+	public SM_ATTACK(int attackerobjectid ,int targetObjectId,int attackno,int time,int type, int damages)
 	{
 		this.attackerobjectid = attackerobjectid;
 		this.targetObjectId = targetObjectId;
-		this.attackno = attackno + 1;// empty
+		this.attackno = attackno;// empty
 		this.time = time ;// empty
 		this.type = type;// empty
-		this.world = world;
+		this.damages = damages;
 	}
 
 	/**
@@ -62,28 +51,7 @@ public class SM_ATTACK extends AionServerPacket
 	
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
-	{		
-		Creature attacker = (Creature)world.findAionObject(attackerobjectid);
-		Creature target = (Creature)world.findAionObject(targetObjectId);
-		Random generator = new Random();
-		double rate = 1.0;
-		int levelDiff = (target.getLevel()-attacker.getLevel());
-		if (levelDiff>2) {
-			switch (levelDiff) {
-				case 3: rate = 0.90;
-				case 4: rate = 0.80;
-				case 5: rate = 0.70;
-				case 6: rate = 0.60;
-				case 7: rate = 0.50;
-				case 8: rate = 0.40;
-				case 9: rate = 0.30;
-				case 10: rate = 0.20;
-				default: rate = 0.10;
-			}
-		}
-		int damages = (int)Math.round((attacker.getPower()-target.getBlock()/10)*rate)+generator.nextInt(10);
-		log.info("attacker:{name:"+attacker.getName()+",power:"+attacker.getPower()+",block:"+attacker.getBlock()+",hp:"+attacker.getHP()+"},target:{name:"+target.getName()+",power:"+target.getPower()+",block:"+target.getBlock()+",hp:"+target.getHP()+"},damages:"+damages);
-		target.setHP(target.getHP()-damages);
+	{
 		//attacker
 		writeD(buf, attackerobjectid);
 		writeC(buf, attackno); // unknown

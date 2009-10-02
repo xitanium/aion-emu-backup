@@ -18,51 +18,35 @@ package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.world.World;
-import com.google.inject.Inject;
 
 /**
  * 
- * @author alexa026
+ * @author ATracer
  * 
  */
-public class SM_ATTACK_STATUS extends AionServerPacket
+public class SM_LEVEL_UPDATE extends AionServerPacket
 {
-    private int remainHp;
-    private int targetObjId;
-    @Inject
-    private World world;
+	private int	targetObjectId;
+	private int	level ;
 	
-	public SM_ATTACK_STATUS(Creature target, int hpPercentage)
+	public SM_LEVEL_UPDATE(int targetObjectId, int level)
 	{
-		this.targetObjId = target.getObjectId();
-		this.remainHp = hpPercentage;
-	}
-	
-	public SM_ATTACK_STATUS(int targetObjId, int hpPercentage)
-	{
-		Creature target = (Creature)world.findAionObject(targetObjId);
-		this.targetObjId = target.getObjectId();
-		this.remainHp = hpPercentage;
+		this.targetObjectId = targetObjectId;
+		this.level = level;	
 	}
 
 	/**
-	 * {@inheritDoc} ddchcc
+	 * {@inheritDoc} dc
 	 */
 	
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
-	{		
-		writeD(buf, targetObjId);
-		writeD(buf, 0);
-		writeC(buf, 5); // unknown?? type 5
-		writeH(buf, remainHp); // unknown remain hp??
-		writeC(buf, 0); // unknown
-		writeC(buf, 0x94); // unknown
-		
-        
+	{	
+		writeD(buf, targetObjectId);
+		writeH(buf, 0x00); //unk
+		writeH(buf, level); 
+		writeH(buf, 0x00); //unk
 	}	
 }

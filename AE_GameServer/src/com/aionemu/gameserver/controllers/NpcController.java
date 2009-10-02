@@ -16,7 +16,17 @@
  */
 package com.aionemu.gameserver.controllers;
 
+import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
+import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.stats.NpcLifeStats;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
+import com.aionemu.gameserver.services.DecayService;
+import com.aionemu.gameserver.services.RespawnService;
+import com.aionemu.gameserver.utils.PacketSendUtility;
+import com.aionemu.gameserver.utils.StatsFunctions;
 
 /**
  * This class is for controlling Npc's
@@ -25,6 +35,86 @@ import com.aionemu.gameserver.model.gameobjects.Npc;
  * 
  */
 public class NpcController extends CreatureController<Npc>
-{
+{	
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.controllers.CreatureController#onDie()
+	 */
+	@Override
+	public void onDie()
+	{
+		super.onDie();
+		RespawnService.getInstance().scheduleRespawnTask(this.getOwner());
+		DecayService.getInstance().scheduleDecayTask(this.getOwner());
+	}
 
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.controllers.CreatureController#onRespawn()
+	 */
+	@Override
+	public void onRespawn()
+	{
+		super.onRespawn();
+		this.getOwner().getLifeStats().reset();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.controllers.CreatureController#onAttack(com.aionemu.gameserver.model.gameobjects.Creature)
+	 */
+	@Override
+	public boolean onAttack(Creature creature)
+	{
+		super.onAttack(creature);
+		
+		Npc npc = getOwner();
+		NpcLifeStats lifeStats = npc.getLifeStats();
+		
+		//TODO resolve synchronization issue
+		if(!lifeStats.isAlive())
+		{
+			//TODO send action failed packet
+			return false;
+		}
+		
+		int newHp = lifeStats.reduceHp(StatsFunctions.calculateBaseDamageToTarget(creature, npc));
+		int hpPercentage = Math.round(100 *  newHp / lifeStats.getMaxHp());
+		
+		PacketSendUtility.broadcastPacket(npc, new SM_ATTACK_STATUS(npc.getObjectId(), hpPercentage));
+		if(newHp == 0)
+		{
+			PacketSendUtility.broadcastPacket(npc, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()));
+			this.doDrop();
+			this.doReward(creature);
+			this.onDie();
+		}
+		return true;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.controllers.CreatureController#doDrop()
+	 */
+	@Override
+	public void doDrop()
+	{
+		super.doDrop();
+		PacketSendUtility.broadcastPacket(this.getOwner(), new SM_LOOT_STATUS(this.getOwner().getObjectId(), 0));
+	}
+			 
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.controllers.CreatureController#doReward()
+	 */
+	@Override
+	public void doReward(Creature creature)
+	{
+		super.doReward(creature);
+		
+		if(creature instanceof Player)
+		{
+			Player player = (Player) creature;
+			//TODO may be introduce increaseExpBy method in PlayerCommonData
+			long currentExp = player.getCommonData().getExp();
+			
+			long xpReward = StatsFunctions.calculateSoloExperienceReward(player, getOwner());
+			player.getCommonData().setExp(currentExp + xpReward);
+		}
+	}
 }

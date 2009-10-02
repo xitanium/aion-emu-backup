@@ -62,7 +62,7 @@ public class NpcTemplate
 		return npcId;
 	}
 
-	public NpcStatsTemplate getNpcStatsTemplate () {
+	public NpcStatsTemplate getStatsTemplate () {
 		return statsTemplate;
 	}
 	

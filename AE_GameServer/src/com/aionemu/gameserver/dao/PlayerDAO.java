@@ -93,6 +93,13 @@ public abstract class PlayerDAO implements IDFactoryAwareDAO
 	 * @param lastOnline Last online time of player to store
 	 */
 	public abstract void storeLastOnlineTime(final int objectId, final Timestamp lastOnline);
+	
+	/**
+	 * Set the online status of a player
+	 * @param player
+	 * @param online
+	 */
+	public abstract void onlinePlayer (final Player player, final boolean online);
 	/**
 	 * Identifier name for all PlayerDAO classes
 	 * 

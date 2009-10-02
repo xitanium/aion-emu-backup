@@ -87,14 +87,14 @@ public class MySQL5PlayerDAO extends PlayerDAO
 	@Override
 	public void storePlayer(final Player player)
 	{
-		DB.insertUpdate("UPDATE players SET name=?, exp=?, x=?, y=?, z=?, heading=?, world_id=?, player_class=?, last_online=?, admin=?, note=?, hp=?, mp=?, dp=? WHERE id=?", new IUStH(){
+		DB.insertUpdate("UPDATE players SET name=?, exp=?, x=?, y=?, z=?, heading=?, world_id=?, player_class=?, last_online=?, admin=?, note=?, online=?, hp=?, mp=?, dp=? WHERE id=?", new IUStH(){
 			@Override
 			public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
 			{
 				log.debug("[DAO: MySQL5PlayerDAO] storing player "+player.getObjectId()+" "+player.getName());
 				
 				stmt.setString(1, player.getName().replace("*MJ* ",""));
-				stmt.setLong(2, player.getExp());
+				stmt.setLong(2, player.getCommonData().getExp());
 				stmt.setFloat(3, player.getX());
 				stmt.setFloat(4, player.getY());
 				stmt.setFloat(5, player.getZ());
@@ -105,9 +105,10 @@ public class MySQL5PlayerDAO extends PlayerDAO
 				stmt.setBoolean(10, player.getCommonData().isAdmin());
 				stmt.setString(11,player.getCommonData().getNote());
 				stmt.setInt(12, player.getObjectId());
-				stmt.setInt(13, player.getHP());
-				stmt.setInt(14, player.getMP());
-				stmt.setInt(15, player.getDP());
+				stmt.setBoolean(13, player.isOnline());
+				stmt.setInt(14, player.getLifeStats().getHp());
+				stmt.setInt(15, player.getLifeStats().getMp());
+				stmt.setInt(16, player.getLifeStats().getDp());
 				stmt.execute();
 			}
 		});
@@ -119,7 +120,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 	public boolean saveNewPlayer(final PlayerCommonData pcd, final int accountId, final String accountName)
 	{
 		boolean success = DB.insertUpdate(
-				"INSERT INTO players(id, `name`, exp, account_id, account_name, x, y, z, heading, world_id, gender, race, player_class , admin, hp, mp, dp) " +
+				"INSERT INTO players(id, `name`, exp, account_id, account_name, x, y, z, heading, world_id, gender, race, player_class , admin, online, hp, mp, dp) " +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 				new IUStH(){
 					@Override
@@ -141,9 +142,10 @@ public class MySQL5PlayerDAO extends PlayerDAO
 						preparedStatement.setString(12, pcd.getRace().toString());
 						preparedStatement.setString(13, pcd.getPlayerClass().toString());
 						preparedStatement.setBoolean(14, pcd.isAdmin());
-						preparedStatement.setInt(15, (pcd.getPlayer()!=null)?pcd.getPlayer().getHP():0);
-						preparedStatement.setInt(16, (pcd.getPlayer()!=null)?pcd.getPlayer().getMP():0);
-						preparedStatement.setInt(17, (pcd.getPlayer()!=null)?pcd.getPlayer().getDP():0);
+						preparedStatement.setBoolean(15, pcd.isOnline());
+						preparedStatement.setInt(16, (pcd.getPlayer()!=null)?pcd.getPlayer().getLifeStats().getHp():0);
+						preparedStatement.setInt(17, (pcd.getPlayer()!=null)?pcd.getPlayer().getLifeStats().getMp():0);
+						preparedStatement.setInt(18, (pcd.getPlayer()!=null)?pcd.getPlayer().getLifeStats().getDp():0);
 						preparedStatement.execute();
 					}
 				});
@@ -192,6 +194,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 				cd.setPlayerClass(PlayerClass.valueOf(resultSet.getString("player_class")));
 				cd.setAdmin(resultSet.getBoolean("admin"));
 				cd.setLastOnline(resultSet.getTimestamp("last_online"));
+				cd.setOnline(resultSet.getBoolean("online"));
 				cd.setNote(resultSet.getString("note"));
 				
 				float x = resultSet.getFloat("x");
@@ -202,6 +205,12 @@ public class MySQL5PlayerDAO extends PlayerDAO
 
 				WorldPosition position = world.createPosition(worldId, x, y, z, heading);
 				cd.setPosition(position);
+				
+				if (cd.getPlayer()!=null) {
+					cd.getPlayer().getLifeStats().setDp(resultSet.getInt("dp"));
+					cd.getPlayer().getLifeStats().setHp(resultSet.getInt("hp"));
+					cd.getPlayer().getLifeStats().setMp(resultSet.getInt("mp"));
+				}
 			}
 		});
 
@@ -339,6 +348,21 @@ public class MySQL5PlayerDAO extends PlayerDAO
 			}
 		});
 	}
+	
+	@Override
+	public void onlinePlayer (final Player player, final boolean online) {
+		DB.insertUpdate("UPDATE players SET online=? WHERE id=?", new IUStH(){
+			@Override
+			public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
+			{
+				log.debug("[DAO: MySQL5PlayerDAO] online status "+player.getObjectId()+" "+player.getName());
+				stmt.setBoolean(1, online);
+				stmt.setInt(2, player.getObjectId());
+				stmt.execute();
+			}
+		});
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

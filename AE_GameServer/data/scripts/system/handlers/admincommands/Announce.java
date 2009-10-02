@@ -36,7 +36,7 @@ public class Announce extends AdminCommand
          * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.model.gameobjects.player.Player, java.lang.String[])
          */
         @Override
-        public void executeCommand(Player admin, String... params)
+        public void executeCommand(Player admin, String[] params)
         {       
                 if (params.length == 0) {
                         PacketSendUtility.sendMessage(admin, "//announce <message>");

@@ -96,6 +96,11 @@ public class PlayerAppearance
 	 * And ronnd!!!!
 	 */
 	private int	eyeShape;
+	
+	/**
+	 * And the colour !!!
+	 */
+	private int eyeRGB;
 
 	/**
 	 * With almost not noticable angle
@@ -578,6 +583,25 @@ public class PlayerAppearance
 		this.eyeAngle = eyeAngle;
 	}
 
+	/**
+	 * Get eye RGB
+	 * 
+	 * @return eye colour
+	 */
+	public int getEyeRGB () {
+		return eyeRGB;
+	}
+	
+	/**
+	 * Set eye RGB
+	 * 
+	 * @param eyeRGB
+	 * 			eye color
+	 */
+	public void setEyeRGB (int eyeRGB) {
+		this.eyeRGB = eyeRGB;
+	}
+	
 	/**
 	 * Rerturn brow heigth
 	 * 

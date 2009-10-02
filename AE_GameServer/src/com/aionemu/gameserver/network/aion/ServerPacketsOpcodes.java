@@ -64,8 +64,8 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_UNK0A.class, Version.Chiness ? 0x0A : -1, idSet);
 		addPacketOpcode(SM_VERSION_CHECK.class, Version.Chiness ? 0xF6 : 0xF9, idSet);
 		addPacketOpcode(SM_SYSTEM_MESSAGE.class, Version.Chiness ? 0x2A : 0x30, idSet);
-		addPacketOpcode(SM_STATUPDATE_MP.class, Version.Chiness ? -1 : 0x14, idSet);
-		addPacketOpcode(SM_STATUPDATE_HP.class, Version.Chiness ? -1 : 0x11, idSet); //0x12//need opcode for 1.5.x client
+		addPacketOpcode(SM_STATUPDATE_MP.class, Version.Chiness ? -1 : -1, idSet);
+		addPacketOpcode(SM_STATUPDATE_HP.class, Version.Chiness ? -1 : -1, idSet); //0x12//need opcode for 1.5.x client
 		addPacketOpcode(SM_STATUPDATE_EXP.class, Version.Chiness ? -1 : 0x01, idSet); // 1.5.x
 		addPacketOpcode(SM_STATUPDATE_DP.class, Version.Chiness ? -1 : 0x17, idSet); // 0x17
 		addPacketOpcode(SM_STATS_INFO.class, Version.Chiness ? 0x29 : 0xF8, idSet);
@@ -93,7 +93,7 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_FRIEND_NOTIFY.class, Version.Chiness ? -1 : 0xD8, idSet);
 		addPacketOpcode(SM_FRIEND_LIST.class,Version.Chiness ? 0x72 : 0x7D, idSet);
 		addPacketOpcode(SM_ENTER_WORLD_CHECK.class, Version.Chiness ? 0xF4 : 0x24, idSet);
-		addPacketOpcode(SM_EMOTION.class, Version.Chiness ? 0x14 : 0x1C, idSet); // 25 1.5.x unknown
+		addPacketOpcode(SM_EMOTION.class, Version.Chiness ? -1 : 0x1C, idSet); // 25 1.5.x unknown
 		addPacketOpcode(SM_DELETE.class, Version.Chiness ? 0xFB : 0x2F, idSet);
 		addPacketOpcode(SM_DELETE_CHARACTER.class, Version.Chiness ? 0xC0 : 0xE3, idSet);
 		addPacketOpcode(SM_CREATE_CHARACTER.class, Version.Chiness ? 0xBF : 0xC0, idSet);
@@ -109,7 +109,10 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_CASTSPELL.class, Version.Chiness ? -1 : 0x18, idSet);	//1.5.x 
 		addPacketOpcode(SM_CASTSPELL_END.class, Version.Chiness ? -1 : 0x42, idSet);	//1.5.x 
 		addPacketOpcode(SM_INVENTORY_UPDATE.class, Version.Chiness ? -1 : 0x12, idSet);	//1.5.x 
-		addPacketOpcode(SM_LOOT_ITEMLIST.class, Version.Chiness ? -1 : 0xE7, idSet);	//1.5.x 
+		addPacketOpcode(SM_LOOT_ITEMLIST.class, Version.Chiness ? -1 : 0xE7, idSet);	//1.5.x
+		addPacketOpcode(SM_UPDATE_ITEM.class, Version.Chiness ? -1 : 0x14, idSet);//1.5.x
+		addPacketOpcode(SM_LEVEL_UPDATE.class, Version.Chiness ? -1 : 0x3f, idSet);//1.5.x
+		addPacketOpcode(SM_FLY_TELEPORT.class, Version.Chiness ? -1 : 0xC2, idSet);//1.5.x
 		
 		addPacketOpcode(SM_BUYLIST.class, Version.Chiness ? -1 : 0xF4, idSet);   //1.5.x 
 		addPacketOpcode(SM_DIALOG.class, Version.Chiness ? -1 : 0x21, idSet);//1.5.x

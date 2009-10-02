@@ -17,10 +17,15 @@
 package com.aionemu.gameserver.model.gameobjects;
 
 import com.aionemu.gameserver.controllers.NpcController;
+import com.aionemu.gameserver.model.gameobjects.stats.GameStats;
+import com.aionemu.gameserver.model.gameobjects.stats.LifeStats;
+import com.aionemu.gameserver.model.gameobjects.stats.NpcGameStats;
+import com.aionemu.gameserver.model.gameobjects.stats.NpcLifeStats;
 import com.aionemu.gameserver.model.templates.NpcTemplate;
 import com.aionemu.gameserver.model.templates.SpawnTemplate;
 import com.aionemu.gameserver.services.DecayService;
 import com.aionemu.gameserver.services.RespawnService;
+import com.aionemu.gameserver.utils.StatsFunctions;
 import com.aionemu.gameserver.world.WorldPosition;
 
 /**
@@ -43,6 +48,16 @@ public class Npc extends Creature
 	private SpawnTemplate	spawn;
 	
 	/**
+	 * Lifestats of this npc
+	 */
+	private NpcLifeStats npcLifeStats;
+	
+	/**
+	 * Gamestats of this npc
+	 */
+	private NpcGameStats npcGameStats;
+	
+	/**
 	 * Constructor creating instance of Npc.
 	 * 
 	 * @param spawn
@@ -56,9 +71,7 @@ public class Npc extends Creature
 
 		this.template = spawn.getNpc();
 		this.spawn = spawn;
-		this.currentHP = template.getNpcStatsTemplate().getMaxHp();
-		this.currentMP = template.getNpcStatsTemplate().getMaxMp();
-		this.currentDP = 0;
+		StatsFunctions.computeStats (this);
 		controller.setOwner(this);
 	}
 
@@ -100,15 +113,6 @@ public class Npc extends Creature
 		return getTemplate().getLevel();
 	}
 	
-	public void setHP (int hp)
-	{
-		if (hp>=template.getNpcStatsTemplate().getMaxHp()) {
-			currentHP = template.getNpcStatsTemplate().getMaxHp();
-		} else {
-			currentHP = hp;
-		}
-	}
-	
 	public void onDie()
 	{
 		RespawnService.getInstance().scheduleRespawnTask(this);
@@ -116,73 +120,38 @@ public class Npc extends Creature
 	}
 
 	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#setDP(int)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getGameStats()
 	 */
 	@Override
-	public void setDP(int dp)
+	public NpcGameStats getGameStats()
 	{
-		if (dp>this.getMaxDP()) {
-			this.currentDP = this.getMaxDP();
-		} else {
-			this.currentDP = dp;
-		}
+		return npcGameStats;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#setMP(int)
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#setGameStats(com.aionemu.gameserver.model.gameobjects.stats.GameStats)
 	 */
 	@Override
-	public void setMP(int mp)
+	public void setGameStats(GameStats gameStats)
 	{
-		if (this.currentMP>=this.getMaxMP()) {
-			this.currentMP = this.getMaxMP();
-		} else {
-			this.currentMP = mp;
-		}
+		this.npcGameStats = (NpcGameStats)gameStats;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getMaxDP()
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#setLifeStats(com.aionemu.gameserver.model.gameobjects.stats.LifeStats)
 	 */
 	@Override
-	public int getMaxDP()
+	public void setLifeStats(LifeStats lifeStats)
 	{
-		return 100;
+		this.npcLifeStats = (NpcLifeStats)lifeStats;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getMaxHP()
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getLifeStats()
 	 */
 	@Override
-	public int getMaxHP()
+	public NpcLifeStats getLifeStats()
 	{
-		return template.getNpcStatsTemplate().getMaxHp();
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getMaxMP()
-	 */
-	@Override
-	public int getMaxMP()
-	{
-		return template.getNpcStatsTemplate().getMaxMp();
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getBlock()
-	 */
-	@Override
-	public int getBlock()
-	{
-		return template.getNpcStatsTemplate().getBlock()/5;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getPower()
-	 */
-	@Override
-	public int getPower()
-	{
-		return template.getNpcStatsTemplate().getMainHandAttack();
+		return npcLifeStats;
 	}
 }

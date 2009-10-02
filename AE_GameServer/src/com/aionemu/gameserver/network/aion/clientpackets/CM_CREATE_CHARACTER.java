@@ -93,17 +93,18 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 
 		// just for sure...
 		//log.info("76 == " + (getRemainingBytes()));
-		playerCommonData.setExp(1);
+		playerCommonData.setLevel(1);
 		playerCommonData.setGender(readD() == 0 ? Gender.MALE : Gender.FEMALE);
 		playerCommonData.setRace(readD() == 0 ? Race.ELYOS : Race.ASMODIANS);
 		playerCommonData.setPlayerClass(PlayerClass.getPlayerClassById((byte) readD()));
+		log.info("creating player [name:\""+name+"\",gender:"+playerCommonData.getGender()+",race:"+playerCommonData.getRace()+",class:"+playerCommonData.getPlayerClass()+"]");
 
 		playerAppearance = new PlayerAppearance();
 
 		playerAppearance.setVoice(readD());
 		playerAppearance.setSkinRGB(readD());
 		playerAppearance.setHairRGB(readD());
-		log.info("EyesColor: " + readD()); //playerAppearance.setEyeRGB(readD()); 1.5.x add EyeColor
+		playerAppearance.setEyeRGB(readD()); //1.5.x add EyeColor
 		playerAppearance.setLipRGB(readD());
 		playerAppearance.setFace(readC());
 		playerAppearance.setHair(readC());
@@ -145,8 +146,8 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		playerAppearance.setNeck(readC());
 		playerAppearance.setNeckLength(readC());
 
-		//playerAppearance.setShoulders(readC());
-		log.info("ShoulderSize: " + readC()); // 1.5.x May be Shoulders
+		playerAppearance.setShoulders(readC());
+		//log.info("ShoulderSize: " + readC()); // 1.5.x May be Shoulders
 		
 		playerAppearance.setTorso(readC());
 		playerAppearance.setChest(readC()); // only woman

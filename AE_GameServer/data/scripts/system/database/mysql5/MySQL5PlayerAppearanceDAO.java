@@ -72,6 +72,7 @@ public class MySQL5PlayerAppearanceDAO extends PlayerAppearanceDAO
 				pa.setSkinRGB(resultSet.getInt("skin_rgb"));
 				pa.setHairRGB(resultSet.getInt("hair_rgb"));
 				pa.setLipRGB(resultSet.getInt("lip_rgb"));
+				pa.setEyeRGB(resultSet.getInt("eye_rgb"));
 				pa.setFaceShape(resultSet.getInt("face_shape"));
 				pa.setForehead(resultSet.getInt("forehead"));
 				pa.setEyeHeight(resultSet.getInt("eye_height"));
@@ -149,12 +150,12 @@ public class MySQL5PlayerAppearanceDAO extends PlayerAppearanceDAO
 		
 		return DB.insertUpdate("REPLACE INTO player_appearance ("
 			+ "player_id, face, hair, deco, tattoo, skin_rgb, hair_rgb, lip_rgb, face_shape,"
-			+ "forehead, eye_height, eye_space, eye_width, eye_size, eye_shape, eye_angle,"
+			+ "forehead, eye_height, eye_space, eye_width, eye_size, eye_shape, eye_angle, eye_rgb,"
 			+ "brow_height, brow_angle, brow_shape, nose, nose_bridge, nose_width, nose_tip, "
 			+ "cheek, lip_height, mouth_size, lip_size, smile, lip_shape, jaw_height, chin_jut, ear_shape,"
 			+ "head_size, neck, neck_length, shoulders, torso, chest, waist, hips, arm_thickness, hand_size,"
 			+ "leg_thickness, foot_size, facial_rate, voice, height)" + " VALUES "
-			+ "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+			+ "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
 			+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" + ")", new IUStH() {
 			@Override
 			public void handleInsertUpdate(PreparedStatement ps) throws SQLException
@@ -176,37 +177,38 @@ public class MySQL5PlayerAppearanceDAO extends PlayerAppearanceDAO
 				ps.setInt(14, pa.getEyeSize());
 				ps.setInt(15, pa.getEyeShape());
 				ps.setInt(16, pa.getEyeAngle());
-				ps.setInt(17, pa.getBrowHeight());
-				ps.setInt(18, pa.getBrowAngle());
-				ps.setInt(19, pa.getBrowShape());
-				ps.setInt(20, pa.getNose());
-				ps.setInt(21, pa.getNoseBridge());
-				ps.setInt(22, pa.getNoseWidth());
-				ps.setInt(23, pa.getNoseTip());
-				ps.setInt(24, pa.getCheek());
-				ps.setInt(25, pa.getLipHeight());
-				ps.setInt(26, pa.getMouthSize());
-				ps.setInt(27, pa.getLipSize());
-				ps.setInt(28, pa.getSmile());
-				ps.setInt(29, pa.getLipShape());
-				ps.setInt(30, pa.getJawHeigh());
-				ps.setInt(31, pa.getChinJut());
-				ps.setInt(32, pa.getEarShape());
-				ps.setInt(33, pa.getHeadSize());
-				ps.setInt(34, pa.getNeck());
-				ps.setInt(35, pa.getNeckLength());
-				ps.setInt(36, pa.getShoulders());
-				ps.setInt(37, pa.getTorso());
-				ps.setInt(38, pa.getChest());
-				ps.setInt(39, pa.getWaist());
-				ps.setInt(40, pa.getHips());
-				ps.setInt(41, pa.getArmThickness());
-				ps.setInt(42, pa.getHandSize());
-				ps.setInt(43, pa.getLegThicnkess());
-				ps.setInt(44, pa.getFootSize());
-				ps.setInt(45, pa.getFacialRate());
-				ps.setInt(46, pa.getVoice());
-				ps.setFloat(47, pa.getHeight());
+				ps.setInt(17, pa.getEyeRGB());
+				ps.setInt(18, pa.getBrowHeight());
+				ps.setInt(19, pa.getBrowAngle());
+				ps.setInt(20, pa.getBrowShape());
+				ps.setInt(21, pa.getNose());
+				ps.setInt(22, pa.getNoseBridge());
+				ps.setInt(23, pa.getNoseWidth());
+				ps.setInt(24, pa.getNoseTip());
+				ps.setInt(25, pa.getCheek());
+				ps.setInt(26, pa.getLipHeight());
+				ps.setInt(27, pa.getMouthSize());
+				ps.setInt(28, pa.getLipSize());
+				ps.setInt(29, pa.getSmile());
+				ps.setInt(30, pa.getLipShape());
+				ps.setInt(31, pa.getJawHeigh());
+				ps.setInt(32, pa.getChinJut());
+				ps.setInt(33, pa.getEarShape());
+				ps.setInt(34, pa.getHeadSize());
+				ps.setInt(35, pa.getNeck());
+				ps.setInt(36, pa.getNeckLength());
+				ps.setInt(37, pa.getShoulders());
+				ps.setInt(38, pa.getTorso());
+				ps.setInt(39, pa.getChest());
+				ps.setInt(40, pa.getWaist());
+				ps.setInt(41, pa.getHips());
+				ps.setInt(42, pa.getArmThickness());
+				ps.setInt(43, pa.getHandSize());
+				ps.setInt(44, pa.getLegThicnkess());
+				ps.setInt(45, pa.getFootSize());
+				ps.setInt(46, pa.getFacialRate());
+				ps.setInt(47, pa.getVoice());
+				ps.setFloat(48, pa.getHeight());
 				ps.execute();
 			}
 		});

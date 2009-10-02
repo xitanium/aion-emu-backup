@@ -26,10 +26,12 @@ import com.aionemu.gameserver.dataholders.StaticData;
 import com.aionemu.gameserver.model.Gender;
 import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.Race;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_LEVEL_UPDATE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATS_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_EXP;
 import com.aionemu.gameserver.utils.PacketSendUtility;
+import com.aionemu.gameserver.utils.StatsFunctions;
 import com.aionemu.gameserver.world.WorldPosition;
 
 /**
@@ -105,14 +107,8 @@ public class PlayerCommonData
 		{
 			this.exp = exp;
 			if (this.getPlayer()!=null) {
-				PacketSendUtility.sendPacket(
-					this.getPlayer(),
-					new SM_STATUPDATE_EXP(
-						this.getExpShown(),
-						0,
-						this.getExpNeed()
-					)
-				);
+				PacketSendUtility.sendPacket(this.getPlayer(),
+					new SM_LEVEL_UPDATE(this.getPlayerObjId(), level));
 			}
 			this.setLevel(level);
 		}
@@ -120,15 +116,8 @@ public class PlayerCommonData
 		{
 			this.exp = exp;
 			if (this.getPlayer()!=null) {
-				PacketSendUtility.sendPacket(
-					this.getPlayer(),
-					new SM_STATUPDATE_EXP(
-						this.getExpShown(),
-						0,
-						this.getExpNeed()
-					)
-				);
-				PacketSendUtility.broadcastPacket(this.getPlayer(), new SM_PLAYER_INFO(this.getPlayer(), false), false);
+				PacketSendUtility.sendPacket(this.getPlayer(),
+					new SM_STATUPDATE_EXP(this.getExpShown(), 0, this.getExpNeed()));
 			}
 		}
 	}
@@ -211,23 +200,16 @@ public class PlayerCommonData
 		return level;
 	}
 	
-	private void setLevel(int level)
+	public void setLevel(int level)
 	{
+		int oldLevel = this.level;
 		log.info("NEW LEVEL: "+level);
 		if (level <= DataManager.PLAYER_EXPERIENCE_TABLE.getMaxLevel())
 		{
 			this.level = level;
 			this.exp = DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level);
 			if(this.getPlayer()!=null) {
-				this.getPlayer().getStats().recomputeStats();
-				PacketSendUtility.sendPacket(
-					this.getPlayer(),
-					new SM_STATUPDATE_EXP(
-						this.getExpShown(),
-						0,
-						this.getExpNeed()
-					)
-				);
+				StatsFunctions.doStatsEvolution(this.getPlayer(), oldLevel);
 				PacketSendUtility.sendPacket(this.getPlayer(), new SM_STATS_INFO(this.getPlayer()));
 			}
 		}

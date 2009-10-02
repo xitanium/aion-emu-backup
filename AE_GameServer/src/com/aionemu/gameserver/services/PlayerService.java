@@ -19,8 +19,6 @@ package com.aionemu.gameserver.services;
 
 import java.sql.Timestamp;
 
-import org.apache.log4j.Logger;
-
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.configs.CacheConfig;
 import com.aionemu.gameserver.configs.Config;
@@ -61,8 +59,6 @@ import com.google.inject.Inject;
  */
 public class PlayerService
 {
-	private static Logger				log				= Logger.getLogger(PlayerService.class);
-
 	private CacheMap<Integer, Player>	playerCache		= CacheMapFactory.createSoftCacheMap("Player", "player");
 
 	private IDFactory					aionObjectsIDFactory;
@@ -182,9 +178,6 @@ public class PlayerService
 		// TODO: starting items;
 
 		player = new Player(new PlayerController(), playerCommonData, playerAppearance);
-		player.setHP(player.getStats().getMaxHP());
-		player.setMP(player.getStats().getMaxMP());
-		player.setDP(0);
 		return player;
 	}
 
@@ -200,7 +193,7 @@ public class PlayerService
 		
 		player.getCommonData().setOnline(true);
 		//log.info("player "+player.getName()+" logged in with id "+player.getObjectId()+" in map "+player.getActiveRegion().getMapId());
-		player.onLoggedIn();
+		player.onLoggedIn(world);
 	}
 
 	/**
@@ -212,7 +205,7 @@ public class PlayerService
 	 */
 	public void playerLoggedOut(Player player)
 	{
-		player.onLoggedOut();
+		player.onLoggedOut(world);
 		
 		player.getCommonData().setOnline(false);
 		player.getCommonData().setLastOnline(new Timestamp(System.currentTimeMillis()));

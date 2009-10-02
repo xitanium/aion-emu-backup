@@ -26,18 +26,15 @@ import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedInListener;
 import com.aionemu.gameserver.model.gameobjects.player.listeners.PlayerLoggedOutListener;
 import com.aionemu.gameserver.model.gameobjects.player.SkillList;
+import com.aionemu.gameserver.model.gameobjects.stats.GameStats;
+import com.aionemu.gameserver.model.gameobjects.stats.LifeStats;
+import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
+import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.network.aion.AionConnection;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_DP;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_HP;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_MP;
-import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
-import com.aionemu.gameserver.services.DecayService;
 import com.aionemu.gameserver.services.PlayerService;
-import com.aionemu.gameserver.services.RespawnService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.ThreadPoolManager;
+import com.aionemu.gameserver.utils.StatsFunctions;
 import com.aionemu.gameserver.world.MapRegion;
 import com.aionemu.gameserver.world.World;
 
@@ -54,17 +51,15 @@ public class Player extends Creature
 {
 	private PlayerAppearance	playerAppearance;
 	private PlayerCommonData	playerCommonData;
-	private PlayerStats			playerStats;
+	private PlayerLifeStats		playerLifeStats;
+	private PlayerGameStats		playerGameStats;
 	private MacroList			macroList;
 	private SkillList			skillList;
 	private FriendList			friendList;
 	private BlockList			blockList;
+	private PlayerItems         playerItems;
 	private ResponseRequester	requester;
 	private boolean				lookingForGroup	= false;
-
-	private int					itemId			= 0;
-	private int					itemNameId		= 0;
-	private int					atcount			= 1;
 
 	/** When player enters game its char is in kind of "protection" state, when is blinking etc */
 	private boolean				protectionActive;
@@ -80,11 +75,8 @@ public class Player extends Creature
 
 		this.playerCommonData = plCommonData;
 		this.playerAppearance = appereance;
-		this.playerStats = new PlayerStats(this);
-		this.currentHP = playerStats.getMaxHP();
-		this.currentMP = playerStats.getMaxMP();
-		this.currentDP = 0;
-
+		StatsFunctions.computeStats(this);
+		StatsFunctions.doStatsEvolution(this, 1);
 		this.requester = new ResponseRequester(this);
 
 		controller.setOwner(this);
@@ -94,11 +86,6 @@ public class Player extends Creature
 	public PlayerCommonData getCommonData()
 	{
 		return playerCommonData;
-	}
-
-	public PlayerStats getStats()
-	{
-		return playerStats;
 	}
 
 	@Override
@@ -228,69 +215,16 @@ public class Player extends Creature
 	{
 		this.blockList = list;
 	}
-
-	public long getExp()
+	
+	public void setItems(PlayerItems playerItems)
 	{
-		return this.getCommonData().getExp();
+		this.playerItems = playerItems;
 	}
 
-	public void setHP (int hp) {
-		if (hp>=playerStats.getMaxHP()) {
-			this.currentHP = playerStats.getMaxHP();
-		} else {
-			this.currentHP = hp;
-		}
-		PacketSendUtility.broadcastPacket(this, new SM_STATUPDATE_HP(this.currentHP, playerStats.getMaxHP()),true);
+	public PlayerItems getItems () {
+		return playerItems;
 	}
 	
-	public void setMP (int mp) {
-		if (mp>=playerStats.getMaxMP()) {
-			this.currentMP = playerStats.getMaxMP();
-		} else {
-			this.currentMP = mp;
-		}
-		PacketSendUtility.broadcastPacket(this, new SM_STATUPDATE_MP(this.currentMP, playerStats.getMaxMP()),true);
-	}
-		
-	public void setDP (int dp) {
-		if (dp>=playerStats.getMaxDP()) {
-			this.currentDP = playerStats.getMaxDP();
-		} else {
-			this.currentDP = dp;
-		}
-		PacketSendUtility.broadcastPacket(this, new SM_STATUPDATE_DP(this.currentDP), true);
-	}
-	
-	public void setItemId(int e)
-	{
-		this.itemId = e;
-	}
-
-	public void setItemNameId(int e)
-	{
-		this.itemNameId = e;
-	}
-
-	public int getItemId()
-	{
-		return itemId;
-	}
-
-	public int getItemNameId()
-	{
-		return itemNameId;
-	}
-
-	public void setatcount(int e)
-	{
-		this.atcount = e;
-	}
-
-	public int getatcount()
-	{
-		return atcount;
-	}
-
 	/**
 	 * Gets the ResponseRequester for this player
 	 * 
@@ -342,29 +276,24 @@ public class Player extends Creature
 	 * {@link PlayerService#playerLoggedIn(Player)}</b>
 	 */
 	@Enhancable(callback = PlayerLoggedInListener.class)
-	public void onLoggedIn()
+	public void onLoggedIn(World world)
 	{
 		if(this.getCommonData().isAdmin())
 		{
-			MapRegion mapRegion = this.getActiveRegion();
-			if(mapRegion != null)
+			if(world != null)
 			{
-				World world = mapRegion.getWorld();
-				if(world != null)
+				Iterator<Player> iter = world.getPlayersIterator();
+				if(iter != null)
 				{
-					Iterator<Player> iter = world.getPlayersIterator();
-					if(iter != null)
-					{
-						StringBuilder sbMessage = new StringBuilder("<Annonce> [>>>MJ] " + this.getName()
+					StringBuilder sbMessage = new StringBuilder("<Annonce> " + this.getName()
 							+ " vient de se connecter");
-
-						String sMessage = sbMessage.toString().trim();
-						while(iter.hasNext())
-						{
-							PacketSendUtility.sendMessage(iter.next(), sMessage);
-						}
+					
+					String sMessage = sbMessage.toString().trim();
+					while(iter.hasNext())
+					{
+						PacketSendUtility.sendMessage(iter.next(), sMessage);
 					}
-				}
+				}		
 			}
 		}
 	}
@@ -377,27 +306,21 @@ public class Player extends Creature
 	 * {@link PlayerService#playerLoggedOut(Player)}</b>
 	 */
 	@Enhancable(callback = PlayerLoggedOutListener.class)
-	public void onLoggedOut()
+	public void onLoggedOut(World world)
 	{
 		if(this.getCommonData().isAdmin())
 		{
-			MapRegion mapRegion = this.getActiveRegion();
-			if(mapRegion != null)
+			if(world != null)
 			{
-				World world = mapRegion.getWorld();
-				if(world != null)
+				Iterator<Player> iter = world.getPlayersIterator();
+				if(iter != null)
 				{
-					Iterator<Player> iter = world.getPlayersIterator();
-					if(iter != null)
-					{
-						StringBuilder sbMessage = new StringBuilder("<Annonce> [<<<MJ] " + this.getName()
-							+ " est sorti du jeu");
-
+					StringBuilder sbMessage = new StringBuilder("<Annonce> " + this.getName()
+						+ " est sorti du jeu");
 						String sMessage = sbMessage.toString().trim();
-						while(iter.hasNext())
-						{
-							PacketSendUtility.sendMessage(iter.next(), sMessage);
-						}
+					while(iter.hasNext())
+					{
+						PacketSendUtility.sendMessage(iter.next(), sMessage);
 					}
 				}
 			}
@@ -405,65 +328,39 @@ public class Player extends Creature
 	}
 
 	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getMaxDP()
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getGameStats()
 	 */
 	@Override
-	public int getMaxDP()
+	public PlayerGameStats getGameStats()
 	{
-		return playerStats.getMaxDP();
+		return playerGameStats;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getMaxHP()
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getLifeStats()
 	 */
 	@Override
-	public int getMaxHP()
+	public PlayerLifeStats getLifeStats()
 	{
-		return playerStats.getMaxHP();
+		return playerLifeStats;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getMaxMP()
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#setGameStats(com.aionemu.gameserver.model.gameobjects.stats.GameStats)
 	 */
 	@Override
-	public int getMaxMP()
+	public void setGameStats(GameStats gameStats)
 	{
-		return playerStats.getMaxMP();
+		this.playerGameStats = (PlayerGameStats)gameStats;
+		
 	}
 
 	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getBlock()
+	 * @see com.aionemu.gameserver.model.gameobjects.Creature#setLifeStats(com.aionemu.gameserver.model.gameobjects.stats.LifeStats)
 	 */
 	@Override
-	public int getBlock()
+	public void setLifeStats(LifeStats lifeStats)
 	{
-		return playerStats.getBlock();
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#getPower()
-	 */
-	@Override
-	public int getPower()
-	{
-		return playerStats.getPower();
-	}
-
-	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.model.gameobjects.Creature#onDie()
-	 */
-	@Override
-	public void onDie()
-	{
-		final int objId = this.getObjectId();
-		final World world = this.getActiveRegion().getWorld();
-		this.getCommonData().setExp((int)Math.round(this.getCommonData().getExpNeed()*0.03));
-		this.setHP((int)Math.round(this.getMaxHP()*0.7));
-		Player player = world.findPlayer(objId);
-		PacketSendUtility.sendMessage(player,"You died...");
-		world.despawn(player);
-		player.setProtectionActive(true);
-		world.updatePosition(player, player.getX(), player.getY(), player.getZ(), player.getHeading());
-		PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
+		this.playerLifeStats = (PlayerLifeStats)lifeStats;
 	}
 }
