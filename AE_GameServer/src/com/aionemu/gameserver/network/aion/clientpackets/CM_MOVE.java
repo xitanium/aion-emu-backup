@@ -67,6 +67,7 @@ public class CM_MOVE extends AionClientPacket
 		byte heading = (byte) readC();
 		MovementType type = MovementType.getMovementTypeById((byte)readC());
 
+		log.info("movement type:"+type);
 		switch(type)
 		{
 			case MOVEMENT_START_MOUSE:
