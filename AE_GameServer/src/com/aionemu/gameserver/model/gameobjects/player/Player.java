@@ -35,7 +35,6 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.StatsFunctions;
-import com.aionemu.gameserver.world.MapRegion;
 import com.aionemu.gameserver.world.World;
 
 /**

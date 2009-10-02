@@ -24,10 +24,10 @@ import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.stats.GameStats;
-import com.aionemu.gameserver.model.gameobjects.stats.LifeStats;
 import com.aionemu.gameserver.model.gameobjects.stats.NpcGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.NpcLifeStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
+import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.model.templates.stats.NpcStatsTemplate;
 import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 
@@ -127,7 +127,11 @@ public class StatsFunctions
 	public static void computeStats (Player player) {
 		PlayerStatsTemplate pst = DataManager.PLAYER_STATS_DATA.getTemplate(player);
 		int maxHp = pst.getMaxHp();
+		int initialHp = pst.getMaxHp();
 		int maxMp = pst.getMaxMp();
+		int initialMp = pst.getMaxMp();
+		int maxDp = 100;
+		int initialDp = 0;
 		int power = pst.getPower();
 		int health = pst.getHealth();
 		int agility = pst.getAgility();
@@ -139,6 +143,6 @@ public class StatsFunctions
 		int oha = mha;
 		int ohcr = mhcr;
 		player.setGameStats(new PlayerGameStats(player, power, health, agility, accuracy, knowledge, will, mha, mhcr, oha, ohcr));
-		player.setLifeStats(new LifeStats(player, maxHp, maxMp, maxHp, maxMp));
+		player.setLifeStats(new PlayerLifeStats(player, initialHp, initialMp, initialDp, maxHp,  maxMp, maxDp));
 	}
 }
