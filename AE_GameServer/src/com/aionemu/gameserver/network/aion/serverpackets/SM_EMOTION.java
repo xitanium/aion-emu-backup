@@ -73,11 +73,10 @@ public class SM_EMOTION extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		log.info("SM_MOVE:unknown:"+unknown);
-		if (unknown !=0x24) {
-			writeD(buf, senderObjectId);
-			writeC(buf, unknown);
-		}
+//		if (unknown !=0x24) {
+//			writeD(buf, senderObjectId);
+//			writeC(buf, unknown);
+//		}
 		if (unknown == 13 ){
 				//emote die
 			writeD(buf, 0x07); // unknown
