@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.controllers;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
@@ -24,6 +26,7 @@ import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.model.gameobjects.stats.NpcLifeStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
+import com.aionemu.gameserver.network.aion.clientpackets.CM_MOVE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
@@ -46,6 +49,7 @@ public class PlayerController extends CreatureController<Player>
 {
 	@Inject
 	private World world;
+	private static final Logger	log	= Logger.getLogger(PlayerController.class);
 	/**
 	 * {@inheritDoc}
 	 */
@@ -102,7 +106,7 @@ public class PlayerController extends CreatureController<Player>
 		int attackType = type; //TODO investigate attack types	
 		
 		Npc npc = (Npc) world.findAionObject(targetObjectId);
-		
+		log.info("player {name:"+player.getName()+",lvl:"+player.getLevel()+"} attacks npc {name:"+npc.getName()+",lvl:"+npc.getLevel()+"}");
 		//TODO fix last attack - cause mob is already dead
 		int damage = StatsFunctions.calculateBaseDamageToTarget(player, npc);
 		PacketSendUtility.broadcastPacket(player,
