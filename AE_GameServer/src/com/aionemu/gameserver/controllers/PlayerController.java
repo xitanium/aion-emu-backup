@@ -108,6 +108,8 @@ public class PlayerController extends CreatureController<Player>
 		PacketSendUtility.broadcastPacket(player,
 			new SM_ATTACK(player.getObjectId(), targetObjectId,
 				gameStats.getAttackCounter(), (int) time, attackType, damage), true);
+		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,30,player.getObjectId()), true);
+		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,19,player.getObjectId()), true);
 		boolean attackSuccess = npc.getController().onAttack(player);
 		
 		if(attackSuccess)
