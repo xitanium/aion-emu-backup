@@ -121,7 +121,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 	{
 		boolean success = DB.insertUpdate(
 				"INSERT INTO players(id, `name`, exp, account_id, account_name, x, y, z, heading, world_id, gender, race, player_class , admin, online, hp, mp, dp) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 				new IUStH(){
 					@Override
 					public void handleInsertUpdate(PreparedStatement preparedStatement) throws SQLException
