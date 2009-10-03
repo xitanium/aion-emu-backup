@@ -33,8 +33,6 @@ public class SM_ATTACK_STATUS extends AionServerPacket
 {
     private int remainHp;
     private int targetObjId;
-    @Inject
-    private World world;
 	
 	public SM_ATTACK_STATUS(Creature target, int hpPercentage)
 	{
@@ -44,8 +42,7 @@ public class SM_ATTACK_STATUS extends AionServerPacket
 	
 	public SM_ATTACK_STATUS(int targetObjId, int hpPercentage)
 	{
-		Creature target = (Creature)world.findAionObject(targetObjId);
-		this.targetObjId = target.getObjectId();
+		this.targetObjId = targetObjId;
 		this.remainHp = hpPercentage;
 	}
 
