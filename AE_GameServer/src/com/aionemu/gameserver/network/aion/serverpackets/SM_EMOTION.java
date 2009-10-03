@@ -31,7 +31,7 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
  */
 public class SM_EMOTION extends AionServerPacket
 {
-	private static final Logger	log	= Logger.getLogger(SM_EMOTION.class);
+	//private static final Logger	log	= Logger.getLogger(SM_EMOTION.class);
 
 	/**
 	 * Object id of emotion sender
@@ -73,10 +73,16 @@ public class SM_EMOTION extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
+		log.info("[SM_EMOTION] senderObjectId:"+senderObjectId+",unknown:"+Integer.toHexString(unknown)+",emotionId:"+Integer.toHexString(emotionId));
+		if (unknown!=0x24) {
+			writeD(buf,senderObjectId);
+			writeC(buf,unknown);
+		}
 		if (unknown == 13 ){
 			// emote die
 			writeD(buf, 0x07); // unknown
 			writeC(buf, 0xE0); // unknown
+			writeH(buf, 0x00); // unknown
 			writeC(buf, 0x40); // unknown
 			writeD(buf, emotionId);
 		}
@@ -84,17 +90,20 @@ public class SM_EMOTION extends AionServerPacket
 		{
 			writeC(buf, 0x01); // unknown
 			writeC(buf, 0x00); // unknown
+			writeH(buf, 0x00);
 			writeC(buf, 0xC0); // unknown
 			writeC(buf, 0x40); // unknown
 		}
 		if(unknown == 0x10)
 		{
 			writeD(buf, 0x00); // unknown
+			writeH(buf, emotionId);
 			writeC(buf, 0x01); // unknown
 		}
 		
 		if (unknown == 0x24) {
 			writeD(buf, senderObjectId); // unknown
+			writeH(buf, 0x00); // unknown
 			writeD(buf, 12); // unknown
 		}
 	}

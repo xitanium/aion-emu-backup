@@ -86,6 +86,7 @@ public class CM_EMOTION extends AionClientPacket
 		{
 			log.info("Unknown emotion type? 0x" + Integer.toHexString(unknown).toUpperCase());
 		}
+		log.info("[CM_EMOTION] unknown:"+Integer.toHexString(unknown)+",emotionId:"+Integer.toHexString(emotion));
 	}
 
 	/**
