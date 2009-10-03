@@ -103,16 +103,15 @@ public class PlayerController extends CreatureController<Player>
 		int attackType = type; //TODO investigate attack types	
 		
 		Npc npc = (Npc) world.findAionObject(targetObjectId);
-		log.info("player {name:"+player.getName()+",lvl:"+player.getLevel()+"} attacks npc {name:"+npc.getName()+",lvl:"+npc.getLevel()+"}");
 		//TODO fix last attack - cause mob is already dead
 		int damage = StatsFunctions.calculateBaseDamageToTarget(player, npc);
 		PacketSendUtility.broadcastPacket(player,
 			new SM_ATTACK(player.getObjectId(), targetObjectId,
 				gameStats.getAttackCounter(), (int) time, attackType, damage), true);
-		//PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,30,player.getObjectId()), true);
-		//PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,19,player.getObjectId()), true);
+		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,30,player.getObjectId()), true);
+		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,19,player.getObjectId()), true);
 		boolean attackSuccess = npc.getController().onAttack(player);
-		
+		log.info("player {name:"+player.getName()+",lvl:"+player.getLevel()+"} attacks npc {name:"+npc.getName()+",lvl:"+npc.getLevel()+"}, attackSuccess:"+attackSuccess);
 		if(attackSuccess)
 		{
 			gameStats.increaseAttackCounter();

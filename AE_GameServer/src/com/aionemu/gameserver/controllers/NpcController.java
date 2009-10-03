@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.controllers;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -36,6 +38,7 @@ import com.aionemu.gameserver.utils.StatsFunctions;
  */
 public class NpcController extends CreatureController<Npc>
 {	
+	private static final Logger	log	= Logger.getLogger(PlayerController.class);
 	/* (non-Javadoc)
 	 * @see com.aionemu.gameserver.controllers.CreatureController#onDie()
 	 */
@@ -78,6 +81,7 @@ public class NpcController extends CreatureController<Npc>
 		int newHp = lifeStats.reduceHp(StatsFunctions.calculateBaseDamageToTarget(creature, npc));
 		int hpPercentage = Math.round(100 *  newHp / lifeStats.getMaxHp());
 		
+		log.info("npc {name:"+npc.getName()+",level:"+npc.getLevel()+"} attacked by {name:"+creature.getName()+",level:"+creature.getLevel()+"}, newHp:"+newHp);
 		PacketSendUtility.broadcastPacket(npc, new SM_ATTACK_STATUS(npc.getObjectId(), hpPercentage));
 		if(newHp == 0)
 		{
