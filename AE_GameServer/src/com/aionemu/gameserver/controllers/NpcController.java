@@ -72,11 +72,11 @@ public class NpcController extends CreatureController<Npc>
 		NpcLifeStats lifeStats = npc.getLifeStats();
 		
 		//TODO resolve synchronization issue
-		if(!lifeStats.isAlive())
-		{
-			//TODO send action failed packet
-			return false;
-		}
+//		if(!lifeStats.isAlive())
+//		{
+//			//TODO send action failed packet
+//			return false;
+//		}
 		
 		int newHp = lifeStats.reduceHp(StatsFunctions.calculateBaseDamageToTarget(creature, npc));
 		int hpPercentage = Math.round(100 *  newHp / lifeStats.getMaxHp());
