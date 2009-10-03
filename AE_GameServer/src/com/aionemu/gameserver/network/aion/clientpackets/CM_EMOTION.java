@@ -17,8 +17,6 @@
 
 package com.aionemu.gameserver.network.aion.clientpackets;
 
-import org.apache.log4j.Logger;
-
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
@@ -29,12 +27,6 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  */
 public class CM_EMOTION extends AionClientPacket
 {
-
-	/**
-	 * Logger
-	 */
-	private static final Logger	log	= Logger.getLogger(CM_EMOTION.class);
-
 	/**
 	 * Can 0x11 or 0x10
 	 */
@@ -46,8 +38,6 @@ public class CM_EMOTION extends AionClientPacket
 	int emotion;
 	
 	int ObjID;
-	
-	private int monsterToAttackId;
 
 
 	/**
@@ -84,7 +74,7 @@ public class CM_EMOTION extends AionClientPacket
 		} 
 		else
 		{
-			log.info("Unknown emotion type? 0x" + Integer.toHexString(unknown).toUpperCase());
+			log.info("[CM_EMOTION] Unknown emotion type? 0x" + Integer.toHexString(unknown).toUpperCase());
 		}
 		log.info("[CM_EMOTION] unknown:"+Integer.toHexString(unknown)+",emotionId:"+Integer.toHexString(emotion));
 	}

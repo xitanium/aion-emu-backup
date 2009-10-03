@@ -23,10 +23,8 @@ import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
-import com.aionemu.gameserver.model.gameobjects.stats.NpcLifeStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
-import com.aionemu.gameserver.network.aion.clientpackets.CM_MOVE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
@@ -37,7 +35,6 @@ import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.StatsFunctions;
 import com.aionemu.gameserver.world.World;
-import com.google.inject.Inject;
 
 /**
  * This class is for controlling players.
@@ -47,8 +44,6 @@ import com.google.inject.Inject;
  */
 public class PlayerController extends CreatureController<Player>
 {
-	@Inject
-	private World world;
 	private static final Logger	log	= Logger.getLogger(PlayerController.class);
 	/**
 	 * {@inheritDoc}
@@ -85,6 +80,7 @@ public class PlayerController extends CreatureController<Player>
 	{
 		super.onDie();
 		Player owner = getOwner();
+		World world = owner.getActiveRegion().getWorld();
 		PlayerCommonData pcd = getOwner().getCommonData();
 		pcd.setExp((int)Math.round(pcd.getExpNeed()*0.03));
 		PacketSendUtility.sendMessage(owner,"You died...");
@@ -100,6 +96,7 @@ public class PlayerController extends CreatureController<Player>
 	public void attackTarget(int targetObjectId, int attackno, long time, int type)
 	{
 		Player player = getOwner();
+		World world = player.getActiveRegion().getWorld();
 		PlayerGameStats gameStats = player.getGameStats();
 		attackno = gameStats.getAttackCounter();
 		time = System.currentTimeMillis();
@@ -112,8 +109,8 @@ public class PlayerController extends CreatureController<Player>
 		PacketSendUtility.broadcastPacket(player,
 			new SM_ATTACK(player.getObjectId(), targetObjectId,
 				gameStats.getAttackCounter(), (int) time, attackType, damage), true);
-		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,30,player.getObjectId()), true);
-		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,19,player.getObjectId()), true);
+		//PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,30,player.getObjectId()), true);
+		//PacketSendUtility.broadcastPacket(player, new SM_EMOTION(targetObjectId,19,player.getObjectId()), true);
 		boolean attackSuccess = npc.getController().onAttack(player);
 		
 		if(attackSuccess)

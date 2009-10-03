@@ -83,11 +83,9 @@ public class CM_TARGET_SELECT extends AionClientPacket
 		if(player == null)
 			return;
 		
-		int targeterOid = player.getObjectId();
-		
 		if(targetObjectId != 0)
 		{
-			log.info(String.format("Selecting target with object id: %d", targetObjectId));
+			log.info(String.format("Selecting target with object id: %d, unknown:%d", targetObjectId, unknown));
 			
 			AionObject obj = world.findAionObject(targetObjectId);
 			if(obj != null && obj instanceof Creature)
