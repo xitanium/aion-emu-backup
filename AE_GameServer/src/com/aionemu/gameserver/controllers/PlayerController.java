@@ -113,7 +113,7 @@ public class PlayerController extends CreatureController<Player>
 		if(attackSuccess)
 		{
 			gameStats.increaseAttackCounter();
-		}		
+		}
 	}
 	
 	/* (non-Javadoc)

@@ -92,6 +92,8 @@ public class NpcController extends CreatureController<Npc>
 			this.doDrop();
 			this.doReward(creature);
 			this.onDie();
+		} else {
+			this.attackTarget(creature.getObjectId(), npc.getGameStats().getAttackCounter(), System.currentTimeMillis(), 2);
 		}
 		return true;
 	}
