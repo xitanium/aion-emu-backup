@@ -23,6 +23,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_ITEMLIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_INVENTORY_UPDATE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_UPDATE_ITEM;
 
 import org.apache.log4j.Logger;
 
@@ -60,8 +61,6 @@ public class CM_LOOT_ITEM extends AionClientPacket
 	@Override
 	protected void runImpl()
 	{
-
-		
 		Player player = getConnection().getActivePlayer();
 		int activePlayer = player.getObjectId();
 		int itemId = player.getGameStats().getItemId();
@@ -73,7 +72,7 @@ public class CM_LOOT_ITEM extends AionClientPacket
 		if (itemId==182400001){
 			Random generator = new Random();
 			int randomKinah = generator.nextInt(50)+1;
-			int randomUniqueId = generator.nextInt(99999999)+generator.nextInt(99999999)+99999999+99999999; // To prevent replacement of other item.
+			//int randomUniqueId = generator.nextInt(99999999)+generator.nextInt(99999999)+99999999+99999999; // To prevent replacement of other item.
 		
 			//calculate how much kinah to send
 
@@ -83,7 +82,7 @@ public class CM_LOOT_ITEM extends AionClientPacket
 			int totalKinah = kinah + randomKinah;
 			kina.putKinahToDb(activePlayer, totalKinah);
 			//Need item update packet
-			//sendPacket(new SM_UPDATE_ITEM()); - need more analysis.
+			sendPacket(new SM_UPDATE_ITEM());// - need more analysis.
 		
 		} else {
 			Inventory itemsDbOfPlayerCount = new Inventory(); // wrong
