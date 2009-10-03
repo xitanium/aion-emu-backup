@@ -72,7 +72,7 @@ public class CM_LOOT_ITEM extends AionClientPacket
 		if (itemId==182400001){
 			Random generator = new Random();
 			int randomKinah = generator.nextInt(50)+1;
-			//int randomUniqueId = generator.nextInt(99999999)+generator.nextInt(99999999)+99999999+99999999; // To prevent replacement of other item.
+			int randomUniqueId = generator.nextInt(99999999)+generator.nextInt(99999999)+99999999+99999999; // To prevent replacement of other item.
 		
 			//calculate how much kinah to send
 
@@ -82,8 +82,8 @@ public class CM_LOOT_ITEM extends AionClientPacket
 			int totalKinah = kinah + randomKinah;
 			kina.putKinahToDb(activePlayer, totalKinah);
 			//Need item update packet
-			sendPacket(new SM_UPDATE_ITEM());// - need more analysis.
-		
+			//sendPacket(new SM_UPDATE_ITEM());// - need more analysis.
+			sendPacket(new SM_INVENTORY_UPDATE(randomUniqueId, itemId, itemNameId, count)); // give item
 		} else {
 			Inventory itemsDbOfPlayerCount = new Inventory(); // wrong
 			itemsDbOfPlayerCount.getInventoryFromDb(activePlayer);

@@ -21,7 +21,9 @@ import org.apache.log4j.Logger;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.stats.NpcGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.NpcLifeStats;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
@@ -29,6 +31,7 @@ import com.aionemu.gameserver.services.DecayService;
 import com.aionemu.gameserver.services.RespawnService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.StatsFunctions;
+import com.aionemu.gameserver.world.World;
 
 /**
  * This class is for controlling Npc's
@@ -72,11 +75,11 @@ public class NpcController extends CreatureController<Npc>
 		NpcLifeStats lifeStats = npc.getLifeStats();
 		
 		//TODO resolve synchronization issue
-//		if(!lifeStats.isAlive())
-//		{
-//			//TODO send action failed packet
-//			return false;
-//		}
+		if(!lifeStats.isAlive())
+		{
+			//TODO send action failed packet
+			return false;
+		}
 		
 		int newHp = lifeStats.reduceHp(StatsFunctions.calculateBaseDamageToTarget(creature, npc));
 		int hpPercentage = Math.round(100 *  newHp / lifeStats.getMaxHp());
@@ -89,6 +92,32 @@ public class NpcController extends CreatureController<Npc>
 			this.doDrop();
 			this.doReward(creature);
 			this.onDie();
+		}
+		return true;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.controllers.CreatureController#onAttack(com.aionemu.gameserver.model.gameobjects.Creature)
+	 */
+	public boolean attackTarget (int targetObjectId, int attackno, long time, int type) {
+		Npc npc = getOwner();
+		World world = npc.getActiveRegion().getWorld();
+		Player player = world.findPlayer(targetObjectId);
+		NpcGameStats gameStats = npc.getGameStats();
+		attackno = gameStats.getAttackCounter();
+		time = System.currentTimeMillis();
+		int attackType = type; //TODO investigate attack types	
+		
+		//TODO fix last attack - cause mob is already dead
+		int damage = StatsFunctions.calculateBaseDamageToTarget(npc, player);
+		PacketSendUtility.broadcastPacket(player,
+			new SM_ATTACK(npc.getObjectId(), targetObjectId,
+				gameStats.getAttackCounter(), (int) time, attackType, damage), true);
+		boolean attackSuccess = player.getController().onAttack(npc);
+		log.info("npc {name:"+npc.getName()+",lvl:"+npc.getLevel()+"} attacks player {name:"+player.getName()+",lvl:"+player.getLevel()+"}, attackSuccess:"+attackSuccess);
+		if(attackSuccess)
+		{
+			gameStats.increaseAttackCounter();
 		}
 		return true;
 	}
