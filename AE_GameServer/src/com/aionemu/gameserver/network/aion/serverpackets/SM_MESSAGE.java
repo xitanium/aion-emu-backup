@@ -110,7 +110,7 @@ public class SM_MESSAGE extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		boolean canRead = false;
+		boolean canRead = true;
 		if (race != null)
 		{
 			canRead = race.equals(con.getActivePlayer().getCommonData().getRace());
