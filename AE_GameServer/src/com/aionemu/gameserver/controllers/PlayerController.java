@@ -135,7 +135,7 @@ public class PlayerController extends CreatureController<Player>
 		
 		int newHp = lifeStats.reduceHp(StatsFunctions.calculateBaseDamageToTarget(creature, player));
 		int hpPercentage = Math.round(100 *  newHp / lifeStats.getMaxHp());
-		log.info("player {name:"+player.getName()+",level:"+player.getLevel()+"} attacked by {name:"+creature.getName()+",level:"+creature.getLevel()+"}, newHp:"+newHp);
+		log.info("player {name:"+player.getName()+",level:"+player.getLevel()+"} attacked by {name:"+creature.getName()+",level:"+creature.getLevel()+"}, newHp:"+newHp+",hpPercent:"+hpPercentage);
 		
 		PacketSendUtility.broadcastPacket(player, new SM_ATTACK_STATUS(player.getObjectId(), hpPercentage));
 		if(newHp == 0)

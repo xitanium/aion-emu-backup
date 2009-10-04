@@ -84,7 +84,7 @@ public class NpcController extends CreatureController<Npc>
 		int newHp = lifeStats.reduceHp(StatsFunctions.calculateBaseDamageToTarget(creature, npc));
 		int hpPercentage = Math.round(100 *  newHp / lifeStats.getMaxHp());
 		
-		log.info("npc {name:"+npc.getName()+",level:"+npc.getLevel()+"} attacked by {name:"+creature.getName()+",level:"+creature.getLevel()+"}, newHp:"+newHp);
+		log.info("npc {name:"+npc.getName()+",level:"+npc.getLevel()+"} attacked by {name:"+creature.getName()+",level:"+creature.getLevel()+"}, newHp:"+newHp+",hpPercent:"+hpPercentage);
 		PacketSendUtility.broadcastPacket(npc, new SM_ATTACK_STATUS(npc.getObjectId(), hpPercentage));
 		if(newHp == 0)
 		{

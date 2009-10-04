@@ -18,7 +18,10 @@ package com.aionemu.gameserver.utils;
 
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.configs.Rates;
+import com.aionemu.gameserver.controllers.PlayerController;
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
@@ -37,6 +40,7 @@ import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
  */
 public class StatsFunctions
 {
+	private static final Logger	log	= Logger.getLogger(StatsFunctions.class);
 	public static int calculateBaseDamageToTarget (Creature attacker, Creature target) {
 		int damages = 0;
 		Random generator = new Random();
@@ -142,6 +146,7 @@ public class StatsFunctions
 		int mhcr = pst.getMainHandCritRate();
 		int oha = mha;
 		int ohcr = mhcr;
+		log.info("player stats: {mhp:"+maxHp+",mmp:"+maxMp+",power:"+power+",health:"+health+",agility:"+agility+",accuracy:"+accuracy+",knowledge:"+knowledge+",will:"+will+",mha:"+mha+",mhcr:"+mhcr+"}");
 		player.setGameStats(new PlayerGameStats(player, power, health, agility, accuracy, knowledge, will, mha, mhcr, oha, ohcr));
 		player.setLifeStats(new PlayerLifeStats(player, initialHp, initialMp, initialDp, maxHp,  maxMp, maxDp));
 	}
