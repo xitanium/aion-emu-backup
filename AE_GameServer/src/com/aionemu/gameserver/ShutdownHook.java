@@ -21,6 +21,7 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.gametime.GameTimeManager;
 import com.aionemu.gameserver.world.World;
@@ -62,7 +63,7 @@ public class ShutdownHook implements Runnable
 					PacketSendUtility.sendMessage(iter.next(), "Server shutdown in "+(10-i)+" seconds...");
 				} else {
 					Player player = iter.next();
-					player.getClientConnection().close(true);
+					player.getClientConnection().close(false);
 				}
 			}
 			try
