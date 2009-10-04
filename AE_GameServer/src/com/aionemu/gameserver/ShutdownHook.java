@@ -25,6 +25,7 @@ import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.gametime.GameTimeManager;
 import com.aionemu.gameserver.world.World;
+import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 import com.google.inject.Inject;
 
 /**
@@ -54,16 +55,16 @@ public class ShutdownHook implements Runnable
 	@Override
 	public void run()
 	{
-		int i;
+		int i=0;
 		log.info("Starting AE GS shutdown sequence");
-		for (i=0;i<=10;i++) {
+		for (i=0;i<=31;i++) {
 			Iterator<Player> iter = world.getPlayersIterator();
 			while (iter.hasNext()) {
-				if (i<10) {
-					PacketSendUtility.sendMessage(iter.next(), "Server shutdown in "+(10-i)+" seconds...");
+				Player p = iter.next();
+				if (i<30) {
+					PacketSendUtility.sendMessage(p, "Server shutdown in "+(30-i)+" seconds...");
 				} else {
-					Player player = iter.next();
-					player.getClientConnection().close(false);
+					p.getClientConnection().close(false);
 				}
 			}
 			try
@@ -72,7 +73,8 @@ public class ShutdownHook implements Runnable
 			}
 			catch(InterruptedException e)
 			{
-			}
+				PacketSendUtility.sendMessage(world.findPlayer("xita"), "saloperie de merde !!!!!");
+			}		
 		}
 		GameTimeManager.saveTime();
 	}
