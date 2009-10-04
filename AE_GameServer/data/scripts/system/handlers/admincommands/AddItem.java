@@ -45,6 +45,7 @@ public class AddItem extends AdminCommand
 	public void executeCommand(Player admin, String[] params)
 	{
 		PacketSendUtility.sendMessage(admin,"received command additem ...");
+		PacketSendUtility.sendMessage(admin,"processing ...");
 	}
 
 }
