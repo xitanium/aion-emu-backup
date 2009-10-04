@@ -110,8 +110,8 @@ public class StatsFunctions
 		NpcStatsTemplate nst = npc.getTemplate().getStatsTemplate();
 		int maxHp = nst.getMaxHp();
 		int maxMp = nst.getMaxMp();
-		int power = 75 + (int) Math.round((npc.getLevel() - 1) * 1.1688);
-		int health = 75 + (int) Math.round((npc.getLevel() - 1) * 1.1688);
+		int power = 30 + (int) Math.round((npc.getLevel() - 1) * 1.1688);
+		int health = 30 + (int) Math.round((npc.getLevel() - 1) * 1.1688);
 		int agility = (int)Math.round((nst.getBlock() + 248.5 - 12.4 * npc.getLevel())/3.1);
 		int accuracy = (int)Math.round((nst.getMainHandAccuracy() + 10 - 8 * npc.getLevel())/2);
 		int knowledge = (int)Math.round((nst.getMagicAccuracy() + 10 - 8 * npc.getLevel())/2);

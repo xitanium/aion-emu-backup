@@ -85,8 +85,8 @@ public class PlayerController extends CreatureController<Player>
 		pcd.setExp((int)Math.round(pcd.getExpNeed()*0.03));
 		PacketSendUtility.sendMessage(owner,"You died...");
 		world.despawn(owner);
+		world.setPosition(owner, owner.getWorldId(), owner.getX(), owner.getY(), owner.getZ(), owner.getHeading());
 		owner.setProtectionActive(true);
-		world.updatePosition(owner, owner.getX(), owner.getY(), owner.getZ(), owner.getHeading());
 		PacketSendUtility.sendPacket(owner, new SM_UNKF5(owner));
 	}
 	
@@ -135,6 +135,7 @@ public class PlayerController extends CreatureController<Player>
 		
 		int newHp = lifeStats.reduceHp(StatsFunctions.calculateBaseDamageToTarget(creature, player));
 		int hpPercentage = Math.round(100 *  newHp / lifeStats.getMaxHp());
+		log.info("player {name:"+player.getName()+",level:"+player.getLevel()+"} attacked by {name:"+creature.getName()+",level:"+creature.getLevel()+"}, newHp:"+newHp);
 		
 		PacketSendUtility.broadcastPacket(player, new SM_ATTACK_STATUS(player.getObjectId(), hpPercentage));
 		if(newHp == 0)
