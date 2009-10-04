@@ -54,6 +54,7 @@ public final class AttackDesire extends AbstractDesire
 	public void handleDesire(AI ai)
 	{
 		// TODO: Implement
+		
 	}
 
 	/**
@@ -88,6 +89,6 @@ public final class AttackDesire extends AbstractDesire
 	 */
 	public Creature getTarget()
 	{
-		return target;
+		return this.target;
 	}
 }
