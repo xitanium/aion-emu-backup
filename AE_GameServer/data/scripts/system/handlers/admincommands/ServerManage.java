@@ -34,7 +34,12 @@ public class ServerManage extends AdminCommand {
 			else {
 				PacketSendUtility.sendMessage(admin, "received shit : '" + params[0].trim() + "'");
 			}*/
-			PacketSendUtility.sendMessage(admin, "//servermanage " + subcommand);
+			if(subcommand == "stop") {
+				PacketSendUtility.sendMessage(admin, "rec. stop");
+			}
+			else {
+				PacketSendUtility.sendMessage(admin, "//servermanage " + subcommand);
+			}
 		}
 	}
 }
