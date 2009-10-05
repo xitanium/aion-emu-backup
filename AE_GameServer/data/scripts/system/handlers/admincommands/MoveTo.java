@@ -20,7 +20,7 @@ package admincommands;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
 
@@ -29,7 +29,7 @@ import com.google.inject.Inject;
  * 
  * @author KID
  */
-public class MoveTo extends AdminCommand
+public class MoveTo extends GMCommand
 {
 	private final World		world;
 

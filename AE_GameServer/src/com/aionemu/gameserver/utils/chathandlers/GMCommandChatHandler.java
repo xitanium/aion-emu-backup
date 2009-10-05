@@ -11,7 +11,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class GMCommandChatHandler implements ChatHandler
 {
-	private static final Logger			log			= Logger.getLogger(AdminCommandChatHandler.class);
+	private static final Logger			log			= Logger.getLogger(GMCommandChatHandler.class);
 
 	private Map<String, GMCommand>	commands	= new HashMap<String, GMCommand>();
 

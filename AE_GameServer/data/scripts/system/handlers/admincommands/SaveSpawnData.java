@@ -19,14 +19,14 @@ package admincommands;
 import com.aionemu.gameserver.dataholders.SpawnData;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 import com.google.inject.Inject;
 
 /**
  * @author Luno
  * 
  */
-public class SaveSpawnData extends AdminCommand
+public class SaveSpawnData extends GMCommand
 {
 	private final SpawnData	spawnData;
 

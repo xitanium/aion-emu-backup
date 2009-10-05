@@ -18,15 +18,16 @@ package admincommands;
 
 import java.util.Iterator;
 
+
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 
 /**
  * @author xavier
  *
  */
-public class Count extends AdminCommand
+public class Count extends GMCommand
 {
 
 	/**

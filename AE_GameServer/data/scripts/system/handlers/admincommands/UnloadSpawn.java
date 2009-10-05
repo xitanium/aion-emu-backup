@@ -23,14 +23,14 @@ import com.aionemu.gameserver.model.gameobjects.AionObject;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.world.World;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 import com.google.inject.Inject;
 
 /**
  * @author Luno
  * 
  */
-public class UnloadSpawn extends AdminCommand
+public class UnloadSpawn extends GMCommand
 {
 	private final SpawnData	spawnData;
 

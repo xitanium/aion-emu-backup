@@ -19,14 +19,15 @@ package admincommands;
  
 import java.util.Iterator;
 
+
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 /**
 * @author Ben
 *
 */
-public class Announce extends AdminCommand
+public class Announce extends GMCommand
 {
  
         public Announce() {

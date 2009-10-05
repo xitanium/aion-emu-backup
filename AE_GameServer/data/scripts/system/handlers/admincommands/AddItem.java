@@ -1,12 +1,13 @@
 package admincommands;
 
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import com.aionemu.gameserver.world.World;
 
-public class AddItem extends AdminCommand {
+public class AddItem extends GMCommand {
 	
 	public World world;
 	

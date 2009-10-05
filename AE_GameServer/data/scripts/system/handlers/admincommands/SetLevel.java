@@ -21,14 +21,14 @@ import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 
 /**
  * Admin setlevel command
  *
  * @author IceReaper
  */
-public class SetLevel extends AdminCommand
+public class SetLevel extends GMCommand
 {
 	public SetLevel()
 	{

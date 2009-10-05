@@ -20,14 +20,14 @@ package admincommands;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 
 /**
  * Admin setlevel command
  *
  * @author IceReaper
  */
-public class SetExp extends AdminCommand
+public class SetExp extends GMCommand
 {
 
 	public SetExp()

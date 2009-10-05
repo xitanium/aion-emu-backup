@@ -17,6 +17,7 @@
 package admincommands;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -39,7 +40,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_CUSTOM_PACKET;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CUSTOM_PACKET.PacketElementType;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 
 /**
  * This admin command is used for sending custom packets from server to client.
@@ -55,7 +56,7 @@ import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
  *
  * @author Aquanox
  */
-public class AdvSendFakeServerPacket extends AdminCommand
+public class AdvSendFakeServerPacket extends GMCommand
 {
 	private static final Logger logger = Logger.getLogger(AdvSendFakeServerPacket.class);
 

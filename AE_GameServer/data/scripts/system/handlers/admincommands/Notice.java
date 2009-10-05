@@ -21,7 +21,7 @@ import com.aionemu.gameserver.model.ChatType;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_MESSAGE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 
 /**
  * Admin notice command
@@ -29,7 +29,7 @@ import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
  * @author Jenose
  * Updated By Darkwolf
  */
-public class Notice extends AdminCommand
+public class Notice extends GMCommand
 {
 	public Notice()
 	{

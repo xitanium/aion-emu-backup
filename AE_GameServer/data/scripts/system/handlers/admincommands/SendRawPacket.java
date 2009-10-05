@@ -20,7 +20,7 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CUSTOM_PACKET;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CUSTOM_PACKET.PacketElementType;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -34,7 +34,7 @@ import java.util.List;
  * @author Luno
  * @author Aquanox
  */
-public class SendRawPacket extends AdminCommand
+public class SendRawPacket extends GMCommand
 {
 	private static final File ROOT = new File("data/packets/");
 

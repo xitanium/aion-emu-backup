@@ -18,20 +18,21 @@ package admincommands;
 
 import java.util.Iterator;
 
+
 import com.aionemu.gameserver.dataholders.SpawnData;
 import com.aionemu.gameserver.model.gameobjects.AionObject;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.spawnengine.SpawnEngine;
 import com.aionemu.gameserver.world.World;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 import com.google.inject.Inject;
 
 /**
  * @author Luno
  * 
  */
-public class ReloadSpawns extends AdminCommand
+public class ReloadSpawns extends GMCommand
 {
 	@Inject
 	private SpawnData	spawnData;

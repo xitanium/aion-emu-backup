@@ -17,18 +17,19 @@
 package admincommands;
 
 import com.aionemu.gameserver.dataholders.SpawnData;
+
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.utils.chathandlers.GMCommand;
 import com.google.inject.Inject;
 
 /**
  * @author Luno
  * 
  */
-public class DeleteSpawn extends AdminCommand
+public class DeleteSpawn extends GMCommand
 {
 	private final SpawnData		spawnData;
 
