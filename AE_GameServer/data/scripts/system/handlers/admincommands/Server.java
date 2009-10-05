@@ -6,39 +6,32 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.ShutdownHook;
 
-public class ServerManage extends AdminCommand {
+public class Server extends AdminCommand {
 	
-	public ServerManage() {
-		super("servermanage");
+	public Server() {
+		super("server");
 	}
 	
 	public void executeCommand(Player admin, String[] params) {
-		if(params == null || params.length != 1) {
-			PacketSendUtility.sendMessage(admin, "usage: //servermanage [stop|restart|info]");
+		if(params == null) {
+			PacketSendUtility.sendMessage(admin, "usage: //server [stop|restart|info]");
 		}
 		else 
 		{
-			String subcommand = params[0].trim();
-			/*if(params[0] == "stop") {
+			if(params[0].equals("stop")) {
 				World w = admin.getActiveRegion().getWorld();
 				ShutdownHook sdh = new ShutdownHook(w);
 				PacketSendUtility.sendMessage(admin, "Reboot started");
 				sdh.run();
 			}
-			else if(params[0].trim() == "restart") {	
+			else if(params[0].equals("restart")) {	
 				PacketSendUtility.sendMessage(admin, "method not yet implemented");
 			}
-			else if(params[0].trim() == "info") {
+			else if(params[0].equals("info")) {
 				PacketSendUtility.sendMessage(admin, "method not yet implemented");
 			}
 			else {
 				PacketSendUtility.sendMessage(admin, "received shit : '" + params[0].trim() + "'");
-			}*/
-			if(subcommand == "stop") {
-				PacketSendUtility.sendMessage(admin, "rec. stop");
-			}
-			else {
-				PacketSendUtility.sendMessage(admin, "//servermanage " + subcommand);
 			}
 		}
 	}
