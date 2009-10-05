@@ -126,7 +126,6 @@ public class NpcController extends CreatureController<Npc>
 				return true;
 		}
 		else {
-			this.doDrop();
 			return true;
 		}
 	}
