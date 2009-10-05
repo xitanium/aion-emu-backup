@@ -104,9 +104,9 @@ public class PlayerStatsData
 
 	private static int makeHash(PlayerClass playerClass, int level)
 	{
-		int result = 0x1f;
-		result = 0x1f * result + playerClass.ordinal();
-		result = 0x1f * result + level;
-		return result;
+//		int result = 0x1f;
+//		result = 0x1f * result + playerClass.ordinal();
+//		result = 0x1f * result + level;
+		return (playerClass.ordinal()<<8)+level;
 	}
 }

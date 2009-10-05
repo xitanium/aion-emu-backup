@@ -130,24 +130,26 @@ public class StatsFunctions
 	
 	public static void computeStats (Player player) {
 		PlayerStatsTemplate pst = DataManager.PLAYER_STATS_DATA.getTemplate(player);
-		int maxHp = pst.getMaxHp();
-		int initialHp = pst.getMaxHp();
-		int maxMp = pst.getMaxMp();
-		int initialMp = pst.getMaxMp();
-		int maxDp = 100;
-		int initialDp = 0;
-		int power = pst.getPower();
-		int health = pst.getHealth();
-		int agility = pst.getAgility();
-		int accuracy = pst.getAccuracy();
-		int knowledge = pst.getKnowledge();
-		int will = pst.getWill();
-		int mha = pst.getMainHandAttack();
-		int mhcr = pst.getMainHandCritRate();
-		int oha = mha;
-		int ohcr = mhcr;
-		log.info("player stats: {mhp:"+maxHp+",mmp:"+maxMp+",power:"+power+",health:"+health+",agility:"+agility+",accuracy:"+accuracy+",knowledge:"+knowledge+",will:"+will+",mha:"+mha+",mhcr:"+mhcr+"}");
-		player.setGameStats(new PlayerGameStats(player, power, health, agility, accuracy, knowledge, will, mha, mhcr, oha, ohcr));
-		player.setLifeStats(new PlayerLifeStats(player, initialHp, initialMp, initialDp, maxHp,  maxMp, maxDp));
+		if(pst != null) {
+			int maxHp = pst.getMaxHp();
+			int initialHp = pst.getMaxHp();
+			int maxMp = pst.getMaxMp();
+			int initialMp = pst.getMaxMp();
+			int maxDp = 100;
+			int initialDp = 0;
+			int power = pst.getPower();
+			int health = pst.getHealth();
+			int agility = pst.getAgility();
+			int accuracy = pst.getAccuracy();
+			int knowledge = pst.getKnowledge();
+			int will = pst.getWill();
+			int mha = pst.getMainHandAttack();
+			int mhcr = pst.getMainHandCritRate();
+			int oha = mha;
+			int ohcr = mhcr;
+			log.info("player stats: {mhp:"+maxHp+",mmp:"+maxMp+",power:"+power+",health:"+health+",agility:"+agility+",accuracy:"+accuracy+",knowledge:"+knowledge+",will:"+will+",mha:"+mha+",mhcr:"+mhcr+"}");
+			player.setGameStats(new PlayerGameStats(player, power, health, agility, accuracy, knowledge, will, mha, mhcr, oha, ohcr));
+			player.setLifeStats(new PlayerLifeStats(player, initialHp, initialMp, initialDp, maxHp,  maxMp, maxDp));
+		}
 	}
 }

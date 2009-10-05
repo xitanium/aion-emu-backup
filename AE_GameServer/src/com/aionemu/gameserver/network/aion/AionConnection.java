@@ -149,7 +149,12 @@ public class AionConnection extends AConnection
 		if((crypt==null)||!crypt.decrypt(data))
 		{
 			log.warn("Decrypt fail!");
-			close(true);
+			try {
+				close(true);
+			}
+			catch(NullPointerException ex) {
+				
+			}
 			return false;
 		}
 
