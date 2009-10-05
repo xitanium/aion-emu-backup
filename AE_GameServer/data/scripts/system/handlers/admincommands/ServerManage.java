@@ -22,6 +22,7 @@ public class ServerManage extends AdminCommand {
 				World w = admin.getActiveRegion().getWorld();
 				ShutdownHook sdh = new ShutdownHook(w);
 				PacketSendUtility.sendMessage(admin, "Reboot started");
+				sdh.run();
 			}
 			else if(params[0] == "restart") {	
 				PacketSendUtility.sendMessage(admin, "method not yet implemented");

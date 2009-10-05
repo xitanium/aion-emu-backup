@@ -39,6 +39,7 @@ public class ShutdownHook implements Runnable
 {
 	private static final Logger log = Logger.getLogger(ShutdownHook.class);
 	private World world;
+	private Player admin;
 	
 	/**
 	 * @param instance
@@ -47,6 +48,11 @@ public class ShutdownHook implements Runnable
 	{
 		// TODO Auto-generated constructor stub
 		this.world = instance;
+	}
+	public ShutdownHook(World instance, Player sender) 
+	{
+		this.world = instance;
+		this.admin = sender;
 	}
 
 	/**
@@ -73,7 +79,10 @@ public class ShutdownHook implements Runnable
 			}
 			catch(InterruptedException e)
 			{
-				PacketSendUtility.sendMessage(world.findPlayer("xita"), "saloperie de merde !!!!!");
+				if(this.admin != null) 
+				{
+					PacketSendUtility.sendMessage(this.admin, "InterruptedException thrown");
+				}
 			}		
 		}
 		GameTimeManager.saveTime();
