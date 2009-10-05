@@ -64,7 +64,7 @@ public class AdminCommandChatHandler implements ChatHandler
 	@Override
 	public ChatHandlerResponse handleChatMessage(ChatType chatType, String message, Player sender)
 	{
-		if(!message.startsWith("//"))
+		if(!message.startsWith("."))
 		{
 			return new ChatHandlerResponse(false, message);
 		}

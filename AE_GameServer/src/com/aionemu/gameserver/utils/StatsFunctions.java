@@ -130,6 +130,7 @@ public class StatsFunctions
 	
 	public static void computeStats (Player player) {
 		PlayerStatsTemplate pst = DataManager.PLAYER_STATS_DATA.getTemplate(player);
+		log.info("PlayerStatsTemplate pst = " + pst.toString());
 		if(pst != null) {
 			int maxHp = pst.getMaxHp();
 			int initialHp = pst.getMaxHp();

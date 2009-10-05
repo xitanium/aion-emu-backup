@@ -51,7 +51,7 @@ public class ChatHandlersFactory
 	{
 		ChatHandlers handlers = new ChatHandlers();
 
-		final AdminCommandChatHandler adminCCH = new AdminCommandChatHandler();
+		final GMCommandChatHandler adminCCH = new GMCommandChatHandler();
 
 		handlers.addChatHandler(adminCCH);
 

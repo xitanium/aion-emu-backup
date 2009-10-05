@@ -21,9 +21,9 @@ class ChatHandlersLoader
 
 	private final Injector injector;
 	
-	private final AdminCommandChatHandler adminCCH;
+	private final GMCommandChatHandler adminCCH;
 
-	public ChatHandlersLoader(Injector injector, AdminCommandChatHandler handler)
+	public ChatHandlersLoader(Injector injector, GMCommandChatHandler handler)
 	{
 		this.injector = injector;
 		this.adminCCH = handler;
@@ -40,9 +40,9 @@ class ChatHandlersLoader
 			if (!isValidClass(c))
 				continue;
 
-			if (ClassUtils.isSubclass(c, AdminCommand.class))
+			if (ClassUtils.isSubclass(c, GMCommand.class))
 			{
-				adminCCH.registerAdminCommand((AdminCommand) injector.getInstance(c));
+				adminCCH.registerGMCommand((GMCommand) injector.getInstance(c));
 			}
 		}
 
