@@ -142,6 +142,7 @@ public class PlayerController extends CreatureController<Player>
 		//PacketSendUtility.broadcastPacket(player, new SM_ATTACK(creature.getObjectId(), player.getObjectId(), 0, 0, 0, StatsFunctions.calculateBaseDamageToTarget(creature, player)));
 		PacketSendUtility.broadcastPacket(player, new SM_ATTACK_STATUS(player.getObjectId(), hpPercentage));
 		PacketSendUtility.broadcastPacket(player, new SM_STATUPDATE_HP(newHp, lifeStats.getMaxHp()));
+		PacketSendUtility.sendMessage(player, "You have " + newHp + "/" + lifeStats.getMaxHp() + " left.");
 		if(newHp == 0)
 		{
 			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()));
