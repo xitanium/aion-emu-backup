@@ -91,6 +91,5 @@ public class ShutdownHook implements Runnable
 			}		
 		}
 		GameTimeManager.saveTime();
-		//TODO: implement server shutdown routine
 	}
 }
