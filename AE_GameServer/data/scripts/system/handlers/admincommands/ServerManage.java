@@ -18,7 +18,8 @@ public class ServerManage extends AdminCommand {
 		}
 		else 
 		{
-			if(params[0].trim() == "stop") {
+			String subcommand = params[0].trim();
+			/*if(params[0] == "stop") {
 				World w = admin.getActiveRegion().getWorld();
 				ShutdownHook sdh = new ShutdownHook(w);
 				PacketSendUtility.sendMessage(admin, "Reboot started");
@@ -32,7 +33,8 @@ public class ServerManage extends AdminCommand {
 			}
 			else {
 				PacketSendUtility.sendMessage(admin, "received shit : '" + params[0].trim() + "'");
-			}
+			}*/
+			PacketSendUtility.sendMessage(admin, "//servermanage " + subcommand);
 		}
 	}
 }
