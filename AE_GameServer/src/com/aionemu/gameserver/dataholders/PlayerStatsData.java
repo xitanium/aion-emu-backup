@@ -19,8 +19,10 @@ package com.aionemu.gameserver.dataholders;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -29,9 +31,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
+import com.aionemu.gameserver.utils.StatsFunctions;
 
 /**
  * Created on: 31.07.2009 14:20:03
@@ -42,6 +47,7 @@ import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PlayerStatsData
 {
+	private static final Logger	log	= Logger.getLogger(StatsFunctions.class);
 	@XmlElement(name = "player_stats", required = true)
 	private List<PlayerStatsType> templatesList = new ArrayList<PlayerStatsType>();
 
@@ -67,6 +73,12 @@ public class PlayerStatsData
 
 	public PlayerStatsTemplate getTemplate(PlayerClass playerClass, int level)
 	{
+		Iterator<Map.Entry <Integer, PlayerStatsTemplate>>  iter = templates.entrySet().iterator();
+		while (iter.hasNext()) {
+			Map.Entry<Integer, PlayerStatsTemplate> set = iter.next();
+			PlayerStatsTemplate pst = set.getValue();
+			log.info ("Key:"+set.getKey()+",Template:"+pst);
+		}
 		return templates.get(makeHash(playerClass, level));
 	}
 
