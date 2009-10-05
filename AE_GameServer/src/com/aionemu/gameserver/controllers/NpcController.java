@@ -111,17 +111,24 @@ public class NpcController extends CreatureController<Npc>
 		int attackType = type; //TODO investigate attack types	
 		
 		//TODO fix last attack - cause mob is already dead
-		int damage = StatsFunctions.calculateBaseDamageToTarget(npc, player);
-		PacketSendUtility.broadcastPacket(player,
-			new SM_ATTACK(npc.getObjectId(), targetObjectId,
-				gameStats.getAttackCounter(), (int) time, attackType, damage), true);
-		boolean attackSuccess = player.getController().onAttack(npc);
-		log.info("npc {name:"+npc.getName()+",lvl:"+npc.getLevel()+"} attacks player {name:"+player.getName()+",lvl:"+player.getLevel()+"}, attackSuccess:"+attackSuccess);
-		if(attackSuccess)
-		{
-			gameStats.increaseAttackCounter();
+		if(gameStats.getHealth() != 0) {
+			int damage = StatsFunctions.calculateBaseDamageToTarget(npc, player);
+			PacketSendUtility.broadcastPacket(player, 
+				new SM_ATTACK(npc.getObjectId(), targetObjectId, gameStats.getAttackCounter(), 
+				(int) time, attackType, damage), 
+				true);
+				boolean attackSuccess = player.getController().onAttack(npc);
+				log.info("npc {name:"+npc.getName()+",lvl:"+npc.getLevel()+"} attacks player {name:"+player.getName()+",lvl:"+player.getLevel()+"}, attackSuccess:"+attackSuccess);
+				if(attackSuccess)
+				{
+					gameStats.increaseAttackCounter();
+				}
+				return true;
 		}
-		return true;
+		else {
+			this.doDrop();
+			return true;
+		}
 	}
 	
 	/* (non-Javadoc)

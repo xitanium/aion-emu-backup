@@ -49,6 +49,11 @@ public class ShutdownHook implements Runnable
 		// TODO Auto-generated constructor stub
 		this.world = instance;
 	}
+	/**
+	 * 
+	 * @param instance
+	 * @param sender
+	 */
 	public ShutdownHook(World instance, Player sender) 
 	{
 		this.world = instance;
@@ -86,5 +91,6 @@ public class ShutdownHook implements Runnable
 			}		
 		}
 		GameTimeManager.saveTime();
+		//TODO: implement server shutdown routine
 	}
 }

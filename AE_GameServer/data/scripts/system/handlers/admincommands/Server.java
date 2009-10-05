@@ -13,7 +13,7 @@ public class Server extends AdminCommand {
 	}
 	
 	public void executeCommand(Player admin, String[] params) {
-		if(params == null) {
+		if(params == null || params.length != 1) {
 			PacketSendUtility.sendMessage(admin, "usage: //server [stop|restart|info]");
 		}
 		else 
