@@ -18,7 +18,7 @@ public class ServerManage extends AdminCommand {
 		}
 		else 
 		{
-			if(params[0] == "stop") {
+			/*if(params[0] == "stop") {
 				World w = admin.getActiveRegion().getWorld();
 				ShutdownHook sdh = new ShutdownHook(w);
 				PacketSendUtility.sendMessage(admin, "Reboot started");
@@ -32,7 +32,8 @@ public class ServerManage extends AdminCommand {
 			}
 			else {
 				PacketSendUtility.sendMessage(admin, "invalid action specified");
-			}
+			}*/
+			PacketSendUtility.sendMessage(admin, "received params");
 		}
 	}
 }
