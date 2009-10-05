@@ -33,7 +33,7 @@ public class ServerManage extends AdminCommand {
 			else {
 				PacketSendUtility.sendMessage(admin, "invalid action specified");
 			}*/
-			PacketSendUtility.sendMessage(admin, "received params");
+			PacketSendUtility.sendMessage(admin, "received params : " + params[0].trim());
 		}
 	}
 }
