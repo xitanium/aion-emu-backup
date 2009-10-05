@@ -51,7 +51,7 @@ public class PlayerCommonData
 	private PlayerClass		playerClass;
 	private int				level=1;
 	private long			exp = 0;
-	private boolean			admin;
+	private int				admin;
 	private Gender			gender;
 	private Timestamp		lastOnline;
 	private boolean 		online;
@@ -152,14 +152,14 @@ public class PlayerCommonData
 		this.playerClass = playerClass;
 	}
 
-	public boolean isAdmin()
+	public int getAdmin()
 	{
 		return admin;
 	}
 
-	public void setAdmin(boolean admin)
+	public void setAdmin(int level)
 	{
-		this.admin = admin;
+		this.admin = level;
 	}
 
 	public boolean isOnline() 

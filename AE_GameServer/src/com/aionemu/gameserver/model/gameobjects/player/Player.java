@@ -90,7 +90,7 @@ public class Player extends Creature
 	@Override
 	public String getName()
 	{
-		if((playerCommonData.isAdmin()) && (!playerCommonData.getName().contains("*MJ*")))
+		if((playerCommonData.getAdmin() >= 2) && (!playerCommonData.getName().contains("*MJ*")))
 		{
 			return new String("*MJ* " + playerCommonData.getName());
 		}
@@ -277,7 +277,7 @@ public class Player extends Creature
 	@Enhancable(callback = PlayerLoggedInListener.class)
 	public void onLoggedIn(World world)
 	{
-		if(this.getCommonData().isAdmin())
+		if(this.getCommonData().getAdmin() > 2)
 		{
 			if(world != null)
 			{
@@ -307,7 +307,7 @@ public class Player extends Creature
 	@Enhancable(callback = PlayerLoggedOutListener.class)
 	public void onLoggedOut(World world)
 	{
-		if(this.getCommonData().isAdmin())
+		if(this.getCommonData().getAdmin() > 2)
 		{
 			if(world != null)
 			{

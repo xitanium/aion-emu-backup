@@ -48,15 +48,18 @@ public class GMCommandChatHandler implements ChatHandler
 		else
 		{
 			//TODO: implement switch on gmlevel
-			if(!sender.getCommonData().isAdmin())
+			/*if(!sender.getCommonData().isAdmin())
 			{
 				PacketSendUtility.sendMessage(sender, "<You do not have permission to use GM commands>");
 				return ChatHandlerResponse.BLOCKED_MESSAGE;
-			}
-
+			}*/
 			String[] commandAndParams = message.split(" ", 2);
 
 			String command = commandAndParams[0].substring(2);
+			
+			//check if gmlevel is sufficient
+			
+			
 			GMCommand admc = commands.get(command);
 			if(admc == null)
 			{

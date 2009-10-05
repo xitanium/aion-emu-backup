@@ -118,12 +118,12 @@ public class SM_MESSAGE extends AionServerPacket
 		if (canRead) {
 			log.info(con.getActivePlayer().getName()+" can read message "+message+" because he is of the same race");	
 		} else {
-			canRead = canRead||con.getActivePlayer().getCommonData().isAdmin();
+			canRead = canRead||(con.getActivePlayer().getCommonData().getAdmin() > 2);
 			if (canRead) {
 				log.info(con.getActivePlayer().getName()+" can read message "+message+" because he is admin");
 			} else {
 				if (con.getActivePlayer().getActiveRegion().getWorld().findPlayer(senderObjectId)!=null) {
-					canRead = canRead||con.getActivePlayer().getActiveRegion().getWorld().findPlayer(senderObjectId).getCommonData().isAdmin();
+					canRead = canRead||(con.getActivePlayer().getActiveRegion().getWorld().findPlayer(senderObjectId).getCommonData().getAdmin() > 2);
 					if (canRead) {
 						log.info(con.getActivePlayer().getName()+" can read message "+message+" because the message is from an admin");
 					}

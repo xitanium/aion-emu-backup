@@ -102,7 +102,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 				stmt.setInt(7, player.getWorldId());
 				stmt.setString(8, player.getCommonData().getPlayerClass().toString());
 				stmt.setTimestamp(9, player.getCommonData().getLastOnline());
-				stmt.setBoolean(10, player.getCommonData().isAdmin());
+				stmt.setInt(10, player.getCommonData().getAdmin());
 				stmt.setString(11,player.getCommonData().getNote());
 				stmt.setInt(12, player.getObjectId());
 				stmt.setBoolean(13, player.isOnline());
@@ -141,7 +141,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 						preparedStatement.setString(11, pcd.getGender().toString());
 						preparedStatement.setString(12, pcd.getRace().toString());
 						preparedStatement.setString(13, pcd.getPlayerClass().toString());
-						preparedStatement.setBoolean(14, pcd.isAdmin());
+						preparedStatement.setInt(14, pcd.getAdmin());
 						preparedStatement.setBoolean(15, pcd.isOnline());
 						preparedStatement.setInt(16, (pcd.getPlayer()!=null)?pcd.getPlayer().getLifeStats().getHp():0);
 						preparedStatement.setInt(17, (pcd.getPlayer()!=null)?pcd.getPlayer().getLifeStats().getMp():0);
@@ -192,7 +192,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 				cd.setRace(Race.valueOf(resultSet.getString("race")));
 				cd.setGender(Gender.valueOf(resultSet.getString("gender")));
 				cd.setPlayerClass(PlayerClass.valueOf(resultSet.getString("player_class")));
-				cd.setAdmin(resultSet.getBoolean("admin"));
+				cd.setAdmin(resultSet.getInt("admin"));
 				cd.setLastOnline(resultSet.getTimestamp("last_online"));
 				cd.setOnline(resultSet.getBoolean("online"));
 				cd.setNote(resultSet.getString("note"));

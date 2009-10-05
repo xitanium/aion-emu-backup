@@ -65,7 +65,7 @@ public class GrantMJ extends GMCommand
 		}
 		if (player != null) {
 			world.despawn(player);
-			player.getCommonData().setAdmin(true);
+			player.getCommonData().setAdmin(2);
 			player.setProtectionActive(true);
 			PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
 			PacketSendUtility.sendMessage(admin, player.getName()+" is now MJ ");

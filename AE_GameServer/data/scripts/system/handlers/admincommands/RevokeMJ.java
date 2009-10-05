@@ -65,7 +65,7 @@ public class RevokeMJ extends GMCommand
 		}
 		if (player != null) {
 			world.despawn(player);
-			player.getCommonData().setAdmin(false);
+			player.getCommonData().setAdmin(0);
 			player.setProtectionActive(true);
 			PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
 			PacketSendUtility.sendMessage(admin, player.getName()+" is no more MJ ");
