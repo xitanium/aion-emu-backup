@@ -32,6 +32,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_NPC_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_HP;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_MP;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.StatsFunctions;
@@ -141,6 +142,7 @@ public class PlayerController extends CreatureController<Player>
 		//PacketSendUtility.sendMessage(player, "Damages received");
 		//PacketSendUtility.broadcastPacket(player, new SM_ATTACK(creature.getObjectId(), player.getObjectId(), 0, 0, 0, StatsFunctions.calculateBaseDamageToTarget(creature, player)));
 		PacketSendUtility.broadcastPacket(player, new SM_ATTACK_STATUS(player.getObjectId(), hpPercentage));
+		PacketSendUtility.broadcastPacket(player, new SM_STATUPDATE_MP(0, 400));
 		PacketSendUtility.broadcastPacket(player, new SM_STATUPDATE_HP(newHp, lifeStats.getMaxHp()));
 		PacketSendUtility.sendMessage(player, "You have " + newHp + "/" + lifeStats.getMaxHp() + " left.");
 		if(newHp == 0)
