@@ -74,12 +74,15 @@ public class PlayerStatsData
 	public PlayerStatsTemplate getTemplate(PlayerClass playerClass, int level)
 	{
 		Iterator<Map.Entry <Integer, PlayerStatsTemplate>>  iter = templates.entrySet().iterator();
+		PlayerStatsTemplate pst2;
 		while (iter.hasNext()) {
 			Map.Entry<Integer, PlayerStatsTemplate> set = iter.next();
 			PlayerStatsTemplate pst = set.getValue();
 			log.info ("Key:"+set.getKey()+",Template:"+pst);
 		}
-		return templates.get(makeHash(playerClass, level));
+		pst2 = templates.get(makeHash(playerClass, level));
+		log.info("Seeking key "+makeHash(playerClass,level)+" for class "+playerClass+" and level "+level+", pst2:"+pst2);
+		return pst2;
 	}
 
 	public int size()
