@@ -31,7 +31,7 @@ public class ServerManage extends AdminCommand {
 				PacketSendUtility.sendMessage(admin, "method not yet implemented");
 			}
 			else {
-				PacketSendUtility.sendMessage(admin, "invalid action specified");
+				PacketSendUtility.sendMessage(admin, "received shit : '" + params[0].trim() + "'");
 			}
 		}
 	}
