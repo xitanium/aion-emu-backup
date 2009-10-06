@@ -18,6 +18,7 @@ package com.aionemu.gameserver.controllers;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
@@ -159,7 +160,7 @@ public class PlayerController extends CreatureController<Player>
 		{
 			//TODO pass targets
 			if (this.getOwner().getTarget()!=null) {
-				List<Creature> list = Collections.emptyList();
+				Vector<Creature> list = new Vector<Creature>();
 				list.add(this.getOwner().getTarget());
 				skillHandler.useSkill(this.getOwner(), list);
 			} else {
