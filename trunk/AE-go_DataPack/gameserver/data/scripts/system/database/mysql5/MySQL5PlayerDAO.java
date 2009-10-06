@@ -82,6 +82,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 			DB.close(s);
 		}
 	}
+	
 
 	/**
 	 * {@inheritDoc}
