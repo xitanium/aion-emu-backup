@@ -24,6 +24,7 @@ import com.aionemu.gameserver.model.account.PlayerAccountData;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.world.World;
+import com.aionemu.gameserver.world.WorldPosition;
 
 /**
  * Class that is responsible for storing/loading player data
@@ -100,6 +101,7 @@ public abstract class PlayerDAO implements IDFactoryAwareDAO
 	 * @param player, online
 	 */
 	public abstract void onlinePlayer(final Player player, final boolean online);
+
 	
 	/**
 	 * Identifier name for all PlayerDAO classes

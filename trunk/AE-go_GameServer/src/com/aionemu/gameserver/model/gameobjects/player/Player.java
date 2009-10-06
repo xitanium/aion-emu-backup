@@ -16,7 +16,13 @@
  */
 package com.aionemu.gameserver.model.gameobjects.player;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.aionemu.commons.callbacks.Enhancable;
+import com.aionemu.commons.database.DB;
+import com.aionemu.commons.database.IUStH;
 import com.aionemu.gameserver.controllers.PlayerController;
 import com.aionemu.gameserver.model.Gender;
 import com.aionemu.gameserver.model.PlayerClass;
@@ -30,6 +36,7 @@ import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
+import com.aionemu.gameserver.world.WorldPosition;
 
 /**
  * This class is representing Player object, it contains all needed data.
@@ -277,6 +284,40 @@ public class Player extends Creature
 	public byte getLevel()
 	{
 		return (byte)playerCommonData.getLevel();
+	}
+	
+	public WorldPosition getBindPoint() {
+		PreparedStatement s = DB.prepareStatement("SELECT returnX as x, returnY as y, returnZ as z, returnH as h, returnMap as map FROM players WHERE id = ?");	
+		WorldPosition result = null;
+		try {
+			s.setInt(1, this.getObjectId());
+			ResultSet rs = s.executeQuery();
+			rs.next();
+			float x = rs.getFloat("x");
+			float y = rs.getFloat("y");
+			float z = rs.getFloat("z");
+			float h = rs.getFloat("h");
+			int map = rs.getInt("map");
+			result = this.getActiveRegion().getWorld().createPosition(map, x, y, z, (byte)Math.round(h));
+		}
+		catch(SQLException e) {
+		}
+		
+		return new WorldPosition();
+	}
+	//"UPDATE players SET returnX = ?, returnY = ?, returnZ = ?, returnH = ?, returnMap = ? WHERE name = ?"
+	public boolean setBindPoint(final WorldPosition wp) {
+		return DB.insertUpdate("UPDATE players SET returnX = ?, returnY = ?, returnZ = ?, returnH = ?, returnMap = ? WHERE id = ?", new IUStH() {
+			public void handleInsertUpdate(PreparedStatement stmt) throws SQLException {
+				stmt.setFloat(1, wp.getX());
+				stmt.setFloat(2, wp.getY());
+				stmt.setFloat(3, wp.getZ());
+				stmt.setFloat(4, (float) wp.getHeading());
+				stmt.setInt(5, wp.getMapId());
+				stmt.setInt(6, getObjectId());
+				stmt.execute();
+			}
+		});
 	}
 
 
