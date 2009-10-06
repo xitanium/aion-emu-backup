@@ -161,14 +161,12 @@ public class PlayerController extends CreatureController<Player>
 			if (this.getOwner().getTarget()!=null) {
 				List<Creature> list = Collections.emptyList();
 				list.add(this.getOwner().getTarget());
-				damages = skillHandler.useSkill(this.getOwner(), list);
+				skillHandler.useSkill(this.getOwner(), list);
 			} else {
-				damages = skillHandler.useSkill(this.getOwner(), null);
+				skillHandler.useSkill(this.getOwner(), null);
 			}
 		}
 		log.info("using skill#"+skillId);
-		PacketSendUtility.sendPacket(this.getOwner(), new SM_CASTSPELL(this.getOwner().getObjectId(),skillId,level,unk,targetObjectId));
-		PacketSendUtility.sendPacket(this.getOwner(), new SM_CASTSPELL_END(this.getOwner().getObjectId(),skillId,level,damages,unk,targetObjectId));
 	}
 
 	/* (non-Javadoc)
