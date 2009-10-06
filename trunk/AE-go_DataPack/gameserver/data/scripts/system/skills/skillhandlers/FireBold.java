@@ -73,7 +73,7 @@ public class FireBold extends SkillHandler
                 				new SM_CASTSPELL_END(attackerId, spellId, level, unk, damages, targetId));
         				performAction(player,cur,damages,cost);
         			}
-        		}, reload*1000);
+        		}, (reload-1)*1000);
         	}
         }
     }
