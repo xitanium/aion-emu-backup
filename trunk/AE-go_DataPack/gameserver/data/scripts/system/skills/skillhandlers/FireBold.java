@@ -62,9 +62,9 @@ public class FireBold extends SkillHandler
         		final int unk = 0;
         		final int targetId = cur.getObjectId();
         		final int damages = st.getDamages();
-        		final int reload = st.getRechargeTime();
+        		final int reload = st.getLaunchTime();
         		final int cost = st.getCost();
-        		PacketSendUtility.sendPacket(player, new SM_CASTSPELL(attackerId,getSkillId(),st.getLevel(),0,st.getLaunchTime(),targetId));
+        		PacketSendUtility.sendPacket(player, new SM_CASTSPELL(attackerId,getSkillId(),st.getLevel(),0,st.getRechargeTime(),targetId));
         		ThreadPoolManager.getInstance().schedule(new Runnable()
         		{
         			public void run() 
