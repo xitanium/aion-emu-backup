@@ -69,7 +69,7 @@ public class LifeStatsRestoreService
 				}
 				else
 				{
-					lifeStats.increaseHp(MP_RESTORE_TICK);
+					lifeStats.increaseMp(MP_RESTORE_TICK);
 				}
 			}
 			
