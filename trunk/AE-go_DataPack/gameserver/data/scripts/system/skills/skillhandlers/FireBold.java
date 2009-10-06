@@ -83,5 +83,6 @@ public class FireBold extends SkillHandler
     	PlayerLifeStats pls = player.getLifeStats();
     	cls.reduceHp(damages);
     	pls.reduceMp(cost);
+    	creature.getController().onAttack(player);
     }
 }
