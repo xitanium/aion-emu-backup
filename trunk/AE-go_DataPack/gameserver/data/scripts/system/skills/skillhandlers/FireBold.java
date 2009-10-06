@@ -78,14 +78,8 @@ public class FireBold extends SkillHandler
         		PlayerLifeStats pls = player.getLifeStats();
             	int newMp = pls.reduceMp(cost);
             	PacketSendUtility.sendPacket(player, new SM_STATUPDATE_MP(newMp, pls.getMaxMp()));
-        		ThreadPoolManager.getInstance().schedule(new Runnable()
-        		{
-        			public void run() 
-        			{
-        				PacketSendUtility.broadcastPacket(player,
-        						new SM_CASTSPELL_END(creatureId, spellId, level, unk, targetId, damages), true);
-        			}   
-        		}, reload);
+        		PacketSendUtility.broadcastPacket(player,
+        				new SM_CASTSPELL_END(creatureId, spellId, level, unk, targetId, damages), true);
         	}
         }
     }
