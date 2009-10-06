@@ -72,14 +72,14 @@ public class FireBold extends SkillHandler
         		final int reload = st.getRechargeTime();
         		final int cost = st.getCost();
         		PacketSendUtility.sendPacket(player, new SM_CASTSPELL(creature.getObjectId(),getSkillId(),st.getLevel(),0,st.getLaunchTime(),cur.getObjectId()));
+        		PacketSendUtility.broadcastPacket(player,
+        				new SM_CASTSPELL_END(creatureId, spellId, level, unk, targetId, damages), true);
         		CreatureLifeStats<?> cls = cur.getLifeStats();
         		int remainHp = Math.round(100 * cls.reduceHp(damages) / cls.getMaxHp());
         		PacketSendUtility.broadcastPacket(player, new SM_ATTACK_STATUS(creature.getObjectId(), remainHp), true);
         		PlayerLifeStats pls = player.getLifeStats();
             	int newMp = pls.reduceMp(cost);
             	PacketSendUtility.sendPacket(player, new SM_STATUPDATE_MP(newMp, pls.getMaxMp()));
-        		PacketSendUtility.broadcastPacket(player,
-        				new SM_CASTSPELL_END(creatureId, spellId, level, unk, targetId, damages), true);
         	}
         }
     }
