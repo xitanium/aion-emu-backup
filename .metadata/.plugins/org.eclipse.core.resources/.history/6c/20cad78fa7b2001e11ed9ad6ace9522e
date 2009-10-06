@@ -19,7 +19,7 @@ package skillhandlers;
 import java.util.List;
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
-import com.aionemu.gameserver.world.World;
+import com.aionemu.gameserver.world.World;;
 import com.aionemu.gameserver.skillengine.SkillHandler;
 
 import org.apache.log4j.Logger;
@@ -42,9 +42,7 @@ public class ReturnSkillHandler extends SkillHandler
     @Override
     public void useSkill(Creature creature, List<Creature> targets)
     {
-    	World w = creature.getActiveRegion().getWorld();
-    	byte heading = 0;
-    	w.setPosition(creature, creature.getActiveRegion().getMapId(), creature.getX() + 10, creature.getY() + 10, creature.getX() + 10, heading);
+    	
         log.info("You are using return");
     }
 

@@ -43,8 +43,7 @@ public class ReturnSkillHandler extends SkillHandler
     public void useSkill(Creature creature, List<Creature> targets)
     {
     	World w = creature.getActiveRegion().getWorld();
-    	byte heading = 0;
-    	w.setPosition(creature, creature.getActiveRegion().getMapId(), creature.getX() + 10, creature.getY() + 10, creature.getX() + 10, heading);
+    	w.setPosition(creature., creature.getActiveRegion().getMapId(), creature.getX() + 10, creature.getY() + 10, creature.getX() + 10, 1);
         log.info("You are using return");
     }
 
