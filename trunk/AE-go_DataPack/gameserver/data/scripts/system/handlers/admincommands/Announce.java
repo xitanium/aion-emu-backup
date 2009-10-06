@@ -30,6 +30,7 @@ public class Announce extends AdminCommand
 {
  
         public Announce() {
+        	// declare
                 super("announce");
         }
         /* (non-Javadoc)
