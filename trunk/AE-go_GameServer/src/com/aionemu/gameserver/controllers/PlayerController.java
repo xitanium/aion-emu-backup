@@ -27,6 +27,8 @@ import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL_END;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DIE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
@@ -50,6 +52,8 @@ import com.google.inject.Inject;
 public class PlayerController extends CreatureController<Player>
 {
 	private static Logger log = Logger.getLogger(PlayerController.class);
+	@Inject
+	private World world;
 
 	/**
 	 * {@inheritDoc}
@@ -143,14 +147,18 @@ public class PlayerController extends CreatureController<Player>
 		return true;
 	}
 	
-	public void useSkill(int skillId)
+	public void useSkill(int skillId, int level, int unk, int targetObjectId, int time)
 	{
+		int damages = 0;
 		SkillHandler skillHandler = SkillEngine.getInstance().getSkillHandlerFor(skillId);
+		
 		if(skillHandler != null)
 		{
 			//TODO pass targets
-			skillHandler.useSkill(this.getOwner(), null);
+			damages = skillHandler.useSkill(this.getOwner(), null);
 		}
+		PacketSendUtility.sendPacket(this.getOwner(), new SM_CASTSPELL(this.getOwner().getObjectId(),skillId,level,unk,targetObjectId));
+		PacketSendUtility.sendPacket(this.getOwner(), new SM_CASTSPELL_END(this.getOwner().getObjectId(),skillId,level,damages,unk,targetObjectId));
 	}
 
 	/* (non-Javadoc)

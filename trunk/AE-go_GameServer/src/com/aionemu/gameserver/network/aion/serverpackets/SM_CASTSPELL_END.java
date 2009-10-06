@@ -17,15 +17,17 @@ public class SM_CASTSPELL_END extends AionServerPacket
 	private int	targetObjectId;
 	private int	spellid;
 	private int	level;
-	private int	unk; //can cast?? 
+	private int	unk; //can cast??
+	private int damages;
 	
-	public SM_CASTSPELL_END(int attackerobjectid ,int spellid,int level,int unk, int targetObjectId)
+	public SM_CASTSPELL_END(int attackerobjectid ,int spellid,int level,int unk, int damages, int targetObjectId)
 	{
 		this.attackerobjectid = attackerobjectid;
 		this.targetObjectId = targetObjectId;
 		this.spellid = spellid ;// empty
 		this.level = level ;
 		this.unk = unk ;
+		this.damages = damages;
 	}
 
 	/**
@@ -34,10 +36,7 @@ public class SM_CASTSPELL_END extends AionServerPacket
 	
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
-	{		
-		Random generator = new Random();
-		int randomdamage = generator.nextInt(20)+ 1;
-	
+	{	
 		writeD(buf, attackerobjectid);
 		writeC(buf, 0);
 		writeD(buf, targetObjectId);
@@ -55,7 +54,7 @@ public class SM_CASTSPELL_END extends AionServerPacket
 		writeH(buf, 16); // unk??
 		
 		writeH(buf, 1); // unk??
-		writeD(buf, 80+ randomdamage); // damage
+		writeD(buf, damages); // damage
 		writeH(buf, 10);
 
 	}	
