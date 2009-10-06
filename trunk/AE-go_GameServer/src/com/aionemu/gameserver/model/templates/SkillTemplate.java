@@ -120,7 +120,7 @@ public class SkillTemplate
 	/**
 	 * @return the recharge_time
 	 */
-	public int getRecharge_time()
+	public int getRechargeTime()
 	{
 		return recharge_time;
 	}
@@ -128,7 +128,7 @@ public class SkillTemplate
 	/**
 	 * @return the launch_time
 	 */
-	public int getLaunch_time()
+	public int getLaunchTime()
 	{
 		return launch_time;
 	}
