@@ -22,6 +22,7 @@ import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.skillengine.SkillHandler;
+import com.google.inject.Inject;
 
 import org.apache.log4j.Logger;
 
@@ -32,6 +33,8 @@ import org.apache.log4j.Logger;
 public class ReturnSkillHandler extends SkillHandler
 {
     private static final Logger log = Logger.getLogger(ReturnSkillHandler.class);
+    @Inject
+    private World world;
     
     public ReturnSkillHandler() {
         super(1801);
@@ -41,7 +44,7 @@ public class ReturnSkillHandler extends SkillHandler
      * @see com.aionemu.gameserver.skillengine.SkillHandler#useSkill(com.aionemu.gameserver.model.gameobjects.Creature, java.util.List)
      */
     @Override
-    public void useSkill(Creature creature, List<Creature> targets)
+    public int useSkill(Creature creature, List<Creature> targets)
     {
     	Player p = null;
     	if(p instanceof Player) {
@@ -55,6 +58,7 @@ public class ReturnSkillHandler extends SkillHandler
     		w.setPosition(p, p.getActiveRegion().getMapId(), 5, 25, 17, (byte) 1);
     		log.info("You are using return");
     	}
+        return 0;
     }
 
 }
