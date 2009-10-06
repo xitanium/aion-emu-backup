@@ -41,7 +41,7 @@
 		<xs:attribute name="scope" type="xs:int" use="optional" />
 	</xs:complexType>
 	
-	<xs:simpleType name="skillId">
+	<xs:simpleType name="SkillId">
 		<xs:restriction base="xs:int">
 			<xs:minInclusive value="1"/>
 			<xs:maxInclusive value="60000"/>
