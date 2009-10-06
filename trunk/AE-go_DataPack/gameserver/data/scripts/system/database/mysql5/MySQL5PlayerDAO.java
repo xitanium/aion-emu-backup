@@ -24,6 +24,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import mysql5.MySQL5DAOUtils;
+
 import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DB;

@@ -3,7 +3,16 @@
 	<name>AE-go_DataPack</name>
 	<comment></comment>
 	<projects>
+		<project>AE-go_Commons</project>
+		<project>AE-go_GameServer</project>
 	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>

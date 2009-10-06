@@ -21,6 +21,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
+import mysql5.MySQL5DAOUtils;
+
 import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DB;

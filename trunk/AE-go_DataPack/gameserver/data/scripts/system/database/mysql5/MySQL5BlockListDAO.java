@@ -22,6 +22,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import mysql5.MySQL5DAOUtils;
+
 import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DB;
