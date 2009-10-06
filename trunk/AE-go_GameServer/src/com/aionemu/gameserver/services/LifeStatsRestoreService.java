@@ -63,7 +63,14 @@ public class LifeStatsRestoreService
 					lifeStats.increaseHp(HP_RESTORE_TICK);
 				}
 				
-				//TODO restore MP also
+				if(lifeStats.getCurrentMp() == lifeStats.getMaxMp())
+				{
+					lifeStats.cancelRestoreTask();
+				}
+				else
+				{
+					lifeStats.increaseMp(MP_RESTORE_TICK);
+				}
 			}
 			
 		}), 1500, DEFAULT_DELAY);

@@ -19,12 +19,20 @@ package skillhandlers;
 import java.util.Iterator;
 import java.util.List;
 
+import com.aionemu.gameserver.dataholders.PlayerInitialData;
+import com.aionemu.gameserver.dataholders.PlayerInitialData.LocationData;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.stats.CreatureLifeStats;
+import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.model.templates.SkillTemplate;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL_END;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_MP;
+import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.utils.PacketSendUtility;
+import com.aionemu.gameserver.utils.ThreadPoolManager;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.skillengine.SkillHandler;
 import com.google.inject.Inject;
@@ -48,16 +56,31 @@ public class FireBold extends SkillHandler
     @Override
     public void useSkill(Creature creature, List<Creature> targets)
     {
+    	final int creatureId = creature.getObjectId();
     	SkillTemplate st = this.getSkillTemplate();
         log.info("You are using fire bold");
         if (creature instanceof Player) {
+        	final Player player = (Player)creature;
         	Iterator<Creature> iter = targets.iterator();
         	while (iter.hasNext()) {
-        		Creature cur = iter.next();
-        		PacketSendUtility.sendPacket((Player)creature, new SM_CASTSPELL(creature.getObjectId(),getSkillId(),st.getLevel(),0,cur.getObjectId()));
-        		PacketSendUtility.sendPacket((Player)creature, new SM_CASTSPELL_END(creature.getObjectId(),getSkillId(),st.getLevel(),st.getDamages(),0,cur.getObjectId()));
+        		final Creature cur = iter.next();
+        		final int spellId = getSkillId();
+        		final int level = st.getLevel();
+        		final int unk = 0;
+        		final int targetId = cur.getObjectId();
+        		final int damages = st.getDamages();
+        		final int reload = st.getRechargeTime();
+        		final int cost = st.getCost();
+        		PacketSendUtility.sendPacket(player, new SM_CASTSPELL(cur.getObjectId(),getSkillId(),st.getLevel(),0,st.getLaunchTime(),creatureId));
+        		PacketSendUtility.broadcastPacket(player,
+        				new SM_CASTSPELL_END(targetId, spellId, level, unk, creatureId, damages), true);
+        		CreatureLifeStats<?> cls = cur.getLifeStats();
+        		int remainHp = Math.round(100 * cls.reduceHp(damages) / cls.getMaxHp());
+        		PacketSendUtility.broadcastPacket(player, new SM_ATTACK_STATUS(creature.getObjectId(), remainHp), true);
+        		PlayerLifeStats pls = player.getLifeStats();
+            	int newMp = pls.reduceMp(cost);
+            	PacketSendUtility.sendPacket(player, new SM_STATUPDATE_MP(newMp, pls.getMaxMp()));
         	}
         }
     }
-
 }

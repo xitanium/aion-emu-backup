@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_MP;
 import com.aionemu.gameserver.services.LifeStatsRestoreService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
@@ -201,6 +202,69 @@ public class CreatureLifeStats<T extends Creature>
 		}		
 		
 		sendHpPacketUpdate();
+		
+		return currentHp;
+	}
+	
+	/**
+	 *  This method is called whenever caller wants to absorb creatures's HP
+	 * @param value
+	 * @return
+	 */
+	public int reduceMp(int value)
+	{
+		synchronized(this)
+		{
+			int newMp = this.currentMp - value;
+			if(newMp < 0)
+			{
+				newMp = 0;
+			}
+			this.currentMp = newMp;
+		}	
+		
+		if(lifeRestoreTask == null)
+		{
+			this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
+		}
+		
+		sendMpPacketUpdate();
+		
+		return currentMp;
+	}
+	/**
+	 * Informs about MP change
+	 */
+	private void sendMpPacketUpdate()
+	{
+		if(owner == null)
+		{
+			return;
+		}
+		if(owner instanceof Player)
+		{
+			PacketSendUtility.sendPacket((Player) owner, new SM_STATUPDATE_MP(currentMp, maxMp));
+		}
+	}
+	
+	/**
+	 *  This method is called whenever caller wants to restore creatures's MP
+	 * @param value
+	 * @return
+	 */
+	public int increaseMp(int value)
+	{
+		synchronized(this)
+		{
+			int newMp = this.currentMp + value;
+			if(newMp > maxMp)
+			{
+				newMp = maxMp;
+			}
+			this.currentMp = newMp;		
+		}		
+		
+		sendMpPacketUpdate();
 		
 		return currentHp;
 	}
