@@ -61,7 +61,9 @@ java.util.List)
    {
        log.info("You are using return");
        final Player player = (Player) creature;
-       
+       world = player.getActiveRegion().getWorld();
+       world.setPosition(player, player.getActiveRegion().getMapId(), 15, 25, 5, (byte)5);
+       PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
    }
 
 }
