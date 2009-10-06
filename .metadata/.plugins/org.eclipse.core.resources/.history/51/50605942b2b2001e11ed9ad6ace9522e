@@ -52,7 +52,7 @@ public class ReturnSkillHandler extends SkillHandler
     	}
     	if(p != null) {
     		World w = p.getActiveRegion().getWorld();
-    		w.setPosition(p, p.getActiveRegion().getMapId(), 5, 25, 17, (byte) 1);
+    		w.setPosition(p, p.getActiveRegion().getMapId(), 5, 25, 17, 8)
     	byte heading = 0;
     	w.setPosition(creature, creature.getActiveRegion().getMapId(), creature.getX() + 10, creature.getY() + 10, creature.getZ() + 10, heading);
         log.info("You are using return");

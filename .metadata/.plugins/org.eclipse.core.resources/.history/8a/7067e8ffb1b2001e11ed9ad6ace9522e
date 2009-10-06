@@ -48,15 +48,12 @@ public class ReturnSkillHandler extends SkillHandler
     		p = (Player) creature;
     	}
     	else {
-    		log.info("Return skill used, but caster is not a player. Execution aborted.");
+    		log.info("");
     	}
-    	if(p != null) {
-    		World w = p.getActiveRegion().getWorld();
-    		w.setPosition(p, p.getActiveRegion().getMapId(), 5, 25, 17, (byte) 1);
+    	World w = creature.getActiveRegion().getWorld();
     	byte heading = 0;
     	w.setPosition(creature, creature.getActiveRegion().getMapId(), creature.getX() + 10, creature.getY() + 10, creature.getZ() + 10, heading);
         log.info("You are using return");
-    	}
     }
 
 }
