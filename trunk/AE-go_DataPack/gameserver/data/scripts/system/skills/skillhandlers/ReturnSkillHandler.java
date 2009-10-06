@@ -41,6 +41,7 @@ public class ReturnSkillHandler extends SkillHandler
     @Override
     public void useSkill(Creature creature, List<Creature> targets)
     {
+    	log.info("debug :" + creature.getName());
         log.info("You are using return");
     }
 
