@@ -65,6 +65,7 @@ public class FireBold extends SkillHandler
         		final int reload = st.getLaunchTime();
         		final int cost = st.getCost();
         		PacketSendUtility.sendPacket(player, new SM_CASTSPELL(attackerId,getSkillId(),st.getLevel(),0,st.getRechargeTime(),targetId));
+        		creature.getController().onAttack(player);
         		ThreadPoolManager.getInstance().schedule(new Runnable()
         		{
         			public void run() 
@@ -83,6 +84,5 @@ public class FireBold extends SkillHandler
     	PlayerLifeStats pls = player.getLifeStats();
     	cls.reduceHp(damages);
     	pls.reduceMp(cost);
-    	creature.getController().onAttack(player);
     }
 }
