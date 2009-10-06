@@ -3,6 +3,7 @@
 	<name>AE-go_GameServer</name>
 	<comment></comment>
 	<projects>
+		<project>AE-go_Commons</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
