@@ -21,6 +21,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.aionemu.gameserver.model.SkillElement;
+
 /**
  * @author ATracer
  *
@@ -29,10 +31,35 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "skill_template")
 public class SkillTemplate
 {
+	@XmlAttribute(name ="skill_id", required = true)
 	private int	skillId;
 	
 	@XmlAttribute(name = "name", required = true)
 	private String name;
+	
+	@XmlAttribute(name = "element")
+	private SkillElement element;
+	
+	@XmlAttribute(name = "level", required = true)
+	private int level;
+	
+	@XmlAttribute(name = "damages")
+	private int damages;
+	
+	@XmlAttribute(name = "cost")
+	private int cost;
+	
+	@XmlAttribute(name = "probability")
+	private float probability;
+	
+	@XmlAttribute(name = "recharge_time")
+	private int recharge_time;
+	
+	@XmlAttribute(name = "launch_time")
+	private int launch_time;
+	
+	@XmlAttribute(name = "scope")
+	private int scope;
 
 	/**
 	 * @return the skillId
@@ -50,4 +77,67 @@ public class SkillTemplate
 		return name;
 	}
 
+	/**
+	 * @return the element
+	 */
+	public SkillElement getElement()
+	{
+		return element;
+	}
+
+	/**
+	 * @return the level
+	 */
+	public int getLevel()
+	{
+		return level;
+	}
+
+	/**
+	 * @return the damages
+	 */
+	public int getDamages()
+	{
+		return damages;
+	}
+
+	/**
+	 * @return the cost
+	 */
+	public int getCost()
+	{
+		return cost;
+	}
+
+	/**
+	 * @return the probability
+	 */
+	public float getProbability()
+	{
+		return probability;
+	}
+
+	/**
+	 * @return the recharge_time
+	 */
+	public int getRecharge_time()
+	{
+		return recharge_time;
+	}
+
+	/**
+	 * @return the launch_time
+	 */
+	public int getLaunch_time()
+	{
+		return launch_time;
+	}
+
+	/**
+	 * @return the scope
+	 */
+	public int getScope()
+	{
+		return scope;
+	}
 }

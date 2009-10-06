@@ -16,9 +16,15 @@
  */
 package skillhandlers;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
+import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.templates.SkillTemplate;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL_END;
+import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.skillengine.SkillHandler;
 import com.google.inject.Inject;
@@ -28,14 +34,12 @@ import org.apache.log4j.Logger;
 /**
  * @author ATracer
  */
-public class ReturnSkillHandler extends SkillHandler
+public class FireBold extends SkillHandler
 {
-    private static final Logger log = Logger.getLogger(ReturnSkillHandler.class);
-    @Inject
-    private World world;
+    private static final Logger log = Logger.getLogger(FireBold.class);
     
-    public ReturnSkillHandler() {
-        super(1801);
+    public FireBold() {
+        super(1351);
     }
 
     /* (non-Javadoc)
@@ -44,9 +48,16 @@ public class ReturnSkillHandler extends SkillHandler
     @Override
     public void useSkill(Creature creature, List<Creature> targets)
     {
-    	byte heading = 0;
-    	world.setPosition(creature, creature.getActiveRegion().getMapId(), creature.getX() + 10, creature.getY() + 10, creature.getX() + 10, heading);
-        log.info("You are using return");
+    	SkillTemplate st = this.getSkillTemplate();
+        log.info("You are using fire bold");
+        if (creature instanceof Player) {
+        	Iterator<Creature> iter = targets.iterator();
+        	while (iter.hasNext()) {
+        		Creature cur = iter.next();
+        		PacketSendUtility.sendPacket((Player)creature, new SM_CASTSPELL(creature.getObjectId(),getSkillId(),st.getLevel(),0,cur.getObjectId()));
+        		PacketSendUtility.sendPacket((Player)creature, new SM_CASTSPELL_END(creature.getObjectId(),getSkillId(),st.getLevel(),st.getDamages(),0,cur.getObjectId()));
+        	}
+        }
     }
 
 }

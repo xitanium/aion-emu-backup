@@ -37,7 +37,7 @@ public abstract class SkillHandler
 		this.skillId = skillId;
 	}
 	
-	public abstract int useSkill(Creature creature, List<Creature> targets);
+	public abstract void useSkill(Creature creature, List<Creature> targets);
 
 	/**
 	 * @return the skillTemplate
