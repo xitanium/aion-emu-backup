@@ -35,14 +35,6 @@ public class SM_VERSION_CHECK extends AionServerPacket
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
 
-		writeH(buf, 0x0C00);// unk
-		writeD(buf, 0x15FFA);// unk
-		writeD(buf, 0x15FFA);// unk
-		writeD(buf, 0x00);// unk
-		writeD(buf, 0x15FFA);// unk
-		writeD(buf, 0x4A4CEC02);// unk
-		writeD(buf, 0x01000100);// unk
-		// Server Version Check for 1.5.0.6 NA/EU
 		writeC(buf, 0x00);
 		writeC(buf, Config.GAMESERVER_ID); // Server id
 		writeD(buf, 0x0001631F);
