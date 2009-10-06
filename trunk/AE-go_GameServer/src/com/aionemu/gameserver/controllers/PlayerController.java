@@ -16,6 +16,9 @@
  */
 package com.aionemu.gameserver.controllers;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.dataholders.SkillData;
@@ -155,8 +158,15 @@ public class PlayerController extends CreatureController<Player>
 		if(skillHandler != null)
 		{
 			//TODO pass targets
-			damages = skillHandler.useSkill(this.getOwner(), null);
+			if (this.getOwner().getTarget()!=null) {
+				List<Creature> list = Collections.emptyList();
+				list.add(this.getOwner().getTarget());
+				damages = skillHandler.useSkill(this.getOwner(), list);
+			} else {
+				damages = skillHandler.useSkill(this.getOwner(), null);
+			}
 		}
+		log.info("using skill#"+skillId);
 		PacketSendUtility.sendPacket(this.getOwner(), new SM_CASTSPELL(this.getOwner().getObjectId(),skillId,level,unk,targetObjectId));
 		PacketSendUtility.sendPacket(this.getOwner(), new SM_CASTSPELL_END(this.getOwner().getObjectId(),skillId,level,damages,unk,targetObjectId));
 	}
