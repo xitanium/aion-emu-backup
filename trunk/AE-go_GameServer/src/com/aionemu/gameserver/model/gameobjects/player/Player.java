@@ -320,6 +320,14 @@ public class Player extends Creature
 		});
 	}
 
+	public void doStatsEvolution(int fromLevel, int toLevel) {
+		if (this.getGameStats()!=null) {
+			this.getGameStats().doEvolution(fromLevel, toLevel);
+		}
+		if (this.getLifeStats()!=null) {
+			this.getLifeStats().doEvolution(fromLevel, toLevel);
+		}
+	}
 
 	/**
 	 * This method is called when player logs into the game. It's main responsibility is to call all registered

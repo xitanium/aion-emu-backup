@@ -97,6 +97,7 @@ public abstract class Creature extends VisibleObject
 	 */
 	public void setGameStats(CreatureGameStats<? extends Creature> gameStats)
 	{
+		gameStats.setOwner(this);
 		this.gameStats = gameStats;
 	}
 

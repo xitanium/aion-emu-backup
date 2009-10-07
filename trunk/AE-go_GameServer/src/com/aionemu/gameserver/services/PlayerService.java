@@ -31,6 +31,7 @@ import com.aionemu.gameserver.dao.PlayerAppearanceDAO;
 import com.aionemu.gameserver.dao.PlayerDAO;
 import com.aionemu.gameserver.dao.PlayerMacrossesDAO;
 import com.aionemu.gameserver.dao.PlayerSkillListDAO;
+import com.aionemu.gameserver.dao.PlayerStatsDAO;
 import com.aionemu.gameserver.dataholders.PlayerInitialData;
 import com.aionemu.gameserver.dataholders.PlayerInitialData.LocationData;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
@@ -39,8 +40,6 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerAppearance;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.model.gameobjects.player.SkillList;
-import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
-import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_ENTER_WORLD;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_QUIT;
@@ -48,7 +47,7 @@ import com.aionemu.gameserver.utils.collections.cachemap.CacheMap;
 import com.aionemu.gameserver.utils.collections.cachemap.CacheMapFactory;
 import com.aionemu.gameserver.utils.idfactory.IDFactory;
 import com.aionemu.gameserver.utils.idfactory.IDFactoryAionObject;
-import com.aionemu.gameserver.utils.stats.ClassStats;
+import com.aionemu.gameserver.utils.stats.StatFunctions;
 import com.aionemu.gameserver.world.KnownList;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.world.WorldPosition;
@@ -68,10 +67,10 @@ public class PlayerService
 
 	private CacheMap<Integer, Player>	playerCache		= CacheMapFactory.createSoftCacheMap("Player", "player");
 
+	@SuppressWarnings("unused")
 	private IDFactory					aionObjectsIDFactory;
 	private World						world;
 	private PlayerInitialData           playerInitialData;
-
 
 	@Inject
 	public PlayerService(@IDFactoryAionObject IDFactory aionObjectsIDFactory, World world, PlayerInitialData playerInitialData)
@@ -114,8 +113,13 @@ public class PlayerService
 	 */
 	public boolean storeNewPlayer(Player player, String accountName, int accountId)
 	{
+		boolean result = true;
 		DAOManager.getDAO(PlayerSkillListDAO.class).addSkillsTree(player);
-		return DAOManager.getDAO(PlayerDAO.class).saveNewPlayer(player.getCommonData(), accountId, accountName) && DAOManager.getDAO(PlayerAppearanceDAO.class).store(player);
+		DAOManager.getDAO(PlayerStatsDAO.class).storeNewStats(player.getObjectId(), player.getLifeStats(), player.getGameStats());
+		result = result && DAOManager.getDAO(PlayerDAO.class).saveNewPlayer(player.getCommonData(), accountId, accountName);
+		result = result && DAOManager.getDAO(PlayerAppearanceDAO.class).store(player);
+		log.info("storing new player {"+player.getName()+"} for account#"+accountId+" {"+accountName+"}... "+(result?"OK":"KO"));
+		return result;
 	}
 
 	/**
@@ -157,6 +161,8 @@ public class PlayerService
 		player.setKnownlist(new KnownList(player));
 		player.setFriendList(DAOManager.getDAO(FriendListDAO.class).load(player, world));
 		player.setBlockList(DAOManager.getDAO(BlockListDAO.class).load(player,world));
+		player.setGameStats(DAOManager.getDAO(PlayerStatsDAO.class).loadGameStats(playerObjId));
+		player.setLifeStats(DAOManager.getDAO(PlayerStatsDAO.class).loadLifeStats(playerObjId));
 		
 		if(CacheConfig.CACHE_PLAYERS)
 			playerCache.put(playerObjId, player);	
@@ -183,10 +189,8 @@ public class PlayerService
 		// TODO: starting skills
 		// TODO: starting items;
 		Player newPlayer = new Player(new PlayerController(), playerCommonData, playerAppearance);
-		//TODO retrieve from storage and calculate
-		newPlayer.setLifeStats(new PlayerLifeStats(
-			ClassStats.getMaxHpFor(newPlayer.getPlayerClass(), newPlayer.getLevel()), 650));
-		newPlayer.setGameStats(new PlayerGameStats());
+		newPlayer.setLifeStats(StatFunctions.getBaseLifeStats(newPlayer.getPlayerClass()));
+		newPlayer.setGameStats(StatFunctions.getBaseGameStats(newPlayer.getPlayerClass()));
 		return newPlayer;
 	}
 
@@ -200,9 +204,6 @@ public class PlayerService
 	public void playerLoggedIn(Player player)
 	{
 		player.getCommonData().setOnline(true);
-		//TODO retrieve from storage and calculate
-		player.setLifeStats(new PlayerLifeStats(ClassStats.getMaxHpFor(player.getPlayerClass(), player.getLevel()), 650));
-		player.setGameStats(new PlayerGameStats());
 		DAOManager.getDAO(PlayerDAO.class).onlinePlayer(player, true);
 		player.onLoggedIn();
 	}
@@ -274,6 +275,7 @@ public class PlayerService
 	void deletePlayerFromDB(int playerId)
 	{
 		DAOManager.getDAO(PlayerSkillListDAO.class).deleteSkills(playerId);
+		DAOManager.getDAO(PlayerStatsDAO.class).deleteStats(playerId);
 		DAOManager.getDAO(PlayerDAO.class).deletePlayer(playerId);
 	}
 
@@ -339,5 +341,13 @@ public class PlayerService
 	public Player getCachedPlayer(int playerObjectId)
 	{
 		return playerCache.get(playerObjectId);
+	}
+	
+	public void storeLifeStats(Player player) {
+		DAOManager.getDAO(PlayerStatsDAO.class).storeLifeStats(player.getObjectId(), player.getLifeStats());
+	}
+	
+	public void storeGameStats(Player player) {
+		DAOManager.getDAO(PlayerStatsDAO.class).storeGameStats(player.getObjectId(), player.getGameStats());
 	}
 }
