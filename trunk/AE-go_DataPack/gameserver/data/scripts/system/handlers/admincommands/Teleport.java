@@ -1,3 +1,8 @@
+/**
+ * @author Xitanium
+ *
+ */
+
 package admincommands;
 
 import com.aionemu.gameserver.utils.PacketSendUtility;
