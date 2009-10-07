@@ -54,8 +54,8 @@ public class SkillEngine
 	public void registerSkill(SkillHandler skillHandler)
 	{
 		int skillId = skillHandler.getSkillId();
-		log.info("Registering handler "+skillHandler.getSkillTemplate().getName()+" for skill #"+skillId);
 		skillHandler.setSkillTemplate(DataManager.SKILL_DATA.getSkillTemplate(skillId));
+		log.info("[registerSkill] Registering skill #"+skillId+"with handler "+skillHandler.getSkillTemplate().getName()+" of type "+skillHandler.getSkillTemplate().getType());
 		skillHandlers.put(skillId, skillHandler);
 	}
 	
@@ -84,7 +84,7 @@ public class SkillEngine
 			int skillId = entry.getKey();
 			SkillType type = entry.getValue().getType();
 			if (type!=SkillType.DEFAULT) {
-				log.info("Registering handler type "+type+" for skill #"+skillId);
+				log.info("[registerAllSkills] Registering handler type "+type+" for skill #"+skillId);
 				registerSkill(entry.getValue().getType().getHandler(entry.getKey()));
 			}
 		}
