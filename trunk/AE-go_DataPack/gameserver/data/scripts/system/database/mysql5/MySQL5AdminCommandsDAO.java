@@ -63,7 +63,7 @@ public class MySQL5AdminCommandsDAO extends AdminCommandsDAO {
 	}
 	
 	public final boolean isExistingTeleport(String name) {
-		PreparedStatement s = DB.prepareStatement("SELECT count(teleport_id) as tps FROM teleports WHERE name = ?");
+		PreparedStatement s = DB.prepareStatement("SELECT count(teleport_id) as tps FROM teleports WHERE teleport_name = ?");
 		try {
 			s.setString(1, name);
 			ResultSet rs = s.executeQuery();
