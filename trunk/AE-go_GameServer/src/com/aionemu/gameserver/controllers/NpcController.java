@@ -34,6 +34,7 @@ import com.aionemu.gameserver.services.RespawnService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.stats.StatFunctions;
 import com.aionemu.gameserver.world.World;
+import com.aionemu.gameserver.model.templates.SkillTemplate;
 
 /**
  * This class is for controlling Npc's
@@ -116,7 +117,6 @@ public class NpcController extends CreatureController<Npc>
 	public boolean onAttack(Creature creature)
 	{
 		super.onAttack(creature);
-		
 		Npc npc = getOwner();
 		
 		NpcAi npcAi = npc.getNpcAi();
@@ -130,8 +130,10 @@ public class NpcController extends CreatureController<Npc>
 			//TODO send action failed packet
 			return false;
 		}
-
-		lifeStats.reduceHp(100);
+		
+		//TODO: Reduce hp corresponding to real damages done by player
+		lifeStats.reduceHp(55);
+		
 		
 		if(!lifeStats.isAlive())
 		{
