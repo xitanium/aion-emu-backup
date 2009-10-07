@@ -54,8 +54,12 @@ public class SkillEngine
 	public void registerSkill(SkillHandler skillHandler)
 	{
 		int skillId = skillHandler.getSkillId();
-		skillHandler.setSkillTemplate(DataManager.SKILL_DATA.getSkillTemplate(skillId));
-		log.info("[registerSkill] Registering skill #"+skillId+"with handler "+skillHandler.getSkillTemplate().getName()+" of type "+skillHandler.getSkillTemplate().getType());
+		SkillTemplate st = DataManager.SKILL_DATA.getSkillTemplate(skillId);
+		if (st==null) {
+			throw new GameServerError("There is no template for skill #"+skillId);
+		}
+		skillHandler.setSkillTemplate(st);
+		log.info("[registerSkill] Registering skill #"+skillId+"with handler "+st.getName()+" of type "+st.getType());
 		skillHandlers.put(skillId, skillHandler);
 	}
 	
