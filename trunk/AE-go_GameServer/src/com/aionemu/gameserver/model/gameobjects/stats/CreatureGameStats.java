@@ -124,7 +124,9 @@ public class CreatureGameStats<T extends Creature>
 	public void setHealth(int health)
 	{
 		this.health = health;
-		this.physicalDefense = (int)Math.round(health * 3.1 - 248.5 + 12.4 * owner.getLevel());
+		if(!(owner == null)) {
+			this.physicalDefense = (int)Math.round(health * 3.1 - 248.5 + 12.4 * owner.getLevel());
+		}
 	}
 	/**
 	 * @return the agility

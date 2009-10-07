@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
  */
 public class BandageHealHandler extends SkillHandler
 {
-    private static final Logger log = Logger.getLogger(FireBold.class);
+    private static final Logger log = Logger.getLogger(BandageHealHandler.class);
     
     public BandageHealHandler() {
         super(1803);
