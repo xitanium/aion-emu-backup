@@ -170,7 +170,7 @@ public class PlayerService
 		}
 		player.setGameStats(pgs);
 		PlayerLifeStats pls = psd.loadLifeStats(playerObjId);
-		if (!pls.isInitialized() || pls == null) {
+		if (pls == null || !pls.isInitialized()) {
 			pls = StatFunctions.getBaseLifeStats(pcd.getPlayerClass());
 		}
 		player.setLifeStats(pls);
