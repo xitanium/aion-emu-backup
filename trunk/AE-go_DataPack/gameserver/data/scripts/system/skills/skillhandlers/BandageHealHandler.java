@@ -35,9 +35,9 @@ import org.apache.log4j.Logger;
 /**
  * @author ATracer
  */
-public class BandageHealHandler extends SkillHandler
+public class BandageHealHandler extends SpellSkillHandler
 {
-    private static final Logger log = Logger.getLogger(FireBold.class);
+    private static final Logger log = Logger.getLogger(BandageHealHandler.class);
     
     public BandageHealHandler() {
         super(1803);
@@ -54,24 +54,23 @@ public class BandageHealHandler extends SkillHandler
         log.info("You are healing using bandage");
         if (creature instanceof Player) {
         	final Player player = (Player)creature;
-        		final int spellId = getSkillId();
-        		final int level = st.getLevel();
-        		final int unk = 0;
-        		final int targetId = player.getObjectId();
-        		final int damages = st.getDamages();
-        		log.info("Healing damages = " + damages);
-        		final int reload = st.getLaunchTime();
-        		final int cost = st.getCost();
-        		PacketSendUtility.sendPacket(player, new SM_CASTSPELL(attackerId,getSkillId(),st.getLevel(),0,st.getRechargeTime(),targetId));
-        		creature.getController().onAttack(player);
-        		ThreadPoolManager.getInstance().schedule(new Runnable()
+        	final int spellId = getSkillId();
+        	final int level = st.getLevel();
+        	final int unk = 0;
+        	final int targetId = player.getObjectId();
+        	final int damages = st.getDamages();
+        	log.info("Healing damages = " + damages);
+        	final int reload = st.getLaunchTime();
+        	final int cost = st.getCost();
+        	PacketSendUtility.sendPacket(player, new SM_CASTSPELL(attackerId,getSkillId(),st.getLevel(),0,st.getRechargeTime(),targetId));
+        	ThreadPoolManager.getInstance().schedule(new Runnable()
+        	{
+        		public void run() 
         		{
-        			public void run() 
-        			{
-        				PacketSendUtility.sendPacket(player,
-                				new SM_CASTSPELL_END(attackerId, spellId, level, unk, damages, targetId));
-        				performAction(player,player,damages,cost);
-        			}
+        			PacketSendUtility.sendPacket(player,
+               				new SM_CASTSPELL_END(attackerId, spellId, level, unk, damages, targetId));
+        			performAction(player,player,damages,cost);
+        		}
         	}, (reload-1)*1000);
         }
     }
