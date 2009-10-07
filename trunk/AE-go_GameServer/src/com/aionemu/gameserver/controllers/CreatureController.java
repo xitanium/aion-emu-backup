@@ -20,6 +20,7 @@ import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.services.DecayService;
 import com.aionemu.gameserver.services.RespawnService;
+import com.aionemu.gameserver.model.templates.SkillTemplate;
 
 /**
  * This class is for controlling Creatures [npc's, players etc]
@@ -60,6 +61,11 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 	 *  Perform tasks when Creature was attacked
 	 */
 	public boolean onAttack(Creature creature)
+	{
+		return onAttack(creature, null);
+	}
+	
+	public boolean onAttack(Creature creature, SkillTemplate skill)
 	{
 		return true;
 	}
