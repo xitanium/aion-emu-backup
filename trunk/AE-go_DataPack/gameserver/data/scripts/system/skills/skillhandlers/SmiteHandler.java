@@ -27,7 +27,7 @@ private static final Logger log = Logger.getLogger(FireBold.class);
     public void useSkill(Creature creature, List<Creature> targets)
     {
     	SkillTemplate st = this.getSkillTemplate();
-        log.info("You are using Smite");
+        log.info("You are using Smite on " + targets.size() + "targets.");
         if (creature instanceof Player) {
         	final Player player = (Player)creature;
         	final int attackerId = player.getObjectId();

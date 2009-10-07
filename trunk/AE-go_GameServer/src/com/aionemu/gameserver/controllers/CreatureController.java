@@ -57,7 +57,7 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 	 */
 	public void onRespawn()
 	{
-		log.info("Creature " + this.getOwner().getObjectId() + " has respawned.");
+		log.info("Creature " + this.getOwner().getObjectId() + " has (re)spawned.");
 	}
 	
 	/**
