@@ -65,7 +65,13 @@ java.util.List)
        world = player.getActiveRegion().getWorld();
        log.info("[Return] Player " + player.getName() + " teleported to bind point in map " + player.getActiveRegion().getMapId());
        WorldPosition bp = player.getBindPoint();
-       world.setPosition(player, bp.getMapId(), bp.getX(), bp.getY(), bp.getZ(), bp.getHeading());
+       if(bp != null) {
+    	   world.setPosition(player, bp.getMapId(), bp.getX(), bp.getY(), bp.getZ(), bp.getHeading());
+       }
+       else {
+    	   log.warn("No bind point registered for player " + player.getName());
+    	   PacketSendUtility.sendMessage(player, "You have no registered bind point. Please report this to Game Masters.");
+       }
        PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
    }
 

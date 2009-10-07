@@ -303,7 +303,7 @@ public class Player extends Creature
 		catch(SQLException e) {
 		}
 		
-		return new WorldPosition();
+		return result;
 	}
 	//"UPDATE players SET returnX = ?, returnY = ?, returnZ = ?, returnH = ?, returnMap = ? WHERE name = ?"
 	public boolean setBindPoint(final WorldPosition wp) {
