@@ -124,7 +124,9 @@ public class CreatureGameStats<T extends Creature>
 	public void setHealth(int health)
 	{
 		this.health = health;
-		this.physicalDefense = (int)Math.round(health * 3.1 - 248.5 + 12.4 * owner.getLevel());
+		if(!(owner == null)) {
+			this.physicalDefense = (int)Math.round(health * 3.1 - 248.5 + 12.4 * owner.getLevel());
+		}
 	}
 	/**
 	 * @return the agility
@@ -139,9 +141,11 @@ public class CreatureGameStats<T extends Creature>
 	public void setAgility(int agility)
 	{
 		this.agility = agility;
-		this.parry = (int)Math.round(agility * 3.1 - 248.5 + 12.4 * owner.getLevel());
-		this.evasion = (int)Math.round(agility * 3.1 - 248.5 + 12.4 * owner.getLevel());
-		this.block = (int)Math.round(agility * 3.1 - 248.5 + 12.4 * owner.getLevel());
+		if(!(owner == null)) {
+			this.parry = (int)Math.round(agility * 3.1 - 248.5 + 12.4 * owner.getLevel());
+			this.evasion = (int)Math.round(agility * 3.1 - 248.5 + 12.4 * owner.getLevel());
+			this.block = (int)Math.round(agility * 3.1 - 248.5 + 12.4 * owner.getLevel());
+		}
 	}
 	/**
 	 * @return the accuracy
@@ -156,8 +160,10 @@ public class CreatureGameStats<T extends Creature>
 	public void setAccuracy(int accuracy)
 	{
 		this.accuracy = accuracy;
-		this.mainHandAccuracy = (accuracy * 2) - 10 + 8 * owner.getLevel();
-		this.otherHandAccuracy = (accuracy * 2) - 10 + 8 * owner.getLevel();
+		if(!(owner == null)) {
+			this.mainHandAccuracy = (accuracy * 2) - 10 + 8 * owner.getLevel();
+			this.otherHandAccuracy = (accuracy * 2) - 10 + 8 * owner.getLevel();
+		}
 	}
 	/**
 	 * @return the knowledge
@@ -172,7 +178,9 @@ public class CreatureGameStats<T extends Creature>
 	public void setKnowledge(int knowledge)
 	{
 		this.knowledge = knowledge;
-		this.magicResistance = (int)Math.round(knowledge * 3.1 - 248.5 + 12.4 * owner.getLevel());
+		if(!(owner == null)) {
+			this.magicResistance = (int)Math.round(knowledge * 3.1 - 248.5 + 12.4 * owner.getLevel());
+		}
 	}
 	/**
 	 * @return the will
@@ -187,7 +195,9 @@ public class CreatureGameStats<T extends Creature>
 	public void setWill(int will)
 	{
 		this.will = will;
-		this.magicAccuracy = (will * 2) - 10 + 8 * owner.getLevel();
+		if(!(owner == null)) {
+			this.magicAccuracy = (will * 2) - 10 + 8 * owner.getLevel();
+		}
 	}
 	/**
 	 * @return the mainHandAttack
