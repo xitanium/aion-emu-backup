@@ -18,6 +18,7 @@ package com.aionemu.gameserver.skillengine;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -25,8 +26,8 @@ import org.apache.log4j.Logger;
 import com.aionemu.commons.scripting.scriptmanager.ScriptManager;
 import com.aionemu.gameserver.GameServerError;
 import com.aionemu.gameserver.dataholders.DataManager;
+import com.aionemu.gameserver.model.templates.SkillTemplate;
 import com.aionemu.gameserver.skillengine.loader.SkillHandlerLoader;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommandChatHandler;
 import com.google.inject.Injector;
 
 /**
@@ -76,6 +77,17 @@ public class SkillEngine
 	{
 		ScriptManager sm = new ScriptManager();
 
+		Iterator<Map.Entry<Integer, SkillTemplate>> iter = DataManager.SKILL_DATA.getIterator();
+		while (iter.hasNext()) {
+			Map.Entry<Integer, SkillTemplate> entry = iter.next();
+			int skillId = entry.getKey();
+			SkillType type = entry.getValue().getType();
+			if (type!=SkillType.DEFAULT) {
+				log.info("Registering handler type "+type+" for skill #"+skillId);
+				registerSkill(entry.getValue().getType().getHandler(entry.getKey()));
+			}
+		}
+		
 		sm.setGlobalClassListener(new SkillHandlerLoader(injector, this));
 
 		try

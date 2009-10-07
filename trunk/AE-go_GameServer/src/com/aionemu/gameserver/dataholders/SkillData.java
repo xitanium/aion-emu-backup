@@ -17,6 +17,7 @@
 package com.aionemu.gameserver.dataholders;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,8 +28,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.aionemu.gameserver.model.templates.SkillTemplate;
-import com.aionemu.gameserver.skillengine.SkillEngine;
-import com.aionemu.gameserver.skillengine.SkillType;
 
 /**
  * @author ATracer
@@ -47,13 +46,9 @@ public class SkillData
 	
 	void afterUnmarshal(Unmarshaller u, Object parent)
 	{
-		SkillEngine skillEngine = SkillEngine.getInstance();
 		for(SkillTemplate skillTempalte: skillTemplates)
 		{
 			skillData.put(skillTempalte.getSkillId(), skillTempalte);
-			if (skillTempalte.getType()!=SkillType.DEFAULT) {
-				skillEngine.registerSkill(skillTempalte.getType().getHandler(skillTempalte.getSkillId()));
-			}
 		}
 	}
 	
@@ -66,6 +61,9 @@ public class SkillData
 		return skillData.get(skillId);
 	}
 	
+	public Iterator<Map.Entry<Integer, SkillTemplate>> getIterator () {
+		return skillData.entrySet().iterator();
+	}
 	public int size()
 	{
 		return skillData.size();
