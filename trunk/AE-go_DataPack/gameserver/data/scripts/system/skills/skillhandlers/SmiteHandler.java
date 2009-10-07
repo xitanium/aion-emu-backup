@@ -42,7 +42,7 @@ private static final Logger log = Logger.getLogger(FireBold.class);
         		final int reload = st.getLaunchTime();
         		final int cost = st.getCost();
         		PacketSendUtility.sendPacket(player, new SM_CASTSPELL(attackerId,getSkillId(),st.getLevel(),0,st.getRechargeTime(),targetId));
-        		creature.getController().onAttack(player, st);
+        		creature.getController().onAttack(player);
         		ThreadPoolManager.getInstance().schedule(new Runnable()
         		{
         			public void run() 
