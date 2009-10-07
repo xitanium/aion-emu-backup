@@ -82,6 +82,7 @@ public class StatFunctions
 		pls.setMaxMp(pst.getMaxMp());
 		// TODO find good MaxDp value
 		pls.setMaxDp(100);
+		log.debug("loading base life stats for player class "+playerClass+":"+pls);
 		return pls;
 	}
 	
@@ -106,6 +107,7 @@ public class StatFunctions
 		pgs.setFire(0);
 		// TODO find good values for fly time
 		pgs.setFlyTime(60);
+		log.debug("loading base game stats for player class "+playerClass+":"+pgs);
 		return pgs;
 	}
 }

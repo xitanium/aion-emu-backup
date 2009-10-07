@@ -30,7 +30,6 @@ import com.aionemu.commons.database.ParamReadStH;
 import com.aionemu.gameserver.dao.PlayerStatsDAO;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
-import com.aionemu.gameserver.utils.stats.StatFunctions;
 
 /**
  * 
@@ -99,6 +98,7 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 					pgs.setFire(rset.getInt("fire"));
 					pgs.setFlyTime(rset.getInt("fly_time"));
 					pgs.setInitialized(true);
+					log.debug("loaded game stats for player #"+playerId+":"+pgs);
 				}
 			}
 		});
@@ -131,6 +131,7 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 					pls.setCurrentDp(rset.getInt("current_mp"));
 					pls.setCurrentMp(rset.getInt("current_dp"));
 					pls.setInitialized(true);
+					log.debug("loaded life stats for player #"+playerId+":"+pls);
 				}
 			}
 		});
@@ -141,6 +142,7 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 	/** {@inheritDoc} */
 	@Override
 	public void storeNewStats(final int playerId, final PlayerLifeStats pls, final PlayerGameStats pgs) {
+		log.debug("storing new stats for player #"+playerId+":[l:"+pls+",g:"+pgs+"]");
 		DB.insertUpdate(INSERT_QUERY, new IUStH() {
 			@Override
 			public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
@@ -176,6 +178,7 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 	/** {@inheritDoc} */
 	@Override
 	public void storeLifeStats(final int playerId, final PlayerLifeStats pls) {
+		log.debug("Storing life stats of player #"+playerId+":"+pls);
 		DB.insertUpdate(LIFE_UPDATE_QUERY, new IUStH() {
 			@Override
 			public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
@@ -195,6 +198,7 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 	/** {@inheritDoc} */
 	@Override
 	public void storeGameStats(final int playerId, final PlayerGameStats pgs) {
+		log.debug("Storing game stats of player #"+playerId+":"+pgs);
 		DB.insertUpdate(GAME_UPDATE_QUERY, new IUStH() {
 			@Override
 			public void handleInsertUpdate(PreparedStatement stmt) throws SQLException
@@ -227,6 +231,7 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 	@Override
 	public void deleteStats(int playerId)
 	{
+		log.debug("Deleting stats for player #"+playerId);
 		PreparedStatement statement = DB.prepareStatement("DELETE FROM `players_stats` WHERE `id`=?");
 		try
 		{

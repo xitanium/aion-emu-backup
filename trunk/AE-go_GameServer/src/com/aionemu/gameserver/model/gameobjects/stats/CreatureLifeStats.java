@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.model.gameobjects.stats;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -59,6 +60,21 @@ public class CreatureLifeStats<T extends Creature>
 		this.maxMp = maxMp;
 		this.owner = owner;
 		this.initialized = true;
+	}
+	
+	@Override
+	public String toString () {
+		String str = new String ("{");
+		Class<?> clazz = CreatureLifeStats.class;
+		for (Field fi : clazz.getDeclaredFields()) {
+			if (fi.getType().isPrimitive()) {
+				try { str += fi.getName()+":"+fi.getInt(this); }
+				catch(Exception e) { try { str += fi.getName()+":"+fi.getBoolean(this); }
+				catch(Exception f) { } }
+			}
+		}
+		str += "}";
+		return str;
 	}
 	
 	public boolean isInitialized () {

@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.model.gameobjects.stats;
 
+import java.lang.reflect.Field;
+
 import com.aionemu.gameserver.model.SkillElement;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 
@@ -71,6 +73,21 @@ public class CreatureGameStats<T extends Creature>
 		setOffHandCritRate(offHandCritRate);
 	}
 
+	@Override
+	public String toString () {
+		String str = new String ("{");
+		Class<?> clazz = CreatureGameStats.class;
+		for (Field fi : clazz.getDeclaredFields()) {
+			if (fi.getType().isPrimitive()) {
+				try { str += fi.getName()+":"+fi.getInt(this); }
+				catch(Exception e) { try { str += fi.getName()+":"+fi.getBoolean(this); }
+				catch(Exception f) { } }
+			}
+		}
+		str += "}";
+		return str;
+	}
+	
 	public boolean isInitialized () {
 		return initialized;
 	}
