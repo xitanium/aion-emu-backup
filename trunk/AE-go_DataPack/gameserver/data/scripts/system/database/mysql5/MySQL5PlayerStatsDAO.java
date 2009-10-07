@@ -135,7 +135,7 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 			}
 		});
 		
-		return null;
+		return pls;
 	}
 	
 	/** {@inheritDoc} */
