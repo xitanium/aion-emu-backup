@@ -26,11 +26,11 @@ private static final Logger log = Logger.getLogger(FireBold.class);
     
     public void useSkill(Creature creature, List<Creature> targets)
     {
-    	final int attackerId = creature.getObjectId();
     	SkillTemplate st = this.getSkillTemplate();
         log.info("You are using Smite");
         if (creature instanceof Player) {
         	final Player player = (Player)creature;
+        	final int attackerId = player.getObjectId();
         	Iterator<Creature> iter = targets.iterator();
         	while (iter.hasNext()) {
         		final Creature cur = iter.next();
@@ -42,7 +42,7 @@ private static final Logger log = Logger.getLogger(FireBold.class);
         		final int reload = st.getLaunchTime();
         		final int cost = st.getCost();
         		PacketSendUtility.sendPacket(player, new SM_CASTSPELL(attackerId,getSkillId(),st.getLevel(),0,st.getRechargeTime(),targetId));
-        		creature.getController().onAttack(player);
+        		//creature.getController().onAttack(player);
         		ThreadPoolManager.getInstance().schedule(new Runnable()
         		{
         			public void run() 
