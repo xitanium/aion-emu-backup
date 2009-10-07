@@ -12,12 +12,13 @@ import com.aionemu.commons.database.DB;
 import com.aionemu.commons.database.IUStH;
 import com.aionemu.commons.database.ParamReadStH;
 import com.aionemu.gameserver.world.WorldPosition;
+import com.aionemu.gameserver.dao.AdminCommandsDAO;
 
-public class MySQL5AdminCommandsDAO {
+public class MySQL5AdminCommandsDAO extends AdminCommandsDAO {
 	
 	private static final Logger log = Logger.getLogger(MySQL5AdminCommandsDAO.class);
 	
-	public static float[] loadTeleport(String name) {
+	public final float[] loadTeleport(String name) {
 		PreparedStatement s = DB.prepareStatement("SELECT teleport_map, teleport_x, teleport_y, teleport_z, teleport_h FROM teleports WHERE teleport_name = ?");
 		float[] result = new float[5];
 		try {
@@ -40,7 +41,7 @@ public class MySQL5AdminCommandsDAO {
 		return result;
 	}
 	
-	public static boolean saveTeleport(String name, int mapId, float x, float y, float z, byte h) {
+	public final boolean saveTeleport(String name, int mapId, float x, float y, float z, byte h) {
 		PreparedStatement s = DB.prepareStatement("INSERT INTO teleports(teleport_name, teleport_map, teleport_x, teleport_y, teleport_z, teleport_h) VALUES (?, ?, ?, ?, ?, ?)");
 		try {
 				s.setString(1, name);
@@ -61,7 +62,7 @@ public class MySQL5AdminCommandsDAO {
 			}
 	}
 	
-	public static boolean isExistingTeleport(String name) {
+	public final boolean isExistingTeleport(String name) {
 		PreparedStatement s = DB.prepareStatement("SELECT count(id) as tps FROM teleports WHERE name = ?");
 		try {
 			s.setString(1, name);
@@ -78,6 +79,11 @@ public class MySQL5AdminCommandsDAO {
 		{
 			DB.close(s);
 		}
+	}
+	
+	public boolean supports(String databaseName, int majorVersion, int minorVersion)
+	{
+		return MySQL5DAOUtils.supports(databaseName, majorVersion, minorVersion);
 	}
 	
 }

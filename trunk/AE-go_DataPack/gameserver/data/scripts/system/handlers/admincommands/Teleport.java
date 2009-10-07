@@ -5,7 +5,8 @@ import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.world.World;
-import mysql5.MySQL5AdminCommandsDAO;
+import com.aionemu.gameserver.dao.AdminCommandsDAO;
+import com.aionemu.commons.database.dao.DAOManager;
 
 public class Teleport extends AdminCommand {
 	
@@ -17,6 +18,7 @@ public class Teleport extends AdminCommand {
 		
 		
 		World world = admin.getActiveRegion().getWorld();
+		AdminCommandsDAO dao = DAOManager.getDAO(AdminCommandsDAO.class);
 		
 		if (params.length == 0) {
             PacketSendUtility.sendMessage(admin, "Usage : //tele [add|del|name] <teleport_name>");
@@ -37,11 +39,11 @@ public class Teleport extends AdminCommand {
 	            PacketSendUtility.sendMessage(admin, "<teleport_name> : The name of the teleportation point to add");
 			}
 			else {
-				if(!MySQL5AdminCommandsDAO.isExistingTeleport(params[0].trim())) {
+				if(dao.isExistingTeleport(params[0].trim())) {
 					PacketSendUtility.sendMessage(admin, "Error : Teleport location '" + params[0].trim() + "' was not found in database.");
 				}
 				else {
-					float[] teleportCoords = MySQL5AdminCommandsDAO.loadTeleport(params[0].trim());
+					float[] teleportCoords = dao.loadTeleport(params[0].trim());
 					world.despawn(admin);
 					world.setPosition(admin, (int) teleportCoords[0], teleportCoords[1], teleportCoords[2], teleportCoords[3], (byte) teleportCoords[4]);
 					PacketSendUtility.sendPacket(admin, new SM_UNKF5(admin));
@@ -52,7 +54,7 @@ public class Teleport extends AdminCommand {
 		else if(params.length == 2) {
 			if(params[0].trim().equals("add")) {
 				if(!params[1].trim().equals("")) {
-					if(MySQL5AdminCommandsDAO.isExistingTeleport(params[1].trim())) {
+					if(dao.isExistingTeleport(params[1].trim())) {
 						PacketSendUtility.sendMessage(admin, "Error : The specified teleport name is already in use. Please choose another one.");
 					}
 					else {
@@ -61,7 +63,7 @@ public class Teleport extends AdminCommand {
 						float curMapY = admin.getY();
 						float curMapZ = admin.getZ();
 						byte curMapH = admin.getHeading();
-						if(MySQL5AdminCommandsDAO.saveTeleport(params[1].trim(), curMapId, curMapX, curMapY, curMapZ, curMapH)) {
+						if(dao.saveTeleport(params[1].trim(), curMapId, curMapX, curMapY, curMapZ, curMapH)) {
 							PacketSendUtility.sendMessage(admin, "Successful !");
 							PacketSendUtility.sendMessage(admin, "=== NEW TELEPORT LOCATION ADDED ===");
 							PacketSendUtility.sendMessage(admin, "Teleport Name : " + params[0].trim());
