@@ -47,8 +47,11 @@ public class SkillTemplate
 	@XmlAttribute(name = "level", required = true)
 	private int level;
 	
-	@XmlAttribute(name = "damages")
-	private int damages;
+	@XmlAttribute(name = "inflicts")
+	private int inflicts;
+	
+	@XmlAttribute(name = "heals")
+	private int heals;
 	
 	@XmlAttribute(name = "cost")
 	private int cost;
@@ -98,11 +101,19 @@ public class SkillTemplate
 	}
 
 	/**
+	 * @return the gain
+	 */
+	public int getGain()
+	{
+		return heals;
+	}
+	
+	/**
 	 * @return the damages
 	 */
 	public int getDamages()
 	{
-		return damages;
+		return inflicts;
 	}
 
 	/**

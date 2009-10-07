@@ -45,6 +45,7 @@
 		<xs:attribute name="level" type="xs:int" use="required" />
 		<xs:attribute name="skill_type" type="Type" default="DEFAULT" />
 		<xs:attribute name="inflicts" type="xs:int" default="0" />
+		<xs:attribute name="heals" type="xs:int" default="0" />
 		<xs:attribute name="element" type="Element" default="NONE" />
 		<xs:attribute name="cost" type="xs:int" default="0" />
 		<xs:attribute name="probability" type="Probability" default="100.0" />
