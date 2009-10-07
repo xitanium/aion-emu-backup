@@ -22,31 +22,32 @@ package admincommands;
 
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.world.World;
+import com.google.inject.Inject;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.world.WorldMap;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
-import com.aionemu.gameserver.model.gameobjects.player.Inventory;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_INVENTORY_UPDATE;
+import com.aionemu.gameserver.model.gameobjects.Creature;
+import com.aionemu.gameserver.model.gameobjects.AionObject;
+import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 
-public class Modify extends AdminCommand
+public class Go extends AdminCommand
 {
-	
+	@Inject
 	private World	world;
 /**
 	 * @param commandName
 	 */
-	public Modify()
+	public Go()
 	{
-		super("mod");
+		super("go");
 	}
 	
 	private void sendHelp(Player admin, String subcommand) {
-		PacketSendUtility.sendMessage(admin, "//mod : Modifies a player variable according to parameters");
-		if(subcommand.equals("money")) {
-			PacketSendUtility.sendMessage(admin, "//mod money <new_kinah> : Changes target's kinah amount by <new_kinah> (can be a negative value to remove kinah from target)");
+		PacketSendUtility.sendMessage(admin, "//go : Sends you to a specific location");
+		if(subcommand.equals("creature")) {
+			PacketSendUtility.sendMessage(admin, "//go creature <creature_id> : Go to creature location");
 		}
 		else {
-			PacketSendUtility.sendMessage(admin, "Available subcommands : money");
+			PacketSendUtility.sendMessage(admin, "Available subcommands : creature, object, coords");
 		}
 	}
 
@@ -56,46 +57,41 @@ public class Modify extends AdminCommand
 	@Override
 	public void executeCommand(Player admin, String... params)
 	{
+		world = admin.getActiveRegion().getWorld();
 		if(params.length == 0) {
 			sendHelp(admin, "");
 		}
 		else {
-			String subcommand = params[0].trim();
-			if(subcommand.equals("")) {
-				sendHelp(admin, "");
-			}
-			else if(subcommand.equals("money")) 
-			{
+			
+			String subcommand = params[1].trim();
+			
+			if(subcommand.equals("creature")) {
+				
 				if(params.length != 2) {
-					sendHelp(admin, "money");
+					sendHelp(admin, subcommand);
 				}
 				else {
 					try {
-						int newKinah = Integer.parseInt(params[1]);
-						if(admin.getTarget() instanceof Player) {
-							PacketSendUtility.sendMessage(admin, "Error : you must target a player, nothing else");
+						int targetCreatureId = Integer.parseInt(params[1].trim());
+						AionObject targetCreatureObj = world.findAionObject(targetCreatureId);
+						if(targetCreatureObj instanceof Creature)  {
+							Creature target = (Creature) targetCreatureObj;
+							world.setPosition(admin, target.getActiveRegion().getMapId(), target.getX(), target.getY(), target.getZ(), target.getHeading());
+							PacketSendUtility.sendPacket(admin, new SM_UNKF5(admin));
+							PacketSendUtility.sendMessage(admin, "Successfully teleported to creature #" + target.getObjectId());
 						}
 						else {
-							Player target = (Player) admin.getTarget();
-							Inventory targetKinah = new Inventory();
-							targetKinah.getKinahFromDb(target.getObjectId());
-							int actualKinah = targetKinah.getKinahCount();
-							int totalKinah = actualKinah + newKinah;
-							targetKinah.putKinahToDb(target.getObjectId(), totalKinah);
-							PacketSendUtility.sendPacket(target, new SM_INVENTORY_UPDATE(0, 182400001, totalKinah));
+							PacketSendUtility.sendMessage(admin, "Error : the specified <creature_id> doesn't point to a valid creature");
 						}
 					}
 					catch(NumberFormatException e) {
-						PacketSendUtility.sendMessage(admin, "Error : you must specify a integer numeric value for <new_kinah>");
+						PacketSendUtility.sendMessage(admin, "Error : you must specify a integer numeric value for <creature_id>");
 					}
-					
 				}
 			}
-			else 
-			{
+			else {
 				sendHelp(admin, "");
 			}
-			
-		}		
+		}
 	}
 }
