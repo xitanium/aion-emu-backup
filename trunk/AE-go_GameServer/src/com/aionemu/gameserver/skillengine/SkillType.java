@@ -28,26 +28,23 @@ public enum SkillType
 	HEAL_OBJECT,
 	HEAL_SIMPLE;
 	
-	private SkillHandler handler;
-	
 	public SkillHandler getHandler (int skillId) {
-		if (handler==null) {
-			switch (this) {
-				case SPELL_OBJECT:
-					handler = new SpellWithObject (skillId);
-					break;
-				case SPELL_SIMPLE:
-					handler = new SpellSimple (skillId);
-					break;
-				case HEAL_OBJECT:
-					handler = new HealWithObject (skillId);
-					break;
-				case HEAL_SIMPLE:
-					handler = new HealSimple (skillId);
-					break;
-				default:
-					throw new IllegalStateException("Cannot instantiate handler for skill type "+this);
-			}
+		final SkillHandler handler;
+		switch (this) {
+			case SPELL_OBJECT:
+				handler = new SpellWithObject (skillId);
+				break;
+			case SPELL_SIMPLE:
+				handler = new SpellSimple (skillId);
+				break;
+			case HEAL_OBJECT:
+				handler = new HealWithObject (skillId);
+				break;
+			case HEAL_SIMPLE:
+				handler = new HealSimple (skillId);
+				break;
+			default:
+				throw new IllegalStateException("Cannot instantiate handler for skill type "+this);
 		}
 		return handler;
 	}

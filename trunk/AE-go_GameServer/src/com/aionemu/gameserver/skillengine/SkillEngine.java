@@ -54,6 +54,7 @@ public class SkillEngine
 	public void registerSkill(SkillHandler skillHandler)
 	{
 		int skillId = skillHandler.getSkillId();
+		log.info("Registering handler "+skillHandler.getSkillTemplate().getName()+" for skill #"+skillId);
 		skillHandler.setSkillTemplate(DataManager.SKILL_DATA.getSkillTemplate(skillId));
 		skillHandlers.put(skillId, skillHandler);
 	}
