@@ -72,7 +72,7 @@ public class Modify extends AdminCommand
 				else {
 					try {
 						int newKinah = Integer.parseInt(params[1]);
-						if(admin.getTarget() instanceof Player) {
+						if(!(admin.getTarget() instanceof Player)) {
 							PacketSendUtility.sendMessage(admin, "Error : you must target a player, nothing else");
 						}
 						else {
