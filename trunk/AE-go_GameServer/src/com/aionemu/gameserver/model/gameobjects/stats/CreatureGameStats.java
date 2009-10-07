@@ -52,11 +52,13 @@ public class CreatureGameStats<T extends Creature>
 	private int block = 0;
 	private int parry = 0;
 	private int magicBoost = 0;
+	private boolean initialized = false;
 	private Creature owner = null;
 	
 	public CreatureGameStats (Creature owner, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int offHandAttack, int offHandCritRate)
 	{
 		this.owner = owner;
+		this.initialized = true;
 		setPower(power);
 		setHealth(health);
 		setAgility(agility);
@@ -69,6 +71,14 @@ public class CreatureGameStats<T extends Creature>
 		setOffHandCritRate(offHandCritRate);
 	}
 
+	public boolean isInitialized () {
+		return initialized;
+	}
+	
+	public void setInitialized (boolean initialized) {
+		this.initialized = initialized;
+	}
+	
 	/**
 	 * @return the atcount
 	 */

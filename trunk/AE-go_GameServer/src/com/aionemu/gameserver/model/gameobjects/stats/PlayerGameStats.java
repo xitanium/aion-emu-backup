@@ -30,6 +30,7 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 
 	public PlayerGameStats () {
 		super(null,0,0,0,0,0,0,0,0,0,0);
+		this.setInitialized(false);
 	}
 	
 	public PlayerGameStats (Player player, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int otherHandAttack, int otherHandCritRate)

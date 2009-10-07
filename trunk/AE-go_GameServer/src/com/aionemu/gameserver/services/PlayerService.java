@@ -40,6 +40,8 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerAppearance;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.model.gameobjects.player.SkillList;
+import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
+import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_ENTER_WORLD;
 import com.aionemu.gameserver.network.aion.clientpackets.CM_QUIT;
@@ -161,8 +163,17 @@ public class PlayerService
 		player.setKnownlist(new KnownList(player));
 		player.setFriendList(DAOManager.getDAO(FriendListDAO.class).load(player, world));
 		player.setBlockList(DAOManager.getDAO(BlockListDAO.class).load(player,world));
-		player.setGameStats(DAOManager.getDAO(PlayerStatsDAO.class).loadGameStats(playerObjId));
-		player.setLifeStats(DAOManager.getDAO(PlayerStatsDAO.class).loadLifeStats(playerObjId));
+		PlayerStatsDAO psd = DAOManager.getDAO(PlayerStatsDAO.class);
+		PlayerGameStats pgs = psd.loadGameStats(playerObjId);
+		if (!pgs.isInitialized()) {
+			pgs = StatFunctions.getBaseGameStats(pcd.getPlayerClass());
+		}
+		player.setGameStats(pgs);
+		PlayerLifeStats pls = psd.loadLifeStats(playerObjId);
+		if (!pls.isInitialized()) {
+			pls = StatFunctions.getBaseLifeStats(pcd.getPlayerClass());
+		}
+		player.setLifeStats(pls);
 		
 		if(CacheConfig.CACHE_PLAYERS)
 			playerCache.put(playerObjId, player);	

@@ -30,6 +30,7 @@ import com.aionemu.commons.database.ParamReadStH;
 import com.aionemu.gameserver.dao.PlayerStatsDAO;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
+import com.aionemu.gameserver.utils.stats.StatFunctions;
 
 /**
  * 
@@ -80,8 +81,7 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 			@Override
 			public void handleRead(ResultSet rset) throws SQLException
 			{
-				while(rset.next())
-				{
+				while (rset.next()) {
 					pgs.setAttackCounter(rset.getInt("attack_counter"));
 					pgs.setPower(rset.getInt("power"));
 					pgs.setHealth(rset.getInt("health"));
@@ -98,6 +98,7 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 					pgs.setEarth(rset.getInt("earth"));
 					pgs.setFire(rset.getInt("fire"));
 					pgs.setFlyTime(rset.getInt("fly_time"));
+					pgs.setInitialized(true);
 				}
 			}
 		});
@@ -129,6 +130,7 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 					pls.setCurrentHp(rset.getInt("current_hp"));
 					pls.setCurrentDp(rset.getInt("current_mp"));
 					pls.setCurrentMp(rset.getInt("current_dp"));
+					pls.setInitialized(true);
 				}
 			}
 		});

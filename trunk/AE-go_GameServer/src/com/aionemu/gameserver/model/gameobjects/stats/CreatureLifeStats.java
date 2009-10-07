@@ -46,6 +46,8 @@ public class CreatureLifeStats<T extends Creature>
 	
 	private Creature owner;
 	
+	private boolean initialized = false;
+	
 	private Future<?> lifeRestoreTask;
 
 	public CreatureLifeStats(Creature owner, int currentHp, int currentMp, int maxHp, int maxMp)
@@ -56,6 +58,15 @@ public class CreatureLifeStats<T extends Creature>
 		this.maxHp = maxHp;
 		this.maxMp = maxMp;
 		this.owner = owner;
+		this.initialized = true;
+	}
+	
+	public boolean isInitialized () {
+		return initialized;
+	}
+	
+	public void setInitialized (boolean initialized) {
+		this.initialized = initialized;
 	}
 	
 	/**
