@@ -18,6 +18,8 @@ package com.aionemu.gameserver.skillengine;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.templates.SkillTemplate;
 
@@ -32,9 +34,12 @@ public abstract class SkillHandler
 	
 	private SkillTemplate skillTemplate;
 	
+	protected static final Logger log = Logger.getLogger(SkillHandler.class);
+	
 	public SkillHandler(int skillId)
 	{
 		this.skillId = skillId;
+		log.info("Creating skill handler "+this.getClass().getName()+" for skill #"+skillId);
 	}
 	
 	public abstract void useSkill(Creature creature, List<Creature> targets);

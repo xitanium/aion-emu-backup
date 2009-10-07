@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.aionemu.gameserver.model.SkillElement;
+import com.aionemu.gameserver.skillengine.SkillType;
 
 /**
  * @author ATracer
@@ -33,6 +34,9 @@ public class SkillTemplate
 {
 	@XmlAttribute(name ="skill_id", required = true)
 	private int	skillId;
+	
+	@XmlAttribute(name = "skill_type")
+	private SkillType skillType;
 	
 	@XmlAttribute(name = "name", required = true)
 	private String name;
@@ -139,5 +143,12 @@ public class SkillTemplate
 	public int getScope()
 	{
 		return scope;
+	}
+	
+	public SkillType getType () {
+		if (skillType==null) {
+			return SkillType.DEFAULT;
+		}
+		return skillType;
 	}
 }

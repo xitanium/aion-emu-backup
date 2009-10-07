@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <skill_data  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="skills.xsd">
 	<skill_template skill_id="1801" name="Return" level="1" recharge_time="1200" launch_time="6" />
-	<skill_template skill_id="1351" name="Fire Storm" level="1" element="FIRE" cost="40" recharge_time="1" launch_time="2" damages="80"/>
-	<skill_template skill_id="975" name="Smite" level="1" element="EARTH" cost="18" recharge_time="2" launch_time="2" damages="81"/>
+	<skill_template skill_id="1351" name="Fire Storm" level="1" element="FIRE" cost="40" recharge_time="1" launch_time="2" damages="80" skill_type="SPELL_SIMPLE" />
+	<skill_template skill_id="975" name="Smite" level="1" element="EARTH" cost="18" recharge_time="2" launch_time="2" damages="81" skill_type="SPELL_SIMPLE" />
 </skill_data>
