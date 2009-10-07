@@ -39,7 +39,7 @@ public class Teleport extends AdminCommand {
 	            PacketSendUtility.sendMessage(admin, "<teleport_name> : The name of the teleportation point to add");
 			}
 			else {
-				if(dao.isExistingTeleport(params[0].trim())) {
+				if(!dao.isExistingTeleport(params[0].trim())) {
 					PacketSendUtility.sendMessage(admin, "Error : Teleport location '" + params[0].trim() + "' was not found in database.");
 				}
 				else {
@@ -66,7 +66,7 @@ public class Teleport extends AdminCommand {
 						if(dao.saveTeleport(params[1].trim(), curMapId, curMapX, curMapY, curMapZ, curMapH)) {
 							PacketSendUtility.sendMessage(admin, "Successful !");
 							PacketSendUtility.sendMessage(admin, "=== NEW TELEPORT LOCATION ADDED ===");
-							PacketSendUtility.sendMessage(admin, "Teleport Name : " + params[0].trim());
+							PacketSendUtility.sendMessage(admin, "Teleport Name : " + params[1].trim());
 							PacketSendUtility.sendMessage(admin, "Coords : 	map			= " + curMapId);
 							PacketSendUtility.sendMessage(admin, "              	x				= " + curMapX);
 							PacketSendUtility.sendMessage(admin, "              	y				= " + curMapY);
