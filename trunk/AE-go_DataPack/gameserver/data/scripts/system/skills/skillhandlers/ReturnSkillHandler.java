@@ -63,6 +63,7 @@ java.util.List)
        log.info("You are using return");
        final Player player = (Player) creature;
        world = player.getActiveRegion().getWorld();
+       log.info("[Return] Player " + player.getName() + " teleported to bind point in map " + player.getActiveRegion().getMapId());
        WorldPosition bp = player.getBindPoint();
        world.setPosition(player, bp.getMapId(), bp.getX(), bp.getY(), bp.getZ(), bp.getHeading());
        PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
