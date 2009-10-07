@@ -118,11 +118,6 @@ public class NpcController extends CreatureController<Npc>
 	@Override
 	public boolean onAttack(Creature creature)
 	{
-		return onAttack(creature, null);
-	}
-	
-	public boolean onAttack(Creature creature, SkillTemplate skill)
-	{
 		super.onAttack(creature);
 		Npc npc = getOwner();
 		
@@ -138,14 +133,9 @@ public class NpcController extends CreatureController<Npc>
 			return false;
 		}
 		
-		if(skill != null) {
+		//TODO: Reduce hp corresponding to real damages done by player
+		lifeStats.reduceHp(55);
 		
-			lifeStats.reduceHp(skill.getDamages());
-		
-		}else {
-			
-			lifeStats.reduceHp(55);
-		}
 		
 		if(!lifeStats.isAlive())
 		{

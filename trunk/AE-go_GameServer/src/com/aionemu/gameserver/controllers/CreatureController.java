@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.controllers;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.services.DecayService;
@@ -30,6 +32,7 @@ import com.aionemu.gameserver.model.templates.SkillTemplate;
  */
 public abstract class CreatureController<T extends Creature> extends VisibleObjectController<T>
 {
+	private static final Logger log = Logger.getLogger(CreatureController.class);
 	/**
 	 * {@inheritDoc}
 	 */
@@ -46,7 +49,7 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 	 */
 	public void onDie()
 	{
-
+		log.info("Creature " + this.getOwner().getObjectId() + " has died.");
 	}
 	
 	/**
@@ -54,18 +57,13 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 	 */
 	public void onRespawn()
 	{
-		
+		log.info("Creature " + this.getOwner().getObjectId() + " has respawned.");
 	}
 	
 	/**
 	 *  Perform tasks when Creature was attacked
 	 */
 	public boolean onAttack(Creature creature)
-	{
-		return onAttack(creature, null);
-	}
-	
-	public boolean onAttack(Creature creature, SkillTemplate skill)
 	{
 		return true;
 	}
