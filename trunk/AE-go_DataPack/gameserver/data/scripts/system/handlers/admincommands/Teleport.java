@@ -51,6 +51,7 @@ public class Teleport extends AdminCommand {
 				}
 			}
 		}
+		// Two params specified
 		else if(params.length == 2) {
 			if(params[0].trim().equals("add")) {
 				if(!params[1].trim().equals("")) {
@@ -83,8 +84,23 @@ public class Teleport extends AdminCommand {
 				}
 			}
 			else if(params[0].trim().equals("del")) {
-				PacketSendUtility.sendMessage(admin, "Usage : //tele del <teleport_name>");
-	            PacketSendUtility.sendMessage(admin, "<teleport_name> : The name of the teleportation point to delete");
+				//TODO: Make delete teleport
+				if(!params[1].trim().equals("")) {
+					if(!dao.isExistingTeleport(params[1].trim())) {
+						PacketSendUtility.sendMessage(admin, "Error : The specified teleport name was not found in database");
+					}
+					else {
+						if(dao.deleteTeleport(params[1].trim())) {
+							PacketSendUtility.sendMessage(admin, "Teleport location '" + params[1].trim() + "' successfully deleted");
+						}
+						else {
+							PacketSendUtility.sendMessage(admin, "An error has occured when removing teleport location from database. Please report to developers.");
+						}
+					}
+				}
+				else {
+					PacketSendUtility.sendMessage(admin, "Error : You must specify the name of the teleport location to delete");
+				}
 			}
 			else if(params[0].trim().equals("name")) {
 				PacketSendUtility.sendMessage(admin, "Usage : //tele name <player_name> <teleport_name>");

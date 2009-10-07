@@ -62,6 +62,22 @@ public class MySQL5AdminCommandsDAO extends AdminCommandsDAO {
 			}
 	}
 	
+	public final boolean deleteTeleport(String name) {
+		PreparedStatement s = DB.prepareStatement("REMOVE FROM teleports WHERE teleport_name = ?");
+		try {
+				s.setString(1, name);
+				s.execute();
+				return true;
+			}
+			catch(SQLException e) {
+				log.error("Cannot delete teleport :" + name, e);
+				return false;
+			}
+			finally {
+				DB.close(s);
+			}
+	}
+	
 	public final boolean isExistingTeleport(String name) {
 		PreparedStatement s = DB.prepareStatement("SELECT count(teleport_id) as tps FROM teleports WHERE teleport_name = ?");
 		try {
