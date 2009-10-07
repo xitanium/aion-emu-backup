@@ -33,6 +33,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  */
 public class CreatureLifeStats<T extends Creature>
 {
+	@SuppressWarnings("unused")
 	private static final Logger log = Logger.getLogger(CreatureLifeStats.class);
 	
 	private int currentHp;
@@ -47,13 +48,14 @@ public class CreatureLifeStats<T extends Creature>
 	
 	private Future<?> lifeRestoreTask;
 
-	public CreatureLifeStats(int currentHp, int currentMp, int maxHp, int maxMp)
+	public CreatureLifeStats(Creature owner, int currentHp, int currentMp, int maxHp, int maxMp)
 	{
 		super();
 		this.currentHp = currentHp;
 		this.currentMp = currentMp;
 		this.maxHp = maxHp;
 		this.maxMp = maxMp;
+		this.owner = owner;
 	}
 	
 	/**

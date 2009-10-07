@@ -17,6 +17,8 @@
 package com.aionemu.gameserver.model.gameobjects.stats;
 
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_DP;
+import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
  * @author ATracer
@@ -25,14 +27,70 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 public class PlayerLifeStats extends CreatureLifeStats<Player>
 {
 
-	public PlayerLifeStats(int currentHp, int currentMp, int maxHp, int maxMp)
+	private int currentDp;
+	private int maxDp;
+	
+	public PlayerLifeStats() {
+		this(null,0,0,0,0,0,0);
+	}
+	
+	public PlayerLifeStats(int maxHp, int maxMp, int maxDp)
 	{
-		super(currentHp, currentMp, maxHp, maxMp);
+		this(null, maxHp, maxMp, maxDp, maxHp, maxMp, maxDp);
+	}
+	
+	public PlayerLifeStats(Player owner, int currentHp, int currentMp, int currentDp, int maxHp, int maxMp, int maxDp)
+	{
+		super(owner, currentHp, currentMp, maxHp, maxMp);
+		this.currentDp = currentDp;
+		this.maxDp = maxDp;
 	}	
 	
-	public PlayerLifeStats(int maxHp, int maxMp)
+	public int increaseCurrentDp (int value) {
+		synchronized(this)
+		{
+			int newDp = this.currentDp + value;
+			if(newDp > maxDp)
+			{
+				newDp = maxDp;
+			}
+			this.currentDp = newDp;		
+		}
+		
+		sendDpPacketUpdate();
+		
+		return currentDp;
+	}
+	
+	public void setCurrentDp (int currentDp) {
+		this.currentDp = currentDp;
+	}
+	
+	private void sendDpPacketUpdate () {
+		if(getOwner() == null)
+		{
+			return;
+		}
+		PacketSendUtility.sendPacket((Player)getOwner(), new SM_STATUPDATE_DP(currentDp));
+	}
+
+	public void setMaxDp(int maxDp)
 	{
-		super(maxHp, maxMp, maxHp, maxMp);
+		this.maxDp = maxDp;
+	}
+	
+	public int getMaxDp() {
+		return maxDp;
+	}
+	
+	public int getCurrentDp() {
+		return currentDp;
+	}
+	
+	public void doEvolution (int fromLevel, int toLevel) {
+		setMaxHp((int) Math.round(this.getMaxHp() * 1.07 * (toLevel - fromLevel)));
+		setMaxMp((int) Math.round(this.getMaxMp() * 1.07 * (toLevel - fromLevel)));
+		setMaxDp((int) Math.round(this.getMaxDp() * 1.07 * (toLevel - fromLevel)));
 	}
 	
 }

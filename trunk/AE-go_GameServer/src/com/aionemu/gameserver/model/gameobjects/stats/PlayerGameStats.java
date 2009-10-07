@@ -28,10 +28,15 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 	private int itemNameId; //TODO remove
 	private int itemCount; //todo remove
 
-	public PlayerGameStats()
-	{
-		super();
+	public PlayerGameStats () {
+		super(null,0,0,0,0,0,0,0,0,0,0);
 	}
+	
+	public PlayerGameStats (Player player, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int otherHandAttack, int otherHandCritRate)
+	{
+		super(player,power,health,agility,accuracy,knowledge,will,mainHandAttack,mainHandCritRate,otherHandAttack,otherHandCritRate);
+	}
+
 
 	/**
 	 * @return the itemId
@@ -79,5 +84,19 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 	public void setItemCount(int itemCount)
 	{
 		this.itemCount = itemCount;
+	}
+	
+	// TODO Find the good stats evolution rates according to level
+	public void doEvolution (int fromLevel, int toLevel) {
+		setPower(getPower() + (int) Math.round((toLevel - fromLevel) * 1.1688));
+		setHealth(getHealth() + (int) Math.round((toLevel - fromLevel) * 1.1688));
+		setAgility(getAgility() + (int) Math.round((toLevel - fromLevel) * 1.1688));
+		setAccuracy(getAccuracy() + (int) Math.round((toLevel - fromLevel) * 1.1688));
+		setKnowledge(getKnowledge() + (int) Math.round((toLevel - fromLevel) * 1.1688));
+		setWill(getWill() + (int) Math.round((toLevel - fromLevel) * 1.1688));
+		setMainHandAttack(getMainHandAttack() + (int) Math.round((toLevel - fromLevel) * 0.108));
+		setMainHandCritRate(getMainHandCritRate() + (int) Math.round((toLevel - fromLevel) * 0.108));
+		setOffHandAttack(getOffHandAttack() + (int) Math.round((toLevel - fromLevel) * 0.108));
+		setOffHandCritRate(getOffHandCritRate() + (int) Math.round((toLevel - fromLevel) * 0.108));
 	}
 }

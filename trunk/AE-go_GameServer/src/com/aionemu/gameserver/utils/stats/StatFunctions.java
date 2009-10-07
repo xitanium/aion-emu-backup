@@ -18,9 +18,14 @@ package com.aionemu.gameserver.utils.stats;
 
 import org.apache.log4j.Logger;
 
+import com.aionemu.gameserver.dataholders.DataManager;
+import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
+import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
+import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 
 /**
  * @author ATracer
@@ -70,4 +75,37 @@ public class StatFunctions
 		return npc.getLevel() * 10;
 	}
 	
+	public static PlayerLifeStats getBaseLifeStats (PlayerClass playerClass) {
+		final PlayerLifeStats pls = new PlayerLifeStats();
+		PlayerStatsTemplate pst = DataManager.PLAYER_STATS_DATA.getTemplate(playerClass,1);
+		pls.setMaxHp(pst.getMaxHp());
+		pls.setMaxMp(pst.getMaxMp());
+		// TODO find good MaxDp value
+		pls.setMaxDp(100);
+		return pls;
+	}
+	
+	public static PlayerGameStats getBaseGameStats (PlayerClass playerClass) {
+		final PlayerGameStats pgs = new PlayerGameStats();
+		PlayerStatsTemplate pst = DataManager.PLAYER_STATS_DATA.getTemplate(playerClass,1);
+		pgs.setAttackCounter(0);
+		pgs.setPower(pst.getPower());
+		pgs.setHealth(pst.getHealth());
+		pgs.setAgility(pst.getAgility());
+		pgs.setAccuracy(pst.getAccuracy());
+		pgs.setKnowledge(pst.getKnowledge());
+		pgs.setWill(pst.getWill());
+		pgs.setMainHandAttack(pst.getMainHandAttack());
+		pgs.setMainHandCritRate(pst.getMainHandCritRate());
+		// TODO find off hand attack and crit rate values
+		pgs.setOffHandAttack(pst.getMainHandAttack());
+		pgs.setOffHandCritRate(pst.getMainHandCritRate());
+		pgs.setWater(0);
+		pgs.setWind(0);
+		pgs.setEarth(0);
+		pgs.setFire(0);
+		// TODO find good values for fly time
+		pgs.setFlyTime(60);
+		return pgs;
+	}
 }

@@ -25,12 +25,10 @@ import com.aionemu.gameserver.dataholders.StaticData;
 import com.aionemu.gameserver.model.Gender;
 import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.Race;
-import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LEVEL_UPDATE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATS_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_EXP;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.stats.ClassStats;
 import com.aionemu.gameserver.world.WorldPosition;
 
 /**
@@ -97,33 +95,21 @@ public class PlayerCommonData
 		{
 			exp = maxExp;
 		}
-		int level = 1;
-		while (exp >= DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level+1) && level != maxLevel)
+		int level = this.level;
+		while (exp >= DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level+1) && level <= maxLevel)
 		{
 			level++;
 		}
+		this.exp = exp;
 		if (level != this.level)
 		{
 			this.setLevel(level);
-			this.exp = exp;
-			
-			if(this.getPlayer()!=null)
-			{
-				Player player = this.getPlayer();
-				PacketSendUtility.sendPacket(this.getPlayer(),
-					new SM_LEVEL_UPDATE(this.getPlayerObjId(), level));
-				player.setLifeStats(new PlayerLifeStats(
-					ClassStats.getMaxHpFor(player.getPlayerClass(), player.getLevel()), 650));
-			}
 		}
 		else
-		{
-			this.exp = exp;
-			
+		{	
 			if(this.getPlayer()!=null)
 			{
-				PacketSendUtility.sendPacket(this.getPlayer(),
-					new SM_STATUPDATE_EXP(this.getExpShown(), 0, this.getExpNeed()));
+				PacketSendUtility.sendPacket(this.getPlayer(),new SM_STATUPDATE_EXP(this.getExpShown(), 0, this.getExpNeed()));
 			}
 		}
 	}
@@ -210,10 +196,18 @@ public class PlayerCommonData
 	{
 		if (level <= DataManager.PLAYER_EXPERIENCE_TABLE.getMaxLevel())
 		{
-			this.level = level;
-			this.setExp(DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level));
-			if(this.getPlayer()!=null)
-				PacketSendUtility.sendPacket(this.getPlayer(), new SM_STATS_INFO(this.getPlayer()));
+			int fromLevel = this.level;
+			int toLevel = level;
+			this.level = toLevel;
+			if (this.getExp()<DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level)) {
+				this.setExp(DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level));
+			}
+			if(this.getPlayer()!=null) {
+				Player player = this.getPlayer();
+				player.doStatsEvolution(fromLevel, toLevel);
+				PacketSendUtility.sendPacket(player, new SM_LEVEL_UPDATE(player.getObjectId(), level));
+				PacketSendUtility.sendPacket(player, new SM_STATS_INFO(player));
+			}
 		}
 	}
 	

@@ -18,7 +18,6 @@ package com.aionemu.gameserver.controllers;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.gameserver.ai.AIState;
 import com.aionemu.gameserver.ai.events.AttackEvent;
 import com.aionemu.gameserver.ai.npcai.NpcAi;
 import com.aionemu.gameserver.model.gameobjects.Creature;
@@ -28,7 +27,6 @@ import com.aionemu.gameserver.model.gameobjects.stats.NpcGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.NpcLifeStats;
 import com.aionemu.gameserver.model.templates.stats.StatsTemplate;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
 import com.aionemu.gameserver.services.DecayService;
@@ -44,7 +42,7 @@ import com.aionemu.gameserver.world.World;
  */
 public class NpcController extends CreatureController<Npc>
 {
-	
+	@SuppressWarnings("unused")
 	private static Logger log = Logger.getLogger(NpcController.class);
 	
 	public void attackTarget(int targetObjectId)

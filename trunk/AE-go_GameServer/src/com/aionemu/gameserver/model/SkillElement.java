@@ -22,6 +22,7 @@ package com.aionemu.gameserver.model;
  */
 public enum SkillElement
 {
+	NONE(0),
 	FIRE(1),
 	WATER(2),
 	WIND(3),

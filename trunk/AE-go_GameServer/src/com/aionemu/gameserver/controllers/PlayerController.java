@@ -153,7 +153,6 @@ public class PlayerController extends CreatureController<Player>
 	
 	public void useSkill(int skillId, int level, int unk, int targetObjectId, int time)
 	{
-		int damages = 0;
 		SkillHandler skillHandler = SkillEngine.getInstance().getSkillHandlerFor(skillId);
 		
 		if(skillHandler != null)
@@ -167,7 +166,6 @@ public class PlayerController extends CreatureController<Player>
 				skillHandler.useSkill(this.getOwner(), null);
 			}
 		}
-		log.info("using skill#"+skillId);
 	}
 
 	/* (non-Javadoc)

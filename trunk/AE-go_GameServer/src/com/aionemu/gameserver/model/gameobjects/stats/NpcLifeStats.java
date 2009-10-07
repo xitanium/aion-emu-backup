@@ -27,7 +27,7 @@ public class NpcLifeStats extends CreatureLifeStats<Npc>
 
 	public NpcLifeStats(int currentHp, int currentMp, int maxHp, int maxMp)
 	{
-		super(currentHp, currentMp, maxHp, maxMp);
+		super(null, currentHp, currentMp, maxHp, maxMp);
 		// TODO Auto-generated constructor stub
 	}
 	
