@@ -70,7 +70,7 @@ java.util.List)
        }
        else {
     	   log.warn("No bind point registered for player " + player.getName());
-    	   PacketSendUtility.sendMessage(player, "You have no registered bind point. Please report this to Game Masters.");
+    	   PacketSendUtility.sendMessage(player, "You have no registered bind point. Please report this issue to Game Masters.");
        }
        PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
    }
