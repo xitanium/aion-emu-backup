@@ -18,7 +18,7 @@ import com.aionemu.gameserver.utils.ThreadPoolManager;
 
 public class SmiteHandler extends SkillHandler {
 	
-private static final Logger log = Logger.getLogger(FireBold.class);
+	private static final Logger log = Logger.getLogger(SmiteHandler.class);
     
     public SmiteHandler() {
         super(975);
