@@ -16,11 +16,10 @@ public class Teleport extends AdminCommand {
 	
 	public void executeCommand(Player admin, String... params) {
 		
-		
 		World world = admin.getActiveRegion().getWorld();
 		AdminCommandsDAO dao = DAOManager.getDAO(AdminCommandsDAO.class);
 		
-		if (params.length == 0) {
+		if (params.length == 0 || params.length > 3) {
             PacketSendUtility.sendMessage(admin, "Usage : //tele [add|del|name] <teleport_name>");
             PacketSendUtility.sendMessage(admin, "<teleport_name> : The name of the teleportation point");
 		}
@@ -84,7 +83,6 @@ public class Teleport extends AdminCommand {
 				}
 			}
 			else if(params[0].trim().equals("del")) {
-				//TODO: Make delete teleport
 				if(!params[1].trim().equals("")) {
 					if(!dao.isExistingTeleport(params[1].trim())) {
 						PacketSendUtility.sendMessage(admin, "Error : The specified teleport name was not found in database");
@@ -112,7 +110,38 @@ public class Teleport extends AdminCommand {
 			}
 		}
 		else if(params.length == 3) {
-			
+			if(params[0].trim().equals("name")) {
+				
+				String playerName = params[1].trim();
+				String teleportName = params[2].trim();
+				
+				Player player = world.findPlayer(playerName);
+				if(player == null) {
+					PacketSendUtility.sendMessage(admin, "Player '" + playerName + "' is not online or does not exist");
+				}
+				else {
+					
+					if(dao.isExistingTeleport(teleportName)) {
+						
+						float[] teleportCoords = dao.loadTeleport(teleportName);
+						world.setPosition(player, (int) teleportCoords[0], teleportCoords[1], teleportCoords[2], teleportCoords[3], (byte) teleportCoords[4]);
+						PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
+						PacketSendUtility.sendMessage(admin, "Player " + playerName + " successfully teleported to " + teleportName);
+						PacketSendUtility.sendMessage(player, "You were teleported by Game Master:" + admin.getName());
+					}
+					
+					else {
+						
+						PacketSendUtility.sendMessage(admin, "Error : The specified teleport name was not found in database");
+						
+					}
+					
+				}
+			}
+			else {
+				PacketSendUtility.sendMessage(admin, "Usage : //tele [add|del|name] <teleport_name>");
+	            PacketSendUtility.sendMessage(admin, "<teleport_name> : The name of the teleportation point");
+			}
 		}
 		
 	}
