@@ -79,12 +79,13 @@ public class StatFunctions
 		final PlayerLifeStats pls = new PlayerLifeStats();
 		PlayerStatsTemplate pst = DataManager.PLAYER_STATS_DATA.getTemplate(playerClass,1);
 		pls.setMaxHp(pst.getMaxHp());
-		pls.setCurrentHp(pls.getMaxDp());
+		pls.setCurrentHp(pls.getMaxHp());
 		pls.setMaxMp(pst.getMaxMp());
 		pls.setCurrentMp(pls.getMaxMp());
 		// TODO find good MaxDp value
 		pls.setMaxDp(100);
 		pls.setCurrentDp(0);
+		pls.setInitialized(true);
 		log.debug("loading base life stats for player class "+playerClass+":"+pls);
 		return pls;
 	}
@@ -110,6 +111,7 @@ public class StatFunctions
 		pgs.setFire(0);
 		// TODO find good values for fly time
 		pgs.setFlyTime(60);
+		pgs.setInitialized(true);
 		log.debug("loading base game stats for player class "+playerClass+":"+pgs);
 		return pgs;
 	}
