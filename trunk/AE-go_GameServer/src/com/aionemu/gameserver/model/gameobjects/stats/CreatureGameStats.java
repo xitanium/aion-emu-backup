@@ -46,7 +46,7 @@ public class CreatureGameStats<T extends Creature>
 	private int fire = 0;
 	private int flyTime = 0;
 	private int mainHandAccuracy = 0;
-	private int otherHandAccuracy = 0;
+	private int offHandAccuracy = 0;
 	private int magicAccuracy = 0;
 	private int magicResistance = 0;
 	private int physicalDefense = 0;
@@ -79,8 +79,8 @@ public class CreatureGameStats<T extends Creature>
 		Class<?> clazz = CreatureGameStats.class;
 		for (Field fi : clazz.getDeclaredFields()) {
 			if (fi.getType().isPrimitive()) {
-				try { str += fi.getName()+":"+fi.getInt(this); }
-				catch(Exception e) { try { str += fi.getName()+":"+fi.getBoolean(this); }
+				try { str += fi.getName()+":"+fi.getInt(this)+","; }
+				catch(Exception e) { try { str += fi.getName()+":"+fi.getBoolean(this)+","; }
 				catch(Exception f) { } }
 			}
 		}
@@ -151,9 +151,7 @@ public class CreatureGameStats<T extends Creature>
 	public void setHealth(int health)
 	{
 		this.health = health;
-		if(!(owner == null)) {
-			this.physicalDefense = (int)Math.round(health * 3.1 - 248.5 + 12.4 * owner.getLevel());
-		}
+		this.physicalDefense = (int)Math.round(health / 3.1);
 	}
 	/**
 	 * @return the agility
@@ -168,11 +166,9 @@ public class CreatureGameStats<T extends Creature>
 	public void setAgility(int agility)
 	{
 		this.agility = agility;
-		if(!(owner == null)) {
-			this.parry = (int)Math.round(agility * 3.1 - 248.5 + 12.4 * owner.getLevel());
-			this.evasion = (int)Math.round(agility * 3.1 - 248.5 + 12.4 * owner.getLevel());
-			this.block = (int)Math.round(agility * 3.1 - 248.5 + 12.4 * owner.getLevel());
-		}
+		this.parry = (int)Math.round(agility / 3.1);
+		this.evasion = (int)Math.round(agility / 3.1);
+		this.block = (int)Math.round(agility / 3.1);
 	}
 	/**
 	 * @return the accuracy
@@ -187,10 +183,8 @@ public class CreatureGameStats<T extends Creature>
 	public void setAccuracy(int accuracy)
 	{
 		this.accuracy = accuracy;
-		if(!(owner == null)) {
-			this.mainHandAccuracy = (accuracy * 2) - 10 + 8 * owner.getLevel();
-			this.otherHandAccuracy = (accuracy * 2) - 10 + 8 * owner.getLevel();
-		}
+		this.mainHandAccuracy = (int) Math.round(accuracy * 1.25);
+		this.offHandAccuracy = (int) Math.round(accuracy * 0.75);
 	}
 	/**
 	 * @return the knowledge
@@ -205,9 +199,7 @@ public class CreatureGameStats<T extends Creature>
 	public void setKnowledge(int knowledge)
 	{
 		this.knowledge = knowledge;
-		if(!(owner == null)) {
-			this.magicResistance = (int)Math.round(knowledge * 3.1 - 248.5 + 12.4 * owner.getLevel());
-		}
+		this.magicResistance = (int)Math.round(knowledge / 3.1);
 	}
 	/**
 	 * @return the will
@@ -222,9 +214,7 @@ public class CreatureGameStats<T extends Creature>
 	public void setWill(int will)
 	{
 		this.will = will;
-		if(!(owner == null)) {
-			this.magicAccuracy = (will * 2) - 10 + 8 * owner.getLevel();
-		}
+		this.magicAccuracy = (int) Math.round(will * 0.75);
 	}
 	/**
 	 * @return the mainHandAttack
@@ -362,9 +352,9 @@ public class CreatureGameStats<T extends Creature>
 	/**
 	 * @return the otherHandAccuracy
 	 */
-	public int getOtherHandAccuracy()
+	public int getOffHandAccuracy()
 	{
-		return otherHandAccuracy;
+		return offHandAccuracy;
 	}
 	/**
 	 * @return the magicAccuracy

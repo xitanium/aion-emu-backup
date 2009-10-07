@@ -68,8 +68,8 @@ public class CreatureLifeStats<T extends Creature>
 		Class<?> clazz = CreatureLifeStats.class;
 		for (Field fi : clazz.getDeclaredFields()) {
 			if (fi.getType().isPrimitive()) {
-				try { str += fi.getName()+":"+fi.getInt(this); }
-				catch(Exception e) { try { str += fi.getName()+":"+fi.getBoolean(this); }
+				try { str += fi.getName()+":"+fi.getInt(this)+","; }
+				catch(Exception e) { try { str += fi.getName()+":"+fi.getBoolean(this)+","; }
 				catch(Exception f) { } }
 			}
 		}

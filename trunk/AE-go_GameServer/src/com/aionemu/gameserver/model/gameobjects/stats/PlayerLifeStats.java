@@ -93,5 +93,4 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 		setMaxMp((int) Math.round(this.getMaxMp() * 1.07 * (toLevel - fromLevel)));
 		setMaxDp((int) Math.round(this.getMaxDp() * 1.07 * (toLevel - fromLevel)));
 	}
-	
 }
