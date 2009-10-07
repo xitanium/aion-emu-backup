@@ -13,6 +13,9 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Xitanium
+ *
  */
 
 package admincommands;
@@ -26,10 +29,6 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.WorldMap;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 
-/**
- * @author Elusive
- *
- */
 public class GPS extends AdminCommand
 {
 	@Inject
