@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.model.gameobjects.stats;
 
+import com.aionemu.commons.database.dao.DAOManager;
+import com.aionemu.gameserver.dao.PlayerStatsDAO;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 
 /**
@@ -99,5 +101,6 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 		setMainHandCritRate(getMainHandCritRate() + (int) Math.round((toLevel - fromLevel) * 0.108));
 		setOffHandAttack(getOffHandAttack() + (int) Math.round((toLevel - fromLevel) * 0.108));
 		setOffHandCritRate(getOffHandCritRate() + (int) Math.round((toLevel - fromLevel) * 0.108));
+		DAOManager.getDAO(PlayerStatsDAO.class).storeGameStats(this.getOwner().getObjectId(), this);
 	}
 }

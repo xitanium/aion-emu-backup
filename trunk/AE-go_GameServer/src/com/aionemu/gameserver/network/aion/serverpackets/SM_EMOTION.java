@@ -31,6 +31,7 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
  */
 public class SM_EMOTION extends AionServerPacket
 {
+	@SuppressWarnings("unused")
 	private static final Logger	log	= Logger.getLogger(SM_EMOTION.class);
 
 	/**
@@ -128,37 +129,5 @@ public class SM_EMOTION extends AionServerPacket
 				}
 				break;
 		}
-		if (unknown == 13 ){
-			
-		}
-		else if (unknown == 35 )
-		{
-			
-		}
-		else if (unknown == 30 )
-		{
-			
-			
-		}
-		else if (unknown == 19 )
-		{
-			//emote startloop
-			
-			
-		}
-		else if (unknown == 36 )
-		{
-			
-		}
-		else
-		{
-		
-		
-		}
-		if(unknown == 0x10)
-		{
-			
-		}
-
 	}
 }

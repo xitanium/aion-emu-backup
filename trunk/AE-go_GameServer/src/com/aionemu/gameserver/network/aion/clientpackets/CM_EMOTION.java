@@ -29,7 +29,6 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  */
 public class CM_EMOTION extends AionClientPacket
 {
-
 	/**
 	 * Logger
 	 */
@@ -46,9 +45,6 @@ public class CM_EMOTION extends AionClientPacket
 	int emotion;
 	
 	int ObjID;
-	
-	private int monsterToAttackId;
-
 
 	/**
 	 * Constructs new client packet instance.

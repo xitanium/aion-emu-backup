@@ -121,6 +121,7 @@ public class CreatureLifeStats<T extends Creature>
 	public void setCurrentHp(int currentHp)
 	{
 		this.currentHp = currentHp;
+		sendHpPacketUpdate();
 	}
 
 	/**
@@ -137,6 +138,7 @@ public class CreatureLifeStats<T extends Creature>
 	public void setCurrentMp(int currentMp)
 	{
 		this.currentMp = currentMp;
+		sendMpPacketUpdate();
 	}
 
 	/**
@@ -153,6 +155,7 @@ public class CreatureLifeStats<T extends Creature>
 	public void setMaxHp(int maxHp)
 	{
 		this.maxHp = maxHp;
+		sendHpPacketUpdate();
 	}
 
 	/**
@@ -169,6 +172,7 @@ public class CreatureLifeStats<T extends Creature>
 	public void setMaxMp(int maxMp)
 	{
 		this.maxMp = maxMp;
+		sendMpPacketUpdate();
 	}
 	
 	/**
@@ -190,9 +194,11 @@ public class CreatureLifeStats<T extends Creature>
 			this.currentHp = newHp;
 		}	
 		
-		if(lifeRestoreTask == null)
-		{
-			this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
+		if (getOwner() instanceof Player) {
+			if(lifeRestoreTask == null)
+			{
+				this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
+			}
 		}
 		
 		sendHpPacketUpdate();
@@ -202,7 +208,7 @@ public class CreatureLifeStats<T extends Creature>
 	/**
 	 * Informs about HP change
 	 */
-	private void sendHpPacketUpdate()
+	protected void sendHpPacketUpdate()
 	{
 		if(owner == null)
 		{
@@ -256,9 +262,11 @@ public class CreatureLifeStats<T extends Creature>
 			this.currentMp = newMp;
 		}	
 		
-		if(lifeRestoreTask == null)
-		{
-			this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
+		if (getOwner() instanceof Player) {
+			if(lifeRestoreTask == null)
+			{
+				this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
+			}
 		}
 		
 		sendMpPacketUpdate();
@@ -268,7 +276,7 @@ public class CreatureLifeStats<T extends Creature>
 	/**
 	 * Informs about MP change
 	 */
-	private void sendMpPacketUpdate()
+	protected void sendMpPacketUpdate()
 	{
 		if(owner == null)
 		{
