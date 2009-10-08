@@ -43,7 +43,7 @@ import com.aionemu.gameserver.world.World;
 public class NpcController extends CreatureController<Npc>
 {
 	public NpcController (World world, StatFunctions statFunctions) {
-		super(world,statFunctions);
+		super(world);
 	}
 	public void attackTarget(int targetObjectId)
 	{
@@ -56,7 +56,7 @@ public class NpcController extends CreatureController<Npc>
 		Player player = (Player) world.findAionObject(targetObjectId);
 
 		//TODO fix last attack - cause mob is already dead
-		int damages = statFunctions.calculateNpcBaseDamageToPlayer(npc, player);
+		int damages = StatFunctions.calculateNpcBaseDamageToPlayer(npc, player);
 		
 		PacketSendUtility.broadcastPacket(player,
 			new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
@@ -175,7 +175,7 @@ public class NpcController extends CreatureController<Npc>
 			//TODO may be introduce increaseExpBy method in PlayerCommonData
 			long currentExp = player.getCommonData().getExp();
 
-			long xpReward = statFunctions.calculateSoloExperienceReward(player, getOwner());
+			long xpReward = StatFunctions.calculateSoloExperienceReward(player, getOwner());
 			player.getCommonData().setExp(currentExp + xpReward);
 			
 			PacketSendUtility.sendPacket(player,SM_SYSTEM_MESSAGE.EXP(Long.toString(xpReward)));

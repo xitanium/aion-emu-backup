@@ -29,7 +29,6 @@ import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 
 import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.model.templates.SkillTemplate;
-import com.google.inject.Inject;
 
 /**
  * @author ATracer
@@ -38,18 +37,18 @@ import com.google.inject.Inject;
 public class StatFunctions
 {
 	private static Logger log = Logger.getLogger(StatFunctions.class);
-
-	@Inject
-	private PlayerStatsData playerStatsData;
+ 
+	private StatFunctions () {
+		// Does not have to be instantiated
+	}
 	/**
 	 * 
 	 * @param player
 	 * @param target
 	 * @return XP reward from target
 	 */
-	public long calculateSoloExperienceReward(Player player, Creature target)
+	public static long calculateSoloExperienceReward(Player player, Creature target)
 	{
-		
 		int playerLevel = player.getCommonData().getLevel();
 		int targetLevel = target.getLevel();
 		
@@ -67,7 +66,7 @@ public class StatFunctions
 	 * @param target
 	 * @return Damage made to target (-hp value)
 	 */
-	public int calculateBaseDamageToTarget(Player player, Creature target)
+	public static int calculateBaseDamageToTarget(Player player, Creature target)
 	{
 		int pAttack = ClassStats.getPowerFor(player.getPlayerClass());
 		int targetPDef = ((Npc) target).getTemplate().getStatsTemplate().getMaxHp();
@@ -81,19 +80,19 @@ public class StatFunctions
 	 * @param skillTemplate
 	 * @return HP damage to target
 	 */
-	public int calculateMagicDamageToTarget(Player player, Creature target, SkillTemplate skillTemplate)
+	public static int calculateMagicDamageToTarget(Player player, Creature target, SkillTemplate skillTemplate)
 	{
 		//TODO this is a dummmy cacluations
 		return skillTemplate.getDamages() * skillTemplate.getLevel() * 2;
 	}
 	
-	public int calculateNpcBaseDamageToPlayer(Npc npc, Player player)
+	public static int calculateNpcBaseDamageToPlayer(Npc npc, Player player)
 	{
 		//TODO this is a dummy calcs
 		return npc.getLevel() * 5 + 10;
 	}
 	
-	public PlayerLifeStats getBaseLifeStats (PlayerClass playerClass) {
+	public static PlayerLifeStats getBaseLifeStats (PlayerClass playerClass, PlayerStatsData playerStatsData) {
 		final PlayerLifeStats pls = new PlayerLifeStats();
 		PlayerStatsTemplate pst = playerStatsData.getTemplate(playerClass,1);
 		pls.setMaxHp(pst.getMaxHp());
@@ -108,7 +107,7 @@ public class StatFunctions
 		return pls;
 	}
 	
-	public PlayerGameStats getBaseGameStats (PlayerClass playerClass) {
+	public static PlayerGameStats getBaseGameStats (PlayerClass playerClass, PlayerStatsData playerStatsData) {
 		final PlayerGameStats pgs = new PlayerGameStats();
 		PlayerStatsTemplate pst = playerStatsData.getTemplate(playerClass,1);
 		pgs.setAttackCounter(0);

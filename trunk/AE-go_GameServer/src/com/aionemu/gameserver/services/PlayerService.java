@@ -34,6 +34,7 @@ import com.aionemu.gameserver.dao.PlayerSkillListDAO;
 import com.aionemu.gameserver.dao.PlayerStatsDAO;
 import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
 import com.aionemu.gameserver.dataholders.PlayerInitialData;
+import com.aionemu.gameserver.dataholders.PlayerStatsData;
 import com.aionemu.gameserver.dataholders.PlayerInitialData.LocationData;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
 import com.aionemu.gameserver.model.gameobjects.player.MacroList;
@@ -75,16 +76,16 @@ public class PlayerService
 	private World						world;
 	private PlayerInitialData           playerInitialData;
 	private PlayerExperienceTable		playerExperienceTable;
-	private StatFunctions				statFunctions;
+	private PlayerStatsData				playerStatsData;
 
 	@Inject
-	public PlayerService(@IDFactoryAionObject IDFactory aionObjectsIDFactory, World world, PlayerInitialData playerInitialData, PlayerExperienceTable playerExperienceTable, StatFunctions statFunctions)
+	public PlayerService(@IDFactoryAionObject IDFactory idf, World w, PlayerInitialData pid, PlayerExperienceTable pet, PlayerStatsData psd)
 	{
-		this.aionObjectsIDFactory = aionObjectsIDFactory;
-		this.world = world;
-		this.playerInitialData = playerInitialData;
-		this.playerExperienceTable = playerExperienceTable;
-		this.statFunctions = statFunctions;
+		this.aionObjectsIDFactory = idf;
+		this.world = w;
+		this.playerInitialData = pid;
+		this.playerExperienceTable = pet;
+		this.playerStatsData = psd;
 	}
 
 	/**
@@ -155,7 +156,7 @@ public class PlayerService
 		PlayerAppearance appereance = DAOManager.getDAO(PlayerAppearanceDAO.class).load(playerObjId);
 		MacroList macroses = DAOManager.getDAO(PlayerMacrossesDAO.class).restoreMacrosses(playerObjId);
 
-		player = new Player(new PlayerController(world,statFunctions), pcd, appereance);
+		player = new Player(new PlayerController(world), pcd, appereance);
 		player.setMacroList(macroses);
 		SkillList sl = DAOManager.getDAO(PlayerSkillListDAO.class).restoreSkillList(playerObjId);
 		if(sl!=null && sl.getSize()>0)
@@ -171,12 +172,12 @@ public class PlayerService
 		PlayerStatsDAO psd = DAOManager.getDAO(PlayerStatsDAO.class);
 		PlayerGameStats pgs = psd.loadGameStats(playerObjId);
 		if (!pgs.isInitialized()) {
-			pgs = statFunctions.getBaseGameStats(pcd.getPlayerClass());
+			pgs = StatFunctions.getBaseGameStats(pcd.getPlayerClass(),playerStatsData);
 		}
 		player.setGameStats(pgs);
 		PlayerLifeStats pls = psd.loadLifeStats(playerObjId);
 		if (!pls.isInitialized()) {
-			pls = statFunctions.getBaseLifeStats(pcd.getPlayerClass());
+			pls = StatFunctions.getBaseLifeStats(pcd.getPlayerClass(),playerStatsData);
 		}
 		player.setLifeStats(pls);
 		
@@ -204,9 +205,9 @@ public class PlayerService
 
 		// TODO: starting skills
 		// TODO: starting items;
-		Player newPlayer = new Player(new PlayerController(world,statFunctions), playerCommonData, playerAppearance);
-		newPlayer.setLifeStats(statFunctions.getBaseLifeStats(newPlayer.getPlayerClass()));
-		newPlayer.setGameStats(statFunctions.getBaseGameStats(newPlayer.getPlayerClass()));
+		Player newPlayer = new Player(new PlayerController(world), playerCommonData, playerAppearance);
+		newPlayer.setLifeStats(StatFunctions.getBaseLifeStats(newPlayer.getPlayerClass(),playerStatsData));
+		newPlayer.setGameStats(StatFunctions.getBaseGameStats(newPlayer.getPlayerClass(),playerStatsData));
 		return newPlayer;
 	}
 

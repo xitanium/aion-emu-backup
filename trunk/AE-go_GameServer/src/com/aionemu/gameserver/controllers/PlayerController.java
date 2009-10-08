@@ -45,8 +45,8 @@ import com.aionemu.gameserver.world.World;
  */
 public class PlayerController extends CreatureController<Player>
 {
-	public PlayerController (World world, StatFunctions statFunctions) {
-		super(world,statFunctions);
+	public PlayerController (World world) {
+		super(world);
 	}
 	/**
 	 * {@inheritDoc}
@@ -96,7 +96,7 @@ public class PlayerController extends CreatureController<Player>
 		int attackType = 0; //TODO investigate attack types	
 
 		Creature target = (Creature) world.findAionObject(targetObjectId);
-		int damages = statFunctions.calculateBaseDamageToTarget(player, target);
+		int damages = StatFunctions.calculateBaseDamageToTarget(player, target);
 		PacketSendUtility.broadcastPacket(player,
 			new SM_ATTACK(player.getObjectId(), targetObjectId,	gameStats.getAttackCounter(), (int) time, attackType, damages), true);
 
