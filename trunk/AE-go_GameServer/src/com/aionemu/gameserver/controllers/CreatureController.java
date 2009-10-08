@@ -20,9 +20,8 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
-import com.aionemu.gameserver.services.DecayService;
-import com.aionemu.gameserver.services.RespawnService;
-import com.aionemu.gameserver.model.templates.SkillTemplate;
+import com.aionemu.gameserver.world.World;
+import com.google.inject.Inject;
 
 /**
  * This class is for controlling Creatures [npc's, players etc]
@@ -33,6 +32,9 @@ import com.aionemu.gameserver.model.templates.SkillTemplate;
 public abstract class CreatureController<T extends Creature> extends VisibleObjectController<T>
 {
 	private static final Logger log = Logger.getLogger(CreatureController.class);
+	@Inject
+	protected World world;
+	
 	/**
 	 * {@inheritDoc}
 	 */

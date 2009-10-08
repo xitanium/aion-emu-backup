@@ -18,8 +18,6 @@ package com.aionemu.gameserver.controllers;
 
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
-
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
@@ -37,8 +35,6 @@ import com.aionemu.gameserver.skillengine.SkillEngine;
 import com.aionemu.gameserver.skillengine.SkillHandler;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.stats.StatFunctions;
-import com.aionemu.gameserver.world.World;
-import com.google.inject.Inject;
 
 /**
  * This class is for controlling players.
@@ -48,10 +44,6 @@ import com.google.inject.Inject;
  */
 public class PlayerController extends CreatureController<Player>
 {
-	private static Logger log = Logger.getLogger(PlayerController.class);
-	@Inject
-	private World world;
-
 	/**
 	 * {@inheritDoc}
 	 */

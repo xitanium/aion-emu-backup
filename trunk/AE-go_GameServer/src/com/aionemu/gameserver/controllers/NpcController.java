@@ -36,7 +36,6 @@ import com.aionemu.gameserver.services.RespawnService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.stats.StatFunctions;
 import com.aionemu.gameserver.world.World;
-import com.aionemu.gameserver.model.templates.SkillTemplate;
 
 /**
  * This class is for controlling Npc's
