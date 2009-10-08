@@ -33,7 +33,6 @@ import com.aionemu.gameserver.skillengine.SkillEngine;
 import com.aionemu.gameserver.spawnengine.SpawnEngine;
 import com.aionemu.gameserver.utils.chathandlers.ChatHandlers;
 import com.aionemu.gameserver.utils.chathandlers.ChatHandlersFactory;
-import com.aionemu.gameserver.utils.stats.StatFunctions;
 import com.aionemu.gameserver.world.World;
 
 import com.google.inject.AbstractModule;
@@ -76,8 +75,6 @@ public class DataInjectionModule extends AbstractModule
 		bind(SocialService.class).in(Scopes.SINGLETON);
 		// binds ScriptService as singleton
 		bind(ScriptService.class).in(Scopes.SINGLETON);
-		// binds StatFunctions as singleton
-		bind(StatFunctions.class).in(Scopes.SINGLETON);
 	}
 
 	@Provides
