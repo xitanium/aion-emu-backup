@@ -19,6 +19,7 @@ public class Teleport extends AdminCommand {
 		super("tele");
 	}
 	
+	//TODO: Add //tele list
 	public void executeCommand(Player admin, String... params) {
 		
 		World world = admin.getActiveRegion().getWorld();
