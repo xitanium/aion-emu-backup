@@ -44,7 +44,7 @@ import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.world.WorldPosition;
 
 /**
- * Class that that is responsible for loading/storing {@link com.aionemu.gameserver.model.gameobjects.player.Player}
+ * Class that that is responsile for loading/storing {@link com.aionemu.gameserver.model.gameobjects.player.Player}
  * object from MySQL 5.
  * 
  * @author SoulKeeper, Saelya
