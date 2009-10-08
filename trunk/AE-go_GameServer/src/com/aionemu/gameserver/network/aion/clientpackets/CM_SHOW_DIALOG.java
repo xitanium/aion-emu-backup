@@ -69,7 +69,8 @@ public class CM_SHOW_DIALOG extends AionClientPacket
 		//if(player == null)
 		//	return;
 		
-		sendPacket(new SM_DIALOG(targetObjectId, 4688));
+		if (targetObjectId==0x40018b14) {
+			sendPacket(new SM_DIALOG(targetObjectId, 0x3e));
 		sendPacket(new SM_DIALOG_WINDOW(targetObjectId));
 
 	}

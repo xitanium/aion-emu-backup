@@ -133,9 +133,8 @@ public class PlayerController extends CreatureController<Player>
 		if(!lifeStats.isAlive())
 		{
 			if (!(creature instanceof Player)) {
-				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()), true);
-				this.onDie();
-			}
+				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()), true);				this.onDie();
+			};
 		}
 		return true;
 	}
@@ -171,7 +170,7 @@ public class PlayerController extends CreatureController<Player>
 		PacketSendUtility.sendPacket(getOwner(), SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(player.getName()));
 	}
 	
-	public void onDuelEnd () {
+	public void onDuel () {
 		
 	}
 }

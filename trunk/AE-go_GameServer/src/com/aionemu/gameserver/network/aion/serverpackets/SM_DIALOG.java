@@ -51,9 +51,8 @@ public class SM_DIALOG extends AionServerPacket
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{		
 		writeD(buf, targetObjectId);
-		//writeD(buf, 4688); // unknown
-		writeD(buf, unk); // unknown
-		writeC(buf, 0); // unknown
+		writeD(buf, con.getActivePlayer().getObjectId());
+		writeC(buf, unk); // unknown
 
 	}	
 }
