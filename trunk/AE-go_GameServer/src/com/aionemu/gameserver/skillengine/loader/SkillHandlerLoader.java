@@ -65,7 +65,7 @@ public class SkillHandlerLoader extends DefaultClassListener
 
 		super.postLoad(classes);
 
-		logger.error("Loaded " + skillEngine.getHandlersCount() + " skill handlers.");
+		logger.info("Loaded " + skillEngine.getHandlersCount() + " skill handlers.");
 	}
 
 	@Override

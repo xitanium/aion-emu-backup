@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<protocol crypt="AionGame" name="AE-go" port="7777" sizebytes="2" checksumSize="2" strictlength="false">
+<protocol crypt="AionGame" name="ae-go" port="7777" sizebytes="2" checksumSize="2" strictlength="false">
 <packetfamilly switchtype="c" way="ServerPackets">
 	<packet id="0x01" name="SM_STATUSUPDATE_EXP">
 		<part name="currentExp" type="Q"/>
@@ -645,6 +645,9 @@
 		<part name="unk" type="d"/>		
 	</packet>
 	<packet id="0xFA" name="SM_STATUPDATE_HP [?]">
+		<part name="currentHp" type="d"/>
+		<part name="maxHp" type="d"/>
+	</packet>
 	<packet id="0xFC" name="SM_ATTACK_STATUS">
 		<part name="receiver" type="d"/>
 		<part name="unk" type="d"/>
@@ -654,6 +657,9 @@
 		<part name="unk0x94" type="c"/>
 	</packet>
 	<packet id="0xFD" name="SM_STATUPDATE_MP [?]">
+		<part name="currentMp" type="d"/>
+		<part name="maxMp" type="d"/>
+	</packet>
 </packetfamilly>
 <packetfamilly switchtype="c" way="ClientPackets">
 	<packet id="0x00" name="CM_CHARACTER_LIST">

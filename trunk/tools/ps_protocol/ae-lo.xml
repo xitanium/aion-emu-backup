@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<protocol port="2106" name="Login" crypt="AionLogin">
+<protocol port="2106" name="ae-lo" crypt="AionLogin">
 	<packetfamilly switchtype="c" way="ServerPackets">
 		<packet id="0x00" name="SM_INIT">
 			<part name="session id" type="d" />

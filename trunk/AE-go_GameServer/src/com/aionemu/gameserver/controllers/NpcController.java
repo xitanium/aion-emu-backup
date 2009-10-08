@@ -58,7 +58,7 @@ public class NpcController extends CreatureController<Npc>
 		Player player = (Player) world.findAionObject(targetObjectId);
 		
 		//TODO fix last attack - cause mob is already dead
-		int damage = StatFunctions.calculateNpcBaseDamageToPlayer(npc, player);
+		int damages = StatFunctions.calculateNpcBaseDamageToPlayer(npc, player);
 		
 		PacketSendUtility.broadcastPacket(player,
 			new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
@@ -72,10 +72,10 @@ public class NpcController extends CreatureController<Npc>
 		
 		PacketSendUtility.broadcastPacket(player,
 			new SM_ATTACK(npc.getObjectId(), player.getObjectId(),
-				npcGameStats.getAttackCounter(), (int) time, attackType, damage), true);
+				npcGameStats.getAttackCounter(), (int) time, attackType, damages), true);
 		
 		
-		boolean attackSuccess = player.getController().onAttack(npc);
+		boolean attackSuccess = player.getController().onAttack(npc,damages);
 		
 		if(attackSuccess)
 		{
@@ -114,9 +114,9 @@ public class NpcController extends CreatureController<Npc>
 	 * @see com.aionemu.gameserver.controllers.CreatureController#onAttack(com.aionemu.gameserver.model.gameobjects.Creature)
 	 */
 	@Override
-	public boolean onAttack(Creature creature)
+	public boolean onAttack(Creature creature, int damages)
 	{
-		super.onAttack(creature);
+		super.onAttack(creature,damages);
 		Npc npc = getOwner();
 		
 		NpcAi npcAi = npc.getNpcAi();
@@ -132,7 +132,7 @@ public class NpcController extends CreatureController<Npc>
 		}
 		
 		//TODO: Reduce hp corresponding to real damages done by player
-		lifeStats.reduceHp(55);
+		lifeStats.reduceHp(damages);
 		
 		
 		if(!lifeStats.isAlive())
