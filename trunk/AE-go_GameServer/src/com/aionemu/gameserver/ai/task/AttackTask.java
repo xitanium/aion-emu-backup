@@ -18,7 +18,6 @@ package com.aionemu.gameserver.ai.task;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.gameserver.ai.AI;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 
@@ -28,7 +27,7 @@ import com.aionemu.gameserver.model.gameobjects.Npc;
  */
 public class AttackTask extends AiTask
 {
-
+	@SuppressWarnings("unused")
 	private static Logger log = Logger.getLogger(AttackTask.class);
 	
 	private Creature attacker;
