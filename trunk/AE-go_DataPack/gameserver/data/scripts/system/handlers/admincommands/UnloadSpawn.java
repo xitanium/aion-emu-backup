@@ -43,7 +43,7 @@ public class UnloadSpawn extends AdminCommand
 	@Inject
 	public UnloadSpawn(World world, SpawnData spawnData)
 	{
-		super("unload_spawn");
+		super("unload_spawn", 2);
 		this.world = world;
 		this.spawnData = spawnData;
 	}

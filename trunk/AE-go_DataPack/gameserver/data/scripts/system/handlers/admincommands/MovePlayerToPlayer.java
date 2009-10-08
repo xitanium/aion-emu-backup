@@ -39,7 +39,7 @@ public class MovePlayerToPlayer extends AdminCommand
 	 */
 	public MovePlayerToPlayer()
 	{
-		super("moveplayertoplayer");
+		super("moveplayertoplayer", 2);
 	}
 
 	/**

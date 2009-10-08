@@ -41,7 +41,7 @@ public class Promote extends AdminCommand
 	 */
 	public Promote()
 	{
-	super("promote");
+	super("promote", 5);
 	}
 
 	/**
@@ -64,8 +64,8 @@ public class Promote extends AdminCommand
 			PacketSendUtility.sendMessage(admin, "The specified player is not online.");
 			return;
 		}
-		player.getCommonData().setAdmin(true);
-		PacketSendUtility.sendMessage(admin, player.getName() + " has been promoted Administrator");
-		PacketSendUtility.sendMessage(player, "You have been promoted Administrator.");
+		player.getCommonData().setAdminLevel(2);
+		PacketSendUtility.sendMessage(admin, player.getName() + " has been promoted Administrator, lvl2");
+		PacketSendUtility.sendMessage(player, "You have been promoted Administrator, lvl2.");
 	}
 }

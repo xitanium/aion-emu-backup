@@ -16,7 +16,7 @@ import com.aionemu.commons.database.dao.DAOManager;
 public class Teleport extends AdminCommand {
 	
 	public Teleport() {
-		super("tele");
+		super("tele", 2);
 	}
 	
 	//TODO: Add //tele list

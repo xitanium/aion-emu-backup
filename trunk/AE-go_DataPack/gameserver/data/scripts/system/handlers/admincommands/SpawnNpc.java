@@ -42,7 +42,7 @@ public class SpawnNpc extends AdminCommand
 	@Inject
 	public SpawnNpc(SpawnData spawnData, SpawnEngine spawnService)
 	{
-		super("spawn");
+		super("spawn", 2);
 		this.spawnData = spawnData;
 		this.spawnService = spawnService;
 	}

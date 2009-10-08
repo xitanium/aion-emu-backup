@@ -38,7 +38,7 @@ public class Go extends AdminCommand
 	 */
 	public Go()
 	{
-		super("go");
+		super("go", 2);
 	}
 	
 	private void sendHelp(Player admin, String subcommand) {

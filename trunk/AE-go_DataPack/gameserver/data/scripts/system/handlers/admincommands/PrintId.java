@@ -11,7 +11,7 @@ public class PrintId extends AdminCommand
 {
     public PrintId()
     {
-        super("printid");
+        super("printid", 2);
     }
 
     /*

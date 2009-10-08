@@ -41,7 +41,7 @@ public class GoName extends AdminCommand
 	 */
 	public GoName()
 	{
-		super("goname");
+		super("goname", 2);
 	}
 
 	/**

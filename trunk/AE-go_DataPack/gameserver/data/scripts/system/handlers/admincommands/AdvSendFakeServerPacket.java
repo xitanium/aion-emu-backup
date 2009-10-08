@@ -70,7 +70,7 @@ public class AdvSendFakeServerPacket extends AdminCommand
 	 */
 	public AdvSendFakeServerPacket()
 	{
-		super("send");
+		super("send", 2);
 
 		// init unmrshaller once.
 		try

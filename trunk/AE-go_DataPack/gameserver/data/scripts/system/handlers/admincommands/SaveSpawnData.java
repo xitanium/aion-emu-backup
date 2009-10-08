@@ -36,7 +36,7 @@ public class SaveSpawnData extends AdminCommand
 	@Inject
 	public SaveSpawnData(SpawnData spawnData)
 	{
-		super("save_spawn");
+		super("save_spawn", 2);
 
 		this.spawnData = spawnData;
 	}

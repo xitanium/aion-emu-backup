@@ -31,7 +31,7 @@ public class SetLevel extends AdminCommand
 {
 	public SetLevel()
 	{
-		super("setlevel");
+		super("setlevel", 2);
 	}
 
 	/*

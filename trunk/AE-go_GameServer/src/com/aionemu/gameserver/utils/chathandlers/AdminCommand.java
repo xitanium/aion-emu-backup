@@ -29,10 +29,12 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 public abstract class AdminCommand
 {
 	private final String	commandName;
+	private final int requiredGMLevel;
 
-	protected AdminCommand(String commandName)
+	protected AdminCommand(String commandName, int requiredGMLevel)
 	{
 		this.commandName = commandName;
+		this.requiredGMLevel = requiredGMLevel;
 	}
 
 	/**
@@ -73,6 +75,10 @@ public abstract class AdminCommand
 	public String getCommandName()
 	{
 		return commandName;
+	}
+	
+	public int getRequiredGMLevel() {
+		return requiredGMLevel;
 	}
 
 	/**

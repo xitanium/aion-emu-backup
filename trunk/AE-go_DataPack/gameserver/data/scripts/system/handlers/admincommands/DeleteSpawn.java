@@ -35,7 +35,7 @@ public class DeleteSpawn extends AdminCommand
 	@Inject
 	public DeleteSpawn(SpawnData spawnData)
 	{
-		super("delete");
+		super("delete", 2);
 
 		this.spawnData = spawnData;
 	}

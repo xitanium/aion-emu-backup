@@ -42,7 +42,7 @@ public class NameGo extends AdminCommand
 	 */
 	public NameGo()
 	{
-		super("namego");
+		super("namego", 2);
 	}
 
 	/**

@@ -31,7 +31,7 @@ public class Announce extends AdminCommand
  
         public Announce() {
         	// declare
-                super("announce");
+                super("announce", 2);
         }
         /* (non-Javadoc)
          * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.model.gameobjects.player.Player, java.lang.String[])
