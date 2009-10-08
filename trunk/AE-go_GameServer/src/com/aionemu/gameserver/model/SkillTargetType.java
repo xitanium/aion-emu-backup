@@ -14,8 +14,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-unique.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.gameserver.model.templates;
+package com.aionemu.gameserver.model;
 
+/**
+ * 
+ * @author xavier
+ *
+ */
 public enum SkillTargetType {
 	TARGET,
 	TARGET_SELF,

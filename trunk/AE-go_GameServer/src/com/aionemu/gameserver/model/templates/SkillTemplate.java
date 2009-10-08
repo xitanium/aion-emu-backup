@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.aionemu.gameserver.model.SkillElement;
+import com.aionemu.gameserver.model.SkillTargetType;
 import com.aionemu.gameserver.model.SkillType;
 
 /**
@@ -57,7 +58,7 @@ public class SkillTemplate
 	private int cost;
 	
 	@XmlAttribute(name = "probability")
-	private float probability;
+	private int probability;
 
 	@XmlAttribute(name = "target")
 	private SkillTargetType target;
@@ -139,8 +140,17 @@ public class SkillTemplate
 	{
 		return target;
 	}
-
-	public int getCost ()
+	/**
+	 * @return the probability
+	 */
+	public int getProbability()
+	{
+		return probability;
+	}
+	/**
+	 * @return the cost in MP
+	 */
+	public int getCost()
 	{
 		return cost;
 	}
