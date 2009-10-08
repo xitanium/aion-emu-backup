@@ -32,6 +32,9 @@ import com.aionemu.gameserver.ai.AIState;
 import com.aionemu.gameserver.services.DecayService;
 import com.aionemu.gameserver.services.RespawnService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
+import com.aionemu.gameserver.utils.stats.StatFunctions;
+import com.aionemu.gameserver.world.World;
+import com.google.inject.Inject;
 
 /**
  * This class is for controlling Npc's
@@ -40,6 +43,11 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  */
 public class NpcController extends CreatureController<Npc>
 {
+	@Inject
+	private StatFunctions statFunctions;
+	@Inject
+	private World world;
+	
 	public void attackTarget(int targetObjectId)
 	{
 		Npc npc = getOwner();
