@@ -16,8 +16,6 @@
  */
 package com.aionemu.gameserver.controllers;
 
-import org.apache.log4j.Logger;
-
 import com.aionemu.gameserver.ai.events.AttackEvent;
 import com.aionemu.gameserver.ai.npcai.NpcAi;
 import com.aionemu.gameserver.model.gameobjects.Creature;
@@ -34,9 +32,6 @@ import com.aionemu.gameserver.ai.AIState;
 import com.aionemu.gameserver.services.DecayService;
 import com.aionemu.gameserver.services.RespawnService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.stats.StatFunctions;
-import com.aionemu.gameserver.world.World;
-import com.google.inject.Inject;
 
 /**
  * This class is for controlling Npc's
@@ -45,14 +40,6 @@ import com.google.inject.Inject;
  */
 public class NpcController extends CreatureController<Npc>
 {
-	@Inject
-	protected StatFunctions statFunctions;
-	@Inject
-	protected World world;
-	
-	@SuppressWarnings("unused")
-	private static Logger log = Logger.getLogger(NpcController.class);
-
 	public void attackTarget(int targetObjectId)
 	{
 		Npc npc = getOwner();
