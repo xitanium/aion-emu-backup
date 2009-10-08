@@ -33,9 +33,25 @@
   </xs:simpleType>
   
   <xs:simpleType name="Probability">
-		<xs:restriction base="xs:float">
-			<xs:minInclusive value="0.0"/>
-			<xs:maxInclusive value="100.0"/>
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="SkillTarget">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TARGET" />
+			<xs:enumeration value="TARGET_SELF" />
+			<xs:enumeration value="SELF" />
+			<xs:enumeration value="LOCATION" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="SkillId">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="60000"/>
 		</xs:restriction>
 	</xs:simpleType>
 		
@@ -48,27 +64,11 @@
 		<xs:attribute name="heals" type="xs:int" default="0" />
 		<xs:attribute name="element" type="Element" default="NONE" />
 		<xs:attribute name="cost" type="xs:int" default="0" />
-		<xs:attribute name="probability" type="Probability" default="100.0" />
+		<xs:attribute name="probability" type="Probability" default="100" />
 		<xs:attribute name="recharge_time" type="xs:int" default="0" />
 		<xs:attribute name="launch_time" type="xs:int" default="0" />
-		<xs:attribute name="target" type="skillTarget" default="TARGET" />
+		<xs:attribute name="target" type="SkillTarget" default="TARGET" />
 	</xs:complexType>
-	
-	<xs:simpleType name="skillTarget">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="TARGET" />
-			<xs:enumeration value="TARGET_SELF" />
-			<xs:enumeration value="SELF" />
-			<xs:enumeration value="LOCATION" />
-		</xs:restriction>
-	</xs:simpleType>
-	
-	<xs:simpleType name="skillId">
-		<xs:restriction base="xs:int">
-			<xs:minInclusive value="1"/>
-			<xs:maxInclusive value="60000"/>
-		</xs:restriction>
-	</xs:simpleType>
 
 </xs:schema>
 

@@ -37,6 +37,7 @@ import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
  */
 public class MySQL5PlayerItemsDAO extends PlayerItemsDAO
 {
+	@SuppressWarnings("unused")
 	private static Logger	log = Logger.getLogger(MySQL5PlayerItemsDAO.class);
 
 	public static final String INSERT_QUERY = "REPLACE INTO `player_equipment` ("
