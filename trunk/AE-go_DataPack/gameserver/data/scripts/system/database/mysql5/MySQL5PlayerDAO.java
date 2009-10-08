@@ -187,6 +187,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 				cd.setGender(Gender.valueOf(resultSet.getString("gender")));
 				cd.setPlayerClass(PlayerClass.valueOf(resultSet.getString("player_class")));
 				cd.setAdminLevel(resultSet.getInt("admin"));
+				log.info("db.players.admin result = " + resultSet.getInt("admin") + " | Player.adminlevel = " + cd.getAdminLevel());
 				cd.setLastOnline(resultSet.getTimestamp("last_online"));
 				cd.setNote(resultSet.getString("note"));
 				
