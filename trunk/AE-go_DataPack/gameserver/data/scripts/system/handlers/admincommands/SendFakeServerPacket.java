@@ -47,7 +47,7 @@ public class SendFakeServerPacket extends AdminCommand
 	/***/
 	public SendFakeServerPacket()
 	{
-		super("fsc");
+		super("fsc", 4);
 	}
 
 	/**

@@ -39,7 +39,7 @@ public class Kick extends AdminCommand
 	 */
 	public Kick()
 	{
-		super("kick");
+		super("kick", 2);
 	}
 
 	/* (non-Javadoc)

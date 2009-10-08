@@ -45,7 +45,7 @@ public class ReloadSpawns extends AdminCommand
 	 */
 	public ReloadSpawns()
 	{
-		super("reload_spawn");
+		super("reload_spawn", 4);
 	}
 
 	/*

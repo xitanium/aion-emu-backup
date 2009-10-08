@@ -42,7 +42,7 @@ public class SendRawPacket extends AdminCommand
 
 	public SendRawPacket()
 	{
-		super("raw");
+		super("raw", 4);
 	}
 
 	/* (non-Javadoc)

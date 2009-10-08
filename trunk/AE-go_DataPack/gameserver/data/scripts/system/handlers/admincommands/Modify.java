@@ -37,7 +37,7 @@ public class Modify extends AdminCommand
 	 */
 	public Modify()
 	{
-		super("mod");
+		super("mod", 2);
 	}
 	
 	private void sendHelp(Player admin, String subcommand) {

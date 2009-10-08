@@ -33,7 +33,7 @@ public class Notice extends AdminCommand
 {
 	public Notice()
 	{
-		super("notice");
+		super("notice", 2);
 	}
 
 	/*

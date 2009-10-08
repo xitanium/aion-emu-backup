@@ -31,7 +31,7 @@ import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
  *
  * @author Cyrakuse
  */
-public class MoveToMe extends AdminCommand
+public class NameGo extends AdminCommand
 {
 	
 	@Inject
@@ -40,9 +40,9 @@ public class MoveToMe extends AdminCommand
 	/**
 	 * Constructor.
 	 */
-	public MoveToMe()
+	public NameGo()
 	{
-		super("movetome");
+		super("namego", 2);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class MoveToMe extends AdminCommand
 	{
 		if (params == null || params.length < 1)
 		{
-			PacketSendUtility.sendMessage(admin, "syntax //movetome characterName");
+			PacketSendUtility.sendMessage(admin, "Usage : //namego <player_name> : Teleports a player to your actual location");
 			return;
 		}
 		

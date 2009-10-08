@@ -41,7 +41,7 @@ public class Revoke extends AdminCommand
 	 */
 	public Revoke()
 	{
-	super("revoke");
+	super("revoke", 5);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class Revoke extends AdminCommand
 			PacketSendUtility.sendMessage(admin, "The specified player is not online.");
 			return;
 		}
-		player.getCommonData().setAdmin(false);
+		player.getCommonData().setAdminLevel(0);
 		PacketSendUtility.sendMessage(admin, player.getName() + " has been revoked");
 		PacketSendUtility.sendMessage(player, "Your Administrator rank has been revoked.");
 	}

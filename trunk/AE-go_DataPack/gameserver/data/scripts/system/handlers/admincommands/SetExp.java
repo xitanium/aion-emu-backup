@@ -32,7 +32,7 @@ public class SetExp extends AdminCommand
 
 	public SetExp()
 	{
-		super("setexp");
+		super("setexp", 2);
 	}
 
 	/*

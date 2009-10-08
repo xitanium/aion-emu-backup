@@ -31,7 +31,7 @@ import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
  *
  * @author Tanelorn
  */
-public class MoveToPlayer extends AdminCommand
+public class GoName extends AdminCommand
 {
 	@Inject
 	private World	world;
@@ -39,9 +39,9 @@ public class MoveToPlayer extends AdminCommand
 	/**
 	 * Constructor.
 	 */
-	public MoveToPlayer()
+	public GoName()
 	{
-		super("movetoplayer");
+		super("goname", 2);
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class MoveToPlayer extends AdminCommand
 	{
 		if (params == null || params.length < 1)
 		{
-			PacketSendUtility.sendMessage(admin, "syntax //movetoplayer characterName");
+			PacketSendUtility.sendMessage(admin, "Usage: //goname <player> : Teleports yourself to the specified player");
 			return;
 		}
 

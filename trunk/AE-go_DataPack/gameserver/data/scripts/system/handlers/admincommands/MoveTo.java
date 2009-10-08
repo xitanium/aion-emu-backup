@@ -39,7 +39,7 @@ public class MoveTo extends AdminCommand
 	@Inject
 	public MoveTo(World world)
 	{
-		super("moveto");
+		super("moveto", 2);
 
 		this.world = world; 
 	}

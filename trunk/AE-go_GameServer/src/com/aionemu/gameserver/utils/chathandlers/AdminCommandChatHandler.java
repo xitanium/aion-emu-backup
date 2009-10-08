@@ -70,22 +70,24 @@ public class AdminCommandChatHandler implements ChatHandler
 		}
 		else
 		{
-			if(!sender.getCommonData().isAdmin())
-			{
-				PacketSendUtility.sendMessage(sender, "<You do not have permission to use admin commands>");
-				return ChatHandlerResponse.BLOCKED_MESSAGE;
-			}
-
 			String[] commandAndParams = message.split(" ", 2);
-
 			String command = commandAndParams[0].substring(2);
+			int senderGMLevel = sender.getCommonData().getAdminLevel();
+			
 			AdminCommand admc = commands.get(command);
 			if(admc == null)
 			{
-				PacketSendUtility.sendMessage(sender, "<There is no such admin command: " + command + ">");
+				PacketSendUtility.sendMessage(sender, "<There is no such server command: " + command + ">");
+				return ChatHandlerResponse.BLOCKED_MESSAGE;
+			}
+			
+			if(sender.getCommonData().getAdminLevel() < admc.getRequiredGMLevel())
+			{
+				PacketSendUtility.sendMessage(sender, "<You do not have sufficient privileges to execute this command>");
 				return ChatHandlerResponse.BLOCKED_MESSAGE;
 			}
 
+			
 			String[] params = new String[] {};
 			if(commandAndParams.length > 1)
 				params = commandAndParams[1].split(" ", admc.getSplitSize());

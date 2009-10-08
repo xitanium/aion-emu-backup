@@ -16,17 +16,17 @@ import com.aionemu.commons.database.dao.DAOManager;
 public class Teleport extends AdminCommand {
 	
 	public Teleport() {
-		super("tele");
+		super("tele", 2);
 	}
 	
+	//TODO: Add //tele list
 	public void executeCommand(Player admin, String... params) {
 		
 		World world = admin.getActiveRegion().getWorld();
 		AdminCommandsDAO dao = DAOManager.getDAO(AdminCommandsDAO.class);
 		
 		if (params.length == 0 || params.length > 3) {
-            PacketSendUtility.sendMessage(admin, "Usage : //tele [add|del|name] <teleport_name>");
-            PacketSendUtility.sendMessage(admin, "<teleport_name> : The name of the teleportation point");
+            PacketSendUtility.sendMessage(admin, "Usage : //tele [add|del|list|name]");
 		}
 		else if(params.length == 1) {
 			if(params[0].trim().equals("add")) {
@@ -41,6 +41,11 @@ public class Teleport extends AdminCommand {
 				PacketSendUtility.sendMessage(admin, "Usage : //tele name <player_name> <teleport_name>");
 				PacketSendUtility.sendMessage(admin, "<player_name> : The player to teleport");
 	            PacketSendUtility.sendMessage(admin, "<teleport_name> : The name of the teleportation point to add");
+			}
+			else if(params[0].trim().equals("list")) {
+				String availableTeleports = dao.loadAllTeleportsList();
+				PacketSendUtility.sendMessage(admin, "Available teleport locations :");
+				PacketSendUtility.sendMessage(admin, availableTeleports);
 			}
 			else {
 				if(!dao.isExistingTeleport(params[0].trim())) {
@@ -144,8 +149,7 @@ public class Teleport extends AdminCommand {
 				}
 			}
 			else {
-				PacketSendUtility.sendMessage(admin, "Usage : //tele [add|del|name] <teleport_name>");
-	            PacketSendUtility.sendMessage(admin, "<teleport_name> : The name of the teleportation point");
+				PacketSendUtility.sendMessage(admin, "Usage : //tele [add|del|list|name]");
 			}
 		}
 		

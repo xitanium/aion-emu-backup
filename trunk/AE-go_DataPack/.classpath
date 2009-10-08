@@ -7,6 +7,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/AE-go_GameServer"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/AE-go_Commons"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/AE-go_LoginServer"/>
 	<classpathentry kind="lib" path="/AE-go_GameServer/lib/ae_commons.jar"/>
 	<classpathentry kind="lib" path="/AE-go_GameServer/lib/aopalliance.jar"/>
 	<classpathentry kind="lib" path="/AE-go_GameServer/lib/commons-dbcp-1.3-SNAPSHOT-r756211-jdbc4.jar"/>
@@ -21,6 +22,5 @@
 	<classpathentry kind="lib" path="/AE-go_GameServer/lib/junit-4.6.jar"/>
 	<classpathentry kind="lib" path="/AE-go_GameServer/lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="/AE-go_GameServer/lib/mysql-connector-java-5.1.7-bin.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/AE-go_LoginServer"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

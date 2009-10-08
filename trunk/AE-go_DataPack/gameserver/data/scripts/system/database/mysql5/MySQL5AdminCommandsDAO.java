@@ -97,6 +97,30 @@ public class MySQL5AdminCommandsDAO extends AdminCommandsDAO {
 		}
 	}
 	
+	public final String loadAllTeleportsList() {
+		PreparedStatement s = DB.prepareStatement("SELECT teleport_name FROM teleports");
+		StringBuilder sb = new StringBuilder();
+		String result = "";
+		try {
+			ResultSet rs = s.executeQuery();
+			while(rs.next()) 
+			{
+				sb.append(rs.getString("teleport_name") + " ");
+			}
+			result = sb.toString();
+		}
+		catch(SQLException e)
+		{
+			log.error("Can't check if teleport name is in use, returning positive response", e);
+			result = "cannot get teleports from database. please report this issue to gamemaster";
+		}
+		finally
+		{
+			DB.close(s);
+		}
+		return result;
+	}
+	
 	public boolean supports(String databaseName, int majorVersion, int minorVersion)
 	{
 		return MySQL5DAOUtils.supports(databaseName, majorVersion, minorVersion);

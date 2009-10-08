@@ -38,7 +38,7 @@ public class GPS extends AdminCommand
 	 */
 	public GPS()
 	{
-		super("gps");
+		super("gps", 0);
 	}
 
 	/* (non-Javadoc)
