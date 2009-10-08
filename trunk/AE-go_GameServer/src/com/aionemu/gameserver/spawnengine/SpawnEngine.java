@@ -24,6 +24,7 @@ import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.templates.SpawnTemplate;
 import com.aionemu.gameserver.utils.idfactory.IDFactory;
 import com.aionemu.gameserver.utils.idfactory.IDFactoryAionObject;
+import com.aionemu.gameserver.utils.stats.StatFunctions;
 import com.aionemu.gameserver.world.KnownList;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
@@ -43,6 +44,7 @@ public class SpawnEngine
 	
 	/** In this world NPCs are spawned by this SpawnEngine */
 	private World	world;
+	private StatFunctions statFunctions;
 
 	private IDFactory aionObjectsIDFactory;
 	/**
@@ -52,7 +54,7 @@ public class SpawnEngine
 	 *            a {@link World} instance which NPCs are spawned in.
 	 */
 	@Inject
-	public SpawnEngine(World world, @IDFactoryAionObject IDFactory aionObjectsIDFactory)
+	public SpawnEngine(World world, StatFunctions statFunctions, @IDFactoryAionObject IDFactory aionObjectsIDFactory)
 	{
 		this.world = world;
 		this.aionObjectsIDFactory = aionObjectsIDFactory;
@@ -66,7 +68,7 @@ public class SpawnEngine
 	 */
 	public Npc spawnNpc(SpawnTemplate spawn)
 	{
-		Npc npc = new Npc(spawn, aionObjectsIDFactory.nextId(), new NpcController());
+		Npc npc = new Npc(spawn, aionObjectsIDFactory.nextId(), new NpcController(world,statFunctions));
 
 		npc.setKnownlist(new KnownList(npc));
 		

@@ -89,15 +89,15 @@ public class SM_PLAYER_INFO extends AionServerPacket
 		switch(playerGMLevel) {
 			case 0: writeS(buf, player.getName());
 			break;
-			case 1: writeS(buf, "*VIP*" + player.getName());
+			case 1: writeS(buf, "*VIP* " + player.getName());
 			break;
-			case 2: writeS(buf, "*Anim*" + player.getName());
+			case 2: writeS(buf, "*Anim* " + player.getName());
 			break;
-			case 3: writeS(buf, "*MJ*" + player.getName());
+			case 3: writeS(buf, "*MJ* " + player.getName());
 			break;
-			case 4: writeS(buf, "*Dev*" + player.getName());
+			case 4: writeS(buf, "*Dev* " + player.getName());
 			break;
-			case 5: writeS(buf, "*Admin*" + player.getName());
+			case 5: writeS(buf, "*Admin* " + player.getName());
 			break;
 			default: writeS(buf, player.getName());
 		}

@@ -20,6 +20,8 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
+import com.aionemu.gameserver.utils.stats.StatFunctions;
+import com.aionemu.gameserver.world.World;
 
 /**
  * This class is for controlling Creatures [npc's, players etc]
@@ -30,6 +32,13 @@ import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 public abstract class CreatureController<T extends Creature> extends VisibleObjectController<T>
 {
 	protected static Logger log = Logger.getLogger(CreatureController.class);
+	protected StatFunctions statFunctions;
+	protected World world;
+	
+	public CreatureController (World world, StatFunctions statFunctions) {
+		this.world = world;
+		this.statFunctions = statFunctions;
+	}
 	
 	/**
 	 * {@inheritDoc}

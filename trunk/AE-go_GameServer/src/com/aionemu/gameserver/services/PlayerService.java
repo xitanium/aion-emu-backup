@@ -155,7 +155,7 @@ public class PlayerService
 		PlayerAppearance appereance = DAOManager.getDAO(PlayerAppearanceDAO.class).load(playerObjId);
 		MacroList macroses = DAOManager.getDAO(PlayerMacrossesDAO.class).restoreMacrosses(playerObjId);
 
-		player = new Player(new PlayerController(), pcd, appereance);
+		player = new Player(new PlayerController(world,statFunctions), pcd, appereance);
 		player.setMacroList(macroses);
 		SkillList sl = DAOManager.getDAO(PlayerSkillListDAO.class).restoreSkillList(playerObjId);
 		if(sl!=null && sl.getSize()>0)
@@ -204,7 +204,7 @@ public class PlayerService
 
 		// TODO: starting skills
 		// TODO: starting items;
-		Player newPlayer = new Player(new PlayerController(), playerCommonData, playerAppearance);
+		Player newPlayer = new Player(new PlayerController(world,statFunctions), playerCommonData, playerAppearance);
 		newPlayer.setLifeStats(statFunctions.getBaseLifeStats(newPlayer.getPlayerClass()));
 		newPlayer.setGameStats(statFunctions.getBaseGameStats(newPlayer.getPlayerClass()));
 		return newPlayer;

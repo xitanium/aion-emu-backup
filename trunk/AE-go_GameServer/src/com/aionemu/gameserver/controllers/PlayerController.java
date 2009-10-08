@@ -36,7 +36,6 @@ import com.aionemu.gameserver.skillengine.SkillHandler;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.stats.StatFunctions;
 import com.aionemu.gameserver.world.World;
-import com.google.inject.Inject;
 
 /**
  * This class is for controlling players.
@@ -46,10 +45,9 @@ import com.google.inject.Inject;
  */
 public class PlayerController extends CreatureController<Player>
 {
-	@Inject
-	private StatFunctions statFunctions;
-	@Inject
-	private World world;
+	public PlayerController (World world, StatFunctions statFunctions) {
+		super(world,statFunctions);
+	}
 	/**
 	 * {@inheritDoc}
 	 */
