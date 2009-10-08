@@ -16,10 +16,9 @@
  */
 package com.aionemu.gameserver;
 
-import org.apache.log4j.Logger;
-
 import com.aionemu.commons.services.ScriptService;
-import com.aionemu.gameserver.controllers.CreatureController;
+import com.aionemu.gameserver.controllers.NpcController;
+import com.aionemu.gameserver.controllers.PlayerController;
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.dataholders.NpcData;
 import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
@@ -52,9 +51,7 @@ import com.google.inject.Singleton;
  * 
  */
 public class DataInjectionModule extends AbstractModule
-{
-	private static Logger log = Logger.getLogger (DataInjectionModule.class);
-	
+{	
 	private Injector	injector;
 
 	public void setInjector(Injector injector)
@@ -81,11 +78,9 @@ public class DataInjectionModule extends AbstractModule
 		bind(SocialService.class).in(Scopes.SINGLETON);
 		// binds ScriptService as singleton
 		bind(ScriptService.class).in(Scopes.SINGLETON);
-		// binds PlayerController as singleton
-		for (Class<?> clazz : CreatureController.class.getClasses()) {
-			log.debug("binding class "+clazz.getName());
-			bind(clazz).in(Scopes.SINGLETON);
-		}
+		// binds Controllers as singleton
+		bind(PlayerController.class).in(Scopes.SINGLETON);
+		bind(NpcController.class).in(Scopes.SINGLETON);
 		// binds StatFunctions as singleton
 		bind(StatFunctions.class).in(Scopes.SINGLETON);
 	}
