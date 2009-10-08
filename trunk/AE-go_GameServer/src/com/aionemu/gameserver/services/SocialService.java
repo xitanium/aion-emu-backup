@@ -20,6 +20,7 @@ import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.dao.BlockListDAO;
 import com.aionemu.gameserver.dao.FriendListDAO;
 import com.aionemu.gameserver.dao.PlayerDAO;
+import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
 import com.aionemu.gameserver.model.gameobjects.player.BlockedPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Friend;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -40,12 +41,14 @@ public class SocialService
 {
 	private World 			world;
 	private PlayerService	playerService;
+	private PlayerExperienceTable playerExperienceTable;
 	
 	@Inject
-	public SocialService(World world, PlayerService playerService)
+	public SocialService(World world, PlayerService playerService, PlayerExperienceTable playerExperienceTable)
 	{
 		this.world = world;
 		this.playerService = playerService;
+		this.playerExperienceTable = playerExperienceTable;
 	}
 	
 	/**
@@ -90,7 +93,7 @@ public class SocialService
 			player.getClientConnection()
 				.sendPacket(new SM_BLOCK_RESPONSE(
 								SM_BLOCK_RESPONSE.UNBLOCK_SUCCESSFUL,
-								DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonData(blockedUserId, world).getName()
+								DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonData(blockedUserId, world, playerExperienceTable).getName()
 							));
 			
 			player.getClientConnection()
@@ -169,7 +172,7 @@ public class SocialService
 				friend2Player = world.findPlayer(exFriend2Id);
 			
 			String friend2Name = friend2Player != null ? friend2Player.getName() : 
-				DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonData(exFriend2Id, world).getName();
+				DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonData(exFriend2Id, world, playerExperienceTable).getName();
 			
 			//Delete from deleter's friend list and send packets
 			deleter.getFriendList().delFriend(exFriend2Id);

@@ -22,8 +22,6 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.stats.CreatureLifeStats;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
-import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
 
 /**
@@ -32,6 +30,7 @@ import com.aionemu.gameserver.utils.ThreadPoolManager;
  */
 public class LifeStatsRestoreService
 {
+	@SuppressWarnings("unused")
 	private static final Logger log = Logger.getLogger(LifeStatsRestoreService.class);
 
 	private static final int DEFAULT_DELAY = 1500;

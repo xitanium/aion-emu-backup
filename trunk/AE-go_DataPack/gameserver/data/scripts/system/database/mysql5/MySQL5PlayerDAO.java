@@ -38,6 +38,7 @@ import com.aionemu.gameserver.model.Race;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
+import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
 import com.aionemu.gameserver.utils.collections.cachemap.CacheMap;
 import com.aionemu.gameserver.utils.collections.cachemap.CacheMapFactory;
 import com.aionemu.gameserver.world.World;
@@ -156,7 +157,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 	 * {@inheritDoc}
 	 */
 	@Override
-	public PlayerCommonData loadPlayerCommonData(final int playerObjId, final World world)
+	public PlayerCommonData loadPlayerCommonData(final int playerObjId, final World world, final PlayerExperienceTable playerExperienceTable)
 	{
 
 		PlayerCommonData cached = playerCommonData.get(playerObjId);
@@ -166,6 +167,7 @@ public class MySQL5PlayerDAO extends PlayerDAO
 			return cached;
 		}
 		final PlayerCommonData cd = new PlayerCommonData(playerObjId);
+		cd.setPlayerExperienceTable(playerExperienceTable);
 
 		boolean success = DB.select("SELECT * FROM players WHERE id = ?", new ParamReadStH(){
 			@Override

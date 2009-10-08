@@ -19,9 +19,6 @@ package com.aionemu.gameserver.services;
 import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.model.gameobjects.Npc;
-import com.aionemu.gameserver.model.templates.SpawnTemplate;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
-import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
 import com.aionemu.gameserver.world.World;
 
@@ -31,6 +28,7 @@ import com.aionemu.gameserver.world.World;
  */
 public class RespawnService
 {
+	@SuppressWarnings("unused")
 	private static final Logger log = Logger.getLogger(RespawnService.class);
 
 	private static final int RESPAWN_DEFAULT_DELAY = 80000;

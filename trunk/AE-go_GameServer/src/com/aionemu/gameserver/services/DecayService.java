@@ -19,7 +19,6 @@ package com.aionemu.gameserver.services;
 import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.model.gameobjects.Npc;
-import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
@@ -31,6 +30,7 @@ import com.aionemu.gameserver.world.World;
  */
 public class DecayService
 {
+	@SuppressWarnings("unused")
 	private static final Logger log = Logger.getLogger(DecayService.class);
 
 	private static final int DECAY_DEFAULT_DELAY = 20000;

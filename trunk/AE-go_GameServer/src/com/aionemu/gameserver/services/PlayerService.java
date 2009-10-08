@@ -151,8 +151,7 @@ public class PlayerService
 		if(player != null)
 			return player;
 
-		PlayerCommonData pcd = DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonData(playerObjId, world);
-		pcd.setPlayerExperienceTable(playerExperienceTable);
+		PlayerCommonData pcd = DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonData(playerObjId, world, playerExperienceTable);
 		PlayerAppearance appereance = DAOManager.getDAO(PlayerAppearanceDAO.class).load(playerObjId);
 		MacroList macroses = DAOManager.getDAO(PlayerMacrossesDAO.class).restoreMacrosses(playerObjId);
 
@@ -167,8 +166,8 @@ public class PlayerService
 			player.setSkillList(DAOManager.getDAO(PlayerSkillListDAO.class).restoreSkillList(playerObjId));
 		}
 		player.setKnownlist(new KnownList(player));
-		player.setFriendList(DAOManager.getDAO(FriendListDAO.class).load(player, world));
-		player.setBlockList(DAOManager.getDAO(BlockListDAO.class).load(player,world));
+		player.setFriendList(DAOManager.getDAO(FriendListDAO.class).load(player, world, playerExperienceTable));
+		player.setBlockList(DAOManager.getDAO(BlockListDAO.class).load(player,world, playerExperienceTable));
 		PlayerStatsDAO psd = DAOManager.getDAO(PlayerStatsDAO.class);
 		PlayerGameStats pgs = psd.loadGameStats(playerObjId);
 		if (!pgs.isInitialized()) {

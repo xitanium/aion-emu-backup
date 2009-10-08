@@ -25,6 +25,7 @@ import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.configs.CacheConfig;
 import com.aionemu.gameserver.dao.PlayerAppearanceDAO;
 import com.aionemu.gameserver.dao.PlayerDAO;
+import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
 import com.aionemu.gameserver.model.account.Account;
 import com.aionemu.gameserver.model.account.AccountTime;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
@@ -51,6 +52,8 @@ public class AccountService
 	private World						world;
 	@Inject
 	private PlayerService				playerService;
+	@Inject
+	private PlayerExperienceTable		playerExperienceTable;
 
 	/**
 	 * Returns {@link Account} object that has given id.
@@ -120,7 +123,7 @@ public class AccountService
 
 		for(int playerOid : playerOids)
 		{
-			PlayerCommonData playerCommonData = playerDAO.loadPlayerCommonData(playerOid, world);
+			PlayerCommonData playerCommonData = playerDAO.loadPlayerCommonData(playerOid, world, playerExperienceTable);
 			PlayerAppearance appereance = appereanceDAO.load(playerOid);
 
 			PlayerAccountData acData = new PlayerAccountData(playerCommonData, appereance);
