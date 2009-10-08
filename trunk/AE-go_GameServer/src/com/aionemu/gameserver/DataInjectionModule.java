@@ -17,7 +17,8 @@
 package com.aionemu.gameserver;
 
 import com.aionemu.commons.services.ScriptService;
-import com.aionemu.gameserver.controllers.CreatureController;
+import com.aionemu.gameserver.controllers.NpcController;
+import com.aionemu.gameserver.controllers.PlayerController;
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.dataholders.NpcData;
 import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
@@ -77,8 +78,10 @@ public class DataInjectionModule extends AbstractModule
 		bind(SocialService.class).in(Scopes.SINGLETON);
 		// binds ScriptService as singleton
 		bind(ScriptService.class).in(Scopes.SINGLETON);
-		// binds CreatureController as singleton
-		bind(CreatureController.class).in(Scopes.SINGLETON);
+		// binds PlayerController as singleton
+		bind(PlayerController.class).in(Scopes.SINGLETON);
+		// binds NpcController as singleton
+		bind(NpcController.class).in(Scopes.SINGLETON);
 		// binds StatFunctions as singleton
 		bind(StatFunctions.class).in(Scopes.SINGLETON);
 	}
