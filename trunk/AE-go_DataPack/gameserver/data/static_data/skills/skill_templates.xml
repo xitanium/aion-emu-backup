@@ -1,27 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<skill_data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="skills.xsd">
-	<!--
-		<skill_template skill_id="965" name="Healing Light I" type="CHANNELED"
-		handler="MDAM" target="TARGET" level="1" duration="2000" cooldown="1"
-		damage="93"/>
-	-->
-	<skill_template skill_id="975" name="Smite I" type="CHANNELED"
-		handler="MDAM" target="TARGET" level="1" duration="2000" cooldown="2000"
-		damage="74" />
-	<!--
-		<skill_template skill_id="1099" name="Root I " type="CHANNELED"
-		handler="MDAM" target="TARGET" level="1" duration="1" cooldown="1000"
-		damage="0" />
-	-->
-	<skill_template skill_id="1351" name="Flame Bolt I "
-		type="CHANNELED" handler="MDAM" target="TARGET" level="1" duration="2000"
-		cooldown="1000" damage="61" />
-	<!--
-		<skill_template skill_id="1362" name="Ice Chain I" type="CHANNELED"
-		handler="MDAM" target="TARGET" level="1" duration="2000"
-		cooldown="10000" damage="76"/>
-	-->
-	<skill_template skill_id="1801" name="Return" type="CHANNELED"
-		handler="MISC" target="SELF" level="1" duration="6000" />
+<skill_data  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="skills.xsd">
+	<skill_template skill_id="1801" name="Return" level="1" recharge_time="1200" launch_time="6" />
+	<skill_template skill_id="1803" name="Bandage Heal" level="1" recharge_time="16" launch_time="4" heals="178" />
+	<skill_template skill_id="1351" name="Fire Storm" level="1" element="FIRE" cost="40" recharge_time="1" launch_time="2" inflicts="80" skill_type="SPELL_SIMPLE" />
+	<skill_template skill_id="975" name="Smite" level="1" element="EARTH" cost="18" recharge_time="2" launch_time="2" inflicts="81" skill_type="SPELL_SIMPLE" />
 </skill_data>

@@ -18,7 +18,6 @@ package com.aionemu.gameserver.skillengine;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -26,10 +25,8 @@ import org.apache.log4j.Logger;
 import com.aionemu.commons.scripting.scriptmanager.ScriptManager;
 import com.aionemu.gameserver.GameServerError;
 import com.aionemu.gameserver.dataholders.DataManager;
-import com.aionemu.gameserver.model.templates.SkillTemplate;
-import com.aionemu.gameserver.skillengine.handlers.GeneralSkillHandlerFactory;
 import com.aionemu.gameserver.skillengine.loader.SkillHandlerLoader;
-import com.aionemu.gameserver.skillengine.model.SkillHandlerType;
+import com.aionemu.gameserver.utils.chathandlers.AdminCommandChatHandler;
 import com.google.inject.Injector;
 
 /**
@@ -40,7 +37,7 @@ public class SkillEngine
 {
 	private static final Logger log = Logger.getLogger(SkillEngine.class);
 	
-	public static final File SKILL_DESCRIPTOR_FILE = new File("./data/scripts/system/skills.xml");
+	public static final File CHAT_DESCRIPTOR_FILE = new File("./data/scripts/system/skills.xml");
 	
 	public static final SkillEngine skillEngine = new SkillEngine();
 	
@@ -75,15 +72,7 @@ public class SkillEngine
 		}
 		return skillHandler;
 	}
-	
 	public void registerAllSkills(Injector injector)
-	{
-		loadCustomHandlers(injector);		
-		loadGeneralHandlers();
-		log.info("Loaded " + skillHandlers.size() + " skill handlers");
-	}
-
-	private void loadCustomHandlers(Injector injector) throws GameServerError
 	{
 		ScriptManager sm = new ScriptManager();
 
@@ -91,34 +80,11 @@ public class SkillEngine
 
 		try
 		{
-			sm.load(SKILL_DESCRIPTOR_FILE);
+			sm.load(CHAT_DESCRIPTOR_FILE);
 		}
 		catch (Exception e)
 		{
 			throw new GameServerError("Can't initialize skill handlers.", e);
-		}
-	}
-	
-	/**
-	 * General Handlers will be loaded after custom java handlers and will not override them
-	 */
-	private void loadGeneralHandlers()
-	{
-		List<SkillTemplate> skillTemplates= DataManager.SKILL_DATA.getSkillTemplates();
-		for(SkillTemplate skillTemplate : skillTemplates)
-		{
-			int skillId = skillTemplate.getSkillId();
-			
-			if(!skillHandlers.keySet().contains(skillId))
-			{
-				SkillHandlerType skillHandlerType = 
-					SkillHandlerType.valueOf(skillTemplate.getHandlerType());
-				
-				SkillHandler skillHandler = GeneralSkillHandlerFactory.createSkillHandler(skillHandlerType);
-				skillHandler.setSkillTemplate(skillTemplate);
-				skillHandler.setSkillId(skillId);
-				skillHandlers.put(skillId, skillHandler);
-			}
 		}
 	}
 	

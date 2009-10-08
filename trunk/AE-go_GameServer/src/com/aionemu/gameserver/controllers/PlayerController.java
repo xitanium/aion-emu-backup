@@ -16,13 +16,10 @@
  */
 package com.aionemu.gameserver.controllers;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.gameserver.dataholders.SkillData;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
@@ -30,9 +27,6 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL_END;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DIE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
@@ -42,7 +36,6 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.skillengine.SkillEngine;
 import com.aionemu.gameserver.skillengine.SkillHandler;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.stats.ClassStats;
 import com.aionemu.gameserver.utils.stats.StatFunctions;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
@@ -106,50 +99,61 @@ public class PlayerController extends CreatureController<Player>
 		long time = System.currentTimeMillis();
 		int attackType = 0; //TODO investigate attack types	
 
-		World world = player.getActiveRegion().getWorld();
-		Npc npc = (Npc) world.findAionObject(targetObjectId);
-
-		//TODO fix last attack - cause mob is already dead
-		int damage = StatFunctions.calculateBaseDamageToTarget(player, npc);
+		Creature target = (Creature) world.findAionObject(targetObjectId);
+		int damages = StatFunctions.calculateBaseDamageToTarget(player, target);
 		PacketSendUtility.broadcastPacket(player,
-			new SM_ATTACK(player.getObjectId(), targetObjectId,
-				gameStats.getAttackCounter(), (int) time, attackType, damage), true);
+			new SM_ATTACK(player.getObjectId(), targetObjectId,	gameStats.getAttackCounter(), (int) time, attackType, damages), true);
 
-		boolean attackSuccess = npc.getController().onAttack(player);
-
+		boolean attackSuccess = target.getController().onAttack(player, damages);
 		if(attackSuccess)
 		{
-			npc.getLifeStats().reduceHp(damage);
+			target.getLifeStats().reduceHp(damages);
 			gameStats.increateAttackCounter();
-		}		
+		}
 	}
 
 	/* (non-Javadoc)
 	 * @see com.aionemu.gameserver.controllers.CreatureController#onAttack(com.aionemu.gameserver.model.gameobjects.Creature)
 	 */
 	@Override
-	public boolean onAttack(Creature creature)
+	public boolean onAttack(Creature creature, int damages)
 	{
-		super.onAttack(creature);
+		super.onAttack(creature,damages);
 		
 		Player player = getOwner();
 		PlayerLifeStats lifeStats = player.getLifeStats();
 
+		//TODO resolve synchronization issue
 		if(!lifeStats.isAlive())
 		{
-			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()), true);
-			this.onDie();
+			return false;
+		}
+
+		lifeStats.reduceHp(damages);
+
+		if(!lifeStats.isAlive())
+		{
+			if (!(creature instanceof Player)) {
+				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()), true);
+				this.onDie();
+			}
 		}
 		return true;
 	}
 	
-	public void useSkill(int skillId, int level, int unk, int targetObjectId, int time)
+	public void useSkill(int skillId)
 	{
 		SkillHandler skillHandler = SkillEngine.getInstance().getSkillHandlerFor(skillId);
 		
 		if(skillHandler != null)
 		{
-			skillHandler.useSkill(this.getOwner());
+			if (this.getOwner().getTarget()!=null) {
+				Vector<Creature> list = new Vector<Creature>();
+				list.add(this.getOwner().getTarget());
+				skillHandler.useSkill(this.getOwner(), list);
+			} else {
+				skillHandler.useSkill(this.getOwner(), null);
+			}
 		}
 	}
 
@@ -161,5 +165,13 @@ public class PlayerController extends CreatureController<Player>
 	{
 		// TODO Auto-generated method stub
 		super.doDrop();
+	}
+	
+	public void startDuelWith (Player player) {
+		PacketSendUtility.sendPacket(getOwner(), SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(player.getName()));
+	}
+	
+	public void onDuelEnd () {
+		
 	}
 }

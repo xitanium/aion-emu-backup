@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.model.gameobjects.stats;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -23,6 +24,7 @@ import org.apache.log4j.Logger;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_HP;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_MP;
 import com.aionemu.gameserver.services.LifeStatsRestoreService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -46,6 +48,8 @@ public class CreatureLifeStats<T extends Creature>
 	
 	private Creature owner;
 	
+	private boolean initialized = false;
+	
 	private Future<?> lifeRestoreTask;
 
 	public CreatureLifeStats(Creature owner, int currentHp, int currentMp, int maxHp, int maxMp)
@@ -56,6 +60,30 @@ public class CreatureLifeStats<T extends Creature>
 		this.maxHp = maxHp;
 		this.maxMp = maxMp;
 		this.owner = owner;
+		this.initialized = true;
+	}
+	
+	@Override
+	public String toString () {
+		String str = new String ("{");
+		Class<?> clazz = CreatureLifeStats.class;
+		for (Field fi : clazz.getDeclaredFields()) {
+			if (fi.getType().isPrimitive()) {
+				try { str += fi.getName()+":"+fi.getInt(this)+","; }
+				catch(Exception e) { try { str += fi.getName()+":"+fi.getBoolean(this)+","; }
+				catch(Exception f) { } }
+			}
+		}
+		str += "}";
+		return str;
+	}
+	
+	public boolean isInitialized () {
+		return initialized;
+	}
+	
+	public void setInitialized (boolean initialized) {
+		this.initialized = initialized;
 	}
 	
 	/**
@@ -185,6 +213,7 @@ public class CreatureLifeStats<T extends Creature>
 		if(owner instanceof Player)
 		{
 			PacketSendUtility.sendPacket((Player) owner, new SM_ATTACK_STATUS(getOwner().getObjectId(), hpPercentage));
+			PacketSendUtility.sendPacket((Player) owner, new SM_STATUPDATE_HP(currentHp, maxHp));
 		}
 	}
 	

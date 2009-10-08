@@ -66,25 +66,17 @@ public class CM_EMOTION extends AionClientPacket
 	protected void readImpl()
 	{
 		unknown = readC();
-		if(unknown == 0x01)
-		{
-			// jump
-		}
-		else if(unknown == 0x11)
-		{
-			// Nothing here
-		}
-		else if(unknown == 0x10)
-		{
-			emotion = readH();
-		} 
-		else if(unknown == 0x13)
-		{
-			//emotion = readH();
-		} 
-		else
-		{
-			log.info("Unknown emotion type? 0x" + Integer.toHexString(unknown).toUpperCase());
+		switch (unknown) {
+			case 0x01:
+			case 0x11:
+			case 0x13:
+			case 0x14:
+				break;
+			case 0x10:
+				emotion = readH();
+				break;
+			default:
+				log.info("Unknown emotion type? 0x" + Integer.toHexString(unknown).toUpperCase());
 		}
 	}
 

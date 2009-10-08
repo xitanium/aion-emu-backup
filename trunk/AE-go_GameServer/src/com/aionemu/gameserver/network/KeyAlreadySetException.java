@@ -25,6 +25,10 @@ package com.aionemu.gameserver.network;
 public class KeyAlreadySetException extends RuntimeException
 {
 	/**
+	 * To be in concordance with Serializable interface
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Constructs an <code>KeyAlreadySetException</code> with no detail message.
 	 */
 	public KeyAlreadySetException()

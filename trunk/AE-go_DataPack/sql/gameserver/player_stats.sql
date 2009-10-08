@@ -1,0 +1,27 @@
+DROP TABLE IF EXISTS `player_stats`;
+CREATE TABLE `player_stats` (
+	`player_id` int(11) NOT NULL default '0',
+	`current_hp` int(11) NOT NULL default '0',
+	`current_mp` int(11) NOT NULL default '0',
+	`current_dp` int(11) NOT NULL default '0',
+	`max_hp` int(11) NOT NULL default '0',
+	`max_mp` int(11) NOT NULL default '0',
+	`max_dp` int(11) NOT NULL default '0',
+	`attack_counter` int(11) NOT NULL default '0',
+	`power` int(11) NOT NULL default '0',
+	`health` int(11) NOT NULL default '0',
+	`agility` int(11) NOT NULL default '0',
+	`accuracy` int(11) NOT NULL default '0',
+	`knowledge` int(11) NOT NULL default '0',
+	`will` int(11) NOT NULL default '0',
+	`main_hand_attack` int(11) NOT NULL default '0',
+	`main_hand_crit_rate` int(11) NOT NULL default '0',
+	`off_hand_attack` int(11) NOT NULL default '0',
+	`off_hand_crit_rate` int(11) NOT NULL default '0',
+	`water` int(11) NOT NULL default '0',
+	`wind` int(11) NOT NULL default '0',
+	`earth` int(11) NOT NULL default '0',
+	`fire` int(11) NOT NULL default '0',
+	`fly_time` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`player_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

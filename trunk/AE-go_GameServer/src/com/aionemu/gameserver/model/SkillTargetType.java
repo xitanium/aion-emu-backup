@@ -14,14 +14,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-unique.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.gameserver.skillengine.handlers;
+package com.aionemu.gameserver.model.templates;
 
-
-/**
- * @author ATracer
- *
- */
-public class NotImplementedSkillHandler extends TemplateSkillHandler
-{
-
+public enum SkillTargetType {
+	TARGET,
+	TARGET_SELF,
+	SELF,
+	LOCATION;
 }

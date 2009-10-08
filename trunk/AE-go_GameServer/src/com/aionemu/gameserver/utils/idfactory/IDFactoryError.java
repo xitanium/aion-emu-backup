@@ -24,7 +24,11 @@ package com.aionemu.gameserver.utils.idfactory;
  */
 public class IDFactoryError extends Error
 {
-
+	/**
+	 * To be in concordance with Serializable interface
+	 **/
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * {@inheritDoc}
 	 */

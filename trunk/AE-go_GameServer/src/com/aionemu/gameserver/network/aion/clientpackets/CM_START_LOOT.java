@@ -141,7 +141,7 @@ public class CM_START_LOOT extends AionClientPacket
 		{
 			//sendPacket(new SM_LOOT_ITEMLIST(targetObjectId,itemId,1));	
 			sendPacket(new SM_LOOT_STATUS(targetObjectId,3));
-			sendPacket(new SM_DELETE((Creature) player.getTarget()));
+			sendPacket(new SM_DELETE(player.getTarget()));
 			playerGameStats.setItemId(0);
 		}
 	}

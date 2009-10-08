@@ -16,89 +16,64 @@
  */
 package skillhandlers;
 
-import org.apache.log4j.Logger;
-
-import com.google.inject.Inject;
-
 import com.aionemu.gameserver.dataholders.PlayerInitialData;
 import com.aionemu.gameserver.dataholders.PlayerInitialData.LocationData;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
-import com.aionemu.gameserver.model.templates.SkillTemplate;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL_END;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
-import com.aionemu.gameserver.skillengine.handlers.MiscSkillHandler;
+import com.aionemu.gameserver.skillengine.SkillHandler;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
-import com.aionemu.gameserver.utils.stats.StatFunctions;
 import com.aionemu.gameserver.world.World;
+import com.aionemu.gameserver.world.WorldPosition;
+import com.google.inject.Inject;
+
+import org.apache.log4j.Logger;
+
+import java.util.List;
 
 /**
  * @author ATracer
  *
  */
-public class ReturnSkillHandler extends MiscSkillHandler
+public class ReturnSkillHandler extends SkillHandler
 {
-    private static final Logger log = Logger.getLogger(ReturnSkillHandler.class);
-    
-    @Inject
-    private World   world;
-    
-    @Inject
-    private PlayerInitialData playerInitialData;
+   private static final Logger log =
+Logger.getLogger(ReturnSkillHandler.class);
 
-    public ReturnSkillHandler() 
-    {
-        this.setSkillId(1801);
-    }
+   @Inject
+   private World   world;
 
-    @Override
-    public void useSkill(Creature creature)
-    {
-        super.useSkill(creature);
-        log.info("RETURN skill handler was called");
-        
-        
-    }
-    
-    /* (non-Javadoc)
-     * @see com.aionemu.gameserver.skillengine.handlers.TemplateSkillHandler#startUsage()
-     */
-    @Override
-    protected void startUsage(Creature creature) 
-    {      
-        //TODO decide whether move logic upper in hierarchy
-        Player player = (Player) creature;
-        SkillTemplate template = getSkillTemplate();
-        
-        final int unk = 0;
-        
-        PacketSendUtility.broadcastPacket(player, 
-                new SM_CASTSPELL(player.getObjectId(), getSkillId(), getSkillTemplate().getLevel(),
-                        unk, 0, getSkillTemplate().getDuration()), true);
-        
-        schedulePerformAction(creature, getSkillTemplate().getDuration());
-    }
-    
-    @Override
-    protected void performAction(Creature creature) 
-    {  
-        Player player = (Player) creature;
-        world.despawn(player);
-        LocationData locationData = playerInitialData.getSpawnLocation(player.getCommonData().getRace());
-        
-        world.setPosition(player, locationData.getMapId(),
-                locationData.getX(), locationData.getY(), locationData.getZ(), locationData.getHeading());
-        
-        player.setProtectionActive(true);
-        PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
-        
-        //TODO investigate unk
-        int unk = 0;
-        
-        PacketSendUtility.broadcastPacket(player,
-                new SM_CASTSPELL_END(player.getObjectId(), getSkillId(), getSkillTemplate().getLevel(), unk, 0, 0), true);
-    }
+   @Inject
+   private PlayerInitialData playerInitialData;
+
+   public ReturnSkillHandler() {
+       super(1801);
+   }
+
+   /* (non-Javadoc)
+    * @see com.aionemu.gameserver.skillengine.SkillHandler#useSkill(com.aionemu.gameserver.model.gameobjects.Creature,
+java.util.List)
+    */
+   @Override
+   public void useSkill(Creature creature, List<Creature> targets)
+   {
+       log.info("You are using return");
+       final Player player = (Player) creature;
+       world = player.getActiveRegion().getWorld();
+       try {
+    	   WorldPosition bp = player.getBindPoint();
+    	   log.info("[Return] Player " + player.getName() + " teleported to bind point in map " + player.getActiveRegion().getMapId());
+    	   world.setPosition(player, bp.getMapId(), bp.getX(), bp.getY(), bp.getZ(), bp.getHeading());
+    	   PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
+       }
+       catch(com.aionemu.gameserver.world.exceptions.WorldMapNotExistException ex) {
+    	   log.warn("No bind point registered for player " + player.getName());
+    	   PacketSendUtility.sendMessage(player, "You have no registered bind point. Please report this issue to Game Masters.");
+       }
+       
+   }
 
 }

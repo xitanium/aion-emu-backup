@@ -18,28 +18,30 @@ package com.aionemu.gameserver.skillengine;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.templates.SkillTemplate;
 
 /**
  * @author ATracer
- * 
- * SkillHandler (top level) -> TemplateSkillHandler 
- * -> GeneralSkillHandler -> SkillTemplates (in xml) -> ConcreteSkillHandler (java in DP)
- * 
+ *
  */
 public abstract class SkillHandler
 {
 	
 	private int skillId;
 	
-	/**
-	 * defined in xml
-	 */
 	private SkillTemplate skillTemplate;
+
+	protected static final Logger log = Logger.getLogger(SkillHandler.class);
 	
+	public SkillHandler(int skillId)
+	{
+		this.skillId = skillId;
+	}
 	
-	public abstract void useSkill(Creature creature);
+	public abstract void useSkill(Creature creature, List<Creature> targets);
 
 	/**
 	 * @return the skillTemplate
@@ -58,18 +60,13 @@ public abstract class SkillHandler
 	}
 
 	/**
-	 * @param skillId the skillId to set
-	 */
-	public void setSkillId(int skillId)
-	{
-		this.skillId = skillId;
-	}
-
-	/**
 	 * @param skillTemplate the skillTemplate to set
 	 */
 	public void setSkillTemplate(SkillTemplate skillTemplate)
 	{
 		this.skillTemplate = skillTemplate;
 	}
+	
+	
+
 }

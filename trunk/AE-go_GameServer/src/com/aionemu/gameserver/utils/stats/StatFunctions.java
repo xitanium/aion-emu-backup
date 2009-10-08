@@ -23,6 +23,10 @@ import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
+import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
+import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
+
 import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.model.templates.SkillTemplate;
 
@@ -77,7 +81,7 @@ public class StatFunctions
 	public static int calculateMagicDamageToTarget(Player player, Creature target, SkillTemplate skillTemplate)
 	{
 		//TODO this is a dummmy cacluations
-		return skillTemplate.getDamage() * skillTemplate.getLevel() * 2;
+		return skillTemplate.getDamages() * skillTemplate.getLevel() * 2;
 	}
 	
 	public static int calculateNpcBaseDamageToPlayer(Npc npc, Player player)
@@ -90,9 +94,14 @@ public class StatFunctions
 		final PlayerLifeStats pls = new PlayerLifeStats();
 		PlayerStatsTemplate pst = DataManager.PLAYER_STATS_DATA.getTemplate(playerClass,1);
 		pls.setMaxHp(pst.getMaxHp());
+		pls.setCurrentHp(pls.getMaxHp());
 		pls.setMaxMp(pst.getMaxMp());
+		pls.setCurrentMp(pls.getMaxMp());
 		// TODO find good MaxDp value
 		pls.setMaxDp(100);
+		pls.setCurrentDp(0);
+		pls.setInitialized(true);
+		log.debug("loading base life stats for player class "+playerClass+":"+pls);
 		return pls;
 	}
 	
@@ -117,6 +126,8 @@ public class StatFunctions
 		pgs.setFire(0);
 		// TODO find good values for fly time
 		pgs.setFlyTime(60);
+		pgs.setInitialized(true);
+		log.debug("loading base game stats for player class "+playerClass+":"+pgs);
 		return pgs;
 	}
 }

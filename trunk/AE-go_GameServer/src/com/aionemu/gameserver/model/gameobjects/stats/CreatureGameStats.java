@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.model.gameobjects.stats;
 
+import java.lang.reflect.Field;
+
 import com.aionemu.gameserver.model.SkillElement;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 
@@ -44,7 +46,7 @@ public class CreatureGameStats<T extends Creature>
 	private int fire = 0;
 	private int flyTime = 0;
 	private int mainHandAccuracy = 0;
-	private int otherHandAccuracy = 0;
+	private int offHandAccuracy = 0;
 	private int magicAccuracy = 0;
 	private int magicResistance = 0;
 	private int physicalDefense = 0;
@@ -52,11 +54,13 @@ public class CreatureGameStats<T extends Creature>
 	private int block = 0;
 	private int parry = 0;
 	private int magicBoost = 0;
+	private boolean initialized = false;
 	private Creature owner = null;
 	
 	public CreatureGameStats (Creature owner, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int offHandAttack, int offHandCritRate)
 	{
 		this.owner = owner;
+		this.initialized = true;
 		setPower(power);
 		setHealth(health);
 		setAgility(agility);
@@ -69,6 +73,29 @@ public class CreatureGameStats<T extends Creature>
 		setOffHandCritRate(offHandCritRate);
 	}
 
+	@Override
+	public String toString () {
+		String str = new String ("{");
+		Class<?> clazz = CreatureGameStats.class;
+		for (Field fi : clazz.getDeclaredFields()) {
+			if (fi.getType().isPrimitive()) {
+				try { str += fi.getName()+":"+fi.getInt(this)+","; }
+				catch(Exception e) { try { str += fi.getName()+":"+fi.getBoolean(this)+","; }
+				catch(Exception f) { } }
+			}
+		}
+		str += "}";
+		return str;
+	}
+	
+	public boolean isInitialized () {
+		return initialized;
+	}
+	
+	public void setInitialized (boolean initialized) {
+		this.initialized = initialized;
+	}
+	
 	/**
 	 * @return the atcount
 	 */
@@ -124,7 +151,7 @@ public class CreatureGameStats<T extends Creature>
 	public void setHealth(int health)
 	{
 		this.health = health;
-		this.physicalDefense = (int)Math.round(health * 3.1 - 248.5 + 12.4 * owner.getLevel());
+		this.physicalDefense = (int)Math.round(health / 3.1);
 	}
 	/**
 	 * @return the agility
@@ -139,9 +166,9 @@ public class CreatureGameStats<T extends Creature>
 	public void setAgility(int agility)
 	{
 		this.agility = agility;
-		this.parry = (int)Math.round(agility * 3.1 - 248.5 + 12.4 * owner.getLevel());
-		this.evasion = (int)Math.round(agility * 3.1 - 248.5 + 12.4 * owner.getLevel());
-		this.block = (int)Math.round(agility * 3.1 - 248.5 + 12.4 * owner.getLevel());
+		this.parry = (int)Math.round(agility / 3.1);
+		this.evasion = (int)Math.round(agility / 3.1);
+		this.block = (int)Math.round(agility / 3.1);
 	}
 	/**
 	 * @return the accuracy
@@ -156,8 +183,8 @@ public class CreatureGameStats<T extends Creature>
 	public void setAccuracy(int accuracy)
 	{
 		this.accuracy = accuracy;
-		this.mainHandAccuracy = (accuracy * 2) - 10 + 8 * owner.getLevel();
-		this.otherHandAccuracy = (accuracy * 2) - 10 + 8 * owner.getLevel();
+		this.mainHandAccuracy = (int) Math.round(accuracy * 1.25);
+		this.offHandAccuracy = (int) Math.round(accuracy * 0.75);
 	}
 	/**
 	 * @return the knowledge
@@ -172,7 +199,7 @@ public class CreatureGameStats<T extends Creature>
 	public void setKnowledge(int knowledge)
 	{
 		this.knowledge = knowledge;
-		this.magicResistance = (int)Math.round(knowledge * 3.1 - 248.5 + 12.4 * owner.getLevel());
+		this.magicResistance = (int)Math.round(knowledge / 3.1);
 	}
 	/**
 	 * @return the will
@@ -187,7 +214,7 @@ public class CreatureGameStats<T extends Creature>
 	public void setWill(int will)
 	{
 		this.will = will;
-		this.magicAccuracy = (will * 2) - 10 + 8 * owner.getLevel();
+		this.magicAccuracy = (int) Math.round(will * 0.75);
 	}
 	/**
 	 * @return the mainHandAttack
@@ -325,9 +352,9 @@ public class CreatureGameStats<T extends Creature>
 	/**
 	 * @return the otherHandAccuracy
 	 */
-	public int getOtherHandAccuracy()
+	public int getOffHandAccuracy()
 	{
-		return otherHandAccuracy;
+		return offHandAccuracy;
 	}
 	/**
 	 * @return the magicAccuracy
@@ -409,13 +436,13 @@ public class CreatureGameStats<T extends Creature>
 	public void setMagicalDefenseFor (SkillElement element, int value) {
 		switch (element) {
 			case EARTH:
-				this.earth = value; 
+				this.earth = value; break; 
 			case FIRE:
-				this.fire = value;
+				this.fire = value; break;
 			case WATER:
-				this.water = value;
+				this.water = value; break;
 			case WIND:
-				this.wind = value;
+				this.wind = value; break;
 			default:
 				break;
 		}

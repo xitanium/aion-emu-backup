@@ -17,6 +17,7 @@
 package com.aionemu.gameserver.dataholders;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -60,14 +61,10 @@ public class SkillData
 		return skillData.get(skillId);
 	}
 	
-	/**
-	 * @return
-	 */
-	public List<SkillTemplate> getSkillTemplates()
-	{
-		return skillTemplates;
+	public Iterator<Map.Entry<Integer, SkillTemplate>> getIterator () {
+		return skillData.entrySet().iterator();
 	}
-	
+
 	public int size()
 	{
 		return skillData.size();

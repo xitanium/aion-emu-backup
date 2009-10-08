@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.aionemu.gameserver.model.SkillElement;
+import com.aionemu.gameserver.model.SkillType;
 
 /**
  * @author ATracer
@@ -32,39 +33,47 @@ import com.aionemu.gameserver.model.SkillElement;
 public class SkillTemplate
 {
 	@XmlAttribute(name ="skill_id", required = true)
-	private int	skillId;
+	private int	skill_id;
+	
+	@XmlAttribute(name = "skill_type")
+	private SkillType skill_type;
 	
 	@XmlAttribute(name = "name", required = true)
 	private String name;
 	
-	@XmlAttribute(name = "type", required = true)
-	private String skillType;
-	
-	@XmlAttribute(name = "handler", required = true)
-	private String handlerType;
-	
 	@XmlAttribute(name = "level", required = true)
 	private int level;
+
+	@XmlAttribute(name = "element")
+	private SkillElement element;
 	
-	@XmlAttribute(name = "duration", required = true)
-	private int duration;
+	@XmlAttribute(name = "inflicts")
+	private int inflicts;
 	
-	@XmlAttribute(name = "target", required = true)
-	private String target;
+	@XmlAttribute(name = "heals")
+	private int heals;
 	
-	@XmlAttribute(name = "cooldown", required = true)
-	private String coolDown;
+	@XmlAttribute(name = "cost")
+	private int cost;
 	
-	//TODO min/max damage
-	@XmlAttribute(name = "damage", required = false)
-	private int damage;
+	@XmlAttribute(name = "probability")
+	private float probability;
+
+	@XmlAttribute(name = "target")
+	private SkillTargetType target;
+	
+	@XmlAttribute(name = "recharge_time")
+	private int recharge_time;
+	
+	@XmlAttribute(name = "launch_time")
+	private int launch_time;
 
 	/**
 	 * @return the skillId
 	 */
 	public int getSkillId()
 	{
-		return skillId;
+		return skill_id;
 	}
 
 	/**
@@ -75,20 +84,32 @@ public class SkillTemplate
 		return name;
 	}
 
+	public SkillElement getElement()
+	{
+		return element;
+	}
 	/**
 	 * @return the skillType
 	 */
-	public String getSkillType()
+	public SkillType getType()
 	{
-		return skillType;
+		return skill_type;
 	}
 
 	/**
-	 * @return the handlerType
+	 * @return the gain
 	 */
-	public String getHandlerType()
+	public int getGain()
 	{
-		return handlerType;
+		return heals;
+	}
+	
+	/**
+	 * @return the damages
+	 */
+	public int getDamages()
+	{
+		return inflicts;
 	}
 
 	/**
@@ -102,32 +123,25 @@ public class SkillTemplate
 	/**
 	 * @return the duration
 	 */
-	public int getDuration()
+	public int getRechargeTime ()
 	{
-		return duration;
+		return recharge_time;
 	}
 
+	public int getLaunchTime ()
+	{
+		return launch_time;
+	}
 	/**
 	 * @return the target
 	 */
-	public String getTarget()
+	public SkillTargetType getTarget()
 	{
 		return target;
 	}
 
-	/**
-	 * @return the coolDown
-	 */
-	public String getCoolDown()
+	public int getCost ()
 	{
-		return coolDown;
-	}
-
-	/**
-	 * @return the damage
-	 */
-	public int getDamage()
-	{
-		return damage;
+		return cost;
 	}
 }

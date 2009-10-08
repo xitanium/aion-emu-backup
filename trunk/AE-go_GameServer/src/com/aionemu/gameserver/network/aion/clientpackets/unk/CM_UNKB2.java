@@ -30,9 +30,9 @@ public class CM_UNKB2 extends AionClientPacket
 	 * @param buf
 	 * @param client
 	 */
-	public CM_UNKB2(ByteBuffer buf, AionConnection client)
+	public CM_UNKB2(int opcode)
 	{
-		super(buf, client, 0xB6);
+		super(opcode);
 	}
 
 	/**

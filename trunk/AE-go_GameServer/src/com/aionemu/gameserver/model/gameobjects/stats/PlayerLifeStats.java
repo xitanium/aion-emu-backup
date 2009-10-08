@@ -32,6 +32,7 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 	
 	public PlayerLifeStats() {
 		this(null,0,0,0,0,0,0);
+		this.setInitialized(false);
 	}
 	
 	public PlayerLifeStats(int maxHp, int maxMp, int maxDp)
@@ -92,5 +93,4 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 		setMaxMp((int) Math.round(this.getMaxMp() * 1.07 * (toLevel - fromLevel)));
 		setMaxDp((int) Math.round(this.getMaxDp() * 1.07 * (toLevel - fromLevel)));
 	}
-	
 }
