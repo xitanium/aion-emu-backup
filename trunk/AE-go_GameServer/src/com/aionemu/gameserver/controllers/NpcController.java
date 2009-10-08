@@ -42,7 +42,7 @@ import com.aionemu.gameserver.world.World;
  */
 public class NpcController extends CreatureController<Npc>
 {
-	public NpcController (World world, StatFunctions statFunctions) {
+	public NpcController (World world) {
 		super(world);
 	}
 	public void attackTarget(int targetObjectId)

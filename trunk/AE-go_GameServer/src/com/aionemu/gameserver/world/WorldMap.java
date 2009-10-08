@@ -29,7 +29,7 @@ import com.aionemu.gameserver.model.templates.WorldMapTemplate;
  */
 public class WorldMap
 {
-	private WorldMapTemplate				worldMapTemplate;
+	private WorldMapTemplate worldMapTemplate;
 
 	/**
 	 * List of instances.
