@@ -72,5 +72,6 @@ public class GoName extends AdminCommand
 		PacketSendUtility.sendPacket(admin, new SM_UNKF5(admin));
 
 		PacketSendUtility.sendMessage(admin, "Teleported to player " + player.getName() + ".");
+		PacketSendUtility.sendMessage(player, "Game Master " + admin.getName() + " appears at your location");
 	}
 }
