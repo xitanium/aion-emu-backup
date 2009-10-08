@@ -87,6 +87,9 @@ public class SkillTemplate
 
 	public SkillElement getElement()
 	{
+		if (element == null) {
+			element = SkillElement.NONE;
+		}
 		return element;
 	}
 	/**
@@ -94,6 +97,9 @@ public class SkillTemplate
 	 */
 	public SkillType getType()
 	{
+		if (skill_type==null) {
+			skill_type = SkillType.DEFAULT;
+		}
 		return skill_type;
 	}
 
@@ -138,6 +144,9 @@ public class SkillTemplate
 	 */
 	public SkillTargetType getTarget()
 	{
+		if (target==null) {
+			target = SkillTargetType.TARGET;
+		}
 		return target;
 	}
 	/**
