@@ -16,7 +16,6 @@
  */
 package skillhandlers;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
@@ -57,8 +56,8 @@ public class BandageHealHandler extends SkillHandler
         	final int level = st.getLevel();
         	final int unk = 0;
         	final int targetId = player.getObjectId();
-        	final int damages = st.getDamages();
-        	log.info("Healing damages = " + damages);
+        	final int gains = st.getGain();
+        	log.info("Healing damages = " + gains);
         	final int reload = st.getLaunchTime();
         	final int cost = st.getCost();
         	PacketSendUtility.sendPacket(player, new SM_CASTSPELL(attackerId,getSkillId(),st.getLevel(),0,st.getRechargeTime(),targetId));
@@ -67,17 +66,17 @@ public class BandageHealHandler extends SkillHandler
         		public void run() 
         		{
         			PacketSendUtility.sendPacket(player,
-               				new SM_CASTSPELL_END(attackerId, spellId, level, unk, damages, targetId));
-        			performAction(player,player,damages,cost);
+               				new SM_CASTSPELL_END(attackerId, spellId, level, unk, -gains, targetId));
+        			performAction(player,player,gains,cost);
         		}
         	}, (reload-1)*1000);
         }
     }
     
-    private void performAction(final Player player, final Player target, final int damages, final int cost) {
+    private void performAction(final Player player, final Player target, final int gains, final int cost) {
     	PlayerLifeStats tls = target.getLifeStats();
     	PlayerLifeStats pls = player.getLifeStats();
-    	tls.increaseHp(damages);
+    	tls.increaseHp(gains);
     	pls.reduceMp(cost);
     }
 }

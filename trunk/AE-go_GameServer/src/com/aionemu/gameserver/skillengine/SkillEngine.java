@@ -76,12 +76,14 @@ public class SkillEngine
 		this.skillData = skillData;
 		
 		for (Map.Entry<Integer, SkillTemplate> skill : skillData) {
-			SkillType type = skill.getValue().getType();
+			SkillTemplate template = skill.getValue();
+			SkillType type = template.getType();
 			int skillId = skill.getKey();
 			try {
 				final SkillHandler handler = type.getHandler(skillId);
+				handler.setSkillTemplate(template);
 				skillHandlers.put(skillId, handler);
-				log.debug("Loaded generic skill#"+skillId+" handler "+handler.getClass().getName());
+				log.debug("Loaded generic skill#"+skillId+" ("+template.getName()+") handler "+handler.getClass().getName());
 			} catch (IllegalStateException e) {
 				log.debug("Generic handler for skill#"+skillId+" not found: "+e.getMessage());
 			}

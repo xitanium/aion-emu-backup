@@ -16,16 +16,11 @@
  */
 package skillhandlers;
 
-import com.aionemu.gameserver.dataholders.PlayerInitialData;
-import com.aionemu.gameserver.dataholders.PlayerInitialData.LocationData;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL_END;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.skillengine.SkillHandler;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.ThreadPoolManager;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.world.WorldPosition;
 import com.google.inject.Inject;
@@ -45,9 +40,6 @@ Logger.getLogger(ReturnSkillHandler.class);
 
    @Inject
    private World   world;
-
-   @Inject
-   private PlayerInitialData playerInitialData;
 
    public ReturnSkillHandler() {
        super(1801);
