@@ -23,21 +23,23 @@ import com.aionemu.gameserver.model.templates.SkillTemplate;
 
 /**
  * @author ATracer
- *
+ * 
+ * SkillHandler (top level) -> TemplateSkillHandler 
+ * -> GeneralSkillHandler -> SkillTemplates (in xml) -> ConcreteSkillHandler (java in DP)
+ * 
  */
 public abstract class SkillHandler
 {
 	
 	private int skillId;
 	
+	/**
+	 * defined in xml
+	 */
 	private SkillTemplate skillTemplate;
 	
-	public SkillHandler(int skillId)
-	{
-		this.skillId = skillId;
-	}
 	
-	public abstract void useSkill(Creature creature, List<Creature> targets);
+	public abstract void useSkill(Creature creature);
 
 	/**
 	 * @return the skillTemplate
@@ -56,13 +58,18 @@ public abstract class SkillHandler
 	}
 
 	/**
+	 * @param skillId the skillId to set
+	 */
+	public void setSkillId(int skillId)
+	{
+		this.skillId = skillId;
+	}
+
+	/**
 	 * @param skillTemplate the skillTemplate to set
 	 */
 	public void setSkillTemplate(SkillTemplate skillTemplate)
 	{
 		this.skillTemplate = skillTemplate;
 	}
-	
-	
-
 }

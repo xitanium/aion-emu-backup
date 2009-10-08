@@ -37,29 +37,27 @@ public class SkillTemplate
 	@XmlAttribute(name = "name", required = true)
 	private String name;
 	
-	@XmlAttribute(name = "element")
-	private SkillElement element;
+	@XmlAttribute(name = "type", required = true)
+	private String skillType;
+	
+	@XmlAttribute(name = "handler", required = true)
+	private String handlerType;
 	
 	@XmlAttribute(name = "level", required = true)
 	private int level;
 	
-	@XmlAttribute(name = "damages")
-	private int damages;
+	@XmlAttribute(name = "duration", required = true)
+	private int duration;
 	
-	@XmlAttribute(name = "cost")
-	private int cost;
+	@XmlAttribute(name = "target", required = true)
+	private String target;
 	
-	@XmlAttribute(name = "probability")
-	private float probability;
+	@XmlAttribute(name = "cooldown", required = true)
+	private String coolDown;
 	
-	@XmlAttribute(name = "recharge_time")
-	private int recharge_time;
-	
-	@XmlAttribute(name = "launch_time")
-	private int launch_time;
-	
-	@XmlAttribute(name = "scope")
-	private int scope;
+	//TODO min/max damage
+	@XmlAttribute(name = "damage", required = false)
+	private int damage;
 
 	/**
 	 * @return the skillId
@@ -78,11 +76,19 @@ public class SkillTemplate
 	}
 
 	/**
-	 * @return the element
+	 * @return the skillType
 	 */
-	public SkillElement getElement()
+	public String getSkillType()
 	{
-		return element;
+		return skillType;
+	}
+
+	/**
+	 * @return the handlerType
+	 */
+	public String getHandlerType()
+	{
+		return handlerType;
 	}
 
 	/**
@@ -94,50 +100,34 @@ public class SkillTemplate
 	}
 
 	/**
-	 * @return the damages
+	 * @return the duration
 	 */
-	public int getDamages()
+	public int getDuration()
 	{
-		return damages;
+		return duration;
 	}
 
 	/**
-	 * @return the cost
+	 * @return the target
 	 */
-	public int getCost()
+	public String getTarget()
 	{
-		return cost;
+		return target;
 	}
 
 	/**
-	 * @return the probability
+	 * @return the coolDown
 	 */
-	public float getProbability()
+	public String getCoolDown()
 	{
-		return probability;
+		return coolDown;
 	}
 
 	/**
-	 * @return the recharge_time
+	 * @return the damage
 	 */
-	public int getRechargeTime()
+	public int getDamage()
 	{
-		return recharge_time;
-	}
-
-	/**
-	 * @return the launch_time
-	 */
-	public int getLaunchTime()
-	{
-		return launch_time;
-	}
-
-	/**
-	 * @return the scope
-	 */
-	public int getScope()
-	{
-		return scope;
+		return damage;
 	}
 }

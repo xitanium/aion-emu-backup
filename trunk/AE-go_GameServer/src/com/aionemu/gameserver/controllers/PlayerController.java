@@ -119,6 +119,7 @@ public class PlayerController extends CreatureController<Player>
 
 		if(attackSuccess)
 		{
+			npc.getLifeStats().reduceHp(damage);
 			gameStats.increateAttackCounter();
 		}		
 	}
@@ -134,15 +135,6 @@ public class PlayerController extends CreatureController<Player>
 		Player player = getOwner();
 		PlayerLifeStats lifeStats = player.getLifeStats();
 
-		//TODO resolve synchronization issue
-		if(!lifeStats.isAlive())
-		{
-			return false;
-		}
-
-		//TODO calculate damage
-		lifeStats.reduceHp(50);
-
 		if(!lifeStats.isAlive())
 		{
 			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()), true);
@@ -157,14 +149,7 @@ public class PlayerController extends CreatureController<Player>
 		
 		if(skillHandler != null)
 		{
-			//TODO pass targets
-			if (this.getOwner().getTarget()!=null) {
-				Vector<Creature> list = new Vector<Creature>();
-				list.add(this.getOwner().getTarget());
-				skillHandler.useSkill(this.getOwner(), list);
-			} else {
-				skillHandler.useSkill(this.getOwner(), null);
-			}
+			skillHandler.useSkill(this.getOwner());
 		}
 	}
 

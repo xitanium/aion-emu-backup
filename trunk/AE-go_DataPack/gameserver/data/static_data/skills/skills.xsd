@@ -31,17 +31,43 @@
 	<xs:complexType name="SkillTemplate">
 		<xs:attribute name="skill_id" type="SkillId" use="required" />
 		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="type" type="skillType" use="required" />
+		<xs:attribute name="handler" type="skillHandlerType" use="required" />
 		<xs:attribute name="level" type="xs:int" use="required" />
-		<xs:attribute name="damages" type="xs:int" use="optional" />
-		<xs:attribute name="element" type="Element" use="optional" />
-		<xs:attribute name="cost" type="xs:int" use="optional" />
-		<xs:attribute name="probability" type="Probability" use="optional" />
-		<xs:attribute name="recharge_time" type="xs:int" use="optional" />
-		<xs:attribute name="launch_time" type="xs:int" use="optional" />
-		<xs:attribute name="scope" type="xs:int" use="optional" />
+		<xs:attribute name="duration" type="xs:int" use="required" />
+		<xs:attribute name="target" type="skillTarget" use="required" />
+		<xs:attribute name="cooldown" type="xs:int" use="optional" default="0"/>
+		<xs:attribute name="damage" type="xs:int" use="optional" default="0"/>
 	</xs:complexType>
 	
-	<xs:simpleType name="SkillId">
+	<xs:simpleType name="skillType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INSTANT" />
+			<xs:enumeration value="CHANNELED" />
+			<xs:enumeration value="PASSIVE" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="skillHandlerType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BUFF" />
+			<xs:enumeration value="MDAM" />
+			<xs:enumeration value="MISC" />
+			<xs:enumeration value="PDAM" />
+			<xs:enumeration value="CREATE" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="skillTarget">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TARGET" />
+			<xs:enumeration value="TARGET_SELF" />
+			<xs:enumeration value="SELF" />
+			<xs:enumeration value="LOCATION" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="skillId">
 		<xs:restriction base="xs:int">
 			<xs:minInclusive value="1"/>
 			<xs:maxInclusive value="60000"/>

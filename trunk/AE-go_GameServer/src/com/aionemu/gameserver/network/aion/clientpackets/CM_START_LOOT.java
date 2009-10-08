@@ -101,7 +101,6 @@ public class CM_START_LOOT extends AionClientPacket
 		{
 			if (totalItemsCount == 0) {
 				//if no item is found for that mob, give item
-				int randomKinah = generator.nextInt(100)+1;
 				playerGameStats.setItemId(100000530);
 				playerGameStats.setItemCount(1);
 				sendPacket(new SM_LOOT_ITEMLIST(targetObjectId, 100000530, 1, 100, 1, 0));
@@ -118,11 +117,9 @@ public class CM_START_LOOT extends AionClientPacket
 					itemMin = dropData.getDropDataMin(row);
  					itemMax = dropData.getDropDataMax(row);
  					itemChance = dropData.getDropDataChance(row); 
+
 					//this count chance should be remade
-					randomCountChance = generator.nextInt(itemMax);
-					if (randomCountChance < itemMin) {
-						randomCountChance = itemMin;
-					} 
+					randomCountChance = (int)Math.random() * (itemMax - itemMin) + itemMin;
 					///////
 			
 					totalItemsCount = totalItemsCount-1;
