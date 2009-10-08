@@ -121,7 +121,6 @@ public class CreatureLifeStats<T extends Creature>
 	public void setCurrentHp(int currentHp)
 	{
 		this.currentHp = currentHp;
-		sendHpPacketUpdate();
 	}
 
 	/**
@@ -138,7 +137,6 @@ public class CreatureLifeStats<T extends Creature>
 	public void setCurrentMp(int currentMp)
 	{
 		this.currentMp = currentMp;
-		sendMpPacketUpdate();
 	}
 
 	/**
@@ -155,7 +153,6 @@ public class CreatureLifeStats<T extends Creature>
 	public void setMaxHp(int maxHp)
 	{
 		this.maxHp = maxHp;
-		sendHpPacketUpdate();
 	}
 
 	/**
@@ -172,7 +169,6 @@ public class CreatureLifeStats<T extends Creature>
 	public void setMaxMp(int maxMp)
 	{
 		this.maxMp = maxMp;
-		sendMpPacketUpdate();
 	}
 	
 	/**

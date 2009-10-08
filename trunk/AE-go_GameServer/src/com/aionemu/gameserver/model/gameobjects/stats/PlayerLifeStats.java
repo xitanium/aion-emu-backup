@@ -79,8 +79,6 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 	
 	public void setCurrentDp (int currentDp) {
 		this.currentDp = currentDp;
-		
-		sendDpPacketUpdate();
 	}
 	
 	private void sendDpPacketUpdate () {
@@ -95,7 +93,6 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 	public void setMaxDp(int maxDp)
 	{
 		this.maxDp = maxDp;
-		this.sendDpPacketUpdate();
 	}
 	
 	public int getMaxDp() {
