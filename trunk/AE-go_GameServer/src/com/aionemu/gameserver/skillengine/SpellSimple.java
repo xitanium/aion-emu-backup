@@ -73,7 +73,7 @@ public class SpellSimple extends SkillHandler
         	if (creature instanceof Player) {
         		PacketSendUtility.sendPacket((Player)creature, new SM_CASTSPELL(attackerId,getSkillId(),st.getLevel(),0,st.getRechargeTime(),targetId));
         	}
-        	cur.getController().onAttack(creature);
+        	cur.getController().onAttack(creature,damages);
         	ThreadPoolManager.getInstance().schedule(new Runnable()
         	{
         		public void run() 

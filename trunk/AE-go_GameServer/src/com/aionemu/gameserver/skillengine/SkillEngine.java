@@ -59,7 +59,7 @@ public class SkillEngine
 			throw new GameServerError("There is no template for skill #"+skillId);
 		}
 		skillHandler.setSkillTemplate(st);
-		log.info("[registerSkill] Registering skill #"+skillId+"with handler "+st.getName()+" of type "+st.getType());
+		log.info("[registerSkill] Registering skill #"+skillId+" with handler "+st.getName()+" of type "+st.getType());
 		skillHandlers.put(skillId, skillHandler);
 	}
 	

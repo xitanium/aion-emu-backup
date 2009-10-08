@@ -63,7 +63,7 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 	/**
 	 *  Perform tasks when Creature was attacked
 	 */
-	public boolean onAttack(Creature creature)
+	public boolean onAttack(Creature creature, int damages)
 	{
 		return true;
 	}

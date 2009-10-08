@@ -49,6 +49,8 @@ public class SM_EMOTION extends AionServerPacket
 	 * ID of emotion
 	 */
 	private int	emotionId;
+	
+	private int targetObjectId = 0x00;
 
 	/**
 	 * Constructs new server packet with specified opcode
@@ -73,62 +75,89 @@ public class SM_EMOTION extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
+		if (con.getActivePlayer().getTarget()!=null) {
+			this.targetObjectId = con.getActivePlayer().getTarget().getObjectId();
+		}
 		writeD(buf, senderObjectId);
 		writeC(buf, unknown);
 		
+		switch (unknown) {
+			case 0x0d:
+				// emote die
+				writeD(buf, 0x07); // unknown
+				writeC(buf, 0xC0); // unknown
+				writeC(buf, 0x40); // unknown
+				writeD(buf, emotionId);
+				break;
+			case 0x23:
+				// emote startloop
+				writeD(buf, 0x2c); // unknown
+				writeC(buf, 0xc0); // unknown
+				writeC(buf, 0x40); // unknown
+				break;
+			case 0x1e:
+				// emote startloop
+				writeD(buf, 0x21); // unknown
+				writeC(buf, 0xe0); // unknown
+				writeC(buf, 0x40); // unknown
+				writeH(buf, 0x085e); // unknown
+				writeH(buf, 0x085e); // unknown
+				break;
+			case 0x13:
+				// emote startloop
+				writeD(buf, 0x01); // unknown
+				writeC(buf, 0xe0); // unknown
+				writeC(buf, 0x40); // unknown
+				break;
+			case 0x24:
+				// emote endloop
+				writeD(buf, 0x21); // unknown
+				writeC(buf, 0xc0); // unknown
+				writeC(buf, 0x40); // unknown
+				break;
+			default:
+				writeC(buf, 0x01); // unknown
+				writeC(buf, 0x00); // unknown
+				writeH(buf, 0x00); // unknown
+				writeC(buf, 0xc0); // unknown
+				writeC(buf, 0x40); // unknown
+				if (unknown==0x10) {
+					writeD(buf, targetObjectId); // target obj id
+					writeH(buf, emotionId);
+					writeC(buf, 0x01); // unknown
+				}
+				break;
+		}
 		if (unknown == 13 ){
-			//emote die
-			writeD(buf, 0x07); // unknown
-			writeC(buf, 0xC0); // unknown
-			writeC(buf, 0x40); // unknown
-			writeD(buf, emotionId);
+			
 		}
 		else if (unknown == 35 )
 		{
-			//emote startloop
-			writeD(buf, 44); // unknown
-			writeC(buf, 0xc0); // unknown
-			writeC(buf, 0x40); // unknown
+			
 		}
 		else if (unknown == 30 )
 		{
-			//emote startloop
-			writeD(buf, 33); // unknown
-			writeC(buf, 0xe0); // unknown
-			writeC(buf, 0x40); // unknown
-			writeH(buf, 2142); // unknown
-			writeH(buf, 2142); // unknown
+			
 			
 		}
 		else if (unknown == 19 )
 		{
 			//emote startloop
-			writeD(buf, 1); // unknown
-			writeC(buf, 0xe0); // unknown
-			writeC(buf, 0x40); // unknown
+			
 			
 		}
 		else if (unknown == 36 )
 		{
-			//emote endloop
-			writeD(buf, 33); // unknown
-			writeC(buf, 0xc0); // unknown
-			writeC(buf, 0x40); // unknown
+			
 		}
 		else
 		{
 		
-		writeC(buf, 0x01); // unknown
-		writeC(buf, 0x00); // unknown
-		writeH(buf, 0x00); // unknown
-		writeC(buf, 0xC0); // unknown
-		writeC(buf, 0x40); // unknown
+		
 		}
 		if(unknown == 0x10)
 		{
-			writeD(buf, 0x00); // unknown
-			writeH(buf, emotionId);
-			writeC(buf, 0x01); // unknown
+			
 		}
 
 	}

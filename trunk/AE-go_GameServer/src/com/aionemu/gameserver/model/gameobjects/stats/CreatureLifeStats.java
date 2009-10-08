@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_HP;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_MP;
 import com.aionemu.gameserver.services.LifeStatsRestoreService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -210,6 +211,7 @@ public class CreatureLifeStats<T extends Creature>
 		if(owner instanceof Player)
 		{
 			PacketSendUtility.sendPacket((Player) owner, new SM_ATTACK_STATUS(getOwner().getObjectId(), hpPercentage));
+			PacketSendUtility.sendPacket((Player) owner, new SM_STATUPDATE_HP(currentHp, maxHp));
 		}
 	}
 	
