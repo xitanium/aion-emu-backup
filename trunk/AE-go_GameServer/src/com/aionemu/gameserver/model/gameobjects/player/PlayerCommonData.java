@@ -20,7 +20,8 @@ import java.sql.Timestamp;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.gameserver.dataholders.DataManager;
+import com.aionemu.gameserver.GameServerError;
+import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
 import com.aionemu.gameserver.dataholders.StaticData;
 import com.aionemu.gameserver.model.Gender;
 import com.aionemu.gameserver.model.PlayerClass;
@@ -55,10 +56,23 @@ public class PlayerCommonData
 	private String 			note;
 	
 	private WorldPosition	position;
+	private PlayerExperienceTable playerExperienceTable;
 
-	public PlayerCommonData(int objId)
+	public PlayerCommonData(int objId, PlayerExperienceTable pet)
 	{
 		this.playerObjId = objId;
+		this.playerExperienceTable = pet;
+		if (pet==null) {
+			throw new GameServerError("PlayerExperienceTable not set");
+		}
+	}
+
+	/**
+	 * @param playerObjId
+	 */
+	public PlayerCommonData(int playerObjId)
+	{
+		this.playerObjId = playerObjId;
 	}
 
 	public int getPlayerObjId()
@@ -73,30 +87,30 @@ public class PlayerCommonData
 	
 	public long getExpShown()
 	{
-		return this.exp - DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(this.level);
+		return this.exp - playerExperienceTable.getStartExpForLevel(this.level);
 	}
 	
 	public long getExpNeed()
 	{
-		if (this.level == DataManager.PLAYER_EXPERIENCE_TABLE.getMaxLevel())
+		if (this.level == playerExperienceTable.getMaxLevel())
 		{
 			return 0;
 		}
-		return DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(this.level+1)-DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(this.level);
+		return playerExperienceTable.getStartExpForLevel(this.level+1)-playerExperienceTable.getStartExpForLevel(this.level);
 	}
 	
 	public void setExp(long exp)
 	{
 		log.info("NEW EXPERIENCE: " + exp);
 		
-		int maxLevel = DataManager.PLAYER_EXPERIENCE_TABLE.getMaxLevel();
-		long maxExp = DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(maxLevel);
+		int maxLevel = playerExperienceTable.getMaxLevel();
+		long maxExp = playerExperienceTable.getStartExpForLevel(maxLevel);
 		if (exp > maxExp)
 		{
 			exp = maxExp;
 		}
 		int level = this.level;
-		while (exp >= DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level+1) && level <= maxLevel)
+		while (exp >= playerExperienceTable.getStartExpForLevel(level+1) && level <= maxLevel)
 		{
 			level++;
 		}
@@ -194,13 +208,13 @@ public class PlayerCommonData
 	
 	public void setLevel(int level)
 	{
-		if (level <= DataManager.PLAYER_EXPERIENCE_TABLE.getMaxLevel())
+		if (level <= playerExperienceTable.getMaxLevel())
 		{
 			int fromLevel = this.level;
 			int toLevel = level;
 			this.level = toLevel;
-			if (this.getExp()<DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level)) {
-				this.setExp(DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(level));
+			if (this.getExp()<playerExperienceTable.getStartExpForLevel(level)) {
+				this.setExp(playerExperienceTable.getStartExpForLevel(level));
 			}
 			if(this.getPlayer()!=null) {
 				Player player = this.getPlayer();
@@ -246,5 +260,21 @@ public class PlayerCommonData
 			return getPosition().getWorld().findPlayer(playerObjId);
 		}
 		return null;
+	}
+
+	/**
+	 * @param playerExperienceTable
+	 */
+	public void setPlayerExperienceTable(PlayerExperienceTable playerExperienceTable)
+	{
+		this.playerExperienceTable = playerExperienceTable;
+	}
+	
+	/**
+	 * @return playerExperienceTable
+	 */
+	public PlayerExperienceTable getPlayerExperienceTable()
+	{
+		return playerExperienceTable;
 	}
 }

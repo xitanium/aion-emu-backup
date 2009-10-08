@@ -32,8 +32,7 @@ public class CM_DIALOG_SELECT extends AionClientPacket
 	* Target object id that client wants to TALK WITH or 0 if wants to unselect
 	*/
 	private int					targetObjectId;
-	private int					unk1;
-	private int					unk2;
+	private int					numberOfChoice;
 	/**
 	* Constructs new instance of <tt>CM_CM_REQUEST_DIALOG </tt> packet
 	* @param opcode
@@ -49,9 +48,9 @@ public class CM_DIALOG_SELECT extends AionClientPacket
 	@Override
 	protected void readImpl()
 	{
-		targetObjectId = readD();// empty
-		unk1 = readH(); //total no of choice
-		unk2 = readH(); //maybe answer 1
+		targetObjectId = readD(); // target object id
+		numberOfChoice = readH(); // total no of choice
+		readH(); //maybe answer 1
 	}
 
 	/**
@@ -64,10 +63,13 @@ public class CM_DIALOG_SELECT extends AionClientPacket
 		if(player == null)
 			return;
 		
-		if (unk1 ==2)
-		sendPacket(new SM_TRADELIST(player, targetObjectId));
-		
-		if (unk1 ==3)
-		sendPacket(new SM_SELL_ITEM(player, targetObjectId));
+		switch(numberOfChoice) {
+			case 2:
+				sendPacket(new SM_TRADELIST(targetObjectId)); break;
+			case 3:
+				sendPacket(new SM_SELL_ITEM(player, targetObjectId));
+			default:
+				break;
+		}		
 	}
 }

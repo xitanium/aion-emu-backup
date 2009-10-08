@@ -259,7 +259,17 @@ public class PlayerAppearance
 	/**
 	 * And height
 	 */
-	private float	height;
+	private float height;
+
+	/**
+	 * And arm length
+	 */
+	private int	armLength;
+	
+	/**
+	 * And leg length
+	 */
+	private int	legLength;
 
 	// Thanks for reading my weird commens :D
 	// But this is so booooooooring to write javadoc to data holder
@@ -1250,6 +1260,50 @@ public class PlayerAppearance
 	public void setHeight(float height)
 	{
 		this.height = height;
+	}
+
+	/**
+	 * Sets arm length
+	 * 
+	 * @param armLength
+	 * 			arm length
+	 */
+	public void setArmLength(int armLength)
+	{
+		this.armLength = armLength;
+	}
+	
+	/**
+	 * Get arm length
+	 * 
+	 * @return armLength
+	 * 			arm length
+	 */
+	public int getArmLength()
+	{
+		return armLength;
+	}
+	
+	/**
+	 * Set leg length
+	 * 
+	 * @param legLength
+	 * 			leg length
+	 */
+	public void setLegLength(int legLength)
+	{
+		this.legLength = legLength;
+	}
+	
+	/**
+	 * Get leg length
+	 * 
+	 * @param legLength
+	 * 			leg length
+	 */
+	public int getLegLength()
+	{
+		return legLength;
 	}
 
 	// Hurrrraaaaay! it's the end of the class :D :D :D :D :D

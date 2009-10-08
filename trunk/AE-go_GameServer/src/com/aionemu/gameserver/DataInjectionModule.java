@@ -17,6 +17,7 @@
 package com.aionemu.gameserver;
 
 import com.aionemu.commons.services.ScriptService;
+import com.aionemu.gameserver.controllers.CreatureController;
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.dataholders.NpcData;
 import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
@@ -33,7 +34,9 @@ import com.aionemu.gameserver.skillengine.SkillEngine;
 import com.aionemu.gameserver.spawnengine.SpawnEngine;
 import com.aionemu.gameserver.utils.chathandlers.ChatHandlers;
 import com.aionemu.gameserver.utils.chathandlers.ChatHandlersFactory;
+import com.aionemu.gameserver.utils.stats.StatFunctions;
 import com.aionemu.gameserver.world.World;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
@@ -64,6 +67,8 @@ public class DataInjectionModule extends AbstractModule
 		bind(World.class).asEagerSingleton();
 		// binds Spawn engine and creates its singleton immediately
 		bind(SpawnEngine.class).asEagerSingleton();
+		// binds SkillEngine and creates its singleton immediately
+		bind(SkillEngine.class).asEagerSingleton();
 		// binds PlayerService as singleton
 		bind(PlayerService.class).in(Scopes.SINGLETON);
 		// binds AccountService as singleton
@@ -72,6 +77,10 @@ public class DataInjectionModule extends AbstractModule
 		bind(SocialService.class).in(Scopes.SINGLETON);
 		// binds ScriptService as singleton
 		bind(ScriptService.class).in(Scopes.SINGLETON);
+		// binds CreatureController as singleton
+		bind(CreatureController.class).in(Scopes.SINGLETON);
+		// binds StatFunctions as singleton
+		bind(StatFunctions.class).in(Scopes.SINGLETON);
 	}
 
 	@Provides

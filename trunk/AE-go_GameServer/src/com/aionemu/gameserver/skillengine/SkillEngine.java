@@ -24,9 +24,9 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.commons.scripting.scriptmanager.ScriptManager;
 import com.aionemu.gameserver.GameServerError;
-import com.aionemu.gameserver.dataholders.DataManager;
+import com.aionemu.gameserver.dataholders.SkillData;
 import com.aionemu.gameserver.skillengine.loader.SkillHandlerLoader;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommandChatHandler;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 /**
@@ -39,21 +39,15 @@ public class SkillEngine
 	
 	public static final File CHAT_DESCRIPTOR_FILE = new File("./data/scripts/system/skills.xml");
 	
-	public static final SkillEngine skillEngine = new SkillEngine();
+	@Inject
+	private SkillData skillData;
 	
 	private static final Map<Integer, SkillHandler> skillHandlers = new HashMap<Integer, SkillHandler>();
-
-	/**
-	 * should not be instantiated directly
-	 */
-	private SkillEngine()
-	{	
-	}
 	
 	public void registerSkill(SkillHandler skillHandler)
 	{
 		int skillId = skillHandler.getSkillId();
-		skillHandler.setSkillTemplate(DataManager.SKILL_DATA.getSkillTemplate(skillId));
+		skillHandler.setSkillTemplate(skillData.getSkillTemplate(skillId));
 		skillHandlers.put(skillId, skillHandler);
 	}
 	
@@ -72,9 +66,12 @@ public class SkillEngine
 		}
 		return skillHandler;
 	}
-	public void registerAllSkills(Injector injector)
+	
+	public void registerAllSkills(SkillData skillData, Injector injector)
 	{
 		ScriptManager sm = new ScriptManager();
+
+		this.skillData = skillData;
 
 		sm.setGlobalClassListener(new SkillHandlerLoader(injector, this));
 
@@ -86,10 +83,5 @@ public class SkillEngine
 		{
 			throw new GameServerError("Can't initialize skill handlers.", e);
 		}
-	}
-	
-	public static SkillEngine getInstance()
-	{
-		return skillEngine;
 	}
 }

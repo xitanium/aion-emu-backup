@@ -21,9 +21,7 @@ import org.apache.log4j.Logger;
 import com.aionemu.gameserver.controllers.NpcController;
 import com.aionemu.gameserver.dataholders.SpawnData;
 import com.aionemu.gameserver.model.gameobjects.Npc;
-import com.aionemu.gameserver.model.gameobjects.stats.NpcLifeStats;
 import com.aionemu.gameserver.model.templates.SpawnTemplate;
-import com.aionemu.gameserver.model.templates.stats.StatsTemplate;
 import com.aionemu.gameserver.utils.idfactory.IDFactory;
 import com.aionemu.gameserver.utils.idfactory.IDFactoryAionObject;
 import com.aionemu.gameserver.world.KnownList;
@@ -40,6 +38,7 @@ import com.google.inject.Inject;
  */
 public class SpawnEngine
 {
+	@SuppressWarnings("unused")
 	private static Logger log = Logger.getLogger(SpawnEngine.class);
 	
 	/** In this world NPCs are spawned by this SpawnEngine */

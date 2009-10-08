@@ -41,16 +41,16 @@ public class IteratorIteratorTest
 	{
 		Map<Integer, Set<Integer>> map1 = new HashMap<Integer, Set<Integer>>();
 
-		Set set1 = new HashSet<Integer>();
+		Set<Integer> set1 = new HashSet<Integer>();
 		Collections.addAll(set1, 50, 60, 70, 80);
 
-		Set set2 = new HashSet<Integer>();
+		Set<Integer> set2 = new HashSet<Integer>();
 		Collections.addAll(set2, 1);
 
-		Set set3 = new HashSet<Integer>();
+		Set<Integer> set3 = new HashSet<Integer>();
 		Collections.addAll(set3);
 
-		Set set4 = new HashSet<Integer>();
+		Set<Integer> set4 = new HashSet<Integer>();
 		Collections.addAll(set4, 99, 100);
 
 		map1.put(1, set1);
@@ -77,6 +77,7 @@ public class IteratorIteratorTest
 		Assert.assertTrue(res.containsAll(goodRes) && goodRes.containsAll(res));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testIt1()
 	{
@@ -91,8 +92,7 @@ public class IteratorIteratorTest
 		List<String> li3 = new ArrayList<String>();
 		Collections.addAll(li3, "x");
 		
-		Collections.addAll(li, li1,li2,li3);
-		
+		Collections.addAll(li,li1,li2,li3);
 		
 		List<String> goodRes = new ArrayList<String>();
 		Collections.addAll(goodRes, "a","b","c","d","x");

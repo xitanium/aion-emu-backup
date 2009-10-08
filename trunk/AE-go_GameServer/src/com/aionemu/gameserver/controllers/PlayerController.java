@@ -31,10 +31,8 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_NPC_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
-import com.aionemu.gameserver.skillengine.SkillEngine;
 import com.aionemu.gameserver.skillengine.SkillHandler;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.stats.StatFunctions;
 
 /**
  * This class is for controlling players.
@@ -43,7 +41,7 @@ import com.aionemu.gameserver.utils.stats.StatFunctions;
  *
  */
 public class PlayerController extends CreatureController<Player>
-{
+{	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -92,7 +90,7 @@ public class PlayerController extends CreatureController<Player>
 		int attackType = 0; //TODO investigate attack types	
 
 		Creature target = (Creature) world.findAionObject(targetObjectId);
-		int damages = StatFunctions.calculateBaseDamageToTarget(player, target);
+		int damages = statFunctions.calculateBaseDamageToTarget(player, target);
 		PacketSendUtility.broadcastPacket(player,
 			new SM_ATTACK(player.getObjectId(), targetObjectId,	gameStats.getAttackCounter(), (int) time, attackType, damages), true);
 
@@ -134,7 +132,7 @@ public class PlayerController extends CreatureController<Player>
 	
 	public void useSkill(int skillId)
 	{
-		SkillHandler skillHandler = SkillEngine.getInstance().getSkillHandlerFor(skillId);
+		SkillHandler skillHandler = skillEngine.getSkillHandlerFor(skillId);
 		
 		if(skillHandler != null)
 		{

@@ -32,6 +32,7 @@ import com.aionemu.gameserver.dao.PlayerDAO;
 import com.aionemu.gameserver.dao.PlayerMacrossesDAO;
 import com.aionemu.gameserver.dao.PlayerSkillListDAO;
 import com.aionemu.gameserver.dao.PlayerStatsDAO;
+import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
 import com.aionemu.gameserver.dataholders.PlayerInitialData;
 import com.aionemu.gameserver.dataholders.PlayerInitialData.LocationData;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
@@ -73,13 +74,17 @@ public class PlayerService
 	private IDFactory					aionObjectsIDFactory;
 	private World						world;
 	private PlayerInitialData           playerInitialData;
+	private PlayerExperienceTable		playerExperienceTable;
+	private StatFunctions				statFunctions;
 
 	@Inject
-	public PlayerService(@IDFactoryAionObject IDFactory aionObjectsIDFactory, World world, PlayerInitialData playerInitialData)
+	public PlayerService(@IDFactoryAionObject IDFactory aionObjectsIDFactory, World world, PlayerInitialData playerInitialData, PlayerExperienceTable playerExperienceTable, StatFunctions statFunctions)
 	{
 		this.aionObjectsIDFactory = aionObjectsIDFactory;
 		this.world = world;
 		this.playerInitialData = playerInitialData;
+		this.playerExperienceTable = playerExperienceTable;
+		this.statFunctions = statFunctions;
 	}
 
 	/**
@@ -147,6 +152,7 @@ public class PlayerService
 			return player;
 
 		PlayerCommonData pcd = DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonData(playerObjId, world);
+		pcd.setPlayerExperienceTable(playerExperienceTable);
 		PlayerAppearance appereance = DAOManager.getDAO(PlayerAppearanceDAO.class).load(playerObjId);
 		MacroList macroses = DAOManager.getDAO(PlayerMacrossesDAO.class).restoreMacrosses(playerObjId);
 
@@ -166,12 +172,12 @@ public class PlayerService
 		PlayerStatsDAO psd = DAOManager.getDAO(PlayerStatsDAO.class);
 		PlayerGameStats pgs = psd.loadGameStats(playerObjId);
 		if (!pgs.isInitialized()) {
-			pgs = StatFunctions.getBaseGameStats(pcd.getPlayerClass());
+			pgs = statFunctions.getBaseGameStats(pcd.getPlayerClass());
 		}
 		player.setGameStats(pgs);
 		PlayerLifeStats pls = psd.loadLifeStats(playerObjId);
 		if (!pls.isInitialized()) {
-			pls = StatFunctions.getBaseLifeStats(pcd.getPlayerClass());
+			pls = statFunctions.getBaseLifeStats(pcd.getPlayerClass());
 		}
 		player.setLifeStats(pls);
 		
@@ -200,8 +206,8 @@ public class PlayerService
 		// TODO: starting skills
 		// TODO: starting items;
 		Player newPlayer = new Player(new PlayerController(), playerCommonData, playerAppearance);
-		newPlayer.setLifeStats(StatFunctions.getBaseLifeStats(newPlayer.getPlayerClass()));
-		newPlayer.setGameStats(StatFunctions.getBaseGameStats(newPlayer.getPlayerClass()));
+		newPlayer.setLifeStats(statFunctions.getBaseLifeStats(newPlayer.getPlayerClass()));
+		newPlayer.setGameStats(statFunctions.getBaseGameStats(newPlayer.getPlayerClass()));
 		return newPlayer;
 	}
 

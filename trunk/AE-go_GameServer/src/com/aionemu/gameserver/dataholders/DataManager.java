@@ -63,16 +63,16 @@ public final class DataManager
 	 * 
 	 * @see PlayerExperienceTable
 	 */
-	public static TradeListData			TRADE_LIST_DATA;
+	public final TradeListData			TRADE_LIST_DATA;
 	
-	public static PlayerExperienceTable	PLAYER_EXPERIENCE_TABLE;
+	public final PlayerExperienceTable	PLAYER_EXPERIENCE_TABLE;
 
 	/**
 	 * 
 	 */
-	public static PlayerStatsData		PLAYER_STATS_DATA;
+	public final PlayerStatsData		PLAYER_STATS_DATA;
 
-	private final ItemData				ITEM_DATA;
+	public final ItemData				ITEM_DATA;
 
 	/**
 	 * Player initial data table.<br />
@@ -83,7 +83,7 @@ public final class DataManager
 	/**
 	 * 
 	 */
-	public static SkillData				SKILL_DATA;
+	public final SkillData SKILL_DATA;
 
 	/**
 	 * Constructor creating <tt>DataManager</tt> instance.<br>

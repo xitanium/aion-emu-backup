@@ -18,7 +18,7 @@ package com.aionemu.gameserver.utils.stats;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.gameserver.dataholders.DataManager;
+import com.aionemu.gameserver.dataholders.PlayerStatsData;
 import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
@@ -29,6 +29,7 @@ import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 
 import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.model.templates.SkillTemplate;
+import com.google.inject.Inject;
 
 /**
  * @author ATracer
@@ -38,13 +39,15 @@ public class StatFunctions
 {
 	private static Logger log = Logger.getLogger(StatFunctions.class);
 
+	@Inject
+	private PlayerStatsData playerStatsData;
 	/**
 	 * 
 	 * @param player
 	 * @param target
 	 * @return XP reward from target
 	 */
-	public static long calculateSoloExperienceReward(Player player, Creature target)
+	public long calculateSoloExperienceReward(Player player, Creature target)
 	{
 		
 		int playerLevel = player.getCommonData().getLevel();
@@ -64,7 +67,7 @@ public class StatFunctions
 	 * @param target
 	 * @return Damage made to target (-hp value)
 	 */
-	public static int calculateBaseDamageToTarget(Player player, Creature target)
+	public int calculateBaseDamageToTarget(Player player, Creature target)
 	{
 		int pAttack = ClassStats.getPowerFor(player.getPlayerClass());
 		int targetPDef = ((Npc) target).getTemplate().getStatsTemplate().getMaxHp();
@@ -78,21 +81,21 @@ public class StatFunctions
 	 * @param skillTemplate
 	 * @return HP damage to target
 	 */
-	public static int calculateMagicDamageToTarget(Player player, Creature target, SkillTemplate skillTemplate)
+	public int calculateMagicDamageToTarget(Player player, Creature target, SkillTemplate skillTemplate)
 	{
 		//TODO this is a dummmy cacluations
 		return skillTemplate.getDamages() * skillTemplate.getLevel() * 2;
 	}
 	
-	public static int calculateNpcBaseDamageToPlayer(Npc npc, Player player)
+	public int calculateNpcBaseDamageToPlayer(Npc npc, Player player)
 	{
 		//TODO this is a dummy calcs
 		return npc.getLevel() * 5 + 10;
 	}
 	
-	public static PlayerLifeStats getBaseLifeStats (PlayerClass playerClass) {
+	public PlayerLifeStats getBaseLifeStats (PlayerClass playerClass) {
 		final PlayerLifeStats pls = new PlayerLifeStats();
-		PlayerStatsTemplate pst = DataManager.PLAYER_STATS_DATA.getTemplate(playerClass,1);
+		PlayerStatsTemplate pst = playerStatsData.getTemplate(playerClass,1);
 		pls.setMaxHp(pst.getMaxHp());
 		pls.setCurrentHp(pls.getMaxHp());
 		pls.setMaxMp(pst.getMaxMp());
@@ -105,9 +108,9 @@ public class StatFunctions
 		return pls;
 	}
 	
-	public static PlayerGameStats getBaseGameStats (PlayerClass playerClass) {
+	public PlayerGameStats getBaseGameStats (PlayerClass playerClass) {
 		final PlayerGameStats pgs = new PlayerGameStats();
-		PlayerStatsTemplate pst = DataManager.PLAYER_STATS_DATA.getTemplate(playerClass,1);
+		PlayerStatsTemplate pst = playerStatsData.getTemplate(playerClass,1);
 		pgs.setAttackCounter(0);
 		pgs.setPower(pst.getPower());
 		pgs.setHealth(pst.getHealth());

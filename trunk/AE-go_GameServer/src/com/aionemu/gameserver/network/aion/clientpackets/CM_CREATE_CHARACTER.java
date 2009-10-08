@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 
 import org.apache.log4j.Logger;
 
+import com.aionemu.gameserver.dataholders.PlayerExperienceTable;
 import com.aionemu.gameserver.model.Gender;
 import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.Race;
@@ -46,6 +47,7 @@ import com.google.inject.Inject;
 public class CM_CREATE_CHARACTER extends AionClientPacket
 {
 	/** Logger for this class. */
+	@SuppressWarnings("unused")
 	private static final Logger	log	= Logger.getLogger(CM_CREATE_CHARACTER.class);
 
 	/** Character appearance */
@@ -55,6 +57,8 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 
 	@Inject
 	private PlayerService		playerService;
+	@Inject
+	private PlayerExperienceTable playerExperienceTable;
 	@Inject
 	@IDFactoryAionObject
 	private IDFactory			aionObjectsIDFactory;
@@ -75,24 +79,16 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 	@Override
 	protected void readImpl()
 	{
-		int playOk2 = readD(); // ignored for now
-		String someShit = readS(); // something + accointId
+		readD(); // ignored for now
+		readS(); // something + accointId
 
-		playerCommonData = new PlayerCommonData(aionObjectsIDFactory.nextId());
+		playerCommonData = new PlayerCommonData(aionObjectsIDFactory.nextId(),playerExperienceTable);
 		String name = readS();
 
 		playerCommonData.setName(name);
-		// just for sure...
-		//log.info((42 - name.length() * 2) + " == " + (getRemainingBytes() - 76));
 
-		byte[] shit = readB(42 - (name.length() * 2)); // some shit? 1.5.x
+		readB(42 - (name.length() * 2)); // some shit? 1.5.x
 
-		/*
-		 * int i = 1; for(byte b : shit) log.info("["+i+++"]="+b);
-		 */
-
-		// just for sure...
-		//log.info("76 == " + (getRemainingBytes()));
 		playerCommonData.setLevel(1);
 		playerCommonData.setGender(readD() == 0 ? Gender.MALE : Gender.FEMALE);
 		playerCommonData.setRace(readD() == 0 ? Race.ELYOS : Race.ASMODIANS);
@@ -103,7 +99,7 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		playerAppearance.setVoice(readD());
 		playerAppearance.setSkinRGB(readD());
 		playerAppearance.setHairRGB(readD());
-		log.info("EyesColor: " + readD()); //playerAppearance.setEyeRGB(readD()); 1.5.x add EyeColor
+		playerAppearance.setEyeRGB(readD()); // 1.5.x add EyeColor
 		playerAppearance.setLipRGB(readD());
 		playerAppearance.setFace(readC());
 		playerAppearance.setHair(readC());
@@ -145,8 +141,7 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		playerAppearance.setNeck(readC());
 		playerAppearance.setNeckLength(readC());
 
-		//playerAppearance.setShoulders(readC());
-		log.info("ShoulderSize: " + readC()); // 1.5.x May be Shoulders
+		playerAppearance.setShoulders(readC());
 		
 		playerAppearance.setTorso(readC());
 		playerAppearance.setChest(readC()); // only woman
@@ -160,11 +155,11 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		playerAppearance.setFootSize(readC());
 		playerAppearance.setFacialRate(readC());
 
-		byte unk1 = (byte) readC(); // always 0
-		log.info ("ArmLength: " + readC()); // 1.5.x add ArmLength
-		log.info ("LegLength: " + readC()); // 1.5.x add LegLength
+		readC(); // always 0
+		playerAppearance.setArmLength(readC()); // 1.5.x add ArmLength 
+		playerAppearance.setLegLength(readC()); // 1.5.x add LegLength
 		playerAppearance.setShoulders(readC()); // 1.5.x May be ShoulderSize
-		byte unk2 = (byte) readC(); // always 0
+		readC(); // always 0
 		readC();
 		playerAppearance.setHeight(readF());
 	}

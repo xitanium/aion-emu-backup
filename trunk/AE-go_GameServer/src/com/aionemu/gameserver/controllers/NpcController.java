@@ -34,8 +34,6 @@ import com.aionemu.gameserver.ai.AIState;
 import com.aionemu.gameserver.services.DecayService;
 import com.aionemu.gameserver.services.RespawnService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.stats.StatFunctions;
-import com.aionemu.gameserver.world.World;
 
 /**
  * This class is for controlling Npc's
@@ -54,12 +52,11 @@ public class NpcController extends CreatureController<Npc>
 		long time = System.currentTimeMillis();
 		int attackType = 1; //TODO investigate attack types	
 
-		World world = npc.getActiveRegion().getWorld();
 		//TODO refactor to possibility npc-npc fight
 		Player player = (Player) world.findAionObject(targetObjectId);
 
 		//TODO fix last attack - cause mob is already dead
-		int damages = StatFunctions.calculateNpcBaseDamageToPlayer(npc, player);
+		int damages = statFunctions.calculateNpcBaseDamageToPlayer(npc, player);
 		
 		PacketSendUtility.broadcastPacket(player,
 			new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
@@ -178,7 +175,7 @@ public class NpcController extends CreatureController<Npc>
 			//TODO may be introduce increaseExpBy method in PlayerCommonData
 			long currentExp = player.getCommonData().getExp();
 
-			long xpReward = StatFunctions.calculateSoloExperienceReward(player, getOwner());
+			long xpReward = statFunctions.calculateSoloExperienceReward(player, getOwner());
 			player.getCommonData().setExp(currentExp + xpReward);
 			
 			PacketSendUtility.sendPacket(player,SM_SYSTEM_MESSAGE.EXP(Long.toString(xpReward)));

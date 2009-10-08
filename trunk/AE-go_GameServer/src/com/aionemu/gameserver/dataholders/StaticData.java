@@ -33,33 +33,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class StaticData
 {
 	@XmlElement(name = "world_maps")
-	public WorldMapsData			worldMapsData;
+	public WorldMapsData worldMapsData;
 
 	@XmlElement(name = "npc_trade_list")
-	public TradeListData			tradeListData;
+	public TradeListData tradeListData;
 	
 	@XmlElement(name = "player_experience_table")
-	public PlayerExperienceTable	playerExperienceTable;
+	public PlayerExperienceTable playerExperienceTable;
 
 	@XmlElement(name = "stats_templates")
-	public PlayerStatsData			statsData;
+	public PlayerStatsData statsData;
 
 	@XmlElement(name = "item_data")
-	public ItemData					itemData;
+	public ItemData	itemData;
 	
 	@XmlElement(name = "npc_data")
-	public NpcData					npcData;
+	public NpcData npcData;
 
 	@XmlElement(name = "player_initial_data")
-	public PlayerInitialData        playerInitialData;
+	public PlayerInitialData playerInitialData;
 	
 	@XmlElement(name = "skill_data")
-	public SkillData				skillData;
+	public SkillData skillData;
 
-	// JAXB callback
-	private void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+	void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
 	{
-
 		DataManager.log.info("Loaded world maps data: " + worldMapsData.size() + " maps");
 		DataManager.log.info("Loaded player exp table: " + playerExperienceTable.getMaxLevel() + " levels");
 		DataManager.log.info("Loaded : " + statsData.size() + " stat templates");

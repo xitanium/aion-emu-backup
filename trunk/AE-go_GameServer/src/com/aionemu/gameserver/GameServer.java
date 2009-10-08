@@ -24,6 +24,7 @@ import com.aionemu.commons.log4j.exceptions.Log4jInitializationError;
 import com.aionemu.commons.network.NioServer;
 import com.aionemu.commons.services.LoggingService;
 import com.aionemu.gameserver.configs.Config;
+import com.aionemu.gameserver.dataholders.SkillData;
 import com.aionemu.gameserver.dataholders.SpawnData;
 import com.aionemu.gameserver.model.quests.qparser.QuestParser;
 import com.aionemu.gameserver.network.loginserver.LoginServer;
@@ -61,7 +62,6 @@ public class GameServer
 		DataInjectionModule dataIM = new DataInjectionModule();
 		NetworkInjectionModule networkIM = new NetworkInjectionModule();
 
-		
 		injector = Guice.createInjector(dataIM,networkIM, new IDFactoriesInjectionModule());
 		dataIM.setInjector(injector);
 		networkIM.setInjector(injector);
@@ -81,13 +81,12 @@ public class GameServer
 
 		GameServer gs = new GameServer();
 		gs.spawnMonsters();
+		// Ininitialize skill engine
+		gs.registerSkills();
 		
 		// Loading quests
 		QuestParser.getInstance();
 		
-		// Ininitialize skill engine
-		SkillEngine.getInstance().registerAllSkills(gs.injector);
-
 		Util.printMemoryUsage(log);
 		log.info("###########################################################################");
 		log.info("AE Game Server started in " + (System.currentTimeMillis() - start) / 1000 + " seconds.");
@@ -110,6 +109,13 @@ public class GameServer
 		SpawnEngine spawnEngine = injector.getInstance(SpawnEngine.class);
 
 		spawnEngine.spawnAll(spawnData);
+	}
+	
+	private void registerSkills() {
+		SkillData skillData = injector.getInstance(SkillData.class);
+		SkillEngine skillEngine = injector.getInstance(SkillEngine.class);
+		
+		skillEngine.registerAllSkills(skillData,injector);
 	}
 
 	/**
