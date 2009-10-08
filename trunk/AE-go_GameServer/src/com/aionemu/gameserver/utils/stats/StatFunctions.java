@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.utils.stats;
 
+import java.util.Random;
+
 import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.dataholders.PlayerStatsData;
@@ -23,6 +25,7 @@ import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.stats.CreatureGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
@@ -131,5 +134,29 @@ public class StatFunctions
 		pgs.setInitialized(true);
 		log.debug("loading base game stats for player class "+playerClass+":"+pgs);
 		return pgs;
+	}
+	
+	/**
+	 * @param speller
+	 * @param target
+	 * @param st
+	 * @return
+	 */
+	public static int calculateMagicDamageToTarget(Creature speller, Creature target, SkillTemplate st)
+	{
+		CreatureGameStats<?> sgs = speller.getGameStats();
+		CreatureGameStats<?> tgs = target.getGameStats();
+		int baseDamages = st.getDamages();
+		int elementaryDefense = tgs.getMagicalDefenseFor(st.getElement());
+		int magicalResistance = tgs.getMagicResistance();
+		int magicBoost = sgs.getMagicBoost();
+		int accuracy = sgs.getMagicAccuracy();
+		int attackCount = sgs.getAttackCounter();
+		Random generator = new Random ();
+		int seed = generator.nextInt(accuracy);
+		if ((attackCount%seed)==0) {
+			return 0;
+		}
+		return baseDamages+Math.round(magicBoost*0.60f)-Math.round((elementaryDefense+magicalResistance)*0.60f);
 	}
 }
