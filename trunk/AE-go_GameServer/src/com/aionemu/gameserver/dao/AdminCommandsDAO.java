@@ -14,6 +14,8 @@ public abstract class AdminCommandsDAO implements DAO {
 	
 	public abstract boolean deleteTeleport(String name);
 	
+	public abstract String loadAllTeleportsList();
+	
 	public abstract float[] loadTeleport(String name);
 	
 }
