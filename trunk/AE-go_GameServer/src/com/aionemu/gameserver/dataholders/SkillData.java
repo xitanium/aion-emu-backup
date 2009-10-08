@@ -35,7 +35,7 @@ import com.aionemu.gameserver.model.templates.SkillTemplate;
  */
 @XmlRootElement(name = "skill_data")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SkillData
+public class SkillData implements Iterable<Map.Entry<Integer, SkillTemplate>>
 {
 	@XmlElement(name = "skill_template")
 	private List<SkillTemplate> skillTemplates;
@@ -61,7 +61,11 @@ public class SkillData
 		return skillData.get(skillId);
 	}
 	
-	public Iterator<Map.Entry<Integer, SkillTemplate>> getIterator () {
+	/* (non-Javadoc)
+	 * @see java.lang.Iterable#iterator()
+	 */
+	@Override
+	public Iterator<Map.Entry<Integer, SkillTemplate>> iterator () {
 		return skillData.entrySet().iterator();
 	}
 

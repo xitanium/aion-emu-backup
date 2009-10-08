@@ -35,7 +35,7 @@ public enum SkillType
 	HEAL_OBJECT,
 	HEAL_SIMPLE;
 	
-	public SkillHandler getHandler (int skillId) {
+	public SkillHandler getHandler (int skillId) throws IllegalStateException {
 		final SkillHandler handler;
 		switch (this) {
 			case SPELL_OBJECT:

@@ -25,6 +25,8 @@ import org.apache.log4j.Logger;
 import com.aionemu.commons.scripting.scriptmanager.ScriptManager;
 import com.aionemu.gameserver.GameServerError;
 import com.aionemu.gameserver.dataholders.SkillData;
+import com.aionemu.gameserver.model.SkillType;
+import com.aionemu.gameserver.model.templates.SkillTemplate;
 import com.aionemu.gameserver.skillengine.loader.SkillHandlerLoader;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -72,7 +74,21 @@ public class SkillEngine
 		ScriptManager sm = new ScriptManager();
 
 		this.skillData = skillData;
-
+		
+		for (Map.Entry<Integer, SkillTemplate> skill : skillData) {
+			SkillType type = skill.getValue().getType();
+			int skillId = skill.getKey();
+			try {
+				final SkillHandler handler = type.getHandler(skillId);
+				skillHandlers.put(skillId, handler);
+				log.debug("Loaded generic skill#"+skillId+" handler "+handler.getClass().getName());
+			} catch (IllegalStateException e) {
+				log.debug("Generic handler for skill#"+skillId+" not found: "+e.getMessage());
+			}
+		}
+		
+		log.debug("Now loading of specific skill handlers...");
+		
 		sm.setGlobalClassListener(new SkillHandlerLoader(injector, this));
 
 		try
