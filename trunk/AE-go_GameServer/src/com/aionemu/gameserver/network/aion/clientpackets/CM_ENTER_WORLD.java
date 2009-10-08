@@ -21,6 +21,7 @@ package com.aionemu.gameserver.network.aion.clientpackets;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 
 import com.aionemu.commons.database.DB;
 import com.aionemu.commons.database.IUStH;
@@ -31,6 +32,7 @@ import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.model.ChatType;
 import com.aionemu.gameserver.model.account.AccountTime;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
+import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
@@ -38,6 +40,7 @@ import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.serverpackets.*;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.*;
 import com.aionemu.gameserver.services.PlayerService;
+import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
@@ -173,6 +176,30 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			int kinah = kinah2.getKinahCount();
 			int uniquedeId = 0;
 			sendPacket(new SM_INVENTORY_UPDATE(uniquedeId, 182400001, kinah));
+			
+			// set tag for GMs
+			PlayerCommonData pcd2 = player2.getCommonData();
+			int playerGMLevel = pcd2.getAdminLevel();
+			/*String originalName = player2.getName();
+			
+			switch(playerGMLevel) {
+				
+				case 0: pcd2.setName(originalName);
+				break;
+				case 1: pcd2.setName("*VIP* " + originalName);
+				break;
+				case 2: pcd2.setName("*Anim* " + originalName);
+				break;
+				case 3: pcd2.setName("*MJ* " + originalName);
+				break;
+				case 4: pcd2.setName("*Dev* " + originalName);
+				break;
+				case 5: pcd2.setName("*Admin* " + originalName);
+				break;
+				default: pcd2.setName(originalName);
+				break;
+				
+			}*/
 
 			
 
@@ -223,6 +250,26 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			sendPacket(new SM_MESSAGE(0, null, "Welcome to " + Config.SERVER_NAME
 				+ " server\npowered by aion-unique software\ndeveloped by aionunique.smfnew.com team.\nCopyright 2009", null,
 				ChatType.ANNOUNCEMENTS));
+			
+			if(playerGMLevel >= 2) {
+				Iterator<Player> iter = player2.getActiveRegion().getWorld().getPlayersIterator();
+				String gmLogonMessage = "";
+				switch(playerGMLevel) {
+					case 2: gmLogonMessage = "*Anim* " + player2.getName() + " vient de se connecter";
+					break;
+					case 3: gmLogonMessage = "*MJ* " + player2.getName() + " vient de se connecter";
+					break;
+					case 4: gmLogonMessage = "*Dev* " + player2.getName() + " vient de se connecter";
+					break;
+					case 5: gmLogonMessage = "*Admin* " + player2.getName() + " vient de se connecter";
+					break;
+					default: gmLogonMessage = player2.getName() + " vient de se connecter";
+					break;
+				}
+				while(iter.hasNext()) {
+					PacketSendUtility.sendMessage(iter.next(), gmLogonMessage);
+				}
+			}
 			
 			playerService.playerLoggedIn(player);
 		}

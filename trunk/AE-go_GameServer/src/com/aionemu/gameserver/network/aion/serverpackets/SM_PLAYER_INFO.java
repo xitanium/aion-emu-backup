@@ -84,8 +84,23 @@ public class SM_PLAYER_INFO extends AionServerPacket
 		writeB(buf, unk);
 
 		writeC(buf, player.getHeading());
-
-		writeS(buf, player.getName());
+		
+		int playerGMLevel = player.getCommonData().getAdminLevel();
+		switch(playerGMLevel) {
+			case 0: writeS(buf, player.getName());
+			break;
+			case 1: writeS(buf, "*VIP*" + player.getName());
+			break;
+			case 2: writeS(buf, "*Anim*" + player.getName());
+			break;
+			case 3: writeS(buf, "*MJ*" + player.getName());
+			break;
+			case 4: writeS(buf, "*Dev*" + player.getName());
+			break;
+			case 5: writeS(buf, "*Admin*" + player.getName());
+			break;
+			default: writeS(buf, player.getName());
+		}
 
 		unk = new byte[] { (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0x00, (byte) 0x00, (byte) 0x00,
 			(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
