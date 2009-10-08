@@ -18,16 +18,9 @@
 package com.aionemu.gameserver.network.aion.clientpackets;
 
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Iterator;
 
-import com.aionemu.commons.database.DB;
-import com.aionemu.commons.database.IUStH;
-import com.aionemu.commons.database.ParamReadStH;
 import com.aionemu.gameserver.model.gameobjects.player.ItemList;
-import java.util.Random;
 import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.model.ChatType;
 import com.aionemu.gameserver.model.account.AccountTime;
@@ -42,6 +35,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.unk.*;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.World;
+
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 
@@ -53,7 +47,7 @@ import org.apache.log4j.Logger;
  */
 public class CM_ENTER_WORLD extends AionClientPacket
 {
-
+	@SuppressWarnings("unused")
 	private static final Logger	log	= Logger.getLogger(CM_ENTER_WORLD.class);
 	/**
 	 * Object Id of player that is entering world
@@ -252,7 +246,7 @@ public class CM_ENTER_WORLD extends AionClientPacket
 				ChatType.ANNOUNCEMENTS));
 			
 			if(playerGMLevel >= 2) {
-				Iterator<Player> iter = player2.getActiveRegion().getWorld().getPlayersIterator();
+				Iterator<Player> iter = world.getPlayersIterator();
 				String gmLogonMessage = "";
 				switch(playerGMLevel) {
 					case 2: gmLogonMessage = "*Anim* " + player2.getName() + " vient de se connecter";
