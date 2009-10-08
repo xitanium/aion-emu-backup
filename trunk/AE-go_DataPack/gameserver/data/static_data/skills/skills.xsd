@@ -51,10 +51,19 @@
 		<xs:attribute name="probability" type="Probability" default="100.0" />
 		<xs:attribute name="recharge_time" type="xs:int" default="0" />
 		<xs:attribute name="launch_time" type="xs:int" default="0" />
-		<xs:attribute name="scope" type="xs:int" default="25" />
+		<xs:attribute name="target" type="skillTarget" default="TARGET" />
 	</xs:complexType>
 	
-	<xs:simpleType name="SkillId">
+	<xs:simpleType name="skillTarget">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TARGET" />
+			<xs:enumeration value="TARGET_SELF" />
+			<xs:enumeration value="SELF" />
+			<xs:enumeration value="LOCATION" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="skillId">
 		<xs:restriction base="xs:int">
 			<xs:minInclusive value="1"/>
 			<xs:maxInclusive value="60000"/>

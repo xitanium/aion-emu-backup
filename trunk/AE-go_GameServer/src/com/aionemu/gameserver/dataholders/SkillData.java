@@ -64,6 +64,7 @@ public class SkillData
 	public Iterator<Map.Entry<Integer, SkillTemplate>> getIterator () {
 		return skillData.entrySet().iterator();
 	}
+
 	public int size()
 	{
 		return skillData.size();

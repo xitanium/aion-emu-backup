@@ -28,7 +28,10 @@ import java.io.Serializable;
  */
 public class Point3D implements Cloneable, Serializable
 {
-
+	/**
+	 * To be in concordance with Serializable interface
+	 **/
+	private static final long serialVersionUID = 1L;
 	/**
 	 * X coord of the point
 	 */

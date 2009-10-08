@@ -107,6 +107,7 @@ public class PlayerController extends CreatureController<Player>
 		boolean attackSuccess = target.getController().onAttack(player, damages);
 		if(attackSuccess)
 		{
+			target.getLifeStats().reduceHp(damages);
 			gameStats.increateAttackCounter();
 		}
 	}
@@ -139,13 +140,12 @@ public class PlayerController extends CreatureController<Player>
 		return true;
 	}
 	
-	public void useSkill(int skillId, int level, int unk, int targetObjectId, int time)
+	public void useSkill(int skillId)
 	{
 		SkillHandler skillHandler = SkillEngine.getInstance().getSkillHandlerFor(skillId);
 		
 		if(skillHandler != null)
 		{
-			//TODO pass targets
 			if (this.getOwner().getTarget()!=null) {
 				Vector<Creature> list = new Vector<Creature>();
 				list.add(this.getOwner().getTarget());

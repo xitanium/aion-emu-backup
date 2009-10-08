@@ -59,6 +59,6 @@ public class CM_CASTSPELL extends AionClientPacket
 	protected void runImpl()
 	{
 		Player player = getConnection().getActivePlayer();
-		player.getController().useSkill(spellid,level,unk,targetObjectId,time);
+		player.getController().useSkill(spellid);
 	}
 }

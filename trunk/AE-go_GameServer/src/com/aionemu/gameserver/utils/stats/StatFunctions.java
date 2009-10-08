@@ -23,13 +23,16 @@ import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
-import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
+import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
+
+import com.aionemu.gameserver.configs.Config;
+import com.aionemu.gameserver.model.templates.SkillTemplate;
 
 /**
  * @author ATracer
- *
+ * @author alexa026
  */
 public class StatFunctions
 {
@@ -51,8 +54,8 @@ public class StatFunctions
 		int baseXP = targetLevel * 80;
 		
 		int xpPercentage =  XPRewardEnum.xpRewardFrom(targetLevel - playerLevel);
-
-		return (int) Math.floor(baseXP * xpPercentage / 100);
+		
+		return (int) Math.floor(baseXP * xpPercentage * Config.EXP_RATE / 100);
 	}
 	
 	/**
@@ -69,10 +72,22 @@ public class StatFunctions
 		return pAttack - targetPDef / 10;
 	}
 	
+	/**
+	 * @param player
+	 * @param target
+	 * @param skillTemplate
+	 * @return HP damage to target
+	 */
+	public static int calculateMagicDamageToTarget(Player player, Creature target, SkillTemplate skillTemplate)
+	{
+		//TODO this is a dummmy cacluations
+		return skillTemplate.getDamages() * skillTemplate.getLevel() * 2;
+	}
+	
 	public static int calculateNpcBaseDamageToPlayer(Npc npc, Player player)
 	{
 		//TODO this is a dummy calcs
-		return npc.getLevel() * 10;
+		return npc.getLevel() * 5 + 10;
 	}
 	
 	public static PlayerLifeStats getBaseLifeStats (PlayerClass playerClass) {

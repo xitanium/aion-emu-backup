@@ -436,13 +436,13 @@ public class CreatureGameStats<T extends Creature>
 	public void setMagicalDefenseFor (SkillElement element, int value) {
 		switch (element) {
 			case EARTH:
-				this.earth = value; 
+				this.earth = value; break; 
 			case FIRE:
-				this.fire = value;
+				this.fire = value; break;
 			case WATER:
-				this.water = value;
+				this.water = value; break;
 			case WIND:
-				this.wind = value;
+				this.wind = value; break;
 			default:
 				break;
 		}

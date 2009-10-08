@@ -33,13 +33,12 @@ public abstract class SkillHandler
 	private int skillId;
 	
 	private SkillTemplate skillTemplate;
-	
+
 	protected static final Logger log = Logger.getLogger(SkillHandler.class);
 	
 	public SkillHandler(int skillId)
 	{
 		this.skillId = skillId;
-		log.info("Creating skill handler "+this.getClass().getName()+" for skill #"+skillId);
 	}
 	
 	public abstract void useSkill(Creature creature, List<Creature> targets);

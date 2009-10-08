@@ -64,6 +64,7 @@
         	
         	<src path="${src}"/>
         	<bootclasspath refid="bootclasspath"/>
+		<compilerarg value="-Xlint:-path" />
             <classpath refid="classpath"/> 
         </javac>
     </target>
