@@ -56,7 +56,7 @@ public class SkillEngine
 		return skillHandlers.size();
 	}
 	
-	public SkillHandler getSkillHandlerFor(int skillId)
+	public static SkillHandler getSkillHandlerFor(int skillId)
 	{
 		SkillHandler skillHandler =  skillHandlers.get(skillId);
 		if(skillHandler == null)

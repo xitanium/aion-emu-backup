@@ -45,9 +45,7 @@ import com.google.inject.Inject;
  *
  */
 public class PlayerController extends CreatureController<Player>
-{	
-	@Inject
-	protected SkillEngine skillEngine;
+{
 	@Inject
 	protected StatFunctions statFunctions;
 	@Inject
@@ -142,7 +140,7 @@ public class PlayerController extends CreatureController<Player>
 	
 	public void useSkill(int skillId)
 	{
-		SkillHandler skillHandler = skillEngine.getSkillHandlerFor(skillId);
+		SkillHandler skillHandler = SkillEngine.getSkillHandlerFor(skillId);
 		
 		if(skillHandler != null)
 		{

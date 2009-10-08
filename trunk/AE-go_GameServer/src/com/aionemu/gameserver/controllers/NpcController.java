@@ -33,7 +33,6 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.ai.AIState;
 import com.aionemu.gameserver.services.DecayService;
 import com.aionemu.gameserver.services.RespawnService;
-import com.aionemu.gameserver.skillengine.SkillEngine;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.stats.StatFunctions;
 import com.aionemu.gameserver.world.World;
@@ -46,8 +45,6 @@ import com.google.inject.Inject;
  */
 public class NpcController extends CreatureController<Npc>
 {
-	@Inject
-	protected SkillEngine skillEngine;
 	@Inject
 	protected StatFunctions statFunctions;
 	@Inject
