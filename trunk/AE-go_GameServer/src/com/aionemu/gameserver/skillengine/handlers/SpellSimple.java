@@ -69,7 +69,7 @@ public class SpellSimple extends SkillHandler
         	final Creature target = iter.next();
         	final int targetId = target.getObjectId();
         	final int damages = StatFunctions.calculateMagicDamageToTarget(speller, target, st);
-        	PacketSendUtility.broadcastPacket(speller, new SM_CASTSPELL(spellerId, spellId, level, unk, targetId, st.getRechargeTime()));
+        	//PacketSendUtility.broadcastPacket(speller, new SM_CASTSPELL(spellerId, spellId, level, unk, targetId, st.getRechargeTime()));
         	if (speller instanceof Player) {
         		PacketSendUtility.sendPacket((Player)speller, new SM_CASTSPELL(spellerId,getSkillId(),st.getLevel(),0,targetId,st.getRechargeTime()));
         	}
@@ -78,7 +78,7 @@ public class SpellSimple extends SkillHandler
         	{
         		public void run()
         		{
-        			PacketSendUtility.broadcastPacket(speller, new SM_CASTSPELL_END(spellerId, spellId, level, unk, targetId, damages));
+        			//PacketSendUtility.broadcastPacket(speller, new SM_CASTSPELL_END(spellerId, spellId, level, unk, targetId, damages));
         			if (speller instanceof Player) {
         				PacketSendUtility.sendPacket((Player)speller,new SM_CASTSPELL_END(spellerId, spellId, level, unk,targetId, damages));
         			}

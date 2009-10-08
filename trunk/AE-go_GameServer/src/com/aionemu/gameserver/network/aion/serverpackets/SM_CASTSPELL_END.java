@@ -38,24 +38,21 @@ public class SM_CASTSPELL_END extends AionServerPacket
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{		
 		writeD(buf, attackerobjectid);
-		writeC(buf, 0);
+		writeC(buf, 0x00);
 		writeD(buf, targetObjectId);
 		writeH(buf, spellid); 
 		writeC(buf, level);
-		writeD(buf, 20);
+		writeD(buf, 0x0000000A);
 		writeC(buf, 0xFE); //unk??
-		writeC(buf, 1); //unk??
-		writeD(buf, 512); //unk??
+		writeC(buf, 0x01); //unk??
+		writeD(buf, 0x00000200); //unk??
 
-		writeH(buf, 1); 
+		writeH(buf, 0x0001);
 		writeD(buf, targetObjectId); 
-		writeH(buf, 3072); // unk?? abnormal eff id ??
-		writeH(buf, 100); // unk??
-		writeH(buf, 16); // unk??
+		writeD(buf, 0x00645800); // unk?? abnormal eff id ??
+		writeD(buf, 0x00010010); // unk??
 		
-		writeH(buf, 1); // unk??
 		writeD(buf, damage); // damage
-		writeH(buf, 10);
-
+		writeH(buf, 0x000A);
 	}	
 }

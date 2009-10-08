@@ -37,15 +37,13 @@ public class SM_CASTSPELL extends AionServerPacket
 	
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
-	{		
-	
+	{
 		writeD(buf, attackerobjectid);
 		writeH(buf, spellid); 
 		writeC(buf, level);
 		writeC(buf, unk);
-		writeD(buf, targetObjectId); 
-		writeH(buf, duration); // CAST TIME
-		writeC(buf, 0x00);//writeC(0);
-
+		writeD(buf, targetObjectId);
+		writeD(buf, 0x00);
+		writeD(buf, duration*1000); // CAST TIME
 	}	
 }
