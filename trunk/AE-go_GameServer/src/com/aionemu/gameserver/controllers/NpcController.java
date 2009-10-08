@@ -29,6 +29,8 @@ import com.aionemu.gameserver.model.templates.stats.StatsTemplate;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
+import com.aionemu.gameserver.ai.AIState;
 import com.aionemu.gameserver.services.DecayService;
 import com.aionemu.gameserver.services.RespawnService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -45,31 +47,31 @@ public class NpcController extends CreatureController<Npc>
 {
 	@SuppressWarnings("unused")
 	private static Logger log = Logger.getLogger(NpcController.class);
-	
+
 	public void attackTarget(int targetObjectId)
 	{
 		Npc npc = getOwner();
 		NpcGameStats npcGameStats = npc.getGameStats();
 		long time = System.currentTimeMillis();
 		int attackType = 1; //TODO investigate attack types	
-		
+
 		World world = npc.getActiveRegion().getWorld();
 		//TODO refactor to possibility npc-npc fight
 		Player player = (Player) world.findAionObject(targetObjectId);
-		
+
 		//TODO fix last attack - cause mob is already dead
 		int damages = StatFunctions.calculateNpcBaseDamageToPlayer(npc, player);
 		
 		PacketSendUtility.broadcastPacket(player,
 			new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
-		
+
 		try {
 			Thread.sleep(50);	
 		} catch (InterruptedException e) {
 			System.out.println(e);
 		}
 
-		
+
 		PacketSendUtility.broadcastPacket(player,
 			new SM_ATTACK(npc.getObjectId(), player.getObjectId(),
 				npcGameStats.getAttackCounter(), (int) time, attackType, damages), true);
@@ -79,6 +81,7 @@ public class NpcController extends CreatureController<Npc>
 		
 		if(attackSuccess)
 		{
+			player.getLifeStats().reduceHp(damages);
 			npcGameStats.increateAttackCounter();
 		}
 		if(!player.getLifeStats().isAlive())
@@ -94,8 +97,23 @@ public class NpcController extends CreatureController<Npc>
 	public void onDie()
 	{
 		super.onDie();
+		
+		NpcAi npcAi = this.getOwner().getNpcAi();
+		npcAi.setAiState(AIState.DEAD);
+		npcAi.stopTask();
+		
+		PacketSendUtility.broadcastPacket(getOwner(), new SM_EMOTION(this.getOwner().getObjectId(), 13 , getOwner().getObjectId()));
+		this.doDrop();
+
+		//TODO change - now reward is given to target only
+		Player target = (Player) this.getOwner().getTarget();
+		this.doReward(target);
+
 		RespawnService.getInstance().scheduleRespawnTask(this.getOwner());
 		DecayService.getInstance().scheduleDecayTask(this.getOwner());
+		
+		//deselect target at the end
+		getOwner().setTarget(null);
 	}
 
 	/* (non-Javadoc)
@@ -105,6 +123,7 @@ public class NpcController extends CreatureController<Npc>
 	public void onRespawn()
 	{
 		super.onRespawn();
+		this.getOwner().getNpcAi().setAiState(AIState.IDLE);
 		StatsTemplate statsTemplate = getOwner().getTemplate().getStatsTemplate();
 		this.getOwner().setLifeStats(new NpcLifeStats(statsTemplate.getMaxHp(),
 			statsTemplate.getMaxMp(), statsTemplate.getMaxHp(), statsTemplate.getMaxMp()));
@@ -118,12 +137,8 @@ public class NpcController extends CreatureController<Npc>
 	{
 		super.onAttack(creature,damages);
 		Npc npc = getOwner();
-		
-		NpcAi npcAi = npc.getNpcAi();
-		npcAi.handleEvent(new AttackEvent(creature));
-		
 		NpcLifeStats lifeStats = npc.getLifeStats();
-		
+
 		//TODO resolve synchronization issue
 		if(!lifeStats.isAlive())
 		{
@@ -134,16 +149,9 @@ public class NpcController extends CreatureController<Npc>
 		//TODO: Reduce hp corresponding to real damages done by player
 		lifeStats.reduceHp(damages);
 		
-		
-		if(!lifeStats.isAlive())
-		{
-			//TODO put into one method - onDie
-			this.getOwner().getNpcAi().stopTask();
-			PacketSendUtility.broadcastPacket(npc, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()));
-			this.doDrop();
-			this.doReward(creature);
-			this.onDie();
-		}
+		NpcAi npcAi = npc.getNpcAi();
+		npcAi.handleEvent(new AttackEvent(creature));
+
 		return true;
 	}
 
@@ -164,15 +172,17 @@ public class NpcController extends CreatureController<Npc>
 	public void doReward(Creature creature)
 	{
 		super.doReward(creature);
-		
+
 		if(creature instanceof Player)
 		{
 			Player player = (Player) creature;
 			//TODO may be introduce increaseExpBy method in PlayerCommonData
 			long currentExp = player.getCommonData().getExp();
-			
+
 			long xpReward = StatFunctions.calculateSoloExperienceReward(player, getOwner());
 			player.getCommonData().setExp(currentExp + xpReward);
+			
+			PacketSendUtility.sendPacket(player,SM_SYSTEM_MESSAGE.EXP(Long.toString(xpReward)));
 		}
 	}
 }

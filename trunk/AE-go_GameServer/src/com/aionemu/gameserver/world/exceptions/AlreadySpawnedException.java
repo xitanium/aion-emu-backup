@@ -25,6 +25,11 @@ package com.aionemu.gameserver.world.exceptions;
 public class AlreadySpawnedException extends RuntimeException
 {
 	/**
+	 * To be in concordance with Serializable interface
+	 **/
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Constructs an <code>AlreadySpawnedException</code> with no detail message.
 	 */
 	public AlreadySpawnedException()

@@ -55,7 +55,7 @@ public class NpcTemplate
 	@XmlElement(name = "equipment")
 	private NpcEquippedGear		equipment;
 	@XmlElement(name = "ammo_speed")
-	private int					ammoSpeed		= 0;
+	private int	ammoSpeed = 0;
 
 	public int getNpcId()
 	{
@@ -99,6 +99,14 @@ public class NpcTemplate
 	{
 		return level;
 	}
+	
+	public int getTalkingDistance () {
+		return talkingDistance;
+	}
+	
+	public int getAmmoSpeed () {
+		return ammoSpeed;
+	}
 
 	/**
 	 * @return the statsTemplate
@@ -124,7 +132,6 @@ public class NpcTemplate
 	{
 		return "Npc Template id: " + npcId + " name: " + name;
 	}
-
 	
 	@SuppressWarnings("unused")
 	@XmlID

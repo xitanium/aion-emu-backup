@@ -41,9 +41,14 @@ public class SM_DIALOG_WINDOW extends AionServerPacket
 	
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
-	{		
+	{	
 		writeD(buf, targetObjectId);
-		writeD(buf, 10); // window mode. 1- opens stigma window and show somekind of aura. 2- create legion window. 3 and higher - npc/quest dialog window + it's id.
+		// TODO get quests of NPC
+		if (targetObjectId==0x40018b14) {
+			writeD(buf, 0x10);
+		} else {
+			writeD(buf, 10); // window mode. 1- opens stigma window and show somekind of aura. 2- create legion window. 3 and higher - npc/quest dialog window + it's id.
+		}
 		writeD(buf, 0); // unk
 
 	}	

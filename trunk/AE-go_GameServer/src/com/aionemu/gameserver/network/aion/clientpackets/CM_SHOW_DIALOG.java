@@ -20,19 +20,10 @@ import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DIALOG;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DIALOG_WINDOW;
 
-import java.util.Random;
 /**
  * 
  * @author alexa026
- * 
- */
-
-import com.aionemu.gameserver.network.aion.AionClientPacket;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_DIALOG;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_DIALOG_WINDOW;
-/**
- * 
- * @author alexa026
+ * @author xavier
  * 
  */
 public class CM_SHOW_DIALOG extends AionClientPacket
@@ -65,12 +56,14 @@ public class CM_SHOW_DIALOG extends AionClientPacket
 	@Override
 	protected void runImpl()
 	{
-		//Player player = getConnection().getActivePlayer();
-		//if(player == null)
-		//	return;
-		
-		sendPacket(new SM_DIALOG(targetObjectId, 4688));
-		sendPacket(new SM_DIALOG_WINDOW(targetObjectId));
+		// TODO: get quests 
+		if (targetObjectId==0x40018b14) { // testing
+			sendPacket(new SM_DIALOG(targetObjectId, 0x3e));
+			sendPacket(new SM_DIALOG_WINDOW(targetObjectId));
+		} else {
+			sendPacket(new SM_DIALOG(targetObjectId, 4688));
+			sendPacket(new SM_DIALOG_WINDOW(targetObjectId));
+		}
 
 	}
 }

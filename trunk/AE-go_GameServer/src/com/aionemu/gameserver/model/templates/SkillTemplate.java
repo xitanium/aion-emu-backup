@@ -22,7 +22,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.aionemu.gameserver.model.SkillElement;
-import com.aionemu.gameserver.skillengine.SkillType;
+import com.aionemu.gameserver.model.SkillTargetType;
+import com.aionemu.gameserver.model.SkillType;
 
 /**
  * @author ATracer
@@ -33,19 +34,19 @@ import com.aionemu.gameserver.skillengine.SkillType;
 public class SkillTemplate
 {
 	@XmlAttribute(name ="skill_id", required = true)
-	private int	skillId;
+	private int	skill_id;
 	
 	@XmlAttribute(name = "skill_type")
-	private SkillType skillType;
+	private SkillType skill_type;
 	
 	@XmlAttribute(name = "name", required = true)
 	private String name;
 	
-	@XmlAttribute(name = "element")
-	private SkillElement element;
-	
 	@XmlAttribute(name = "level", required = true)
 	private int level;
+
+	@XmlAttribute(name = "element")
+	private SkillElement element;
 	
 	@XmlAttribute(name = "inflicts")
 	private int inflicts;
@@ -57,23 +58,23 @@ public class SkillTemplate
 	private int cost;
 	
 	@XmlAttribute(name = "probability")
-	private float probability;
+	private int probability;
+
+	@XmlAttribute(name = "target")
+	private SkillTargetType target;
 	
 	@XmlAttribute(name = "recharge_time")
 	private int recharge_time;
 	
 	@XmlAttribute(name = "launch_time")
 	private int launch_time;
-	
-	@XmlAttribute(name = "scope")
-	private int scope;
 
 	/**
 	 * @return the skillId
 	 */
 	public int getSkillId()
 	{
-		return skillId;
+		return skill_id;
 	}
 
 	/**
@@ -84,20 +85,16 @@ public class SkillTemplate
 		return name;
 	}
 
-	/**
-	 * @return the element
-	 */
 	public SkillElement getElement()
 	{
 		return element;
 	}
-
 	/**
-	 * @return the level
+	 * @return the skillType
 	 */
-	public int getLevel()
+	public SkillType getType()
 	{
-		return level;
+		return skill_type;
 	}
 
 	/**
@@ -117,49 +114,44 @@ public class SkillTemplate
 	}
 
 	/**
-	 * @return the cost
+	 * @return the level
 	 */
-	public int getCost()
+	public int getLevel()
 	{
-		return cost;
+		return level;
 	}
 
 	/**
-	 * @return the probability
+	 * @return the duration
 	 */
-	public float getProbability()
-	{
-		return probability;
-	}
-
-	/**
-	 * @return the recharge_time
-	 */
-	public int getRechargeTime()
+	public int getRechargeTime ()
 	{
 		return recharge_time;
 	}
 
-	/**
-	 * @return the launch_time
-	 */
-	public int getLaunchTime()
+	public int getLaunchTime ()
 	{
 		return launch_time;
 	}
-
 	/**
-	 * @return the scope
+	 * @return the target
 	 */
-	public int getScope()
+	public SkillTargetType getTarget()
 	{
-		return scope;
+		return target;
 	}
-	
-	public SkillType getType () {
-		if (skillType==null) {
-			return SkillType.DEFAULT;
-		}
-		return skillType;
+	/**
+	 * @return the probability
+	 */
+	public int getProbability()
+	{
+		return probability;
+	}
+	/**
+	 * @return the cost in MP
+	 */
+	public int getCost()
+	{
+		return cost;
 	}
 }

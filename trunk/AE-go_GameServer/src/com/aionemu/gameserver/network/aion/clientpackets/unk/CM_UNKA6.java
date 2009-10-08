@@ -27,12 +27,11 @@ public class CM_UNKA6 extends AionClientPacket
 	/**
 	 * Constructor.
 	 * 
-	 * @param buf
-	 * @param client
+	 * @param opcode
 	 */
-	public CM_UNKA6(ByteBuffer buf, AionConnection client)
+	public CM_UNKA6(int opcode)
 	{
-		super(buf, client, 0xAA);
+		super(opcode);
 	}
 
 	/**

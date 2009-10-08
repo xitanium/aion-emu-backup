@@ -528,7 +528,7 @@
 		<part name="result" type="c"/>
 		<part name="key" type="d"/>
 	</packet>
-	<packet id="0xF6" name="SM_UNKF0C"/>
+	<!--<packet id="0xF6" name="SM_UNKF0C"/>-->
 	<packet id="0xF8" name="SM_STATS_INFO [UI]">
       	<part name="objectId" type="d"/>
        	<part name="gameTime" type="d"/>

@@ -26,6 +26,11 @@ package com.aionemu.gameserver.world.exceptions;
 public class WorldMapNotExistException extends RuntimeException
 {
 	/**
+	 * To be in concordance with Serializable interface
+	 **/
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Constructs an <code>WorldMapNotExistException</code> with no detail message.
 	 */
 	public WorldMapNotExistException()

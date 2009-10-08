@@ -107,6 +107,7 @@ public class PlayerController extends CreatureController<Player>
 		boolean attackSuccess = target.getController().onAttack(player, damages);
 		if(attackSuccess)
 		{
+			target.getLifeStats().reduceHp(damages);
 			gameStats.increateAttackCounter();
 		}
 	}
@@ -133,20 +134,18 @@ public class PlayerController extends CreatureController<Player>
 		if(!lifeStats.isAlive())
 		{
 			if (!(creature instanceof Player)) {
-				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()), true);
-				this.onDie();
-			}
+				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()), true);				this.onDie();
+			};
 		}
 		return true;
 	}
 	
-	public void useSkill(int skillId, int level, int unk, int targetObjectId, int time)
+	public void useSkill(int skillId)
 	{
 		SkillHandler skillHandler = SkillEngine.getInstance().getSkillHandlerFor(skillId);
 		
 		if(skillHandler != null)
 		{
-			//TODO pass targets
 			if (this.getOwner().getTarget()!=null) {
 				Vector<Creature> list = new Vector<Creature>();
 				list.add(this.getOwner().getTarget());
@@ -171,7 +170,7 @@ public class PlayerController extends CreatureController<Player>
 		PacketSendUtility.sendPacket(getOwner(), SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(player.getName()));
 	}
 	
-	public void onDuelEnd () {
+	public void onDuel () {
 		
 	}
 }
