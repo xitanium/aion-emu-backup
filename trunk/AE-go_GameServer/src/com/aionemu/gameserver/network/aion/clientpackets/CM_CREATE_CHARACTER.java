@@ -99,12 +99,7 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		playerAppearance.setVoice(readD());
 		playerAppearance.setSkinRGB(readD());
 		playerAppearance.setHairRGB(readD());
-<<<<<<< HEAD:trunk/AE-go_GameServer/src/com/aionemu/gameserver/network/aion/clientpackets/CM_CREATE_CHARACTER.java
 		playerAppearance.setEyeRGB(readD()); // 1.5.x add EyeColor
-=======
-		playerAppearance.setEyeRGB(readD());
-		//log.info("EyesColor: " + readD());
->>>>>>> git-svn:trunk/AE-go_GameServer/src/com/aionemu/gameserver/network/aion/clientpackets/CM_CREATE_CHARACTER.java
 		playerAppearance.setLipRGB(readD());
 		playerAppearance.setFace(readC());
 		playerAppearance.setHair(readC());

@@ -168,9 +168,6 @@ public class CreatureLifeStats<T extends Creature>
 		this.maxMp = maxMp;
 	}
 	
-	public boolean isAlreadyDead () {
-		return alreadyDead;
-	}
 	/**
 	 * @return the alreadyDead
 	 * There is no setter method cause life stats should be completely renewed on revive
