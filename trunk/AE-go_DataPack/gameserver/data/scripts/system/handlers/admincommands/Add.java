@@ -41,7 +41,7 @@ public class Add extends AdminCommand
 {
     public Add()
     {
-        super("add", 2);
+        super("additem", 2);
     }
 
     /*
@@ -51,42 +51,54 @@ public class Add extends AdminCommand
     @Override
     public void executeCommand(Player admin, String... params)
     {
-        if(params == null)
+        if(params == null || params.length == 0 || params.length > 2)
         {
-            PacketSendUtility.sendMessage(admin, "syntax //add itemID");
+            PacketSendUtility.sendMessage(admin, "Usage: //additem <item_id> <count>");
+            PacketSendUtility.sendMessage(admin, "Add (or remove) item from your target (or yourself if no target is selected). To add more of this item, specify <count>. To remove item(s) from your target, specify a negative <count> value.");
             return;
         }
-
-        int parameter = 0;
+        int itemId = 0;
+        int count = 1;
         try
         {
-            parameter = Integer.parseInt(params[0]);
+            itemId = Integer.parseInt(params[0]);
+            if(params.length == 2) {
+            	count = Integer.parseInt(params[1]);
+            }
         }
         catch (NumberFormatException e)
         {
-            PacketSendUtility.sendMessage(admin, "Param needs to be a number.");
-
+            PacketSendUtility.sendMessage(admin, "You must specify numbers for both parameters.");
             return;
         }
-        int activePlayer = admin.getObjectId();
+        //int activePlayer = admin.getObjectId();
+        int targetPlayerId = 0;
+        Player targetPlayer = null;
+        if(admin.getTarget() instanceof Player) {
+        	targetPlayer = (Player)admin.getTarget();
+        }
+        else {
+        	targetPlayer = admin;
+        }
+        targetPlayerId = targetPlayer.getObjectId();
         try{
         	try{
-        		PreparedStatement ps = DB.prepareStatement("SELECT id FROM item_list WHERE `id`=" + parameter);
+        		PreparedStatement ps = DB.prepareStatement("SELECT id FROM item_list WHERE `id`=" + itemId);
         		ResultSet rs = ps.executeQuery();
         		rs.last();
-        		parameter = rs.getInt("id");
+        		itemId = rs.getInt("id");
         	}catch(Exception e)
         	{
-        		parameter = 0;
+        		itemId = 0;
         	}
         	
-        	if(parameter!=0){
+        	if(itemId!=0){
 			Inventory itemsDbOfPlayerCount = new Inventory(); // wrong
-			itemsDbOfPlayerCount.getInventoryFromDb(activePlayer);
+			itemsDbOfPlayerCount.getInventoryFromDb(targetPlayerId);
 			int totalItemsCount = itemsDbOfPlayerCount.getItemsCount();
 
 			Inventory equipedItems = new Inventory();
-			equipedItems.getEquipedItemsFromDb(activePlayer);
+			equipedItems.getEquipedItemsFromDb(targetPlayerId);
 			int totalEquipedItemsCount = equipedItems.getEquipedItemsCount();
 			
 			
@@ -94,19 +106,19 @@ public class Add extends AdminCommand
 			int cubesize = 27;
 			int allowItemsCount = cubesize*cubes-1;
 			
-			if (totalItemsCount<=allowItemsCount){
+			if (totalItemsCount + count<=allowItemsCount){
 			Inventory items = new Inventory();
-			items.putItemToDb(activePlayer, parameter, 1);
+			items.putItemToDb(targetPlayerId, itemId, count);
 			items.getLastUniqueIdFromDb();
 			int newItemUniqueId = items.getnewItemUniqueIdValue();
 				
-			PacketSendUtility.sendPacket(admin, new SM_INVENTORY_INFO(newItemUniqueId, parameter, 1, 1, 8));
+			PacketSendUtility.sendPacket(targetPlayer, new SM_INVENTORY_INFO(newItemUniqueId, itemId, count, 1, 8));
 	        PacketSendUtility.sendMessage(admin, "Added Item.");
 			}else{
-		        PacketSendUtility.sendMessage(admin, "Inventory is Full.");
+		        PacketSendUtility.sendMessage(admin, "Target's cube has not enough space for that item(s)");
 			}
         	}else{
-        		PacketSendUtility.sendMessage(admin, "Invalid Item.");
+        		PacketSendUtility.sendMessage(admin, "Invalid item ID");
         	}
 			
         }catch(Exception e)
