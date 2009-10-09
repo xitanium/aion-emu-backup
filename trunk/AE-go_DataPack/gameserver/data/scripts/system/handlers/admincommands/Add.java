@@ -41,7 +41,7 @@ public class Add extends AdminCommand
 {
     public Add()
     {
-        super("add");
+        super("add", 2);
     }
 
     /*
