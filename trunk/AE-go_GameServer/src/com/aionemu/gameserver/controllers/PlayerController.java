@@ -18,6 +18,8 @@ package com.aionemu.gameserver.controllers;
 
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
@@ -47,10 +49,14 @@ public class PlayerController extends CreatureController<Player>
 {
 	// TEMP till player AI introduced
 	private Creature lastAttacker;
+	private static Logger log = Logger.getLogger(PlayerController.class);
 
 	public PlayerController (World world) {
 		super(world);
 	}
+	
+	// TEMP till player AI introduced
+	private Creature lastAttacker;
 
 	/**
 	 * {@inheritDoc}
@@ -141,7 +147,6 @@ public class PlayerController extends CreatureController<Player>
 			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()), true);
 			this.onDie();
 		}
-		return true;
 	}
 	
 	public void useSkill(int skillId)

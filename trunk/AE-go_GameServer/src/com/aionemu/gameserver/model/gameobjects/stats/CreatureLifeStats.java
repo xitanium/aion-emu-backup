@@ -172,6 +172,15 @@ public class CreatureLifeStats<T extends Creature>
 		return alreadyDead;
 	}
 	/**
+	 * @return the alreadyDead
+	 * There is no setter method cause life stats should be completely renewed on revive
+	 */
+	public boolean isAlreadyDead()
+	{
+		return alreadyDead;
+	}
+
+	/**
 	 *  This method is called whenever caller wants to absorb creatures's HP
 	 * @param value
 	 * @return
@@ -200,6 +209,11 @@ public class CreatureLifeStats<T extends Creature>
 			{
 				this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
 			}
+		}	
+		
+		if(lifeRestoreTask == null && !alreadyDead)
+		{
+			this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
 		}
 		
 		return currentHp;
@@ -233,7 +247,7 @@ public class CreatureLifeStats<T extends Creature>
 		{
 			if(isAlreadyDead())
 			{
-				alreadyDead = true;
+				alreadyDead = false;
 			}
 			int newHp = this.currentHp + value;
 			if(newHp > maxHp)
