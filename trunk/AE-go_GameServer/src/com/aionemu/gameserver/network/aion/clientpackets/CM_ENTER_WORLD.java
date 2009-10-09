@@ -112,6 +112,7 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			/*
 			 * Needed
 			 */
+			sendPacket(new SM_PLAY_VIDEO(1));
 			client.sendPacket(new SM_ENTER_WORLD_CHECK());
 
 			// sendPacket(new SM_UNK60());
