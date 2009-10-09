@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.network.aion.clientpackets;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.RequestResponseHandler;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
@@ -37,6 +39,8 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 	private int	objectId;
 	@Inject
 	private World world;
+	
+	private static Logger		log			= Logger.getLogger(CM_DUEL_REQUEST.class);
 
 	/**
 	* Constructs new instance of <tt>CM_DUAL_REQUEST</tt> packet
@@ -60,8 +64,12 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 	@Override
 	protected void runImpl()
 	{
+		// Get the request sender
 		final Player activePlayer = getConnection().getActivePlayer();
+		// Get the request recipient
 		final Player targetPlayer = world.findPlayer(objectId);
+		
+		log.debug("Player " + activePlayer.getName() + " (objid=" + activePlayer.getObjectId() + ") requested duel with " + targetPlayer.getName() + " (objid=" + targetPlayer.getObjectId());
 
 		RequestResponseHandler responseHandler = new RequestResponseHandler(activePlayer) {
 			@Override
