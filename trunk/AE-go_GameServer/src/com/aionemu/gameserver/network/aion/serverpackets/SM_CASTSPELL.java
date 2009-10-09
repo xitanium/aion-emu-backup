@@ -59,7 +59,8 @@ public class SM_CASTSPELL extends AionServerPacket
 		writeC(buf, level);
 		writeC(buf, unk);
 		writeD(buf, targetObjectId);
-		writeD(buf, 0x00);
 		writeD(buf, duration*1000); // CAST TIME
+		writeD(buf, 0x00);
+		
 	}	
 }
