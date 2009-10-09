@@ -27,7 +27,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
  * This task is run, when server is shutting down.
- * We should do here all data saving etc. 
+ * We should do here all data saving etc...
  * 
  * @author Luno
  * @modifier xitanium
