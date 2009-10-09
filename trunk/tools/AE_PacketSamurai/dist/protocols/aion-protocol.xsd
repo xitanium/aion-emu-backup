@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="protocol">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="packetfamilly" minOccurs="1" maxOccurs="2">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="packet" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:choice maxOccurs="unbounded">
+										<xs:element name="part" type="PacketPart"
+											minOccurs="0" maxOccurs="unbounded" />
+										<xs:element name="for" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="part" type="PacketPart"
+														minOccurs="1" maxOccurs="unbounded" />
+												</xs:sequence>
+												<xs:attribute name="id" type="xs:int" />
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="switch" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="case" minOccurs="1" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																<xs:element name="part" type="PacketPart"
+																	minOccurs="1" maxOccurs="unbounded" />
+															</xs:sequence>
+															<xs:attribute name="id" type="xs:int" />
+															<xs:attribute name="comment" type="xs:string" />
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="id" type="xs:int" />
+											</xs:complexType>
+										</xs:element>
+									</xs:choice>
+									<xs:attribute name="name" type="xs:string" />
+									<xs:attribute name="id" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="switchtype" type="xs:string" />
+						<xs:attribute name="way">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="ServerPackets" />
+									<xs:enumeration value="ClientPackets" />
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="crypt" type="xs:string" />
+			<xs:attribute name="name" type="xs:string" />
+			<xs:attribute name="port" type="xs:int" />
+			<xs:attribute name="sizebytes" type="xs:string" />
+			<xs:attribute name="checksumSize" type="xs:string" />
+			<xs:attribute name="strictlength" type="xs:boolean" />
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="PacketPart">
+		<xs:sequence minOccurs="0" maxOccurs="1">
+			<xs:element name="reader">
+				<xs:complexType>
+					<xs:attribute name="type">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="Color" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" />
+		<xs:attribute name="size" type="xs:int" />
+		<xs:attribute name="id" type="xs:int" />
+		<xs:attribute name="sizeid" type="xs:int" />
+		<xs:attribute name="type">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="d" />
+					<xs:enumeration value="c" />
+					<xs:enumeration value="h" />
+					<xs:enumeration value="df" />
+					<xs:enumeration value="f" />
+					<xs:enumeration value="Q" />
+					<xs:enumeration value="s" />
+					<xs:enumeration value="b" />
+					<xs:enumeration value="S" />
+					<xs:enumeration value="dbs" />
+					<xs:enumeration value="hbs" />
+					<xs:enumeration value="cbs" />
+					<xs:enumeration value="x" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>
