@@ -34,7 +34,7 @@ import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 
 /**
  * @author dragoon112
- *
+ * @modifier xitanium
  */
 
 public class Add extends AdminCommand
