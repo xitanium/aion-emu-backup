@@ -45,9 +45,13 @@ import com.aionemu.gameserver.world.World;
  */
 public class PlayerController extends CreatureController<Player>
 {
+	// TEMP till player AI introduced
+	private Creature lastAttacker;
+
 	public PlayerController (World world) {
 		super(world);
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -77,12 +81,16 @@ public class PlayerController extends CreatureController<Player>
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 *  Shoul only be triggered from one place (life stats)
 	 */
 	@Override
 	public void onDie()
 	{
 		super.onDie();
 
+		//TODO probably introduce variable - last attack creature in player AI
+		PacketSendUtility.broadcastPacket(this.getOwner(), new SM_EMOTION(this.getOwner().getObjectId(), 13 , lastAttacker.getObjectId()), true);
 		Player player = this.getOwner();
 		PacketSendUtility.sendPacket(player, new SM_DIE());
 		PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.DIE);
@@ -115,23 +123,23 @@ public class PlayerController extends CreatureController<Player>
 	public boolean onAttack(Creature creature, int damages)
 	{
 		super.onAttack(creature,damages);
+		lastAttacker = creature;
 		
 		Player player = getOwner();
 		PlayerLifeStats lifeStats = player.getLifeStats();
 
 		//TODO resolve synchronization issue
-		if(!lifeStats.isAlive())
+		if(lifeStats.isAlreadyDead())
 		{
 			return false;
 		}
 
 		lifeStats.reduceHp(damages);
 
-		if(!lifeStats.isAlive())
+		if(lifeStats.isAlreadyDead())
 		{
-			if (!(creature instanceof Player)) {
-				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()), true);				this.onDie();
-			};
+			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()), true);
+			this.onDie();
 		}
 		return true;
 	}

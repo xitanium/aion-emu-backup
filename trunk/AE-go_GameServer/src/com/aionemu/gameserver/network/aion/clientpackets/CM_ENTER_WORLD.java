@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
 /**
  * In this packets aion client is asking if given char [by oid] may login into game [ie start playing].
  * 
- * @author -Nemesiss-, Avol
+ * @author -Nemesiss-, Avol, Dominion
  * 
  */
 public class CM_ENTER_WORLD extends AionClientPacket
@@ -242,7 +242,7 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			// sendPacket(new SM_UNK8D());
 			
 			sendPacket(new SM_MESSAGE(0, null, "Welcome to " + Config.SERVER_NAME
-				+ " server\npowered by aion-unique software\ndeveloped by aionunique.smfnew.com team.\nCopyright 2009", null,
+				+ " server\nPowered by aion-unique software\ndeveloped by www.aion-unique.com team.\nCopyright 2009", null,
 				ChatType.ANNOUNCEMENTS));
 			
 			if(playerGMLevel >= 2) {

@@ -72,15 +72,15 @@ public class SM_LOOT_ITEMLIST extends AionServerPacket
 
 		DropList dropData = new DropList();
 		dropData.getDropList(monsterId);
-
-		Random generator = new Random();
-		int chance = 100 / itemChance;
-		if (itemChance == 100) {
-			chance = 1;
+		Random r = new Random();
+		int chance;
+		if (itemChance == 1) {
+			chance = 0;
 		} else {
-			chance = generator.nextInt(chance)+1;
+			chance = r.nextInt(itemChance-1);
 		}
-		if (chance == 1){
+
+		if (chance == 0){
 			writeD(buf, targetObjectId);
 			writeH(buf, itemCount);
 			for(int i = 0; i < itemCount; i++)

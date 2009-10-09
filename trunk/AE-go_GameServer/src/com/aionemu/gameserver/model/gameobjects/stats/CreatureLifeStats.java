@@ -46,6 +46,8 @@ public class CreatureLifeStats<T extends Creature>
 	
 	private int maxMp;
 	
+	private boolean alreadyDead = false;
+	
 	private Creature owner;
 	
 	private boolean initialized = false;
@@ -100,11 +102,6 @@ public class CreatureLifeStats<T extends Creature>
 	public Creature getOwner()
 	{
 		return owner;
-	}
-
-	public boolean isAlive()
-	{
-		return currentHp > 0;
 	}
 
 	/**
@@ -171,6 +168,9 @@ public class CreatureLifeStats<T extends Creature>
 		this.maxMp = maxMp;
 	}
 	
+	public boolean isAlreadyDead () {
+		return alreadyDead;
+	}
 	/**
 	 *  This method is called whenever caller wants to absorb creatures's HP
 	 * @param value
@@ -181,23 +181,26 @@ public class CreatureLifeStats<T extends Creature>
 		synchronized(this)
 		{
 			int newHp = this.currentHp - value;
+			
 			if(newHp < 0)
 			{
 				this.currentHp = 0;
-				getOwner().getController().onDie();
-				return 0;
+				if(!alreadyDead)
+				{
+					alreadyDead = true;
+				}			
 			}
 			this.currentHp = newHp;
+			
+			sendHpPacketUpdate();
 		}	
 		
 		if (getOwner() instanceof Player) {
-			if(lifeRestoreTask == null)
+			if(lifeRestoreTask == null && !alreadyDead)
 			{
 				this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
 			}
 		}
-		
-		sendHpPacketUpdate();
 		
 		return currentHp;
 	}
@@ -228,6 +231,10 @@ public class CreatureLifeStats<T extends Creature>
 	{
 		synchronized(this)
 		{
+			if(isAlreadyDead())
+			{
+				alreadyDead = true;
+			}
 			int newHp = this.currentHp + value;
 			if(newHp > maxHp)
 			{
@@ -314,4 +321,5 @@ public class CreatureLifeStats<T extends Creature>
 			this.lifeRestoreTask = null;
 		}
 	}
+
 }
