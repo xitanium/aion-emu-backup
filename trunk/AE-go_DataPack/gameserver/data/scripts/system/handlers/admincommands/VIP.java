@@ -20,7 +20,6 @@
 
 package admincommands;
 
-import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_QUIT_RESPONSE;
 import com.aionemu.gameserver.services.PlayerService;
@@ -29,17 +28,18 @@ import com.google.inject.Inject;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.WorldMap;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
+import com.aionemu.gameserver.model.AdminLevel;
 
-public class GPS extends AdminCommand
+public class VIP extends AdminCommand
 {
 	@Inject
 	private World	world;
 /**
 	 * @param commandName
 	 */
-	public GPS()
+	public VIP()
 	{
-		super("gps", AdminLevel.PLAYER);
+		super("vip", AdminLevel.VIP);
 	}
 
 	/* (non-Javadoc)
@@ -48,12 +48,6 @@ public class GPS extends AdminCommand
 	@Override
 	public void executeCommand(Player admin, String... params)
 	{
-		world = admin.getActiveRegion().getWorld();
-		PacketSendUtility.sendMessage(admin, "Actual location GPS coordinates :");
-		PacketSendUtility.sendMessage(admin, "x				= " + admin.getX());
-		PacketSendUtility.sendMessage(admin, "y				= " + admin.getY());
-		PacketSendUtility.sendMessage(admin, "z 				= " + admin.getZ());
-		PacketSendUtility.sendMessage(admin, "heading		= " + admin.getHeading());
-		PacketSendUtility.sendMessage(admin, "map 			= " + admin.getActiveRegion().getMapId());
+		PacketSendUtility.sendMessage(admin, "Very soon, VIP players will use this command to access VIP advantages");
 	}
 }

@@ -17,6 +17,7 @@
 
 package com.aionemu.gameserver.utils.chathandlers;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 
 /**
@@ -29,12 +30,12 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 public abstract class AdminCommand
 {
 	private final String	commandName;
-	private final int requiredGMLevel;
+	private final AdminLevel requiredGMLevel;
 
-	protected AdminCommand(String commandName, int requiredGMLevel)
+	protected AdminCommand(String commandName, AdminLevel requiredLevel)
 	{
 		this.commandName = commandName;
-		this.requiredGMLevel = requiredGMLevel;
+		this.requiredGMLevel = requiredLevel;
 	}
 
 	/**
@@ -77,7 +78,7 @@ public abstract class AdminCommand
 		return commandName;
 	}
 	
-	public int getRequiredGMLevel() {
+	public AdminLevel getRequiredGMLevel() {
 		return requiredGMLevel;
 	}
 

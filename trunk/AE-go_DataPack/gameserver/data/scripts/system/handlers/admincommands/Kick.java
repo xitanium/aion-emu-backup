@@ -17,6 +17,7 @@
 
 package admincommands;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_QUIT_RESPONSE;
 import com.aionemu.gameserver.services.PlayerService;
@@ -39,7 +40,7 @@ public class Kick extends AdminCommand
 	 */
 	public Kick()
 	{
-		super("kick", 2);
+		super("kick", AdminLevel.ANIM);
 	}
 
 	/* (non-Javadoc)

@@ -17,6 +17,7 @@
 
 package admincommands;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.services.PlayerService;
@@ -41,7 +42,7 @@ public class Revoke extends AdminCommand
 	 */
 	public Revoke()
 	{
-	super("revoke", 5);
+	super("revoke", AdminLevel.ADMIN);
 	}
 
 	/**

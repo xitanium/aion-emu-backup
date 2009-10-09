@@ -17,6 +17,7 @@
 
 package admincommands;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -39,7 +40,7 @@ public class MoveTo extends AdminCommand
 	@Inject
 	public MoveTo(World world)
 	{
-		super("moveto", 2);
+		super("moveto", AdminLevel.ANIM);
 
 		this.world = world; 
 	}

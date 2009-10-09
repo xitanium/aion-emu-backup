@@ -19,6 +19,7 @@ package admincommands;
 import java.util.Iterator;
 
 import com.aionemu.gameserver.dataholders.SpawnData;
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.AionObject;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -43,7 +44,7 @@ public class UnloadSpawn extends AdminCommand
 	@Inject
 	public UnloadSpawn(World world, SpawnData spawnData)
 	{
-		super("unload_spawn", 2);
+		super("unload_spawn", AdminLevel.ANIM);
 		this.world = world;
 		this.spawnData = spawnData;
 	}

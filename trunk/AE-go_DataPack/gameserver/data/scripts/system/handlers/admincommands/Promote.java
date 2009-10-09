@@ -17,6 +17,7 @@
 
 package admincommands;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
@@ -41,7 +42,7 @@ public class Promote extends AdminCommand
 	 */
 	public Promote()
 	{
-	super("promote", 5);
+	super("promote", AdminLevel.ADMIN);
 	}
 
 	/**

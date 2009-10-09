@@ -16,6 +16,7 @@
  */
 package admincommands;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CUSTOM_PACKET;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CUSTOM_PACKET.PacketElementType;
@@ -42,7 +43,7 @@ public class SendRawPacket extends AdminCommand
 
 	public SendRawPacket()
 	{
-		super("raw", 4);
+		super("raw", AdminLevel.DEV);
 	}
 
 	/* (non-Javadoc)

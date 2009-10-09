@@ -17,6 +17,7 @@
 package admincommands;
 
 import com.aionemu.gameserver.dataholders.SpawnData;
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.templates.SpawnTemplate;
@@ -42,7 +43,7 @@ public class SpawnNpc extends AdminCommand
 	@Inject
 	public SpawnNpc(SpawnData spawnData, SpawnEngine spawnService)
 	{
-		super("spawn", 2);
+		super("spawn", AdminLevel.ANIM);
 		this.spawnData = spawnData;
 		this.spawnService = spawnService;
 	}
