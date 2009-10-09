@@ -34,6 +34,8 @@ public class SM_PLAY_VIDEO extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{		
+		writeH(buf, 0x01);
+		writeD(buf, 0x00);
 		writeD(buf, videoId);
 	}
 }

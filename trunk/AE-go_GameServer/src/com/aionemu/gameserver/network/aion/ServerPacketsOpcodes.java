@@ -128,7 +128,7 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_FLY_TELEPORT.class, 0xC2, idSet);//1.5.x
 		addPacketOpcode(SM_DIE.class, 0xb8, idSet);	//1.5.x
 		
-		addPacketOpcode(SM_PLAY_VIDEO.class, 0xCB, idSet);
+		addPacketOpcode(SM_PLAY_VIDEO.class, 0x60, idSet);
 		
 		
 
