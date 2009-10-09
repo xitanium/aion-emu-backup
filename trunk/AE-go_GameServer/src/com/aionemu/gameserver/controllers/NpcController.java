@@ -58,8 +58,8 @@ public class NpcController extends CreatureController<Npc>
 		//TODO fix last attack - cause mob is already dead
 		int damages = StatFunctions.calculateNpcBaseDamageToPlayer(npc, player);
 		
-		PacketSendUtility.broadcastPacket(player,
-			new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
+//		PacketSendUtility.broadcastPacket(player,
+//			new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
 
 		try {
 			Thread.sleep(50);	
