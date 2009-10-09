@@ -63,7 +63,7 @@ public class ShutdownHook implements Runnable
 			}
 			catch(InterruptedException e) 
 			{
-				log.error("Can't sleep thread while running ShutdownHook", e);
+				log.error("Cannot sleep thread while running ShutdownHook", e);
 			}
 		}
 		GameTimeManager.saveTime();
