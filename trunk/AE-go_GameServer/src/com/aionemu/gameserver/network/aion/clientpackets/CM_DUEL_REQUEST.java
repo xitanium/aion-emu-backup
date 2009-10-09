@@ -20,6 +20,7 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.RequestResponseHandler;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_QUESTION_WINDOW;
+import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
 
@@ -66,14 +67,15 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 			@Override
 			public void acceptRequest(Player requester, Player responder)
 			{
-				activePlayer.getController().startDuelWith(targetPlayer);
-				targetPlayer.getController().startDuelWith(activePlayer);
+				requester.getController().startDuelWith(responder);
+				responder.getController().startDuelWith(requester);
 			}
 
 			public void denyRequest(Player requester, Player responder)
 			{
 				// TODO find code for STR_DUEL_HE_REJECTED_DUEL
 				// activePlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_HE_REJECTED_DUEL, targetPlayer.getName()));
+				PacketSendUtility.sendMessage(requester, "Player " + responder.getName() + " declined your Duel request.");
 			}
 		};
 		
