@@ -88,7 +88,7 @@ public class StatFunctions
 	public static PlayerGameStats getBaseGameStats (PlayerClass playerClass, PlayerStatsData playerStatsData) {
 		final PlayerGameStats pgs = new PlayerGameStats();
 		PlayerStatsTemplate pst = playerStatsData.getTemplate(playerClass,1);
-		pgs.setAttackCounter(0);
+		pgs.setAttackCounter(1);
 		pgs.setPower(pst.getPower());
 		pgs.setHealth(pst.getHealth());
 		pgs.setAgility(pst.getAgility());
@@ -139,7 +139,7 @@ public class StatFunctions
 		int magicalResistance = tgs.getMagicResistance();
 		int magicBoost = sgs.getMagicBoost();
 		int accuracy = sgs.getMagicAccuracy();
-		int attackCount = sgs.getAttackCounter();
+		long attackCount = sgs.getAttackCounter();
 		Random generator = new Random ();
 		int missedSpellSeed = Math.round(accuracy*100f/(generator.nextInt(accuracy)+1));
 		boolean missedSpell = (attackCount%missedSpellSeed) == 0;
@@ -174,7 +174,7 @@ public class StatFunctions
 		int baseDamages = ags.getMainHandAttack();
 		int critRate = ags.getMainHandCritRate();
 		int accuracy = ags.getMainHandAccuracy();
-		int attackCount = ags.getAttackCounter();
+		long attackCount = ags.getAttackCounter();
 		int parry = tgs.getParry();
 		int block = tgs.getBlock();
 		int pDef = tgs.getPhysicalDefense();

@@ -31,7 +31,7 @@ public class CreatureGameStats<T extends Creature>
 {
 	protected static final Logger log = Logger.getLogger(CreatureGameStats.class);
 	
-	private static final long ATTACK_MAX_COUNTER = Long.MAX_VALUE;
+	private static final int ATTACK_MAX_COUNTER = Integer.MAX_VALUE;
 	
 	private int attackCounter = 0;
 	private int power = 0;
@@ -117,7 +117,11 @@ public class CreatureGameStats<T extends Creature>
 	 */
 	public void setAttackCounter(int attackCounter)
 	{
-		this.attackCounter = attackCounter;
+		if (attackCounter<=0) {
+			this.attackCounter = 1;
+		} else {
+			this.attackCounter = attackCounter;
+		}
 	}
 	
 	public void increaseAttackCounter()
