@@ -43,7 +43,7 @@ public abstract class AionServerPacket extends BaseServerPacket
 	 * @param buf
 	 * @param value
 	 */
-	private final void writeOP(ByteBuffer buf, int value)
+	public  final void writeOP(ByteBuffer buf, int value)
 	{
 		/** obfuscate packet id */
 		byte op = Crypt.encodeOpcodec(value);

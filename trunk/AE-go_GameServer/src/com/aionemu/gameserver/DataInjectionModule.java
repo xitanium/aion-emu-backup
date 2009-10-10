@@ -42,7 +42,7 @@ import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 
 /**
- * This is a configuration module for <tt>Injector</tt> that is used in aion-emu.<br>
+ * This is a configuration module for <tt>Injector</tt> that is used in aionemu.<br>
  * 
  * @author Luno
  * 
