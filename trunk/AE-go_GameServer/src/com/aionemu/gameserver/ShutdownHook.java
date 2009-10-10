@@ -54,7 +54,7 @@ public class ShutdownHook implements Runnable
 	{
 		log.info("Starting AE GS shutdown sequence");
 		
-		for(int i = 0; i <= Config.SERVER_SHUTDOWN_WAIT_TIME; i--)
+		for(int i = Config.SERVER_SHUTDOWN_WAIT_TIME; i >= 0; i--)
 		{
 			Iterator<Player> onlinePlayers = world.getPlayersIterator();
 			if (!onlinePlayers.hasNext()) {
@@ -67,7 +67,7 @@ public class ShutdownHook implements Runnable
 				if (i==0) {
 					service.storePlayer(p);
 				} else {
-					PacketSendUtility.sendMessage(p, "Server shutdown in " + (15 - i) + " seconds.");
+					PacketSendUtility.sendMessage(p, "Server shutdown in " + i + " seconds.");
 				}
 			}
 			
