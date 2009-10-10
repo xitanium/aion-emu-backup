@@ -117,12 +117,16 @@ public class SM_SYSTEM_MESSAGE extends AionServerPacket
 	 */
 	public static SM_SYSTEM_MESSAGE BLOCKLIST_NOT_BLOCKED = new SM_SYSTEM_MESSAGE(1300897);
 	
-	public static SM_SYSTEM_MESSAGE DUEL_STARTED_WITH (String player) {
+	public static SM_SYSTEM_MESSAGE DUEL_ASKED_TO (String player) {
 		return new SM_SYSTEM_MESSAGE(1301065,player);
 	}
 	
-	public static SM_SYSTEM_MESSAGE DUEL_REJECTED_BY (String player) {
+	public static SM_SYSTEM_MESSAGE DUEL_ASKED_BY (String player) {
 		return new SM_SYSTEM_MESSAGE(1300094,player);
+	}
+	
+	public static SM_SYSTEM_MESSAGE DUEL_REJECTED_BY (String player) {
+		return new SM_SYSTEM_MESSAGE(1300097,player);
 	}
 	
 	/**

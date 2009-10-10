@@ -111,6 +111,7 @@ public class SM_EMOTION extends AionServerPacket
 				writeC(buf, 0x40); // unknown
 				break;
 			case 0x24:
+			case 0x01:
 				// emote endloop
 				writeD(buf, 0x21); // unknown
 				writeC(buf, 0xc0); // unknown

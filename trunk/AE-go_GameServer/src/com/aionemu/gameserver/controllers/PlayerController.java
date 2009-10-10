@@ -171,7 +171,8 @@ public class PlayerController extends CreatureController<Player>
 	}
 	
 	public void startDuelWith (Player player) {
-		PacketSendUtility.sendPacket(getOwner(), SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(player.getName()));
+		//PacketSendUtility.sendPacket(getOwner(), SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(player.getName()));
+		log.info("Player "+this.getOwner().getName()+" start duel with "+player.getName());
 	}
 	
 	public void onDuel () {

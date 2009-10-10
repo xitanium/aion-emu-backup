@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.RequestResponseHandler;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_DUEL_START;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_QUESTION_WINDOW;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -76,6 +77,7 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 			@Override
 			public void acceptRequest(Player requester, Player responder)
 			{
+				responder.getClientConnection().sendPacket(new SM_DUEL_START(requester.getObjectId()));
 				requester.getController().startDuelWith(responder);
 			}
 
@@ -108,7 +110,7 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 		}
 		else {
 			targetPlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL, activePlayer.getName()));
-			targetPlayer.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(activePlayer.getName()));
+			targetPlayer.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_ASKED_BY(activePlayer.getName()));
 		}
 		requested = activePlayer.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL,activePlayerResponseHandler);
 		if (!requested){
@@ -117,7 +119,7 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 		}
 		else {
 			activePlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL, targetPlayer.getName()));
-			activePlayer.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(targetPlayer.getName()));
+			activePlayer.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_ASKED_TO(targetPlayer.getName()));
 		}
 	}
 }
