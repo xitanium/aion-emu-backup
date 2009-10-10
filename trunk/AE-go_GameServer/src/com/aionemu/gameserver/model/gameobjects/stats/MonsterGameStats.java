@@ -16,6 +16,10 @@
  */
 package com.aionemu.gameserver.model.gameobjects.stats;
 
+import com.aionemu.gameserver.model.gameobjects.Creature;
+import com.aionemu.gameserver.model.gameobjects.Npc;
+import com.aionemu.gameserver.model.templates.stats.NpcStatsTemplate;
+
 
 /**
  * @author ATracer
@@ -23,5 +27,11 @@ package com.aionemu.gameserver.model.gameobjects.stats;
  */
 public class MonsterGameStats extends NpcGameStats
 {
-
+	public MonsterGameStats (Npc npc, NpcStatsTemplate nst) {
+		super(npc,nst);
+	}
+	
+	private MonsterGameStats (Creature owner, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int offHandAttack, int offHandCritRate) {
+		super(null,power,health,agility,accuracy,knowledge,will,mainHandAttack,mainHandCritRate,offHandAttack,offHandCritRate);
+	}
 }

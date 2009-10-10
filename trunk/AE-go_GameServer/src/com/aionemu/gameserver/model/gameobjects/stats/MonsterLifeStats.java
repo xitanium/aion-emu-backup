@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.model.gameobjects.stats;
 
+import com.aionemu.gameserver.model.gameobjects.Npc;
+
 
 
 /**
@@ -24,10 +26,9 @@ package com.aionemu.gameserver.model.gameobjects.stats;
  */
 public class MonsterLifeStats extends NpcLifeStats
 {
-
-	public MonsterLifeStats(int currentHp, int currentMp, int maxHp, int maxMp)
+	public MonsterLifeStats(Npc owner, int currentHp, int currentMp, int maxHp, int maxMp)
 	{
-		super(currentHp, currentMp, maxHp, maxMp);
+		super(owner, currentHp, currentMp, maxHp, maxMp);
 	}
 
 }

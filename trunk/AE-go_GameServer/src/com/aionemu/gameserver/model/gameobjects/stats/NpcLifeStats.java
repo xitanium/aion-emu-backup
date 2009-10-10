@@ -17,6 +17,7 @@
 package com.aionemu.gameserver.model.gameobjects.stats;
 
 import com.aionemu.gameserver.model.gameobjects.Npc;
+import com.aionemu.gameserver.model.templates.stats.NpcStatsTemplate;
 
 /**
  * @author ATracer
@@ -24,11 +25,11 @@ import com.aionemu.gameserver.model.gameobjects.Npc;
  */
 public class NpcLifeStats extends CreatureLifeStats<Npc>
 {
-
-	public NpcLifeStats(int currentHp, int currentMp, int maxHp, int maxMp)
-	{
-		super(null, currentHp, currentMp, maxHp, maxMp);
-		// TODO Auto-generated constructor stub
+	public NpcLifeStats(Npc owner, NpcStatsTemplate nst) {
+		super(owner, nst.getMaxHp(), nst.getMaxMp(), nst.getMaxHp(), nst.getMaxMp());
 	}
 	
+	protected NpcLifeStats(Npc owner, int currentHp, int currentMp, int maxHp, int maxMp) {
+		super(owner,currentHp,currentMp,maxHp,maxMp);
+	}
 }
