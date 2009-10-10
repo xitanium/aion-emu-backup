@@ -34,6 +34,7 @@ import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_STATE;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATS_INFO;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.WorldPosition;
@@ -79,6 +80,12 @@ public class Player extends Creature
 
 	}
 
+	public void resetStats () {
+		this.setGameStats(this.getGameStats().getBaseGameStats());
+		this.setLifeStats(this.getLifeStats().getBaseLifeStats());
+		PacketSendUtility.sendPacket(this, new SM_STATS_INFO(this));
+	}
+	
 	public PlayerCommonData getCommonData()
 	{
 		return playerCommonData;
