@@ -27,23 +27,24 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
- * This task is run, when server is shutting down.
- * We should do here all data saving etc...
+ * This task is run, when server is shutting down. We should do here all data saving etc...
  * 
  * @author Luno
  * @modifier xitanium
- *
+ * 
  */
 public class ShutdownHook implements Runnable
 {
-	private static final Logger log = Logger.getLogger(ShutdownHook.class);
-	private World world;
-	private PlayerService service;
-	
-	public ShutdownHook(World w, PlayerService service) {
+	private static final Logger	log	= Logger.getLogger(ShutdownHook.class);
+	private World				world;
+	private PlayerService		service;
+
+	public ShutdownHook(World w, PlayerService service)
+	{
 		this.world = w;
 		this.service = service;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -51,24 +52,30 @@ public class ShutdownHook implements Runnable
 	public void run()
 	{
 		log.info("Starting AE GS shutdown sequence");
-		for(int i=0; i<15; i++) 
+		
+		for(int i = 0; i < 15; i++)
 		{
 			Iterator<Player> onlinePlayers = world.getPlayersIterator();
-			while(onlinePlayers.hasNext()) 
+			if (!onlinePlayers.hasNext()) {
+				break;
+			}
+			
+			while(onlinePlayers.hasNext())
 			{
 				Player p = onlinePlayers.next();
-				PacketSendUtility.sendMessage(p, "Server shutdown in " + (15-i) + " seconds.");
+				PacketSendUtility.sendMessage(p, "Server shutdown in " + (15 - i) + " seconds.");
 				service.storePlayer(p);
 			}
 			
-			try 
+			try
 			{
 				Thread.sleep(1000);
 			}
-			catch(InterruptedException e) 
+			catch(InterruptedException e)
 			{
 				log.error("Can't sleep thread while running ShutdownHook", e);
 			}
+			
 		}
 		GameTimeManager.saveTime();
 	}

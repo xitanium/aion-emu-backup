@@ -84,7 +84,7 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 			public void denyRequest(Player requester, Player responder)
 			{
 				requester.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_REJECTED_BY(responder.getName()));
-				PacketSendUtility.sendMessage(requester, "Player " + responder.getName() + " declined your Duel request.");
+				PacketSendUtility.sendMessage(requester, "Player " + responder.getName() + " declined duel of "+requester.getName());
 			}
 		};
 		
@@ -98,7 +98,7 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 			public void denyRequest(Player requester, Player responder)
 			{
 				requester.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_REJECTED_BY(responder.getName()));
-				PacketSendUtility.sendMessage(requester, "Player " + responder.getName() + " declined your Duel request.");
+				PacketSendUtility.sendMessage(requester, "Player " + responder.getName() + " declined duel of "+requester.getName());
 			}
 		};
 
