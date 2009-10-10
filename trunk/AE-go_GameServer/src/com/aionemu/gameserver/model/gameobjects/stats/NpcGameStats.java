@@ -27,7 +27,7 @@ import com.aionemu.gameserver.model.templates.stats.NpcStatsTemplate;
 public class NpcGameStats extends CreatureGameStats<Npc>
 {	
 	public NpcGameStats(Npc owner, NpcStatsTemplate nst) {
-		super(owner,0,0,0,0,0,0,0,0,0,0);
+		super(owner,0,0,0,0,0,0,0,0,0,0,nst.getAttackSpeed(),0);
 		this.block = nst.getBlock();
 		this.magicAccuracy = nst.getMagicAccuracy();
 		this.mainHandAccuracy = nst.getMainHandAccuracy();
@@ -37,7 +37,7 @@ public class NpcGameStats extends CreatureGameStats<Npc>
 		this.evasion = nst.getEvasion();
 	}
 	
-	protected NpcGameStats (Creature owner, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int offHandAttack, int offHandCritRate) {
-		super(null,power,health,agility,accuracy,knowledge,will,mainHandAttack,mainHandCritRate,offHandAttack,offHandCritRate);
+	protected NpcGameStats (Creature owner, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int offHandAttack, int offHandCritRate, float attackSpeed, float attackRange) {
+		super(null,power,health,agility,accuracy,knowledge,will,mainHandAttack,mainHandCritRate,offHandAttack,offHandCritRate,attackSpeed,attackRange);
 	}
 }

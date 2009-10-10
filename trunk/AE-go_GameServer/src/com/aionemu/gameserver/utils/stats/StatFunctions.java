@@ -78,6 +78,13 @@ public class StatFunctions
 		return pls;
 	}
 	
+	public static PlayerLifeStats getBaseLifeStats (PlayerClass playerClass, int level, PlayerStatsData playerStatsData) {
+		final PlayerLifeStats pls = getBaseLifeStats(playerClass, playerStatsData);
+		pls.doEvolution(1, level);
+		log.debug("Loading base life stats for player class "+playerClass+" at level "+level+": "+pls);
+		return pls;
+	}
+	
 	public static PlayerGameStats getBaseGameStats (PlayerClass playerClass, PlayerStatsData playerStatsData) {
 		final PlayerGameStats pgs = new PlayerGameStats();
 		PlayerStatsTemplate pst = playerStatsData.getTemplate(playerClass,1);
@@ -97,10 +104,20 @@ public class StatFunctions
 		pgs.setWind(0);
 		pgs.setEarth(0);
 		pgs.setFire(0);
+		// TODO find good values for attack range
+		pgs.setAttackRange(15.0f);
+		pgs.setAttackSpeed(pst.getAttackSpeed());
 		// TODO find good values for fly time
 		pgs.setFlyTime(60);
 		pgs.setInitialized(true);
 		log.debug("loading base game stats for player class "+playerClass+":"+pgs);
+		return pgs;
+	}
+	
+	public static PlayerGameStats getBaseGameStats (PlayerClass playerClass, int level, PlayerStatsData playerStatsData) {
+		final PlayerGameStats pgs = getBaseGameStats(playerClass, playerStatsData);
+		pgs.doEvolution(1, level);
+		log.debug("Loading base game stats for player class "+playerClass+" at level "+level+": "+pgs);
 		return pgs;
 	}
 	

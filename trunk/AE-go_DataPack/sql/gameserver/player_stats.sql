@@ -23,5 +23,7 @@ CREATE TABLE `player_stats` (
 	`earth` int(11) NOT NULL default '0',
 	`fire` int(11) NOT NULL default '0',
 	`fly_time` int(11) NOT NULL default '0',
+	`attack_speed` float(11) NOT NULL default '1.5',
+	`attack_range` float(11) NOT NULL default '15.0',
   PRIMARY KEY  (`player_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

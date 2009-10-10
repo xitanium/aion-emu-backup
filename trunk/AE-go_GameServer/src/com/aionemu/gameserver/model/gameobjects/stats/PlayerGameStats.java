@@ -31,15 +31,14 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 	private int itemCount; //todo remove
 
 	public PlayerGameStats () {
-		super(null,0,0,0,0,0,0,0,0,0,0);
+		super(null,0,0,0,0,0,0,0,0,0,0,0,0);
 		this.setInitialized(false);
 	}
 	
-	public PlayerGameStats (Player player, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int otherHandAttack, int otherHandCritRate)
+	public PlayerGameStats (Player player, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int otherHandAttack, int otherHandCritRate, float attackSpeed, float attackRange)
 	{
-		super(player,power,health,agility,accuracy,knowledge,will,mainHandAttack,mainHandCritRate,otherHandAttack,otherHandCritRate);
+		super(player,power,health,agility,accuracy,knowledge,will,mainHandAttack,mainHandCritRate,otherHandAttack,otherHandCritRate,attackSpeed,attackRange);
 	}
-
 
 	/**
 	 * @return the itemId
@@ -101,6 +100,8 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 		setMainHandCritRate(getMainHandCritRate() + (int) Math.round((toLevel - fromLevel) * 0.108));
 		setOffHandAttack(getOffHandAttack() + (int) Math.round((toLevel - fromLevel) * 0.108));
 		setOffHandCritRate(getOffHandCritRate() + (int) Math.round((toLevel - fromLevel) * 0.108));
+		setAttackSpeed(getAttackSpeed() + (int) Math.round((toLevel - fromLevel) * 0.108));
+		setAttackRange(getAttackRange() + (int) Math.round((toLevel - fromLevel) * 0.108));
 		DAOManager.getDAO(PlayerStatsDAO.class).storeGameStats(this.getOwner().getObjectId(), this);
 	}
 }
