@@ -27,17 +27,15 @@ public class SM_PLAY_INTRO extends AionServerPacket
 	 * {@inheritDoc}
 	 */
 	private int videoid;
-	private int factionid; // i think it's factionid, need to test and change if necessary
-	public SM_PLAY_INTRO(int factionID, int videoID) {
+	public SM_PLAY_INTRO(int videoID) {
 		videoid = videoID;
-		factionid = factionID;
 	}
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
 		writeD(buf, 1);
 		writeH(buf, 0);
-		writeC(buf, factionid);
+		writeC(buf, 1);
 		writeC(buf, videoid);
 		writeD(buf, 0);
 	}

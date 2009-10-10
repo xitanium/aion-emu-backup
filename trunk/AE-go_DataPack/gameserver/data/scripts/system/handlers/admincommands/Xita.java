@@ -50,7 +50,7 @@ public class Xita extends AdminCommand
 		}
 		else if(params[0].equals("video")) 
 		{ 
-			sendVideo(admin, Integer.parseInt(params[1]), Integer.parseInt(params[2]));
+			sendVideo(admin, Integer.parseInt(params[1]));
 		}
 		else if(params[0].equals("sys_1370000")) 
 		{
@@ -66,8 +66,8 @@ public class Xita extends AdminCommand
 	public void playerTitlesSendPacket(Player xita) {
 		PacketSendUtility.sendPacket(xita, new SM_PLAYER_TITLES(1));
 	}
-	public void sendVideo(Player xita, int factionid, int videoid) {
-		PacketSendUtility.sendPacket(xita, new SM_PLAY_INTRO(factionid, videoid));
+	public void sendVideo(Player xita, int videoid) {
+		PacketSendUtility.sendPacket(xita, new SM_PLAY_INTRO(videoid));
 	}
 	public void sendSys1370000(Player xita, int _1, int _2) {
 		PacketSendUtility.sendPacket(xita, SM_SYSTEM_MESSAGE.UNKNOWN_1370000(_1, _2));
