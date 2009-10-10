@@ -179,6 +179,10 @@ public class PlayerService
 		if ((!pgs.isInitialized())||(!pls.isInitialized())) {
 			pgs = StatFunctions.getBaseGameStats(pcd.getPlayerClass(),playerStatsData);
 			pls = StatFunctions.getBaseLifeStats(pcd.getPlayerClass(),playerStatsData);
+			if (player.getLevel()>1) {
+				pgs.doEvolution(1, player.getLevel());
+				pls.doEvolution(1, player.getLevel());
+			}
 			DAOManager.getDAO(PlayerStatsDAO.class).storeNewStats(playerObjId, pls, pgs);
 		}
 		player.setGameStats(pgs);
