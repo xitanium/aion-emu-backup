@@ -131,7 +131,8 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_DUEL_STARTED.class, 0xD0, idSet);
 		
 		addPacketOpcode(SM_PLAYER_TITLES.class, 0xAE, idSet); // 1.5.x player titles
-		
+
+		addPacketOpcode(SM_PLAY_INTROVIDEO.class, 0x76, idSet); // think it's startup video
 
 
 
