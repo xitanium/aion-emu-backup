@@ -175,16 +175,15 @@ public class PlayerService
 		player.setBlockList(DAOManager.getDAO(BlockListDAO.class).load(player,world, playerExperienceTable));
 		PlayerStatsDAO psd = DAOManager.getDAO(PlayerStatsDAO.class);
 		PlayerGameStats pgs = psd.loadGameStats(playerObjId);
-		if (!pgs.isInitialized()) {
+		PlayerLifeStats pls = psd.loadLifeStats(playerObjId);
+		if ((!pgs.isInitialized())||(!pls.isInitialized())) {
 			pgs = StatFunctions.getBaseGameStats(pcd.getPlayerClass(),playerStatsData);
+			pls = StatFunctions.getBaseLifeStats(pcd.getPlayerClass(),playerStatsData);
+			DAOManager.getDAO(PlayerStatsDAO.class).storeNewStats(playerObjId, pls, pgs);
 		}
 		player.setGameStats(pgs);
-		PlayerLifeStats pls = psd.loadLifeStats(playerObjId);
-		if (!pls.isInitialized()) {
-			pls = StatFunctions.getBaseLifeStats(pcd.getPlayerClass(),playerStatsData);
-		}
 		player.setLifeStats(pls);
-		
+
 		if(CacheConfig.CACHE_PLAYERS)
 			playerCache.put(playerObjId, player);	
 
