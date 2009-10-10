@@ -29,6 +29,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
@@ -42,6 +44,8 @@ import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PlayerStatsData
 {
+	private static Logger log = Logger.getLogger(PlayerStatsData.class);
+	
 	@XmlElement(name = "player_stats", required = true)
 	private List<PlayerStatsType> templatesList = new ArrayList<PlayerStatsType>();
 
@@ -52,7 +56,8 @@ public class PlayerStatsData
 		for (PlayerStatsType pt : templatesList)
 		{
 			int code = makeHash(pt.getRequiredPlayerClass(), pt.getRequiredLevel());
-
+			log.debug("Putting template for class "+pt.getRequiredPlayerClass()+" at level "+pt.getRequiredLevel()+": hash["+
+				makeHash(pt.getRequiredPlayerClass(),pt.getRequiredLevel())+"],template["+pt.getTemplate()+"]");
 			templates.put(code, pt.getTemplate());
 		}
 
@@ -67,6 +72,7 @@ public class PlayerStatsData
 
 	public PlayerStatsTemplate getTemplate(PlayerClass playerClass, int level)
 	{
+		log.debug("Get template for class "+playerClass+" at level "+level+": hash["+makeHash(playerClass,level)+"],template["+templates.get(makeHash(playerClass, level))+"]");
 		return templates.get(makeHash(playerClass, level));
 	}
 

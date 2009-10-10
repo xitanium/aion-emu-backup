@@ -53,7 +53,7 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 		setMaxDp(4000);
 		setCurrentDp(0);
 		setInitialized(true);
-		log.debug("loading base life stats for player "+owner.getName()+"(id "+owner.getObjectId()+"): "+this);
+		log.debug("Loading base life stats for player "+owner.getName()+"(id "+owner.getObjectId()+"): "+this);
 	}
 	
 	public PlayerLifeStats(Player owner, PlayerStatsData playerStatsData, int maxHp, int maxMp, int maxDp)
