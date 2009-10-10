@@ -55,6 +55,8 @@ public class Xita extends AdminCommand
 		
 		case 1: playerTitlesSendPacket(admin);
 		break;
+		case 2: sendVideo(admin);
+		break;
 		default: return;
 		
 		}
