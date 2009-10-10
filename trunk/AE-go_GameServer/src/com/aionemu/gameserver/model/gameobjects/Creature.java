@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.model.gameobjects;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.controllers.CreatureController;
 import com.aionemu.gameserver.model.gameobjects.stats.CreatureGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.CreatureLifeStats;
@@ -29,6 +31,8 @@ import com.aionemu.gameserver.world.WorldPosition;
  */
 public abstract class Creature extends VisibleObject
 {
+	protected static final Logger log = Logger.getLogger(Creature.class);
+	
 	private Creature	target;
 	
 	private CreatureLifeStats<? extends Creature> lifeStats;

@@ -62,7 +62,6 @@ public class CreatureLifeStats<T extends Creature>
 		this.maxMp = maxMp;
 		this.owner = owner;
 		this.initialized = true;
-		log.debug("Creating life stats for "+owner.getName()+" (id "+owner.getObjectId()+"): "+toString());
 	}
 	
 	@Override

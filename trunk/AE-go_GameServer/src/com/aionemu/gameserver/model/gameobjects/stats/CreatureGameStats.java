@@ -75,7 +75,6 @@ public class CreatureGameStats<T extends Creature>
 		setMainHandCritRate(mainHandCritRate);
 		setOffHandAttack(offHandAttack);
 		setOffHandCritRate(offHandCritRate);
-		log.debug("Creating gamestats for "+owner.getName()+" (id "+owner.getObjectId()+"): "+this.toString());
 	}
 
 	@Override

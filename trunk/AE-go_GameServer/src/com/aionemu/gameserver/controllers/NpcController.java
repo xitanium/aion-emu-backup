@@ -122,6 +122,7 @@ public class NpcController extends CreatureController<Npc>
 		this.getOwner().getNpcAi().setAiState(AIState.IDLE);
 		NpcStatsTemplate statsTemplate = getOwner().getTemplate().getStatsTemplate();
 		this.getOwner().setLifeStats(new NpcLifeStats(getOwner(),statsTemplate));
+		log.debug("Npc life stats of "+this.getOwner().getObjectId()+": "+this.getOwner().getLifeStats().toString());
 	}
 
 	/* (non-Javadoc)
