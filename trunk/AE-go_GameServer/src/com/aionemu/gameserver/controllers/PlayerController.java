@@ -196,9 +196,7 @@ public class PlayerController extends CreatureController<Player>
 		world.despawn(p);
 		world.setPosition(p, worldId, x, y, z, heading);
 		p.setProtectionActive(true);
-		if (worldId!=oldWorldId) {
-			PacketSendUtility.sendPacket(p, new SM_UNKF5(p));
-		}
+		PacketSendUtility.sendPacket(p, new SM_UNKF5(p));
 	}
 	
 	/**
