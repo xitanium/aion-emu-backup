@@ -24,21 +24,13 @@ import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_TITLES;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAY_INTRO;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_QUIT_RESPONSE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
-import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNK76;
-import com.aionemu.gameserver.services.PlayerService;
-import com.aionemu.gameserver.world.World;
-import com.google.inject.Inject;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.world.WorldMap;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 
 public class Xita extends AdminCommand
 {
-	@Inject
-	private World	world;
-/**
+	/**
 	 * @param commandName
 	 */
 	public Xita()
@@ -50,7 +42,7 @@ public class Xita extends AdminCommand
 	 * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.gameobjects.Player, java.lang.String[])
 	 */
 	@Override
-	public void executeCommand(Player admin, String... params)
+	public void executeCommand(Player admin, String[] params)
 	{
 		if(params[0].equals("titles")) 
 		{		

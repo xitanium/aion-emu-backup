@@ -18,13 +18,13 @@ package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
-import com.aionemu.gameserver.dataholders.PlayerStatsData;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
+import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.gametime.GameTimeManager;
 import com.aionemu.gameserver.utils.stats.StatFunctions;
 import com.google.inject.Inject;
@@ -37,12 +37,13 @@ import com.google.inject.Inject;
  */
 public class SM_STATS_INFO extends AionServerPacket
 {
-	@Inject
-	private PlayerStatsData playerStatsData;
 	/**
 	 * Player that stats info will be send
 	 */
 	private Player	player;
+	
+	@Inject
+	private PlayerService playerService;
 	
 	/**
 	 * Constructs new <tt>SM_UI</tt> packet
@@ -61,9 +62,9 @@ public class SM_STATS_INFO extends AionServerPacket
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
 		PlayerGameStats pgs = player.getGameStats();
-		PlayerGameStats bgs = StatFunctions.getBaseGameStats(player.getPlayerClass(), player.getLevel(), playerStatsData);
+		PlayerGameStats bgs = StatFunctions.getBaseGameStats(player.getPlayerClass(), playerService.getPlayerStatsData());
 		PlayerLifeStats pls = player.getLifeStats();
-		PlayerLifeStats bls = StatFunctions.getBaseLifeStats(player.getPlayerClass(), player.getLevel(), playerStatsData);
+		PlayerLifeStats bls = StatFunctions.getBaseLifeStats(player.getPlayerClass(), player.getLevel(), playerService.getPlayerStatsData());
 		PlayerCommonData pcd = player.getCommonData();
 
 		writeD(buf, player.getObjectId());

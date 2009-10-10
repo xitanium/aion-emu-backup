@@ -88,6 +88,10 @@ public class PlayerService
 		this.playerStatsData = psd;
 	}
 
+	public PlayerStatsData getPlayerStatsData () {
+		return this.playerStatsData;
+	}
+	
 	/**
 	 * Checks if name is already taken or not
 	 * 

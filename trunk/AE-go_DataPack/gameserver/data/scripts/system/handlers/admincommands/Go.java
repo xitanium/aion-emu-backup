@@ -28,7 +28,6 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.AionObject;
-import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 
 public class Go extends AdminCommand
 {
@@ -56,7 +55,7 @@ public class Go extends AdminCommand
 	 * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.gameobjects.Player, java.lang.String[])
 	 */
 	@Override
-	public void executeCommand(Player admin, String... params)
+	public void executeCommand(Player admin, String[] params)
 	{
 		world = admin.getActiveRegion().getWorld();
 		if(params.length == 0) {
@@ -77,8 +76,7 @@ public class Go extends AdminCommand
 						AionObject targetCreatureObj = world.findAionObject(targetCreatureId);
 						if(targetCreatureObj instanceof Creature)  {
 							Creature target = (Creature) targetCreatureObj;
-							world.setPosition(admin, target.getActiveRegion().getMapId(), target.getX(), target.getY(), target.getZ(), target.getHeading());
-							PacketSendUtility.sendPacket(admin, new SM_UNKF5(admin));
+							admin.getController().teleportTo(target.getActiveRegion().getMapId(), target.getX(), target.getY(), target.getZ(), target.getHeading());
 							PacketSendUtility.sendMessage(admin, "Successfully teleported to creature #" + target.getObjectId());
 						}
 						else {
