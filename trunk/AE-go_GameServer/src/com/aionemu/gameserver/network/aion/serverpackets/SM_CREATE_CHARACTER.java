@@ -117,7 +117,7 @@ public class SM_CREATE_CHARACTER extends PlayerInfo
 					inventory.putItemToDb(activePlayer, 160000001, 12); // mercenary Fruit Juice
 					inventory.putItemToDb(activePlayer, 169300001, 20); // bandage
 			}
-
+			
 			writePlayerInfo(buf, player); // if everything is fine, all the character's data should be sent
 		}
 		else

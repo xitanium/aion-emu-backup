@@ -59,7 +59,7 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_UNK8D.class, -1, idSet);
 		addPacketOpcode(SM_UNK66.class, -1, idSet);
 		addPacketOpcode(SM_UNK64.class, -1, idSet);
-		addPacketOpcode(SM_UNK60.class, 0x60, idSet);
+		addPacketOpcode(SM_PLAY_INTRO.class, 0x60, idSet);
 		addPacketOpcode(SM_UNK5E.class, -1, idSet);
 		addPacketOpcode(SM_UNK72.class, 0x72, idSet);//1.5.x
 		addPacketOpcode(SM_UNK32.class, -1, idSet);
