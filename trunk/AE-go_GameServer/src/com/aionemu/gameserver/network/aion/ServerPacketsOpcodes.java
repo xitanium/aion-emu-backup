@@ -128,7 +128,8 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_FLY_TELEPORT.class, 0xC2, idSet);//1.5.x
 		addPacketOpcode(SM_DIE.class, 0xb8, idSet);	//1.5.x
 		
-		addPacketOpcode(SM_DUEL_START.class, 0xD0, idSet);
+		addPacketOpcode(SM_DUEL_CONFIRMED.class, 0xD0, idSet);
+		addPacketOpcode(SM_DUEL_ACCEPTED.class, 0x68, idSet);
 		
 		
 

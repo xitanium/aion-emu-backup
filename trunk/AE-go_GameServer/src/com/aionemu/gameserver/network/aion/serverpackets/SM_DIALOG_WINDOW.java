@@ -18,8 +18,13 @@ package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
+import com.aionemu.gameserver.model.gameobjects.AionObject;
+import com.aionemu.gameserver.model.gameobjects.Citizen;
+import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
+import com.aionemu.gameserver.world.World;
+import com.google.inject.Inject;
 
 /**
  * 
@@ -28,6 +33,9 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
  */
 public class SM_DIALOG_WINDOW extends AionServerPacket
 {
+	@Inject
+	private World world;
+	
 	private int	targetObjectId;
 	
 	public SM_DIALOG_WINDOW(int targetObjectId)
@@ -41,15 +49,21 @@ public class SM_DIALOG_WINDOW extends AionServerPacket
 	
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
-	{	
+	{
+		AionObject target = world.findAionObject(targetObjectId);
 		writeD(buf, targetObjectId);
+		if (target instanceof Citizen) {
+			writeD(buf,0x03);
+		}
+		
 		// TODO get quests of NPC
 		if (targetObjectId==0x40018b14) {
 			writeD(buf, 0x10);
+			
 		} else {
 			writeD(buf, 10); // window mode. 1- opens stigma window and show somekind of aura. 2- create legion window. 3 and higher - npc/quest dialog window + it's id.
 		}
-		writeD(buf, 0); // unk
+		writeD(buf, 0); // Quest id
 
 	}	
 }

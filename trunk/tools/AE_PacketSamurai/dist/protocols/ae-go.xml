@@ -178,9 +178,9 @@
 			<part name="gameTime" type="d" />
 		</packet>
 		<packet id="0x21" name="SM_DIALOG">
-			<part name="targetObjectId" type="d" />
-			<part name="unk" type="d" />
-			<part name="unk" type="c" />
+			<part name="targetId" type="d" />
+			<part name="sourceId" type="d" />
+			<part name="0x50" type="c" />
 		</packet>
 		<packet id="0x23" name="SM_STATUPDATE_EXP">
 			<part name="currentExp" type="Q" />
@@ -270,7 +270,7 @@
 		<packet id="0x35" name="SM_DIALOG_WINDOW">
 			<part name="targetObjectId" type="d" />
 			<part name="windowMode" type="d" />
-			<part name="unk" type="d" />
+			<part name="questId" type="d" />
 		</packet>
 		<packet id="0x3D" name="SM_PLAYER_STATE">
 			<part name="playerObjId" type="d" />
@@ -725,6 +725,13 @@
 		<packet id="0xFD" name="SM_STATUPDATE_MP [?]">
 			<part name="currentMp" type="d" />
 			<part name="maxMp" type="d" />
+		</packet>
+		<packet id="0x68" name="SM_DUEL_ACCEPTED">
+			<part name="responderId" type="d" />
+			<part name="requesterId" type="d" />
+		</packet>
+		<packet id="0xD0" name="SM_DUEL_CONFIRMED">
+			<part name="requesterId" type="d" />
 		</packet>
 	</packetfamilly>
 	<packetfamilly switchtype="c" way="ClientPackets">
