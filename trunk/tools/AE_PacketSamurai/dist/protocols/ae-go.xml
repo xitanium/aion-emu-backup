@@ -36,8 +36,8 @@
 			<part name="level" type="c" />
 			<part name="unk" type="c" />
 			<part name="targetId" type="d" />
-			<part name="0x00" type="d" />
 			<part name="duration" type="d" />
+			<part name="0x00" type="d" />
 		</packet>
 		<packet id="0x19" name="SM_PLAYER_INFO">
 			<part name="x" type="f" />
@@ -152,7 +152,7 @@
 					<part name="emotionId" type="h" />
 					<part name="0x01" type="c" />
 				</case>
-				<case comment="Default">
+				<case id="default" comment="Default">
 					<part name="0x01" type="c" />
 					<part name="0x00" type="c" />
 					<part name="0x00" type="h" />
@@ -218,7 +218,6 @@
 			<part name="hp" type="c" />
 			<part name="unk" type="d" />
 			<part name="level" type="c" />
-			<part name="gearItemMask" type="h" />
 			<part id="0" name="gears" type="hbs" />
 			<for id="0">
 				<part name="itemId" type="d" />
