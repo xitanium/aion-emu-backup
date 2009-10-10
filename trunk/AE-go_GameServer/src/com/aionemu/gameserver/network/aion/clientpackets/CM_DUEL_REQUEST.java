@@ -22,6 +22,7 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.RequestResponseHandler;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_QUESTION_WINDOW;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
@@ -71,29 +72,50 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 		
 		log.debug("Player " + activePlayer.getName() + " (objid=" + activePlayer.getObjectId() + ") requested duel with " + targetPlayer.getName() + " (objid=" + targetPlayer.getObjectId()+")");
 
-		RequestResponseHandler responseHandler = new RequestResponseHandler(activePlayer) {
+		RequestResponseHandler activePlayerResponseHandler = new RequestResponseHandler(activePlayer) {
 			@Override
 			public void acceptRequest(Player requester, Player responder)
 			{
 				requester.getController().startDuelWith(responder);
-				responder.getController().startDuelWith(requester);
 			}
 
 			public void denyRequest(Player requester, Player responder)
 			{
-				// TODO find code for STR_DUEL_HE_REJECTED_DUEL
-				// activePlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_HE_REJECTED_DUEL, targetPlayer.getName()));
+				requester.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_REJECTED_BY(responder.getName()));
 				PacketSendUtility.sendMessage(requester, "Player " + responder.getName() + " declined your Duel request.");
 			}
 		};
 		
-		boolean requested = targetPlayer.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL,responseHandler);
+		RequestResponseHandler targetPlayerResponseHandler = new RequestResponseHandler(targetPlayer) {
+			@Override
+			public void acceptRequest(Player requester, Player responder)
+			{
+				requester.getController().startDuelWith(responder);
+			}
+
+			public void denyRequest(Player requester, Player responder)
+			{
+				requester.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_REJECTED_BY(responder.getName()));
+				PacketSendUtility.sendMessage(requester, "Player " + responder.getName() + " declined your Duel request.");
+			}
+		};
+
+		
+		boolean requested = targetPlayer.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL,targetPlayerResponseHandler);
 		if (!requested){
 			// Can't trade with player.
 			// TODO: Need to check why and send a error.
 		}
 		else {
-			targetPlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL, activePlayer.getObjectId(), activePlayer.getName()));
+			targetPlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL, activePlayer.getName()));
+		}
+		requested = activePlayer.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL,activePlayerResponseHandler);
+		if (!requested){
+			// Can't trade with player.
+			// TODO: Need to check why and send a error.
+		}
+		else {
+			activePlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL, targetPlayer.getName()));
 		}
 	}
 }

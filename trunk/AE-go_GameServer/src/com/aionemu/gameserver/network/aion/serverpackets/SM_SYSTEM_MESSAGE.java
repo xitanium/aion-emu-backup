@@ -121,6 +121,10 @@ public class SM_SYSTEM_MESSAGE extends AionServerPacket
 		return new SM_SYSTEM_MESSAGE(1301065,player);
 	}
 	
+	public static SM_SYSTEM_MESSAGE DUEL_REJECTED_BY (String player) {
+		return new SM_SYSTEM_MESSAGE(1300094,player);
+	}
+	
 	/**
 	 * %0 has blocked you.
 	 */

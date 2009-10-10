@@ -37,11 +37,9 @@ public class SM_QUESTION_WINDOW extends AionServerPacket
 	public static final int STR_EXCHANGE_DO_YOU_ACCEPT_EXCHANGE = 0x15f91;
 	public static final int STR_EXCHANGE_HE_REJECTED_EXCHANGE = 0x13D782; // TODO: make it a simple box, not a question.
 	public static final int STR_DUEL_DO_YOU_ACCEPT_DUEL = 0xc36e;
-	public static final int STR_DUEL_HE_REJECTED_DUEL = 0x0;
 	
 	private int code;
 	private String[] params;
-	private int senderId;
 	
 	/**
 	 * Creates a new <tt>SM_QUESTION_WINDOW<tt> packet
@@ -55,7 +53,6 @@ public class SM_QUESTION_WINDOW extends AionServerPacket
 	
 	public SM_QUESTION_WINDOW(int code, int senderId, String... params) {
 		this.code = code;
-		this.senderId = senderId;
 		this.params = params;
 	}
 	/**
@@ -66,10 +63,6 @@ public class SM_QUESTION_WINDOW extends AionServerPacket
 	{
 		
 		writeD(buf, code);
-		if (code==STR_DUEL_DO_YOU_ACCEPT_DUEL) {
-			writeD(buf,senderId);
-			writeH(buf,0x0072);
-		}
 		for (String string : params) { 
 			writeS(buf, string);
 		}
