@@ -114,6 +114,9 @@ public class StatFunctions
 	{
 		CreatureGameStats<?> sgs = speller.getGameStats();
 		CreatureGameStats<?> tgs = target.getGameStats();
+		log.debug("Calculating magic damages between "+speller.getObjectId()+" and "+target.getObjectId()+" ...");
+		log.debug("---> Attacker game stats : "+sgs);
+		log.debug("---> Target game stats   : "+tgs);
 		int baseDamages = st.getDamages();
 		int elementaryDefense = tgs.getMagicalDefenseFor(st.getElement());
 		int magicalResistance = tgs.getMagicResistance();
@@ -148,6 +151,9 @@ public class StatFunctions
 		CreatureGameStats<?> ags = attacker.getGameStats();
 		CreatureGameStats<?> tgs = target.getGameStats();
 		
+		log.debug("Calculating base damages...");
+		log.debug("---> Attacker game stats : "+ags);
+		log.debug("---> Target game stats   : "+tgs);
 		int baseDamages = ags.getMainHandAttack();
 		int critRate = ags.getMainHandCritRate();
 		int accuracy = ags.getMainHandAccuracy();

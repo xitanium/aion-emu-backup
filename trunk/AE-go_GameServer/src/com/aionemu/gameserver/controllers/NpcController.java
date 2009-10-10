@@ -134,7 +134,7 @@ public class NpcController extends CreatureController<Npc>
 		super.onAttack(creature,damages);
 		Npc npc = getOwner();
 		NpcLifeStats lifeStats = npc.getLifeStats();
-
+		
 		if(lifeStats.isAlreadyDead())
 		{
 			return false;

@@ -68,7 +68,6 @@ public class Npc extends Creature
 
 		NpcStatsTemplate nst = template.getStatsTemplate();
 		super.setGameStats(new NpcGameStats(this,nst));
-		log.debug("Creating npc "+objId+" with gamestats "+getGameStats().toString());
 		super.setLifeStats(new NpcLifeStats(this,nst));
 	}
 

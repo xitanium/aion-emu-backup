@@ -25,15 +25,7 @@ import com.aionemu.gameserver.model.templates.stats.NpcStatsTemplate;
  *
  */
 public class NpcGameStats extends CreatureGameStats<Npc>
-{
-	private int evasion = 0;
-	private int block = 0;
-	private int parry = 0;
-	private int mainHandAttack = 0;
-	private int mainHandCritRate = 0;
-	private int mainHandAccuracy = 0;
-	private int magicAccuracy = 0;
-	
+{	
 	public NpcGameStats(Npc owner, NpcStatsTemplate nst) {
 		super(owner,0,0,0,0,0,0,0,0,0,0);
 		this.block = nst.getBlock();
@@ -47,62 +39,5 @@ public class NpcGameStats extends CreatureGameStats<Npc>
 	
 	protected NpcGameStats (Creature owner, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int offHandAttack, int offHandCritRate) {
 		super(null,power,health,agility,accuracy,knowledge,will,mainHandAttack,mainHandCritRate,offHandAttack,offHandCritRate);
-	}
-	
-	/**
-	 * @return the evasion
-	 */
-	@Override
-	public int getEvasion()
-	{
-		return evasion;
-	}
-	/**
-	 * @return the block
-	 */
-	@Override
-	public int getBlock()
-	{
-		return block;
-	}
-	/**
-	 * @return the parry
-	 */
-	@Override
-	public int getParry()
-	{
-		return parry;
-	}
-	/**
-	 * @return the mainHandAttack
-	 */
-	@Override
-	public int getMainHandAttack()
-	{
-		return mainHandAttack;
-	}
-	/**
-	 * @return the mainHandCritRate
-	 */
-	@Override
-	public int getMainHandCritRate()
-	{
-		return mainHandCritRate;
-	}
-	/**
-	 * @return the mainHandAccuracy
-	 */
-	@Override
-	public int getMainHandAccuracy()
-	{
-		return mainHandAccuracy;
-	}
-	/**
-	 * @return the magicAccuracy
-	 */
-	@Override
-	public int getMagicAccuracy()
-	{
-		return magicAccuracy;
 	}
 }
