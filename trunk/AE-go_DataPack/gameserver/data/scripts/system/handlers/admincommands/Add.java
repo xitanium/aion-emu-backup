@@ -54,7 +54,7 @@ public class Add extends AdminCommand
     {
         if(params == null || params.length == 0 || params.length > 2)
         {
-            PacketSendUtility.sendMessage(admin, "Usage: //additem <item_id> <count>");
+            PacketSendUtility.sendMessage(admin, "usage: //additem <item_id> <count>");
             PacketSendUtility.sendMessage(admin, "Add (or remove) item from your target (or yourself if no target is selected). To add more of this item, specify <count>. To remove item(s) from your target, specify a negative <count> value.");
             return;
         }
