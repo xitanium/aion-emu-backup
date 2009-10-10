@@ -108,14 +108,16 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 		}
 		else {
 			targetPlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL, activePlayer.getName()));
+			targetPlayer.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(activePlayer.getName()));
 		}
-		requested = activePlayer.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL,activePlayerResponseHandler);
+		requested = activePlayer.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL,activePlayerResponseHandler);
 		if (!requested){
 			// Can't trade with player.
 			// TODO: Need to check why and send a error.
 		}
 		else {
-			activePlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL, targetPlayer.getName()));
+			activePlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL, targetPlayer.getName()));
+			activePlayer.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(targetPlayer.getName()));
 		}
 	}
 }
