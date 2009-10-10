@@ -28,6 +28,7 @@ import com.aionemu.gameserver.dataholders.SkillData;
 import com.aionemu.gameserver.dataholders.SpawnData;
 import com.aionemu.gameserver.model.quests.qparser.QuestParser;
 import com.aionemu.gameserver.network.loginserver.LoginServer;
+import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.skillengine.SkillEngine;
 import com.aionemu.gameserver.spawnengine.SpawnEngine;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
@@ -96,7 +97,7 @@ public class GameServer
 		gs.startServers();
 		GameTimeManager.startClock();
 		
-		Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownHook(gs.injector.getInstance(World.class))));
+		Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownHook(gs.injector.getInstance(World.class), gs.injector.getInstance(PlayerService.class))));
 
 		//gs.injector.getInstance(com.aionemu.gameserver.utils.chathandlers.ChatHandlers.class);
 	}

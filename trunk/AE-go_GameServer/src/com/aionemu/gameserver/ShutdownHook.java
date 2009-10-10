@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Iterator;
 
+import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.gametime.GameTimeManager;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -37,9 +38,11 @@ public class ShutdownHook implements Runnable
 {
 	private static final Logger log = Logger.getLogger(ShutdownHook.class);
 	private World world;
+	private PlayerService service;
 	
-	public ShutdownHook(World w) {
-		world = w;
+	public ShutdownHook(World w, PlayerService service) {
+		this.world = w;
+		this.service = service;
 	}
 	/**
 	 * {@inheritDoc}
@@ -55,6 +58,7 @@ public class ShutdownHook implements Runnable
 			{
 				Player p = onlinePlayers.next();
 				PacketSendUtility.sendMessage(p, "Server shutdown in " + (15-i) + " seconds.");
+				service.storePlayer(p);
 			}
 			
 			try 

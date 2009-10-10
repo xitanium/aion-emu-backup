@@ -69,7 +69,7 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 		// Get the request recipient
 		final Player targetPlayer = world.findPlayer(objectId);
 		
-		log.debug("Player " + activePlayer.getName() + " (objid=" + activePlayer.getObjectId() + ") requested duel with " + targetPlayer.getName() + " (objid=" + targetPlayer.getObjectId());
+		log.debug("Player " + activePlayer.getName() + " (objid=" + activePlayer.getObjectId() + ") requested duel with " + targetPlayer.getName() + " (objid=" + targetPlayer.getObjectId()+")");
 
 		RequestResponseHandler responseHandler = new RequestResponseHandler(activePlayer) {
 			@Override
@@ -93,7 +93,7 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 			// TODO: Need to check why and send a error.
 		}
 		else {
-			targetPlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL, activePlayer.getName()));
+			targetPlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL, activePlayer.getObjectId(), activePlayer.getName()));
 		}
 	}
 }

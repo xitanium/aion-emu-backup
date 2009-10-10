@@ -39,8 +39,10 @@ public class SM_QUESTION_WINDOW extends AionServerPacket
 	public static final int STR_DUEL_DO_YOU_ACCEPT_DUEL = 0xc36e;
 	public static final int STR_DUEL_HE_REJECTED_DUEL = 0x0;
 	
-	int code;
-	String[] params;
+	private int code;
+	private String[] params;
+	private int senderId;
+	
 	/**
 	 * Creates a new <tt>SM_QUESTION_WINDOW<tt> packet
 	 * @param code The string code to display, found in client_strings.xml
@@ -51,6 +53,11 @@ public class SM_QUESTION_WINDOW extends AionServerPacket
 		this.params = params;
 	}
 	
+	public SM_QUESTION_WINDOW(int code, int senderId, String... params) {
+		this.code = code;
+		this.senderId = senderId;
+		this.params = params;
+	}
 	/**
 	 * {@inheritDoc}
 	 */
@@ -59,10 +66,13 @@ public class SM_QUESTION_WINDOW extends AionServerPacket
 	{
 		
 		writeD(buf, code);
-		for (String string : params) 
+		if (code==STR_DUEL_DO_YOU_ACCEPT_DUEL) {
+			writeD(buf,senderId);
+			writeH(buf,0x0072);
+		}
+		for (String string : params) { 
 			writeS(buf, string);
-
-		
+		}
 	}
 
 }
