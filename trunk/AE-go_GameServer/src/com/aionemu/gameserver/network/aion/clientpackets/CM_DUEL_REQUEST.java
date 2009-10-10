@@ -103,7 +103,7 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 		};
 
 		
-		boolean requested = targetPlayer.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL,targetPlayerResponseHandler);
+		boolean requested = targetPlayer.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL,activePlayerResponseHandler);
 		if (!requested){
 			// Can't trade with player.
 			// TODO: Need to check why and send a error.
@@ -112,7 +112,7 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 			targetPlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL, activePlayer.getName()));
 			targetPlayer.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_ASKED_BY(activePlayer.getName()));
 		}
-		requested = activePlayer.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL,activePlayerResponseHandler);
+		requested = activePlayer.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL,targetPlayerResponseHandler);
 		if (!requested){
 			// Can't trade with player.
 			// TODO: Need to check why and send a error.

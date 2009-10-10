@@ -23,6 +23,7 @@ import java.util.Iterator;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.gametime.GameTimeManager;
 import com.aionemu.gameserver.world.World;
+import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
@@ -53,7 +54,7 @@ public class ShutdownHook implements Runnable
 	{
 		log.info("Starting AE GS shutdown sequence");
 		
-		for(int i = 0; i < 15; i++)
+		for(int i = Config.SERVER_SHUTDOWN_WAIT_TIME; i >= 0; i--)
 		{
 			Iterator<Player> onlinePlayers = world.getPlayersIterator();
 			if (!onlinePlayers.hasNext()) {
@@ -63,8 +64,11 @@ public class ShutdownHook implements Runnable
 			while(onlinePlayers.hasNext())
 			{
 				Player p = onlinePlayers.next();
-				PacketSendUtility.sendMessage(p, "Server shutdown in " + (15 - i) + " seconds.");
-				service.storePlayer(p);
+				if (i==0) {
+					service.storePlayer(p);
+				} else {
+					PacketSendUtility.sendMessage(p, "Server shutdown in " + (15 - i) + " seconds.");
+				}
 			}
 			
 			try

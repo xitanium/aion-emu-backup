@@ -111,6 +111,12 @@ public class Config
 	public static int				SERVER_MODE;
 	
 	/*
+	 * Server shutdown wait time
+	 */
+	@Property(key = "gameserver.shutdown.wait.time",defaultValue = "15")
+	public static int				SERVER_SHUTDOWN_WAIT_TIME;
+	
+	/*
 	 * Exp Rate
 	 */
 	@Property(key = "ExpRate",defaultValue = "1")
