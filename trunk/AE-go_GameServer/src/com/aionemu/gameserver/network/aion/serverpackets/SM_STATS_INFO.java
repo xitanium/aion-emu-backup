@@ -24,10 +24,7 @@ import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.gametime.GameTimeManager;
-import com.aionemu.gameserver.utils.stats.StatFunctions;
-import com.google.inject.Inject;
 
 /**
  * In this packet Server is sending User Info?
@@ -41,9 +38,6 @@ public class SM_STATS_INFO extends AionServerPacket
 	 * Player that stats info will be send
 	 */
 	private Player	player;
-	
-	@Inject
-	private PlayerService playerService;
 	
 	/**
 	 * Constructs new <tt>SM_UI</tt> packet
@@ -62,9 +56,9 @@ public class SM_STATS_INFO extends AionServerPacket
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
 		PlayerGameStats pgs = player.getGameStats();
-		PlayerGameStats bgs = StatFunctions.getBaseGameStats(player.getPlayerClass(), playerService.getPlayerStatsData());
+		PlayerGameStats bgs = pgs.getBaseGameStats();
 		PlayerLifeStats pls = player.getLifeStats();
-		PlayerLifeStats bls = StatFunctions.getBaseLifeStats(player.getPlayerClass(), player.getLevel(), playerService.getPlayerStatsData());
+		PlayerLifeStats bls = pls.getBaseLifeStats();
 		PlayerCommonData pcd = player.getCommonData();
 
 		writeD(buf, player.getObjectId());

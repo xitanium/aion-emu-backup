@@ -20,14 +20,9 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
-import com.aionemu.gameserver.dataholders.PlayerStatsData;
-import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.stats.CreatureGameStats;
-import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
-import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
-import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 
 import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.model.templates.SkillTemplate;
@@ -61,64 +56,6 @@ public class StatFunctions
 		int xpPercentage =  XPRewardEnum.xpRewardFrom(targetLevel - playerLevel);
 		
 		return (int) Math.floor(baseXP * xpPercentage * Config.EXP_RATE / 100);
-	}
-	
-	public static PlayerLifeStats getBaseLifeStats (PlayerClass playerClass, PlayerStatsData playerStatsData) {
-		final PlayerLifeStats pls = new PlayerLifeStats();
-		PlayerStatsTemplate pst = playerStatsData.getTemplate(playerClass,1);
-		pls.setMaxHp(pst.getMaxHp());
-		pls.setCurrentHp(pls.getMaxHp());
-		pls.setMaxMp(pst.getMaxMp());
-		pls.setCurrentMp(pls.getMaxMp());
-		// TODO find good MaxDp value
-		pls.setMaxDp(100);
-		pls.setCurrentDp(0);
-		pls.setInitialized(true);
-		log.debug("loading base life stats for player class "+playerClass+":"+pls);
-		return pls;
-	}
-	
-	public static PlayerLifeStats getBaseLifeStats (PlayerClass playerClass, int level, PlayerStatsData playerStatsData) {
-		final PlayerLifeStats pls = getBaseLifeStats(playerClass, playerStatsData);
-		pls.doEvolution(1, level);
-		log.debug("Loading base life stats for player class "+playerClass+" at level "+level+": "+pls);
-		return pls;
-	}
-	
-	public static PlayerGameStats getBaseGameStats (PlayerClass playerClass, PlayerStatsData playerStatsData) {
-		final PlayerGameStats pgs = new PlayerGameStats();
-		PlayerStatsTemplate pst = playerStatsData.getTemplate(playerClass,1);
-		pgs.setAttackCounter(1);
-		pgs.setPower(pst.getPower());
-		pgs.setHealth(pst.getHealth());
-		pgs.setAgility(pst.getAgility());
-		pgs.setAccuracy(pst.getAccuracy());
-		pgs.setKnowledge(pst.getKnowledge());
-		pgs.setWill(pst.getWill());
-		pgs.setMainHandAttack(pst.getMainHandAttack());
-		pgs.setMainHandCritRate(pst.getMainHandCritRate());
-		// TODO find off hand attack and crit rate values
-		pgs.setOffHandAttack(pst.getMainHandAttack());
-		pgs.setOffHandCritRate(pst.getMainHandCritRate());
-		pgs.setWater(0);
-		pgs.setWind(0);
-		pgs.setEarth(0);
-		pgs.setFire(0);
-		// TODO find good values for attack range
-		pgs.setAttackRange(15.0f);
-		pgs.setAttackSpeed(pst.getAttackSpeed());
-		// TODO find good values for fly time
-		pgs.setFlyTime(60);
-		pgs.setInitialized(true);
-		log.debug("loading base game stats for player class "+playerClass+":"+pgs);
-		return pgs;
-	}
-	
-	public static PlayerGameStats getBaseGameStats (PlayerClass playerClass, int level, PlayerStatsData playerStatsData) {
-		final PlayerGameStats pgs = getBaseGameStats(playerClass, playerStatsData);
-		pgs.doEvolution(1, level);
-		log.debug("Loading base game stats for player class "+playerClass+" at level "+level+": "+pgs);
-		return pgs;
 	}
 	
 	/**

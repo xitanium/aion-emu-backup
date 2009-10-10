@@ -16,7 +16,9 @@
  */
 package com.aionemu.gameserver.model.gameobjects.stats;
 
+import com.aionemu.gameserver.dataholders.PlayerStatsData;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_DP;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
@@ -29,23 +31,51 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 
 	private int currentDp;
 	private int maxDp;
+	private PlayerStatsData playerStatsData;
 	
 	public PlayerLifeStats() {
-		this(null,0,0,0,0,0,0);
-		this.setInitialized(false);
+		super(null,0,0,0,0);
+		setInitialized(false);
+		this.playerStatsData = null;
+		this.currentDp = 0;
+		this.maxDp = 0;
 	}
 	
-	public PlayerLifeStats(int maxHp, int maxMp, int maxDp)
+	public PlayerLifeStats(PlayerStatsData psd, Player owner) {
+		super(owner,0,0,0,0);
+		this.playerStatsData = psd;
+		PlayerStatsTemplate pst = psd.getTemplate(owner.getPlayerClass(),1);
+		setMaxHp(getMaxHp());
+		setCurrentHp(getMaxHp());
+		setMaxMp(pst.getMaxMp());
+		setCurrentMp(getMaxMp());
+		// TODO find good MaxDp value
+		setMaxDp(4000);
+		setCurrentDp(0);
+		setInitialized(true);
+		log.debug("loading base life stats for player "+owner.getName()+"(id "+owner.getObjectId()+"): "+this);
+	}
+	
+	public PlayerLifeStats(Player owner, PlayerStatsData playerStatsData, int maxHp, int maxMp, int maxDp)
 	{
-		this(null, maxHp, maxMp, maxDp, maxHp, maxMp, maxDp);
+		this(owner, playerStatsData, maxHp, maxMp, maxDp, maxHp, maxMp, maxDp);
 	}
 	
-	public PlayerLifeStats(Player owner, int currentHp, int currentMp, int currentDp, int maxHp, int maxMp, int maxDp)
+	public PlayerLifeStats(Player owner, PlayerStatsData psd, int currentHp, int currentMp, int currentDp, int maxHp, int maxMp, int maxDp)
 	{
 		super(owner, currentHp, currentMp, maxHp, maxMp);
 		this.currentDp = currentDp;
 		this.maxDp = maxDp;
-	}	
+		this.playerStatsData = psd;
+	}
+	
+	public PlayerLifeStats getBaseLifeStats () {
+		int level = this.getOwner().getLevel();
+		final PlayerLifeStats pls = new PlayerLifeStats (playerStatsData,(Player)this.getOwner());
+		pls.doEvolution(1, level);
+		log.debug("Loading base life stats for player "+getOwner().getName()+"(id "+getOwner().getObjectId()+") for level "+level+": "+pls);
+		return pls;
+	}
 	
 	@Override
 	public void sendHpPacketUpdate () {
@@ -102,5 +132,9 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 		setMaxHp((int) Math.round(this.getMaxHp() * 1.07 * (toLevel - fromLevel)));
 		setMaxMp((int) Math.round(this.getMaxMp() * 1.07 * (toLevel - fromLevel)));
 		setMaxDp((int) Math.round(this.getMaxDp() * 1.07 * (toLevel - fromLevel)));
+	}
+	
+	public void setPlayerStatsData (PlayerStatsData playerStatsData) {
+		this.playerStatsData = playerStatsData;
 	}
 }

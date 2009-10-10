@@ -16,7 +16,9 @@
  */
 package com.aionemu.gameserver.model.gameobjects.stats;
 
+import com.aionemu.gameserver.dataholders.PlayerStatsData;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 
 /**
  * @author ATracer
@@ -27,15 +29,55 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 	private int itemId; //TODO remove
 	private int itemNameId; //TODO remove
 	private int itemCount; //todo remove
-
+	private PlayerStatsData playerStatsData; 
+	
 	public PlayerGameStats () {
 		super(null,0,0,0,0,0,0,0,0,0,0,0,0);
-		this.setInitialized(false);
+		setInitialized(false);
+		this.playerStatsData = null;
+	}
+
+	public PlayerGameStats (PlayerStatsData playerStatsData, Player owner) {
+		super(owner,0,0,0,0,0,0,0,0,0,0,0,0);
+		this.playerStatsData = playerStatsData;
+		PlayerStatsTemplate pst = playerStatsData.getTemplate(owner.getPlayerClass(),1);
+		setAttackCounter(1);
+		setPower(pst.getPower());
+		setHealth(pst.getHealth());
+		setAgility(pst.getAgility());
+		setAccuracy(pst.getAccuracy());
+		setKnowledge(pst.getKnowledge());
+		setWill(pst.getWill());
+		setMainHandAttack(pst.getMainHandAttack());
+		setMainHandCritRate(pst.getMainHandCritRate());
+		// TODO find off hand attack and crit rate values
+		setOffHandAttack(pst.getMainHandAttack());
+		setOffHandCritRate(pst.getMainHandCritRate());
+		setWater(0);
+		setWind(0);
+		setEarth(0);
+		setFire(0);
+		// TODO find good values for attack range
+		setAttackRange(15.0f);
+		setAttackSpeed(pst.getAttackSpeed());
+		// TODO find good values for fly time
+		setFlyTime(60);
+		setInitialized(true);
+		log.debug("loading base game stats for player "+owner.getName()+" (id "+owner.getObjectId()+"): "+this);
 	}
 	
-	public PlayerGameStats (Player player, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int otherHandAttack, int otherHandCritRate, float attackSpeed, float attackRange)
+	public PlayerGameStats (Player player, PlayerStatsData psd, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int otherHandAttack, int otherHandCritRate, float attackSpeed, float attackRange)
 	{
 		super(player,power,health,agility,accuracy,knowledge,will,mainHandAttack,mainHandCritRate,otherHandAttack,otherHandCritRate,attackSpeed,attackRange);
+		this.playerStatsData = psd;
+	}
+	
+	public PlayerGameStats getBaseGameStats () {
+		int level = this.getOwner().getLevel();
+		final PlayerGameStats pgs = new PlayerGameStats (playerStatsData,(Player)getOwner());
+		pgs.doEvolution(1, level);
+		log.debug("Loading base game stats for player "+getOwner().getName()+"(id "+getOwner().getObjectId()+") for level "+level+": "+pgs);
+		return pgs;
 	}
 
 	/**
@@ -84,6 +126,10 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 	public void setItemCount(int itemCount)
 	{
 		this.itemCount = itemCount;
+	}
+	
+	public void setPlayerStatsData (PlayerStatsData playerStatsData) {
+		this.playerStatsData = playerStatsData;
 	}
 	
 	// TODO Find the good stats evolution rates according to level
