@@ -23,7 +23,6 @@ package admincommands;
 import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_TITLES;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAY_INTROVIDEO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_QUIT_RESPONSE;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.world.World;
@@ -55,8 +54,6 @@ public class Xita extends AdminCommand
 		
 		case 1: playerTitlesSendPacket(admin);
 		break;
-		case 2: sendIntroVideo(admin);
-		break;
 		default: return;
 		
 		}
@@ -64,8 +61,5 @@ public class Xita extends AdminCommand
 	
 	public void playerTitlesSendPacket(Player xita) {
 		PacketSendUtility.sendPacket(xita, new SM_PLAYER_TITLES(1));
-	}
-	public void sendIntroVideo(Player xita) {
-		PacketSendUtility.sendPacket(xita, new SM_PLAY_INTROVIDEO());
 	}
 }

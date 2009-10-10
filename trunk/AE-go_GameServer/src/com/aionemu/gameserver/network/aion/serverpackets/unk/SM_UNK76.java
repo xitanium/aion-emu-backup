@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aionemu.gameserver.network.aion.serverpackets;
+package com.aionemu.gameserver.network.aion.serverpackets.unk;
 
 import java.nio.ByteBuffer;
 
@@ -25,9 +25,9 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
  * @author -Nemesiss-
  * 
  */
-public class SM_PLAY_INTROVIDEO extends AionServerPacket
+public class SM_UNK76 extends AionServerPacket
 {
-	public SM_PLAY_INTROVIDEO() {
+	public SM_UNK76() {
 		
 	}
 	/**
