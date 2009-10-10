@@ -8,48 +8,10 @@
 						<xs:sequence>
 							<xs:element name="packet" minOccurs="1" maxOccurs="unbounded">
 								<xs:complexType>
-									<xs:choice maxOccurs="unbounded">
-										<xs:element name="part" type="PacketPart"
-											minOccurs="0" maxOccurs="unbounded" />
-										<xs:element name="for" minOccurs="0" maxOccurs="unbounded">
-											<xs:complexType>
-												<xs:sequence>
-													<xs:element name="part" type="PacketPart"
-														minOccurs="1" maxOccurs="unbounded" />
-												</xs:sequence>
-												<xs:attribute name="id" type="xs:int" />
-											</xs:complexType>
-										</xs:element>
-										<xs:element name="switch" minOccurs="0" maxOccurs="unbounded">
-											<xs:complexType>
-												<xs:sequence>
-													<xs:element name="case" minOccurs="1" maxOccurs="unbounded">
-														<xs:complexType>
-															<xs:sequence minOccurs="0" maxOccurs="unbounded">
-																<xs:element name="part" type="PacketPart"
-																	minOccurs="1" maxOccurs="unbounded" />
-															</xs:sequence>
-															<xs:attribute name="id">
-																<xs:simpleType>
-																	<xs:union>
-																		<xs:simpleType>
-																			<xs:restriction base="xs:string">
-																				<xs:enumeration value="default" />
-																			</xs:restriction>
-																		</xs:simpleType>
-																		<xs:simpleType>
-																			<xs:restriction base="xs:int" />
-																		</xs:simpleType>
-																	</xs:union>
-																</xs:simpleType>
-															</xs:attribute>
-															<xs:attribute name="comment" type="xs:string" />
-														</xs:complexType>
-													</xs:element>
-												</xs:sequence>
-												<xs:attribute name="id" type="xs:int" />
-											</xs:complexType>
-										</xs:element>
+									<xs:choice minOccurs="0" maxOccurs="unbounded">
+										<xs:element ref="part" />
+										<xs:element ref="for" />
+										<xs:element ref="switch" />
 									</xs:choice>
 									<xs:attribute name="name" type="xs:string" />
 									<xs:attribute name="id" type="xs:string" />
@@ -76,6 +38,46 @@
 			<xs:attribute name="strictlength" type="xs:boolean" />
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="for" id="for" type="For" />
+	<xs:element name="switch" id="switch" type="Switch" />
+	<xs:element name="part" id="part" type="PacketPart" />
+	<xs:complexType name="For">
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:element ref="part" />
+			<xs:element ref="for" />
+			<xs:element ref="switch" />
+		</xs:choice>
+		<xs:attribute name="id" type="xs:int" />
+	</xs:complexType>
+	<xs:complexType name="Switch">
+		<xs:sequence>
+			<xs:element name="case" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element ref="part" />
+						<xs:element ref="for" />
+						<xs:element ref="switch" />
+					</xs:choice>
+					<xs:attribute name="id">
+						<xs:simpleType>
+							<xs:union>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="default" />
+									</xs:restriction>
+								</xs:simpleType>
+								<xs:simpleType>
+									<xs:restriction base="xs:int" />
+								</xs:simpleType>
+							</xs:union>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="comment" type="xs:string" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:int" />
+	</xs:complexType>
 	<xs:complexType name="PacketPart">
 		<xs:sequence minOccurs="0" maxOccurs="1">
 			<xs:element name="reader">
@@ -84,6 +86,7 @@
 						<xs:simpleType>
 							<xs:restriction base="xs:string">
 								<xs:enumeration value="Color" />
+								<xs:enumeration value="Boolean" />
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:attribute>
