@@ -17,6 +17,7 @@
 package admincommands;
 
 import com.aionemu.gameserver.dataholders.SpawnData;
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -35,7 +36,7 @@ public class DeleteSpawn extends AdminCommand
 	@Inject
 	public DeleteSpawn(SpawnData spawnData)
 	{
-		super("delete", 2);
+		super("delete", AdminLevel.ANIM);
 
 		this.spawnData = spawnData;
 	}

@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.GameServerError;
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CUSTOM_PACKET;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_CUSTOM_PACKET.PacketElementType;
@@ -70,7 +71,7 @@ public class AdvSendFakeServerPacket extends AdminCommand
 	 */
 	public AdvSendFakeServerPacket()
 	{
-		super("send", 2);
+		super("send", AdminLevel.ANIM);
 
 		// init unmrshaller once.
 		try

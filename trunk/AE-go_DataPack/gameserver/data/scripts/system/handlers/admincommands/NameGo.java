@@ -17,6 +17,7 @@
 
 package admincommands;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.services.PlayerService;
@@ -42,7 +43,7 @@ public class NameGo extends AdminCommand
 	 */
 	public NameGo()
 	{
-		super("namego", 2);
+		super("namego", AdminLevel.ANIM);
 	}
 
 	/**

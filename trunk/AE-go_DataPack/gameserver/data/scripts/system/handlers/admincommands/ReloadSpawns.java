@@ -19,6 +19,7 @@ package admincommands;
 import java.util.Iterator;
 
 import com.aionemu.gameserver.dataholders.SpawnData;
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.AionObject;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -45,7 +46,7 @@ public class ReloadSpawns extends AdminCommand
 	 */
 	public ReloadSpawns()
 	{
-		super("reload_spawn", 4);
+		super("reload_spawn", AdminLevel.DEV);
 	}
 
 	/*

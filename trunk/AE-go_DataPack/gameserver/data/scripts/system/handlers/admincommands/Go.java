@@ -20,6 +20,7 @@
 
 package admincommands;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
@@ -38,7 +39,7 @@ public class Go extends AdminCommand
 	 */
 	public Go()
 	{
-		super("go", 2);
+		super("go", AdminLevel.ANIM);
 	}
 	
 	private void sendHelp(Player admin, String subcommand) {

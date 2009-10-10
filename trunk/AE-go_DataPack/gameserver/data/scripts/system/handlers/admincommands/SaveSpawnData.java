@@ -17,6 +17,7 @@
 package admincommands;
 
 import com.aionemu.gameserver.dataholders.SpawnData;
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
@@ -36,7 +37,7 @@ public class SaveSpawnData extends AdminCommand
 	@Inject
 	public SaveSpawnData(SpawnData spawnData)
 	{
-		super("save_spawn", 2);
+		super("save_spawn", AdminLevel.ANIM);
 
 		this.spawnData = spawnData;
 	}

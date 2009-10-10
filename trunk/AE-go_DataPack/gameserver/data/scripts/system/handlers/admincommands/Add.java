@@ -22,6 +22,7 @@ import java.sql.ResultSet;
 import com.aionemu.commons.database.DB;
 import com.aionemu.gameserver.dataholders.ItemData;
 import com.aionemu.gameserver.dataholders.SpawnData;
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.ChatType;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -41,7 +42,7 @@ public class Add extends AdminCommand
 {
     public Add()
     {
-        super("additem", 2);
+        super("additem", AdminLevel.ANIM);
     }
 
     /*

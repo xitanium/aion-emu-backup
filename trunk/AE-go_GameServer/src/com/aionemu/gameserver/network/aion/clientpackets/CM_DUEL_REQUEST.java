@@ -16,10 +16,13 @@
  */
 package com.aionemu.gameserver.network.aion.clientpackets;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.RequestResponseHandler;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_QUESTION_WINDOW;
+import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
 
@@ -36,6 +39,8 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 	private int	objectId;
 	@Inject
 	private World world;
+	
+	private static Logger		log			= Logger.getLogger(CM_DUEL_REQUEST.class);
 
 	/**
 	* Constructs new instance of <tt>CM_DUAL_REQUEST</tt> packet
@@ -59,21 +64,26 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 	@Override
 	protected void runImpl()
 	{
+		// Get the request sender
 		final Player activePlayer = getConnection().getActivePlayer();
+		// Get the request recipient
 		final Player targetPlayer = world.findPlayer(objectId);
+		
+		log.debug("Player " + activePlayer.getName() + " (objid=" + activePlayer.getObjectId() + ") requested duel with " + targetPlayer.getName() + " (objid=" + targetPlayer.getObjectId());
 
 		RequestResponseHandler responseHandler = new RequestResponseHandler(activePlayer) {
 			@Override
 			public void acceptRequest(Player requester, Player responder)
 			{
-				activePlayer.getController().startDuelWith(targetPlayer);
-				targetPlayer.getController().startDuelWith(activePlayer);
+				requester.getController().startDuelWith(responder);
+				responder.getController().startDuelWith(requester);
 			}
 
 			public void denyRequest(Player requester, Player responder)
 			{
 				// TODO find code for STR_DUEL_HE_REJECTED_DUEL
 				// activePlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_HE_REJECTED_DUEL, targetPlayer.getName()));
+				PacketSendUtility.sendMessage(requester, "Player " + responder.getName() + " declined your Duel request.");
 			}
 		};
 		

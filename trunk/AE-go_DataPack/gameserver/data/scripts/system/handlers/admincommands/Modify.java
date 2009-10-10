@@ -20,6 +20,7 @@
 
 package admincommands;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -37,7 +38,7 @@ public class Modify extends AdminCommand
 	 */
 	public Modify()
 	{
-		super("mod", 2);
+		super("mod", AdminLevel.ANIM);
 	}
 	
 	private void sendHelp(Player admin, String subcommand) {

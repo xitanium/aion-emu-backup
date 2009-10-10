@@ -19,6 +19,7 @@ package admincommands;
  
 import java.util.Iterator;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
@@ -31,7 +32,7 @@ public class Announce extends AdminCommand
  
         public Announce() {
         	// declare
-                super("announce", 2);
+                super("announce", AdminLevel.ANIM);
         }
         /* (non-Javadoc)
          * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.model.gameobjects.player.Player, java.lang.String[])

@@ -81,7 +81,7 @@ public class AdminCommandChatHandler implements ChatHandler
 				return ChatHandlerResponse.BLOCKED_MESSAGE;
 			}
 			
-			if(sender.getCommonData().getAdminLevel() < admc.getRequiredGMLevel())
+			if(sender.getCommonData().getAdminLevel() < admc.getRequiredGMLevel().valueOf())
 			{
 				PacketSendUtility.sendMessage(sender, "<You do not have sufficient privileges to execute this command>");
 				return ChatHandlerResponse.BLOCKED_MESSAGE;

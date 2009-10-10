@@ -16,6 +16,7 @@
  */
 package admincommands;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.ChatType;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_MESSAGE;
@@ -27,7 +28,7 @@ public class PrintId extends AdminCommand
 {
     public PrintId()
     {
-        super("printid", 2);
+        super("printid", AdminLevel.ANIM);
     }
 
     /*

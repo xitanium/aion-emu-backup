@@ -17,6 +17,7 @@
 
 package admincommands;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -31,7 +32,7 @@ public class SetLevel extends AdminCommand
 {
 	public SetLevel()
 	{
-		super("setlevel", 2);
+		super("setlevel", AdminLevel.ANIM);
 	}
 
 	/*

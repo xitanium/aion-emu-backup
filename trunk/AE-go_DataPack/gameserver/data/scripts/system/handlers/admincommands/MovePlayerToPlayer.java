@@ -17,6 +17,7 @@
 
 package admincommands;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -39,7 +40,7 @@ public class MovePlayerToPlayer extends AdminCommand
 	 */
 	public MovePlayerToPlayer()
 	{
-		super("moveplayertoplayer", 2);
+		super("moveplayertoplayer", AdminLevel.ANIM);
 	}
 
 	/**

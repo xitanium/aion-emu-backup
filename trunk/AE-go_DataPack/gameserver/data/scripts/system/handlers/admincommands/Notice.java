@@ -17,6 +17,7 @@
 
 package admincommands;
 
+import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.ChatType;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_MESSAGE;
@@ -33,7 +34,7 @@ public class Notice extends AdminCommand
 {
 	public Notice()
 	{
-		super("notice", 2);
+		super("notice", AdminLevel.ANIM);
 	}
 
 	/*
