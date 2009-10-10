@@ -56,7 +56,7 @@ public class Xita extends AdminCommand
 		
 		case 1: playerTitlesSendPacket(admin);
 		break;
-		case 2: sendVideo(admin);
+		case 2: sendVideo(admin, Integer.parseInt(params[1]));
 		break;
 		default: return;
 		
@@ -66,7 +66,7 @@ public class Xita extends AdminCommand
 	public void playerTitlesSendPacket(Player xita) {
 		PacketSendUtility.sendPacket(xita, new SM_PLAYER_TITLES(1));
 	}
-	public void sendVideo(Player xita) {
-		PacketSendUtility.sendPacket(xita, new SM_PLAY_INTRO());
+	public void sendVideo(Player xita, int videoid) {
+		PacketSendUtility.sendPacket(xita, new SM_PLAY_INTRO(videoid));
 	}
 }
