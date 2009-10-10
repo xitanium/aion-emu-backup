@@ -37,9 +37,9 @@ public class SM_UNK76 extends AionServerPacket
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{		
 		writeD(buf, 0x04);
-		writeD(buf, 0xB684);
-		writeD(buf, 0x5104);
-		writeD(buf, 0x4D04);
-		writeD(buf, 0x5484);
+		writeD(buf, 0x86B6);
+		writeD(buf, 0x0451);
+		writeD(buf, 0x044D);
+		writeD(buf, 0x8454);
 	}
 }

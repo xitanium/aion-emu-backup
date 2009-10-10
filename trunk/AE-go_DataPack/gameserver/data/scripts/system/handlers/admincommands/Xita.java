@@ -24,6 +24,7 @@ import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_TITLES;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_QUIT_RESPONSE;
+import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNK76;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
@@ -61,5 +62,8 @@ public class Xita extends AdminCommand
 	
 	public void playerTitlesSendPacket(Player xita) {
 		PacketSendUtility.sendPacket(xita, new SM_PLAYER_TITLES(1));
+	}
+	public void sendVideo(Player xita) {
+		PacketSendUtility.sendPacket(xita, new SM_UNK76());
 	}
 }
