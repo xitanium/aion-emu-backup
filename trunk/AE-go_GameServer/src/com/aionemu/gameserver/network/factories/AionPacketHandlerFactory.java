@@ -87,7 +87,7 @@ public class AionPacketHandlerFactory
 		addPacket(new CM_BLOCK_DEL(0x11), State.IN_GAME);
 		addPacket(new CM_BLOCK_ADD(0x10), State.IN_GAME);
 		addPacket(new CM_TRADE_REQUEST(0x11), State.IN_GAME);
-		addPacket(new CM_TRADE_LOCK(0x0D), State.IN_GAME);
+		//addPacket(new CM_TRADE_LOCK(0x0D), State.IN_GAME);
 		addPacket(new CM_TRADE_CANCEL(0x0F), State.IN_GAME);
 		addPacket(new CM_TRADE_OK(0x0C), State.IN_GAME);
 		addPacket(new CM_TERRITORY(0x4A), State.IN_GAME);

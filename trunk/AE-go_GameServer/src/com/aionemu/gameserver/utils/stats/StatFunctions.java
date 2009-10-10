@@ -121,7 +121,7 @@ public class StatFunctions
 		int accuracy = sgs.getMagicAccuracy();
 		int attackCount = sgs.getAttackCounter();
 		Random generator = new Random ();
-		int missedSpellSeed = generator.nextInt(accuracy);
+		int missedSpellSeed = Math.round(accuracy*100f/(generator.nextInt(accuracy)+1));
 		boolean missedSpell = (attackCount%missedSpellSeed) == 0;
 		int damages = baseDamages+Math.round(magicBoost*0.60f);
 		damages -= Math.round((elementaryDefense+magicalResistance)*0.60f); 
@@ -156,10 +156,10 @@ public class StatFunctions
 		int block = tgs.getBlock();
 		int pDef = tgs.getPhysicalDefense();
 		Random generator = new Random ();
-		int critAttackSeed =  generator.nextInt(critRate);
-		int missedAttackSeed = generator.nextInt(accuracy);
-		int blockedAttackSeed = generator.nextInt(block);
-		int parredAttackSeed = generator.nextInt(parry);
+		int critAttackSeed = Math.round(critRate*100f/(generator.nextInt(critRate)+1));
+		int missedAttackSeed = Math.round(accuracy*100f/(generator.nextInt(accuracy)+1));
+		int blockedAttackSeed = Math.round(block*100f/(generator.nextInt(block)+1));
+		int parredAttackSeed = Math.round(parry*100f/(generator.nextInt(parry)+1));
 		boolean critAttack = (attackCount%critAttackSeed)==0;
 		boolean missedAttack = (attackCount%missedAttackSeed)==0;
 		boolean blockedAttack = (attackCount%blockedAttackSeed)==0;
