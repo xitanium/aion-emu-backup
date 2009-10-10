@@ -30,7 +30,10 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_DIE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_NPC_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_INFO;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_STATS_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
+import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNK72;
+import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.skillengine.SkillEngine;
 import com.aionemu.gameserver.skillengine.SkillHandler;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -112,7 +115,7 @@ public class PlayerController extends CreatureController<Player>
 		if(attackSuccess)
 		{
 			target.getLifeStats().reduceHp(damages);
-			gameStats.increateAttackCounter();
+			gameStats.increaseAttackCounter();
 		}
 	}
 
@@ -177,5 +180,38 @@ public class PlayerController extends CreatureController<Player>
 	
 	public void onDuel () {
 		
+	}
+
+	/**
+	 * Teleport player to new location
+	 * 
+	 * @param worldId
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void teleportTo (int worldId, float x, float y, float z, byte heading) {
+		Player p = getOwner();
+		int oldWorldId = p.getWorldId();
+		world.despawn(p);
+		world.setPosition(p, worldId, x, y, z, heading);
+		p.setProtectionActive(true);
+		if (worldId!=oldWorldId) {
+			PacketSendUtility.sendPacket(p, new SM_UNKF5(p));
+		}
+	}
+	
+	/**
+	 * Do player revival
+	 */
+	public void onRevive()
+	{
+		Player p = this.getOwner();
+		PacketSendUtility.sendPacket(p,SM_SYSTEM_MESSAGE.REVIVE);
+		PacketSendUtility.sendPacket(p, new SM_UNK72());
+		PacketSendUtility.sendPacket(p, new SM_STATS_INFO(p));			
+		PacketSendUtility.sendPacket(p, new SM_PLAYER_INFO(p, true));	
+		
+		this.teleportTo(p.getWorldId(), p.getX(), p.getY(), p.getZ(), p.getHeading());
 	}
 }

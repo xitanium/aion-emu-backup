@@ -9,7 +9,6 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
-import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.dao.AdminCommandsDAO;
 import com.aionemu.commons.database.dao.DAOManager;
@@ -21,7 +20,7 @@ public class Teleport extends AdminCommand {
 	}
 	
 	//TODO: Add //tele list
-	public void executeCommand(Player admin, String... params) {
+	public void executeCommand(Player admin, String[] params) {
 		
 		World world = admin.getActiveRegion().getWorld();
 		AdminCommandsDAO dao = DAOManager.getDAO(AdminCommandsDAO.class);
@@ -54,9 +53,7 @@ public class Teleport extends AdminCommand {
 				}
 				else {
 					float[] teleportCoords = dao.loadTeleport(params[0].trim());
-					world.despawn(admin);
-					world.setPosition(admin, (int) teleportCoords[0], teleportCoords[1], teleportCoords[2], teleportCoords[3], (byte) teleportCoords[4]);
-					PacketSendUtility.sendPacket(admin, new SM_UNKF5(admin));
+					admin.getController().teleportTo((int) teleportCoords[0], teleportCoords[1], teleportCoords[2], teleportCoords[3], (byte) teleportCoords[4]);
 					PacketSendUtility.sendMessage(admin, "You were successfully teleported to " + params[0].trim());
 				}
 			}
@@ -135,8 +132,7 @@ public class Teleport extends AdminCommand {
 					if(dao.isExistingTeleport(teleportName)) {
 						
 						float[] teleportCoords = dao.loadTeleport(teleportName);
-						world.setPosition(player, (int) teleportCoords[0], teleportCoords[1], teleportCoords[2], teleportCoords[3], (byte) teleportCoords[4]);
-						PacketSendUtility.sendPacket(player, new SM_UNKF5(player));
+						player.getController().teleportTo((int) teleportCoords[0], teleportCoords[1], teleportCoords[2], teleportCoords[3], (byte) teleportCoords[4]);
 						PacketSendUtility.sendMessage(admin, "Player " + playerName + " successfully teleported to " + teleportName);
 						PacketSendUtility.sendMessage(player, "You were teleported by Game Master:" + admin.getName());
 					}

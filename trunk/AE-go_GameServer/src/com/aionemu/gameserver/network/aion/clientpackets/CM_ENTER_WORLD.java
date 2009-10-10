@@ -131,9 +131,11 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			Inventory items = new Inventory();
 			items.getInventoryFromDb(activePlayer);
 			int totalItemsCount = items.getItemsCount();
+			@SuppressWarnings("unused")
 			ItemList itemName = new ItemList();
+			@SuppressWarnings("unused")
 			Inventory inventory = new Inventory();
-			
+			@SuppressWarnings("unused")
 			int slot;
 
 

@@ -43,13 +43,14 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 		+ "`player_id`,`current_hp`,`current_mp`,`current_dp`,`max_hp`,`max_mp`,`max_dp`,"
 		+ "`attack_counter`,`power`,`health`,`agility`,`accuracy`,`knowledge`,`will`,"
 		+ "`main_hand_attack`,`main_hand_crit_rate`,`off_hand_attack`,`off_hand_crit_rate`,"
-		+ "`water`,`wind`,`earth`,`fire`,`fly_time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		+ "`water`,`wind`,`earth`,`fire`,`fly_time`,`attack_speed`,`attack_range`)"
+		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
 	public static final String GAME_UPDATE_QUERY = "UPDATE `player_stats` SET "
 	    + "`attack_counter`=?,`power`=?,`health`=?,`agility`=?,`accuracy`=?,"
 	    + "`knowledge`=?,`will`=?,`main_hand_attack`=?,`main_hand_crit_rate`=?,"
 		+ "`off_hand_attack`=?,`off_hand_crit_rate`=?,`water`=?,`wind`=?,`earth`=?,"
-		+ "`fire`=?,`fly_time`=? WHERE `player_id`=?";
+		+ "`fire`=?,`fly_time`=?, `attack_speed`=?, `attack_range`=? WHERE `player_id`=?";
 	
 	public static final String LIFE_UPDATE_QUERY = "UPDATE `player_stats` SET "
 	    + "`current_hp`=?,`current_mp`=?,`current_dp`=?,`max_hp`=?,`max_mp`=?,`max_dp`=? "
@@ -97,6 +98,8 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 					pgs.setEarth(rset.getInt("earth"));
 					pgs.setFire(rset.getInt("fire"));
 					pgs.setFlyTime(rset.getInt("fly_time"));
+					pgs.setAttackSpeed(rset.getFloat("attack_speed"));
+					pgs.setAttackRange(rset.getFloat("attack_range"));
 					pgs.setInitialized(true);
 					log.debug("loaded game stats for player #"+playerId+":"+pgs);
 				}
@@ -170,6 +173,8 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 				stmt.setInt(21, pgs.getEarth());
 				stmt.setInt(22, pgs.getFire());
 				stmt.setInt(23, pgs.getFlyTime());
+				stmt.setFloat(24, pgs.getAttackSpeed());
+				stmt.setFloat(25, pgs.getAttackRange());
 				stmt.execute();
 			}
 		});
@@ -219,7 +224,9 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 				stmt.setInt(14, pgs.getEarth());
 				stmt.setInt(15, pgs.getFire());
 				stmt.setInt(16, pgs.getFlyTime());
-				stmt.setInt(17, playerId);
+				stmt.setFloat(17, pgs.getAttackSpeed()/1000f);
+				stmt.setFloat(18, pgs.getAttackRange()/1000f);
+				stmt.setInt(19, playerId);
 				stmt.execute();
 			}
 		});

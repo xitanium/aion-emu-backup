@@ -19,11 +19,8 @@ package admincommands;
 
 import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
-import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
-import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.world.WorldMap;
 import com.google.inject.Inject;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 
@@ -49,7 +46,7 @@ public class GoName extends AdminCommand
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void executeCommand(Player admin, String... params)
+	public void executeCommand(Player admin, String[] params)
 	{
 		if (params == null || params.length < 1)
 		{
@@ -69,8 +66,7 @@ public class GoName extends AdminCommand
 			return;
 		}
 
-		world.setPosition(admin, player.getWorldId(), player.getX(), player.getY(), player.getZ(), player.getHeading());
-		PacketSendUtility.sendPacket(admin, new SM_UNKF5(admin));
+		admin.getController().teleportTo(player.getWorldId(), player.getX(), player.getY(), player.getZ(), player.getHeading());
 
 		PacketSendUtility.sendMessage(admin, "Teleported to player " + player.getName() + ".");
 		PacketSendUtility.sendMessage(player, "Game Master " + admin.getName() + " appears at your location");

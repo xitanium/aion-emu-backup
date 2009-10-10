@@ -62,7 +62,7 @@ public class CM_ATTACK extends AionClientPacket
 		targetObjectId = readD();// empty
 		attackno = readC();// empty
 		time = readH();// empty
-		type = readC();// empty
+		type = readH();// empty
 	}
 
 	/**

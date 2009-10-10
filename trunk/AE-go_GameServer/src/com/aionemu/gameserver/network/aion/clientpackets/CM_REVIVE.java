@@ -17,16 +17,7 @@
 package com.aionemu.gameserver.network.aion.clientpackets;
 
 import com.aionemu.gameserver.model.gameobjects.player.Player;
-import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_INFO;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_STATS_INFO;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
-import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNK72;
-import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
-import com.aionemu.gameserver.utils.stats.ClassStats;
-import com.aionemu.gameserver.world.World;
-import com.google.inject.Inject;
 
 /**
  * @author ATracer, orz
@@ -34,10 +25,6 @@ import com.google.inject.Inject;
  */
 public class CM_REVIVE extends AionClientPacket
 {
-	@Inject
-	private World	world;
-    private float   x ,y,z;
-    
 	/**
 	 * Constructs new instance of <tt>CM_REVIVE </tt> packet
 	 * @param opcode
@@ -64,31 +51,8 @@ public class CM_REVIVE extends AionClientPacket
 	{
 
 		Player activePlayer = getConnection().getActivePlayer();
-
-		//activePlayer.setLifeStats(new PlayerLifeStats(
-		//	ClassStats.getMaxHpFor(activePlayer.getPlayerClass(), activePlayer.getLevel()), 650));
 		
-		sendPacket(SM_SYSTEM_MESSAGE.REVIVE);	
-		sendPacket(new SM_UNK72());
-		sendPacket(new SM_STATS_INFO(activePlayer));			
-		sendPacket(new SM_PLAYER_INFO(activePlayer, true));	
-		
-		/**
-		 * Spawn player into the world.
-		 */
-		int worldId = activePlayer.getWorldId();
-		x = activePlayer.getX();
-		y = activePlayer.getY();
-		z = activePlayer.getZ();
-		
-		world.despawn(activePlayer);
-		// TODO! this should go to PlayerController.teleportTo(...)
-		// more todo: when teleporting to the same map then SM_UNKF5 should not be send, but something else
-		world.setPosition(activePlayer, worldId, x, y, z, activePlayer.getHeading());
-		activePlayer.setProtectionActive(true);
-		//world.spawn(activePlayer);
-		
-		sendPacket(new SM_UNKF5(activePlayer));
+		activePlayer.getController().onRevive();
 	}
 
 }

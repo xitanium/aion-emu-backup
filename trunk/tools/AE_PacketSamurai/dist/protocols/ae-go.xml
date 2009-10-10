@@ -46,30 +46,54 @@
 			<part name="objId" type="d" />
 			<part name="raceSex" type="d" />
 			<part name="raceSex" type="d" />
-			<part name="shit" type="b" size="15" />
+			<part name="0x26" type="c" />
+			<part name="raceId" type="c" />
+			<part name="classId" type="c" />
+			<part name="genderId" type="c" />
+			<part name="[0x01,9*0x00]" type="b" size="10" />
+			<part name="heading" type="c" />
 			<part name="name" type="S" />
-			<part name="shit" type="b" size="61" />
-			<part name="skinRGB" type="d" />
-			<part name="hairRGB" type="d" />
-			<part name="lipRGB" type="d" />
+			<part name="[4*0xFF,15*0x00]" type="b" size="19" />
+			<part name="%hp" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part id="0" name="gears" type="hbs" />
+			<for id="0">
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+			</for>
+			<part name="skinRGB" type="d">
+				<reader type="Color"/>
+			</part>
+			<part name="hairRGB" type="d">
+				<reader type="Color"/>
+			</part>
+			<part name="eyeRGB" type="d">
+				<reader type="Color"/>
+			</part>
+			<part name="lipRGB" type="d">
+				<reader type="Color"/>
+			</part>
 			<part name="face" type="c" />
 			<part name="hair" type="c" />
 			<part name="deco" type="c" />
-			<part name="tatto" type="c" />
-			<part name="unk == 4" type="c" />
+			<part name="tattoo" type="c" />
+			<part name="0x04" type="c" />
 			<part name="faceShape" type="c" />
-			<part name="forehead" type="c" />
-			<part name="eyeHeigh" type="c" />
+			<part name="foreHead" type="c" />
+			<part name="eyeHeight" type="c" />
 			<part name="eyeSpace" type="c" />
 			<part name="eyeWidth" type="c" />
 			<part name="eyeSize" type="c" />
 			<part name="eyeShape" type="c" />
 			<part name="eyeAngle" type="c" />
-			<part name="browHeigh" type="c" />
+			<part name="browHeight" type="c" />
 			<part name="browAngle" type="c" />
 			<part name="browShape" type="c" />
 			<part name="nose" type="c" />
-			<part name="noseBridg" type="c" />
+			<part name="noseBridge" type="c" />
 			<part name="noseWidth" type="c" />
 			<part name="noseTip" type="c" />
 			<part name="cheek" type="c" />
@@ -78,10 +102,14 @@
 			<part name="lipSize" type="c" />
 			<part name="smile" type="c" />
 			<part name="lipShape" type="c" />
-			<part name="jawHeigh" type="c" />
+			<part name="jawHeight" type="c" />
 			<part name="chinJut" type="c" />
 			<part name="earShape" type="c" />
 			<part name="headSize" type="c" />
+			<part name="0x00" type="c" />
+			<part name="shoulderSize" type="c" />
+			<part name="armLength" type="c" />
+			<part name="legLength" type="c" />
 			<part name="neck" type="c" />
 			<part name="neckLength" type="c" />
 			<part name="shoulders" type="c" />
@@ -89,25 +117,32 @@
 			<part name="chest" type="c" />
 			<part name="waist" type="c" />
 			<part name="hips" type="c" />
-			<part name="armThickne" type="c" />
+			<part name="armThickness" type="c" />
 			<part name="handSize" type="c" />
-			<part name="legThicnkes" type="c" />
+			<part name="legThickness" type="c" />
 			<part name="footSize" type="c" />
 			<part name="facialRate" type="c" />
-			<part name="unk1 == 0" type="c" />
-			<part name="unk2 == 0" type="c" />
-			<part name="height" type="d" />
-			<part name="unk3 == 63" type="c" />
-			<part name="shit" type="b" size="17" />
-			<part name="title?" type="S" />
-			<part name="shit" type="b" size="12" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part name="voice" type="c" />
+			<part name="height" type="f" />
+			<part name="[0x00*2,0x80,0x3E,0x00*3,0x40]" type="b" size="8" />
+			<part name="moveSpeed?" type="f" />
+			<part name="[0xDC,0x05,0xDC,0x05,0x02]" type="c" />
+			<part name="privateShop?" type="S" />
+			<part name="[0x00*12]" type="b" size="12" />
 			<part name="x" type="f" />
 			<part name="y" type="f" />
 			<part name="z" type="f" />
-			<part name="unk" type="d" />
-			<part name="unk" type="d" />
-			<part name="unk" type="h" />
-			<part name="unk" type="d" />
+			<part name="moveType" type="c" />
+			<part name="self[0x40|0x00]" type="c" />
+			<part name="heroe" type="c">
+				<reader type="Boolean"/>
+			</part>
+			<part name="0x00" type="c" />
+			<part name="level" type="d" />
+			<part name="0x00" type="c" />
+			<part name="0x01" type="d" />
 		</packet>
 		<packet id="0x1A" name="SM_WAIT_LIST" />
 		<packet id="0x1C" name="SM_EMOTION">
@@ -207,15 +242,15 @@
 			<part name="npcId" type="d" />
 			<part name="npcType" type="c" />
 			<part name="npcMode?" type="c" />
-			<part name="unk" type="c" />
+			<part name="0x00" type="c" />
 			<part name="npcHeading" type="c" />
 			<part name="npcTemplateNameId" type="d" />
 			<part name="npcTemplateTitleId" type="d" />
-			<part name="unk" type="d" />
-			<part name="unk" type="d" />
-			<part name="unk" type="d" />
-			<part name="unk" type="c" />
-			<part name="hp" type="c" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="c" />
+			<part name="%hp" type="c" />
 			<part name="unk" type="d" />
 			<part name="level" type="c" />
 			<part id="0" name="gears" type="hbs" />
@@ -224,29 +259,29 @@
 				<part name="0x00" type="d" />
 				<part name="0x00" type="d" />
 			</for>
-			<part name="unk" type="d" />
-			<part name="npcTempalteHeight" type="f" />
+			<part name="0x3EB33333" type="d" />
+			<part name="npcTemplateHeight" type="f" />
 			<part name="speed" type="f" />
-			<part name="speedUnk?" type="h" />
-			<part name="speedUnk?" type="h" />
-			<part name="unk" type="c" />
+			<part name="0x834" type="h" />
+			<part name="0x834" type="h" />
+			<part name="0x00" type="c" />
 			<part name="x" type="f" />
 			<part name="y" type="f" />
 			<part name="z" type="f" />
 			<part name="moveType" type="c" />
-			<part name="unk" type="c" />
-			<part name="unk" type="c" />
-			<part name="unk" type="c" />
-			<part name="unk" type="c" />
-			<part name="unk" type="c" />
-			<part name="unk" type="c" />
-			<part name="unk" type="c" />
-			<part name="unk" type="c" />
-			<part name="unk" type="c" />
-			<part name="unk" type="c" />
-			<part name="unk" type="c" />
-			<part name="unk" type="h" />
-			<part name="unk" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x00" type="c" />
+			<part name="0x01" type="h" />
+			<part name="0x00" type="c" />
 		</packet>
 		<packet id="0x2F" name="SM_DELETE">
 			<part name="objId" type="d" />
@@ -255,9 +290,29 @@
 		<packet id="0x30" name="SM_SYSTEM_MESSAGE">
 			<part name="0x13" type="h" />
 			<part name="0x00" type="d" />
-			<part name="code" type="d" />
-			<part id="0" name="count" type="c" />
-			<for id="0">
+			<part id="0" name="code" type="d" />
+			<switch id="0">
+				<case id="230038" comment="CURRENT_LOCATION" />
+				<case id="900847" comment="BUDDYLIST_BUSY" />
+				<case id="1300627" comment="PLAYER_IS_OFFLINE" />
+				<case id="1300719" comment="REMAINING_PLAYING_TIME" />
+				<case id="1340000" comment="DIE" />
+				<case id="1300738" comment="REVIVE" />
+				<case id="1370002" comment="EXP" />
+				<case id="1300887" comment="BUDDYLIST_NOT_IN_LIST" />
+				<case id="1300891" comment="BLOCKLIST_NO_BUDDY" />
+				<case id="1300894" comment="BLOCKLIST_ALREADY_BLOCKED" />
+				<case id="1300897" comment="BLOCKLIST_NOT_BLOCKED" />
+				<case id="1301065" comment="DUEL_ASKED_BY" />
+				<case id="1301067" comment="DUEL_ASKED_BY_REJECTED [?]" />
+				<case id="1300094" comment="DUEL_ASKED_TO" />
+				<case id="1300097" comment="DUEL_ASKED_TO_REJECTED" />
+				<case id="1300628" comment="YOU_ARE_BLOCKED_BY" />
+				<case id="1390141" comment="ACCUMULATED_TIME" />
+				<case id="1370000" comment="UNKNOWN_1370000" />
+			</switch>
+			<part id="1" name="count" type="c" />
+			<for id="1">
 				<part name="txt" type="S" />
 			</for>
 		</packet>
@@ -539,6 +594,13 @@
 		<packet id="0xC2" name="SM_FLY_TELEPORT">
 			<part name="unk" type="d" />
 			<part name="teleportId?" type="d" />
+		</packet>
+		<packet id="0x60" name="SM_PLAY_INTRO [?]">
+			<part name="0x01" type="d" />
+			<part name="0x00" type="h" />
+			<part name="0x00" type="c" />
+			<part name="0x01" type="c" />
+			<part name="0x00" type="d" />
 		</packet>
 		<packet id="0xD3" name="SM_PLAYER_SEARCH">
 		</packet>
@@ -852,10 +914,10 @@
 			<part name="msg" type="S" />
 		</packet>
 		<packet id="0x8A" name="CM_ATTACK">
-			<part name="targetId" type="h" />
-			<part name="unk2" type="d" />
-			<part name="timer" type="d" />
-			<part name="unk3" type="d" />
+			<part name="targetId" type="d" />
+			<part name="unk2" type="c" />
+			<part name="timer" type="h" />
+			<part name="unk3" type="h" />
 		</packet>
 		<packet id="0x8B" name="CM_CASTSPELL">
 			<part name="spellId" type="h" />

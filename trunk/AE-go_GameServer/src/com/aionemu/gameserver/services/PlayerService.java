@@ -51,7 +51,6 @@ import com.aionemu.gameserver.utils.collections.cachemap.CacheMap;
 import com.aionemu.gameserver.utils.collections.cachemap.CacheMapFactory;
 import com.aionemu.gameserver.utils.idfactory.IDFactory;
 import com.aionemu.gameserver.utils.idfactory.IDFactoryAionObject;
-import com.aionemu.gameserver.utils.stats.StatFunctions;
 import com.aionemu.gameserver.world.KnownList;
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.world.WorldPosition;
@@ -87,7 +86,7 @@ public class PlayerService
 		this.playerExperienceTable = pet;
 		this.playerStatsData = psd;
 	}
-
+	
 	/**
 	 * Checks if name is already taken or not
 	 * 
@@ -171,16 +170,21 @@ public class PlayerService
 		player.setBlockList(DAOManager.getDAO(BlockListDAO.class).load(player,world, playerExperienceTable));
 		PlayerStatsDAO psd = DAOManager.getDAO(PlayerStatsDAO.class);
 		PlayerGameStats pgs = psd.loadGameStats(playerObjId);
-		if (!pgs.isInitialized()) {
-			pgs = StatFunctions.getBaseGameStats(pcd.getPlayerClass(),playerStatsData);
-		}
-		player.setGameStats(pgs);
 		PlayerLifeStats pls = psd.loadLifeStats(playerObjId);
-		if (!pls.isInitialized()) {
-			pls = StatFunctions.getBaseLifeStats(pcd.getPlayerClass(),playerStatsData);
+		if ((!pgs.isInitialized())||(!pls.isInitialized())) {
+			pgs = new PlayerGameStats(playerStatsData,player);
+			pls = new PlayerLifeStats(playerStatsData,player);
+			if (player.getLevel()>1) {
+				pgs.doEvolution(1, player.getLevel());
+				pls.doEvolution(1, player.getLevel());
+			}
+			DAOManager.getDAO(PlayerStatsDAO.class).storeNewStats(playerObjId, pls, pgs);
 		}
+		pls.setPlayerStatsData(playerStatsData);
+		pgs.setPlayerStatsData(playerStatsData);
+		player.setGameStats(pgs);
 		player.setLifeStats(pls);
-		
+
 		if(CacheConfig.CACHE_PLAYERS)
 			playerCache.put(playerObjId, player);	
 
@@ -206,8 +210,8 @@ public class PlayerService
 		// TODO: starting skills
 		// TODO: starting items;
 		Player newPlayer = new Player(new PlayerController(world), playerCommonData, playerAppearance);
-		newPlayer.setLifeStats(StatFunctions.getBaseLifeStats(newPlayer.getPlayerClass(),playerStatsData));
-		newPlayer.setGameStats(StatFunctions.getBaseGameStats(newPlayer.getPlayerClass(),playerStatsData));
+		newPlayer.setLifeStats(new PlayerLifeStats(playerStatsData,newPlayer));
+		newPlayer.setGameStats(new PlayerGameStats(playerStatsData,newPlayer));
 		return newPlayer;
 	}
 

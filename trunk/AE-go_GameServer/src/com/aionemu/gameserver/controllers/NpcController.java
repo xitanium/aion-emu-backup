@@ -58,8 +58,8 @@ public class NpcController extends CreatureController<Npc>
 		//TODO fix last attack - cause mob is already dead
 		int damages = StatFunctions.calculateBaseDamageToTarget(npc, player);
 		
-//		PacketSendUtility.broadcastPacket(player,
-//			new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
+		PacketSendUtility.broadcastPacket(player,
+			new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
 
 		try {
 			Thread.sleep(50);	
@@ -78,7 +78,7 @@ public class NpcController extends CreatureController<Npc>
 		if(attackSuccess)
 		{
 			player.getLifeStats().reduceHp(damages);
-			npcGameStats.increateAttackCounter();
+			npcGameStats.increaseAttackCounter();
 		}
 		if(player.getLifeStats().isAlreadyDead())
 		{
@@ -122,7 +122,6 @@ public class NpcController extends CreatureController<Npc>
 		this.getOwner().getNpcAi().setAiState(AIState.IDLE);
 		NpcStatsTemplate statsTemplate = getOwner().getTemplate().getStatsTemplate();
 		this.getOwner().setLifeStats(new NpcLifeStats(getOwner(),statsTemplate));
-		log.debug("Npc life stats of "+this.getOwner().getObjectId()+": "+this.getOwner().getLifeStats().toString());
 	}
 
 	/* (non-Javadoc)

@@ -24,20 +24,13 @@ import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_TITLES;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAY_INTRO;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_QUIT_RESPONSE;
-import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNK76;
-import com.aionemu.gameserver.services.PlayerService;
-import com.aionemu.gameserver.world.World;
-import com.google.inject.Inject;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.world.WorldMap;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 
 public class Xita extends AdminCommand
 {
-	@Inject
-	private World	world;
-/**
+	/**
 	 * @param commandName
 	 */
 	public Xita()
@@ -49,7 +42,7 @@ public class Xita extends AdminCommand
 	 * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.gameobjects.Player, java.lang.String[])
 	 */
 	@Override
-	public void executeCommand(Player admin, String... params)
+	public void executeCommand(Player admin, String[] params)
 	{
 		if(params[0].equals("titles")) 
 		{		
@@ -58,6 +51,10 @@ public class Xita extends AdminCommand
 		else if(params[0].equals("video")) 
 		{ 
 			sendVideo(admin, Integer.parseInt(params[1]));
+		}
+		else if(params[0].equals("sys_1370000")) 
+		{
+			sendSys1370000(admin,Integer.parseInt(params[1],16), Integer.parseInt(params[2],16));
 		}
 		else 
 		{
@@ -71,5 +68,8 @@ public class Xita extends AdminCommand
 	}
 	public void sendVideo(Player xita, int videoid) {
 		PacketSendUtility.sendPacket(xita, new SM_PLAY_INTRO(videoid));
+	}
+	public void sendSys1370000(Player xita, int _1, int _2) {
+		PacketSendUtility.sendPacket(xita, SM_SYSTEM_MESSAGE.UNKNOWN_1370000(_1, _2));
 	}
 }

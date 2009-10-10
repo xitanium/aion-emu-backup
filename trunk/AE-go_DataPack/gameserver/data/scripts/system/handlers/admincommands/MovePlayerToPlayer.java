@@ -19,7 +19,6 @@ package admincommands;
 
 import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
-import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF5;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
@@ -47,7 +46,7 @@ public class MovePlayerToPlayer extends AdminCommand
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void executeCommand(Player admin, String... params)
+	public void executeCommand(Player admin, String[] params)
 	{
 		if (params == null || params.length < 2)
 		{
@@ -74,8 +73,7 @@ public class MovePlayerToPlayer extends AdminCommand
 			return;
 		}
 
-		world.setPosition(playerToMove, playerDestination.getWorldId(), playerDestination.getX(), playerDestination.getY(), playerDestination.getZ(), playerDestination.getHeading());
-		PacketSendUtility.sendPacket(playerToMove, new SM_UNKF5(playerToMove));
+		playerToMove.getController().teleportTo(playerDestination.getWorldId(), playerDestination.getX(), playerDestination.getY(), playerDestination.getZ(), playerDestination.getHeading());
 		
 		PacketSendUtility.sendMessage(admin, "Teleported player " + playerToMove.getName() + " to the location of player " + playerDestination.getName() + ".");
 		PacketSendUtility.sendMessage(playerToMove, "You have been teleported by an administrator.");

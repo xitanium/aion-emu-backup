@@ -22,19 +22,12 @@ package admincommands;
 
 import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_QUIT_RESPONSE;
-import com.aionemu.gameserver.services.PlayerService;
-import com.aionemu.gameserver.world.World;
-import com.google.inject.Inject;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.world.WorldMap;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 
 public class GPS extends AdminCommand
 {
-	@Inject
-	private World	world;
-/**
+	/**
 	 * @param commandName
 	 */
 	public GPS()
@@ -46,13 +39,12 @@ public class GPS extends AdminCommand
 	 * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.gameobjects.Player, java.lang.String[])
 	 */
 	@Override
-	public void executeCommand(Player admin, String... params)
+	public void executeCommand(Player admin, String[] params)
 	{
-		world = admin.getActiveRegion().getWorld();
 		PacketSendUtility.sendMessage(admin, "Actual location GPS coordinates :");
 		PacketSendUtility.sendMessage(admin, "x				= " + admin.getX());
 		PacketSendUtility.sendMessage(admin, "y				= " + admin.getY());
-		PacketSendUtility.sendMessage(admin, "z 				= " + admin.getZ());
+		PacketSendUtility.sendMessage(admin, "z 			= " + admin.getZ());
 		PacketSendUtility.sendMessage(admin, "heading		= " + admin.getHeading());
 		PacketSendUtility.sendMessage(admin, "map 			= " + admin.getActiveRegion().getMapId());
 	}

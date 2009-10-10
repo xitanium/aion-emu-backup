@@ -31,7 +31,7 @@ public class CreatureGameStats<T extends Creature>
 {
 	protected static final Logger log = Logger.getLogger(CreatureGameStats.class);
 	
-	private static final int ATTACK_MAX_COUNTER = 255;
+	private static final int ATTACK_MAX_COUNTER = Integer.MAX_VALUE;
 	
 	private int attackCounter = 0;
 	private int power = 0;
@@ -58,10 +58,12 @@ public class CreatureGameStats<T extends Creature>
 	protected int block = 0;
 	protected int parry = 0;
 	private int magicBoost = 0;
+	private int attackSpeed = 0;
+	private int attackRange = 0;
 	private boolean initialized = false;
 	private Creature owner = null;
 	
-	public CreatureGameStats (Creature owner, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int offHandAttack, int offHandCritRate)
+	public CreatureGameStats (Creature owner, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int offHandAttack, int offHandCritRate, float attackSpeed, float attackRange)
 	{
 		this.owner = owner;
 		this.initialized = true;
@@ -75,6 +77,8 @@ public class CreatureGameStats<T extends Creature>
 		setMainHandCritRate(mainHandCritRate);
 		setOffHandAttack(offHandAttack);
 		setOffHandCritRate(offHandCritRate);
+		setAttackSpeed(attackSpeed);
+		setAttackRange(attackRange);
 	}
 
 	@Override
@@ -113,14 +117,18 @@ public class CreatureGameStats<T extends Creature>
 	 */
 	public void setAttackCounter(int attackCounter)
 	{
-		this.attackCounter = attackCounter;
+		if (attackCounter<=0) {
+			this.attackCounter = 1;
+		} else {
+			this.attackCounter = attackCounter;
+		}
 	}
 	
-	public void increateAttackCounter()
+	public void increaseAttackCounter()
 	{
 		if(attackCounter == ATTACK_MAX_COUNTER)
 		{
-			this.attackCounter = 0;
+			this.attackCounter = 1;
 		}
 		else
 		{
@@ -276,6 +284,39 @@ public class CreatureGameStats<T extends Creature>
 	{
 		this.offHandCritRate = offHandCritRate;
 	}
+	
+	/**
+	 * @return the attackSpeed
+	 */
+	public int getAttackSpeed()
+	{
+		return attackSpeed;
+	}
+
+	/**
+	 * @param attackSpeed the attackSpeed to set
+	 */
+	public void setAttackSpeed(float attackSpeed)
+	{
+		this.attackSpeed = Math.round(attackSpeed*1000);
+	}
+
+	/**
+	 * @return the attackRange
+	 */
+	public int getAttackRange()
+	{
+		return attackRange;
+	}
+	
+	/**
+	 * @param attackRange the attackRange to set
+	 */
+	public void setAttackRange(float attackRange)
+	{
+		this.attackRange = Math.round(attackRange*1000);
+	}
+
 	/**
 	 * @return the water
 	 */
