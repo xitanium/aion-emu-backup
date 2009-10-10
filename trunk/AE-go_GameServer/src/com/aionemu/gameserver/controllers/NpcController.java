@@ -56,7 +56,7 @@ public class NpcController extends CreatureController<Npc>
 		Player player = (Player) world.findAionObject(targetObjectId);
 
 		//TODO fix last attack - cause mob is already dead
-		int damages = StatFunctions.calculateNpcBaseDamageToPlayer(npc, player);
+		int damages = StatFunctions.calculateBaseDamageToTarget(npc, player);
 		
 //		PacketSendUtility.broadcastPacket(player,
 //			new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);

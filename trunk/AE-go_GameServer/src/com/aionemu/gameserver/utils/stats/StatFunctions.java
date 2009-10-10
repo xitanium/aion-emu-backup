@@ -23,7 +23,6 @@ import org.apache.log4j.Logger;
 import com.aionemu.gameserver.dataholders.PlayerStatsData;
 import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.Creature;
-import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.stats.CreatureGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
@@ -32,6 +31,7 @@ import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 
 import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.model.templates.SkillTemplate;
+import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
  * @author ATracer
@@ -61,38 +61,6 @@ public class StatFunctions
 		int xpPercentage =  XPRewardEnum.xpRewardFrom(targetLevel - playerLevel);
 		
 		return (int) Math.floor(baseXP * xpPercentage * Config.EXP_RATE / 100);
-	}
-	
-	/**
-	 * 
-	 * @param player
-	 * @param target
-	 * @return Damage made to target (-hp value)
-	 */
-	public static int calculateBaseDamageToTarget(Player player, Creature target)
-	{
-		int pAttack = ClassStats.getPowerFor(player.getPlayerClass());
-		int targetPDef = ((Npc) target).getTemplate().getStatsTemplate().getMaxHp();
-		
-		return pAttack - targetPDef / 10;
-	}
-	
-	/**
-	 * @param player
-	 * @param target
-	 * @param skillTemplate
-	 * @return HP damage to target
-	 */
-	public static int calculateMagicDamageToTarget(Player player, Creature target, SkillTemplate skillTemplate)
-	{
-		//TODO this is a dummmy cacluations
-		return skillTemplate.getDamages() * skillTemplate.getLevel() * 2;
-	}
-	
-	public static int calculateNpcBaseDamageToPlayer(Npc npc, Player player)
-	{
-		//TODO this is a dummy calcs
-		return npc.getLevel() * 5 + 20;
 	}
 	
 	public static PlayerLifeStats getBaseLifeStats (PlayerClass playerClass, PlayerStatsData playerStatsData) {
@@ -153,10 +121,71 @@ public class StatFunctions
 		int accuracy = sgs.getMagicAccuracy();
 		int attackCount = sgs.getAttackCounter();
 		Random generator = new Random ();
-		int seed = generator.nextInt(accuracy);
-		if ((attackCount%seed)==0) {
-			return 0;
+		int missedSpellSeed = generator.nextInt(accuracy);
+		boolean missedSpell = (attackCount%missedSpellSeed) == 0;
+		int damages = baseDamages+Math.round(magicBoost*0.60f);
+		damages -= Math.round((elementaryDefense+magicalResistance)*0.60f); 
+		if (missedSpell&&(speller instanceof Player)) {
+			PacketSendUtility.sendMessage((Player)speller,"Your spell miss "+target.getName()+"...");
 		}
-		return baseDamages+Math.round(magicBoost*0.60f)-Math.round((elementaryDefense+magicalResistance)*0.60f);
+		if (missedSpell&&(target instanceof Player)) {
+			PacketSendUtility.sendMessage((Player)target,speller.getName()+"missed you...");
+		}
+		if (missedSpell) {
+			damages = 0;
+		}
+		return damages;
+	}
+	
+	/**
+	 * 
+	 * @param player
+	 * @param target
+	 * @return Damage made to target (-hp value)
+	 */
+	public static int calculateBaseDamageToTarget(Creature attacker, Creature target)
+	{
+		CreatureGameStats<?> ags = attacker.getGameStats();
+		CreatureGameStats<?> tgs = target.getGameStats();
+		
+		int baseDamages = ags.getMainHandAttack();
+		int critRate = ags.getMainHandCritRate();
+		int accuracy = ags.getMainHandAccuracy();
+		int attackCount = ags.getAttackCounter();
+		int parry = tgs.getParry();
+		int block = tgs.getBlock();
+		int pDef = tgs.getPhysicalDefense();
+		Random generator = new Random ();
+		int critAttackSeed =  generator.nextInt(critRate);
+		int missedAttackSeed = generator.nextInt(accuracy);
+		int blockedAttackSeed = generator.nextInt(block);
+		int parredAttackSeed = generator.nextInt(parry);
+		boolean critAttack = (attackCount%critAttackSeed)==0;
+		boolean missedAttack = (attackCount%missedAttackSeed)==0;
+		boolean blockedAttack = (attackCount%blockedAttackSeed)==0;
+		boolean parredAttack = (attackCount%parredAttackSeed)==0;
+		int damages = baseDamages + (critAttack?Math.round(baseDamages*0.60f):0);
+		damages -= Math.round(pDef * 0.10f) + (parredAttack?Math.round(pDef*0.60f):0);
+		if (attacker instanceof Player) {
+			if (missedAttack) {
+				PacketSendUtility.sendMessage((Player)attacker,"You miss "+target.getName()+"...");
+			}
+			if (blockedAttack) {
+				PacketSendUtility.sendMessage((Player)attacker,target.getName()+" blocks your attack...");
+			}
+			
+		}
+		if (target instanceof Player) {
+			if (missedAttack) {
+				PacketSendUtility.sendMessage((Player)target,attacker.getName()+" missed you...");
+			}
+			if (blockedAttack) {
+				PacketSendUtility.sendMessage((Player)target,"You blocked "+attacker.getName()+"'s attack...");
+			}
+		}
+		if (blockedAttack||missedAttack) {
+			damages = 0;
+		}
+		return damages;
 	}
 }
