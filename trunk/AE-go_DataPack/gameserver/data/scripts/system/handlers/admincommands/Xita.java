@@ -51,22 +51,25 @@ public class Xita extends AdminCommand
 	@Override
 	public void executeCommand(Player admin, String... params)
 	{
-		int methodId = Integer.parseInt(params[0]);
-		switch(methodId) {
-		
-		case 1: playerTitlesSendPacket(admin);
-		break;
-		case 2: sendVideo(admin, Integer.parseInt(params[1]));
-		break;
-		default: return;
-		
+		if(params[0].equals("titles")) 
+		{		
+			playerTitlesSendPacket(admin);
+		}
+		else if(params[0].equals("video")) 
+		{ 
+			sendVideo(admin, Integer.parseInt(params[1]), Integer.parseInt(params[2]));
+		}
+		else 
+		{
+			PacketSendUtility.sendMessage(admin, "//xita titles");
+			PacketSendUtility.sendMessage(admin, "//xita video #factionid #videoid");
 		}
 	}
 	
 	public void playerTitlesSendPacket(Player xita) {
 		PacketSendUtility.sendPacket(xita, new SM_PLAYER_TITLES(1));
 	}
-	public void sendVideo(Player xita, int videoid) {
-		PacketSendUtility.sendPacket(xita, new SM_PLAY_INTRO(videoid));
+	public void sendVideo(Player xita, int factionid, int videoid) {
+		PacketSendUtility.sendPacket(xita, new SM_PLAY_INTRO(factionid, videoid));
 	}
 }
