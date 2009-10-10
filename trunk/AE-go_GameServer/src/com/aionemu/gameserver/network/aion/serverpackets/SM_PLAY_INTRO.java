@@ -35,9 +35,9 @@ public class SM_PLAY_INTRO extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		writeD(buf, factionid);
+		writeD(buf, 1);
 		writeH(buf, 0);
-		writeC(buf, 0);
+		writeC(buf, factionid);
 		writeC(buf, videoid);
 		writeD(buf, 0);
 	}
