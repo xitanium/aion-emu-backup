@@ -309,6 +309,7 @@
 				<case id="1300097" comment="DUEL_ASKED_TO_REJECTED" />
 				<case id="1300628" comment="YOU_ARE_BLOCKED_BY" />
 				<case id="1390141" comment="ACCUMULATED_TIME" />
+				<case id="1370000" comment="UNKNOWN_1370000" />
 			</switch>
 			<part id="1" name="count" type="c" />
 			<for id="1">

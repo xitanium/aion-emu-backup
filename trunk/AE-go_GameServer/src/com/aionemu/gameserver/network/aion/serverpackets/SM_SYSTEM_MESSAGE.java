@@ -87,6 +87,9 @@ public class SM_SYSTEM_MESSAGE extends AionServerPacket
 	/**
 	 * 
 	 */
+	public static SM_SYSTEM_MESSAGE UNKNOWN_1370000(int _1, int _2) {
+		return new SM_SYSTEM_MESSAGE(1370000,_1,_2);
+	}
 	public static SM_SYSTEM_MESSAGE EXP(String _exp)
 	{
 		return new SM_SYSTEM_MESSAGE(1370002, _exp);

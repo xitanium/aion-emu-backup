@@ -25,6 +25,7 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_TITLES;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAY_INTRO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_QUIT_RESPONSE;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNK76;
 import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.world.World;
@@ -59,6 +60,10 @@ public class Xita extends AdminCommand
 		{ 
 			sendVideo(admin, Integer.parseInt(params[1]), Integer.parseInt(params[2]));
 		}
+		else if(params[0].equals("sys_1370000")) 
+		{
+			sendSys1370000(admin,Integer.parseInt(params[1],16), Integer.parseInt(params[2],16));
+		}
 		else 
 		{
 			PacketSendUtility.sendMessage(admin, "//xita titles");
@@ -71,5 +76,8 @@ public class Xita extends AdminCommand
 	}
 	public void sendVideo(Player xita, int factionid, int videoid) {
 		PacketSendUtility.sendPacket(xita, new SM_PLAY_INTRO(factionid, videoid));
+	}
+	public void sendSys1370000(Player xita, int _1, int _2) {
+		PacketSendUtility.sendPacket(xita, SM_SYSTEM_MESSAGE.UNKNOWN_1370000(_1, _2));
 	}
 }
