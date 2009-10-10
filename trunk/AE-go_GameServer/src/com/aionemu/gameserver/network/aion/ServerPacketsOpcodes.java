@@ -131,6 +131,7 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_DUEL_CONFIRMED.class, 0xD0, idSet);
 		addPacketOpcode(SM_DUEL_ACCEPTED.class, 0x68, idSet);
 		
+		addPacketOpcode(SM_PLAYER_TITLES.class, 0xAE, idSet); // 1.5.x player titles
 		
 
 
