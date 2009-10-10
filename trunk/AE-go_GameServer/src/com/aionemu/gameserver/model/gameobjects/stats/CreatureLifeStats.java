@@ -35,8 +35,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  */
 public class CreatureLifeStats<T extends Creature>
 {
-	@SuppressWarnings("unused")
-	private static final Logger log = Logger.getLogger(CreatureLifeStats.class);
+	protected static final Logger log = Logger.getLogger(CreatureLifeStats.class);
 	
 	private int currentHp;
 	
@@ -63,6 +62,7 @@ public class CreatureLifeStats<T extends Creature>
 		this.maxMp = maxMp;
 		this.owner = owner;
 		this.initialized = true;
+		log.debug("Creating life stats for "+owner.getName()+" (id "+owner.getObjectId()+"): "+toString());
 	}
 	
 	@Override

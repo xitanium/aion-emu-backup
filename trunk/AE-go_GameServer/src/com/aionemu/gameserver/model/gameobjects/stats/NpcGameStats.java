@@ -38,10 +38,11 @@ public class NpcGameStats extends CreatureGameStats<Npc>
 		super(owner,0,0,0,0,0,0,0,0,0,0);
 		this.block = nst.getBlock();
 		this.magicAccuracy = nst.getMagicAccuracy();
-		this.mainHandAttack = nst.getMainHandAccuracy();
+		this.mainHandAccuracy = nst.getMainHandAccuracy();
 		this.mainHandCritRate = nst.getMainHandCritRate();
 		this.mainHandAttack = nst.getMainHandAttack();
 		this.parry = nst.getParry();
+		this.evasion = nst.getEvasion();
 	}
 	
 	protected NpcGameStats (Creature owner, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int offHandAttack, int offHandCritRate) {

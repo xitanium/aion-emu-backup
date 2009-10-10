@@ -18,6 +18,8 @@ package com.aionemu.gameserver.model.gameobjects.stats;
 
 import java.lang.reflect.Field;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.SkillElement;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 
@@ -27,6 +29,8 @@ import com.aionemu.gameserver.model.gameobjects.Creature;
  */
 public class CreatureGameStats<T extends Creature>
 {
+	protected static final Logger log = Logger.getLogger(CreatureGameStats.class);
+	
 	private static final int ATTACK_MAX_COUNTER = 255;
 	
 	private int attackCounter = 0;
@@ -71,6 +75,7 @@ public class CreatureGameStats<T extends Creature>
 		setMainHandCritRate(mainHandCritRate);
 		setOffHandAttack(offHandAttack);
 		setOffHandCritRate(offHandCritRate);
+		log.debug("Creating gamestats for "+owner.getName()+" (id "+owner.getObjectId()+"): "+this.toString());
 	}
 
 	@Override
