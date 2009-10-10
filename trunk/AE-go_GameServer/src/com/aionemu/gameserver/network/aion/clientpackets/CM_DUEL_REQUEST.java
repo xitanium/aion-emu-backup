@@ -79,6 +79,7 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 			public void acceptRequest(Player requester, Player responder)
 			{
 				responder.getClientConnection().sendPacket(new SM_DUEL_CONFIRMED(requester.getObjectId()));
+				requester.getClientConnection().sendPacket(new SM_DUEL_ACCEPTED(responder.getObjectId(), requester.getObjectId()));
 				requester.getController().startDuelWith(responder);
 			}
 
@@ -93,7 +94,6 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 			@Override
 			public void acceptRequest(Player requester, Player responder)
 			{
-				responder.getClientConnection().sendPacket(new SM_DUEL_ACCEPTED(requester.getObjectId(), responder.getObjectId()));
 				requester.getController().startDuelWith(responder);
 			}
 

@@ -16,8 +16,6 @@
  */
 package com.aionemu.gameserver.model.gameobjects.stats;
 
-import com.aionemu.commons.database.dao.DAOManager;
-import com.aionemu.gameserver.dao.PlayerStatsDAO;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_DP;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -52,13 +50,11 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 	@Override
 	public void sendHpPacketUpdate () {
 		super.sendHpPacketUpdate();
-		DAOManager.getDAO(PlayerStatsDAO.class).storeLifeStats(this.getOwner().getObjectId(), this);
 	}
 	
 	@Override
 	public void sendMpPacketUpdate () {
 		super.sendMpPacketUpdate();
-		DAOManager.getDAO(PlayerStatsDAO.class).storeLifeStats(this.getOwner().getObjectId(), this);
 	}
 	
 	public int increaseCurrentDp (int value) {
@@ -87,7 +83,6 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 			return;
 		}
 		PacketSendUtility.sendPacket((Player)getOwner(), new SM_STATUPDATE_DP(currentDp));
-		DAOManager.getDAO(PlayerStatsDAO.class).storeLifeStats(this.getOwner().getObjectId(), this);
 	}
 
 	public void setMaxDp(int maxDp)
@@ -107,6 +102,5 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 		setMaxHp((int) Math.round(this.getMaxHp() * 1.07 * (toLevel - fromLevel)));
 		setMaxMp((int) Math.round(this.getMaxMp() * 1.07 * (toLevel - fromLevel)));
 		setMaxDp((int) Math.round(this.getMaxDp() * 1.07 * (toLevel - fromLevel)));
-		DAOManager.getDAO(PlayerStatsDAO.class).storeLifeStats(this.getOwner().getObjectId(), this);
 	}
 }
