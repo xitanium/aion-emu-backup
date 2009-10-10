@@ -726,11 +726,11 @@
 			<part name="currentMp" type="d" />
 			<part name="maxMp" type="d" />
 		</packet>
-		<packet id="0x68" name="SM_DUEL_ACCEPTED">
-			<part name="responderId" type="d" />
-			<part name="requesterId" type="d" />
+		<packet id="0x68" name="SM_UNK68">
+			<part name="targetId" type="d" />
+			<part name="playerId" type="d" />
 		</packet>
-		<packet id="0xD0" name="SM_DUEL_CONFIRMED">
+		<packet id="0xD0" name="SM_DUEL_STARTED">
 			<part name="requesterId" type="d" />
 		</packet>
 	</packetfamilly>

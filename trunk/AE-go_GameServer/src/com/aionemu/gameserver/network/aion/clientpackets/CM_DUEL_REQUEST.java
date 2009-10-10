@@ -21,8 +21,7 @@ import org.apache.log4j.Logger;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.RequestResponseHandler;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_DUEL_ACCEPTED;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_DUEL_CONFIRMED;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_DUEL_STARTED;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_QUESTION_WINDOW;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -78,8 +77,8 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 			@Override
 			public void acceptRequest(Player requester, Player responder)
 			{
-				responder.getClientConnection().sendPacket(new SM_DUEL_CONFIRMED(requester.getObjectId()));
-				requester.getClientConnection().sendPacket(new SM_DUEL_ACCEPTED(responder.getObjectId(), requester.getObjectId()));
+				responder.getClientConnection().sendPacket(new SM_DUEL_STARTED(requester.getObjectId()));
+				requester.getClientConnection().sendPacket(new SM_DUEL_STARTED(responder.getObjectId()));
 				requester.getController().startDuelWith(responder);
 			}
 

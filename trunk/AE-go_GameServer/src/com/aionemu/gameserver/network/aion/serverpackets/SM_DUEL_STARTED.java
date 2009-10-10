@@ -26,25 +26,22 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
  * @author xavier
  * 
  */
-public class SM_DUEL_ACCEPTED extends AionServerPacket
+public class SM_DUEL_STARTED extends AionServerPacket
 {
-	private int	responderObjectId;
-	private int	requesterObjectId;
+	private int	requesterObjectId = 0;
 	
-	public SM_DUEL_ACCEPTED(int responserObjectId, int requesterObjectId)
+	public SM_DUEL_STARTED (int requesterObjectId)
 	{
-		this.responderObjectId = requesterObjectId;
 		this.requesterObjectId = requesterObjectId;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
-	{		
-		writeD(buf, responderObjectId);
+	{
 		writeD(buf, requesterObjectId);
-	}	
+	}
 }
