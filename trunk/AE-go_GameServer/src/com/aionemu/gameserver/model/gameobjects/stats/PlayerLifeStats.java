@@ -45,10 +45,10 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 		super(owner,0,0,0,0);
 		this.playerStatsData = psd;
 		PlayerStatsTemplate pst = psd.getTemplate(owner.getPlayerClass(),1);
-		setMaxHp(getMaxHp());
-		setCurrentHp(getMaxHp());
+		setMaxHp(pst.getMaxHp());
+		setCurrentHp(pst.getMaxHp());
 		setMaxMp(pst.getMaxMp());
-		setCurrentMp(getMaxMp());
+		setCurrentMp(pst.getMaxMp());
 		// TODO find good MaxDp value
 		setMaxDp(4000);
 		setCurrentDp(0);
