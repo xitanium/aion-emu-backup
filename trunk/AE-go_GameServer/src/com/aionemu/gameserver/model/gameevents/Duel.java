@@ -22,8 +22,8 @@ public class Duel {
 	private Player requester;
 	private Player responder;
 	private World currentWorld;
-	private static Player duelWinner;
-	private static Player duelLooser;
+	private Player duelWinner;
+	private Player duelLooser;
 	
 	public Duel(Player _requester, Player _responder) {
 		
@@ -37,10 +37,9 @@ public class Duel {
 		sendDuelChallenge();
 	}
 	
-	public static void setDuelResults(Player winner, Player looser) {
+	public void setDuelResults(Player winner, Player looser) {
 		duelWinner = winner;
 		duelLooser = looser;
-		finishDuel();
 	}
 	
 	// method :: sendDuelChallenge
@@ -104,13 +103,35 @@ public class Duel {
 	// method :: startDuel
 	public void startDuel() 
 	{
+		log.info("Duel started");
 		responder.getClientConnection().sendPacket(new SM_DUEL_STARTED(requester.getObjectId()));
 		requester.getClientConnection().sendPacket(new SM_DUEL_STARTED(responder.getObjectId()));
 		DuelThread dTh = new DuelThread(requester, responder);
+		try
+		{
+			dTh.join();
+		}
+		catch(InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("Cannot join DuelThread", e);
+		}
+		
+		int requesterHP = requester.getLifeStats().getCurrentHp();
+		int responderHP = requester.getLifeStats().getCurrentHp();
+		
+		if(requesterHP == 0) {
+			setDuelResults(responder, requester);
+		}
+		else {
+			setDuelResults(requester, responder);
+		}
+		finishDuel();
 	}
 	
 	// method :: finishDuel(Player winner, Player looser)
-	private static void finishDuel() {
+	private void finishDuel() {
 		if(duelLooser == null || duelWinner == null) {
 			//TODO: investigate why winner and looser are set to null.
 		}

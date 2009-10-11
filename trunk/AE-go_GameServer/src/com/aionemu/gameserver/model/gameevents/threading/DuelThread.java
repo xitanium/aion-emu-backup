@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.model.gameevents.threading;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.gameevents.Duel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 
@@ -27,6 +29,7 @@ public class DuelThread extends Thread
 {
 	private Player _requester;
 	private Player _responder;
+	private static Logger	log = Logger.getLogger(DuelThread.class);
 	
 	public DuelThread(Player requester, Player responder) {
 		_requester = requester;
@@ -45,14 +48,7 @@ public class DuelThread extends Thread
 			catch(InterruptedException e) {
 				
 			}
+			
 		}
-		if(requesterHP == 0) {
-			Duel.setDuelResults(_responder, _requester);
-		}
-		else {
-			Duel.setDuelResults(_requester, _responder);
-		}
-		// exit
 	}
-	
 }
