@@ -107,6 +107,7 @@ public class Duel {
 		responder.getClientConnection().sendPacket(new SM_DUEL_STARTED(requester.getObjectId()));
 		requester.getClientConnection().sendPacket(new SM_DUEL_STARTED(responder.getObjectId()));
 		DuelThread dTh = new DuelThread(requester, responder);
+		dTh.start();
 		try
 		{
 			dTh.join();
