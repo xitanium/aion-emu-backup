@@ -43,12 +43,13 @@ public class DuelThread extends Thread
 		
 		while(requesterHP > 0 && responderHP > 0) {
 			try {
-				Thread.currentThread().sleep(500);
+				Thread.sleep(250);
 			}
 			catch(InterruptedException e) {
-				
+				log.error("Cannot sleep DuelThread", e);
 			}
 			
 		}
+		return;
 	}
 }
