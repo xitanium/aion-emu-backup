@@ -18,6 +18,7 @@ package com.aionemu.gameserver.network.aion.clientpackets;
 
 import org.apache.log4j.Logger;
 
+import com.aionemu.gameserver.model.gameevents.Duel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.RequestResponseHandler;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
@@ -71,7 +72,10 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 		// Get the request recipient
 		final Player targetPlayer = world.findPlayer(objectId);
 		
-		log.debug("Player " + activePlayer.getName() + " (objid=" + activePlayer.getObjectId() + ") requested duel with " + targetPlayer.getName() + " (objid=" + targetPlayer.getObjectId()+")");
+		Duel d = new Duel(activePlayer, targetPlayer);
+		d.start();
+		
+		/*log.debug("Player " + activePlayer.getName() + " (objid=" + activePlayer.getObjectId() + ") requested duel with " + targetPlayer.getName() + " (objid=" + targetPlayer.getObjectId()+")");
 
 		RequestResponseHandler activePlayerResponseHandler = new RequestResponseHandler(activePlayer) {
 			@Override
@@ -122,6 +126,6 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 		else {
 			activePlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL, targetPlayer.getName()));
 			activePlayer.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_ASKED_TO(targetPlayer.getName()));
-		}
+		}*/
 	}
 }
