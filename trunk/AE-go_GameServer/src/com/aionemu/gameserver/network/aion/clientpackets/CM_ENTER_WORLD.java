@@ -242,9 +242,7 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			// sendPacket(new SM_UNK97());
 			// sendPacket(new SM_UNK8D());
 			
-			sendPacket(new SM_MESSAGE(0, null, "Welcome to " + Config.SERVER_NAME
-				+ " server\nPowered by aion-unique software\ndeveloped by www.aion-unique.com team.\nCopyright 2009", null,
-				ChatType.ANNOUNCEMENTS));
+			sendPacket(new SM_MESSAGE(0, null, "Welcome to " + Config.SERVER_NAME, null,	ChatType.ANNOUNCEMENTS));
 			
 			if(playerGMLevel >= 2) {
 				Iterator<Player> iter = world.getPlayersIterator();

@@ -80,6 +80,7 @@ public class CM_DUEL_REQUEST extends AionClientPacket
 				responder.getClientConnection().sendPacket(new SM_DUEL_STARTED(requester.getObjectId()));
 				requester.getClientConnection().sendPacket(new SM_DUEL_STARTED(responder.getObjectId()));
 				requester.getController().startDuelWith(responder);
+				responder.getController().startDuelWith(requester);
 			}
 
 			public void denyRequest(Player requester, Player responder)
