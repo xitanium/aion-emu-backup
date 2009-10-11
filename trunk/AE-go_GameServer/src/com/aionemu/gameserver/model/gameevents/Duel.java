@@ -58,7 +58,7 @@ public class Duel {
 			public void denyRequest(Player _requester, Player _responder)
 			{
 				requester.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_REJECTED_BY(responder.getName()));
-				PacketSendUtility.sendMessage(requester, "Player " + responder.getName() + " declined duel of "+requester.getName());
+				//PacketSendUtility.sendMessage(requester, "Player " + responder.getName() + " declined duel of "+requester.getName());
 				log.debug("player " + _responder.getName() + " rejected duel request from " + _requester.getName());
 			}
 		};
@@ -88,16 +88,16 @@ public class Duel {
 			responder.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL, requester.getName()));
 			responder.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_ASKED_BY(requester.getName()));
 		}
-		/*requested = requester.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL,responderResponseHandler);
+		requested = requester.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL,responderResponseHandler);
 		if (!requested){
 			// Can't trade with player.
 			// TODO: Need to check why and send a error.
 			log.debug("requested == false on Duel.java:82");
 		}
 		else {
-			activePlayer.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL, targetPlayer.getName()));
-			activePlayer.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_ASKED_TO(targetPlayer.getName()));
-		}*/
+			requester.getClientConnection().sendPacket(new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL, responder.getName()));
+			requester.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_ASKED_TO(responder.getName()));
+		}
 	}
 	
 	// method :: startDuel
