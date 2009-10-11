@@ -25,6 +25,8 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_TITLES;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAY_INTRO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
+import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNK50;
+import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNKF0;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
 
@@ -55,6 +57,12 @@ public class Xita extends AdminCommand
 		else if(params[0].equals("sys_1370000")) 
 		{
 			sendSys1370000(admin,Integer.parseInt(params[1],16), Integer.parseInt(params[2],16));
+		}
+		else if(params[0].equals("f0")) {
+			PacketSendUtility.sendPacket(admin, new SM_UNKF0());
+		}
+		else if(params[0].equals("50")) {
+			PacketSendUtility.sendPacket(admin, new SM_UNK50());
 		}
 		else 
 		{

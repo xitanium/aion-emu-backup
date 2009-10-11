@@ -133,7 +133,8 @@ public class ServerPacketsOpcodes
 		addPacketOpcode(SM_PLAYER_TITLES.class, 0xAE, idSet); // 1.5.x player titles
 
 		addPacketOpcode(SM_UNK76.class, 0x76, idSet); // think it's startup video
-
+		addPacketOpcode(SM_UNK50.class, 0x50, idSet);
+		addPacketOpcode(SM_UNKF0.class, 0xF0, idSet);
 
 
 		//Unrecognized Opcodes:
