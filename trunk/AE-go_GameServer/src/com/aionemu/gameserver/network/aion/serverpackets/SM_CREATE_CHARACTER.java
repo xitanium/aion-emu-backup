@@ -119,6 +119,8 @@ public class SM_CREATE_CHARACTER extends PlayerInfo
 			}
 			
 			writePlayerInfo(buf, player); // if everything is fine, all the character's data should be sent
+			writeD(buf, player.getDeletionTimeInSeconds());
+			writeD(buf, 0x00);// unk
 		}
 		else
 		{

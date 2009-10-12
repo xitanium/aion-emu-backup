@@ -158,7 +158,5 @@ public abstract class PlayerInfo extends AionServerPacket
 		    writeD(buf, 0x00);
 		    writeD(buf, 0x00);
 		}
-		writeD(buf, accPlData.getDeletionTimeInSeconds());
-		writeD(buf, 0x00);// unk
 	}
 }
