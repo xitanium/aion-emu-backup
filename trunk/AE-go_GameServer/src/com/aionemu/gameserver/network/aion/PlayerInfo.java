@@ -18,13 +18,10 @@ package com.aionemu.gameserver.network.aion;
 
 import java.nio.ByteBuffer;
 
-import org.apache.log4j.Logger;
-
 import com.aionemu.gameserver.model.account.PlayerAccountData;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerAppearance;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
-import com.aionemu.gameserver.model.gameobjects.player.Player;
 
 /**
  * 
@@ -34,13 +31,10 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
  */
 public abstract class PlayerInfo extends AionServerPacket
 {
-	private static Logger log= Logger.getLogger(PlayerInfo.class);
-
 	protected PlayerInfo()
 	{
 		
 	}
-
 
 	protected void writePlayerInfo(ByteBuffer buf, PlayerAccountData accPlData)
 	{
@@ -112,8 +106,8 @@ public abstract class PlayerInfo extends AionServerPacket
 		writeC(buf, playerAppearance.getFootSize());
 		writeC(buf, playerAppearance.getFacialRate());
 		writeC(buf, 0x00); // always 0 may be acessLevel
-		writeC(buf, 0x00); // always 0 - unk
 		writeF(buf, playerAppearance.getHeight());
+		writeC(buf, 0x00); // always 0 - unk
 		int raceSex = 100000 + raceId * 2 + genderId;
 		writeD(buf, raceSex);
 		writeD(buf, pbd.getPosition().getMapId());//mapid for preloading map
@@ -143,29 +137,23 @@ public abstract class PlayerInfo extends AionServerPacket
 		writeD(buf, 0);// unk 50379392
 		writeD(buf, 0);// unk 1242638636
 
-		int itemsSize = 0;
-
 		Inventory equipedItems = new Inventory();
 		equipedItems.getEquipedItemsFromDb(pbd.getPlayerObjId());
 		int totalEquipedItemsCount = equipedItems.getEquipedItemsCount();
 
-		int row = 0;
-		while (totalEquipedItemsCount > 0) {
- 			writeC(buf, row);
-		    	writeD(buf, equipedItems.getEquipedItemIdArray(row));
-		    	writeD(buf, 0);
-		     	writeD(buf, 0);
-
-			totalEquipedItemsCount = totalEquipedItemsCount-1;
-			itemsSize = itemsSize + 13;
-			row+=1;
+		for (int row = 0; row < totalEquipedItemsCount; row++) {
+ 			writeC(buf, 0x01); // item equiped
+ 			writeD(buf, equipedItems.getEquipedItemIdArray(row));
+		    writeD(buf, 0x00);
+		    writeD(buf, 0x00);
 		}
-
-		
-		stupidNc = new byte[208-itemsSize];
-		writeB(buf, stupidNc);
+		for (int row = totalEquipedItemsCount; row < 16; row++) {
+			writeC(buf, 0x00); // item not equiped
+ 			writeD(buf, 0x00);
+		    writeD(buf, 0x00);
+		    writeD(buf, 0x00);
+		}
 		writeD(buf, accPlData.getDeletionTimeInSeconds());
-		writeD(buf, 0x00);// unk
-		
+		writeC(buf, 0x00);// unk
 	}
 }

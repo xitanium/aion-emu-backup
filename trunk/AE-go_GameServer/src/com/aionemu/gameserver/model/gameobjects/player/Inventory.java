@@ -17,9 +17,6 @@
 
 package com.aionemu.gameserver.model.gameobjects.player;
 
-import java.util.Random;
-
-import com.aionemu.gameserver.configs.Config;
 import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
@@ -27,8 +24,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.aionemu.commons.database.DB;
-import com.aionemu.commons.database.IUStH;
-import com.aionemu.commons.database.ParamReadStH;
 
 /**
  *

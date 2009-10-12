@@ -65,16 +65,16 @@
 				<part name="0x00" type="d" />
 			</for>
 			<part name="skinRGB" type="d">
-				<reader type="Color"/>
+				<reader type="Color" />
 			</part>
 			<part name="hairRGB" type="d">
-				<reader type="Color"/>
+				<reader type="Color" />
 			</part>
 			<part name="eyeRGB" type="d">
-				<reader type="Color"/>
+				<reader type="Color" />
 			</part>
 			<part name="lipRGB" type="d">
-				<reader type="Color"/>
+				<reader type="Color" />
 			</part>
 			<part name="face" type="c" />
 			<part name="hair" type="c" />
@@ -137,7 +137,7 @@
 			<part name="moveType" type="c" />
 			<part name="self[0x40|0x00]" type="c" />
 			<part name="heroe" type="c">
-				<reader type="Boolean"/>
+				<reader type="Boolean" />
 			</part>
 			<part name="0x00" type="c" />
 			<part name="level" type="d" />
@@ -421,34 +421,43 @@
 		<packet id="0xBD" name="SM_TELEPORT">
 		</packet>
 		<packet id="0xC0" name="SM_CREATE_CHARACTER">
-			<part name="unk1" type="d" />
+			<part name="responseCode" type="d" />
 			<part name="objectId" type="d" />
-			<part name="shit" type="b" size="44" />
-			<part name="famale" type="d" />
-			<part name="race" type="d" />
+			<part name="characterName" type="S" size="44" />
+			<part name="gender(0=female,1=male)" type="d" />
+			<part name="race(0=asmo,1=elys)" type="d" />
 			<part name="classId" type="d" />
 			<part name="voice" type="d" />
-			<part name="skinRGB" type="d" />
-			<part name="hairRGB" type="d" />
-			<part name="lipRGB" type="d" />
+			<part name="skinRGB" type="d">
+				<reader type="Color" />
+			</part>
+			<part name="hairRGB" type="d">
+				<reader type="Color" />
+			</part>
+			<part name="eyeRGB" type="d">
+				<reader type="Color" />
+			</part>
+			<part name="lipRGB" type="d">
+				<reader type="Color" />
+			</part>
 			<part name="face" type="c" />
 			<part name="hair" type="c" />
 			<part name="deco" type="c" />
-			<part name="tatto" type="c" />
-			<part name="unk == 4" type="c" />
+			<part name="tattoo" type="c" />
+			<part name="0x04" type="c" />
 			<part name="faceShape" type="c" />
-			<part name="forehead" type="c" />
-			<part name="eyeHeigh" type="c" />
+			<part name="foreHead" type="c" />
+			<part name="eyeHeight" type="c" />
 			<part name="eyeSpace" type="c" />
 			<part name="eyeWidth" type="c" />
 			<part name="eyeSize" type="c" />
 			<part name="eyeShape" type="c" />
 			<part name="eyeAngle" type="c" />
-			<part name="browHeigh" type="c" />
+			<part name="browHeight" type="c" />
 			<part name="browAngle" type="c" />
 			<part name="browShape" type="c" />
 			<part name="nose" type="c" />
-			<part name="noseBridg" type="c" />
+			<part name="noseBridge" type="c" />
 			<part name="noseWidth" type="c" />
 			<part name="noseTip" type="c" />
 			<part name="cheek" type="c" />
@@ -457,7 +466,7 @@
 			<part name="lipSize" type="c" />
 			<part name="smile" type="c" />
 			<part name="lipShape" type="c" />
-			<part name="jawHeigh" type="c" />
+			<part name="jawHeight" type="c" />
 			<part name="chinJut" type="c" />
 			<part name="earShape" type="c" />
 			<part name="headSize" type="c" />
@@ -468,51 +477,154 @@
 			<part name="chest" type="c" />
 			<part name="waist" type="c" />
 			<part name="hips" type="c" />
-			<part name="armThickne" type="c" />
+			<part name="armThickness" type="c" />
 			<part name="handSize" type="c" />
-			<part name="legThicnkes" type="c" />
+			<part name="legThicknes" type="c" />
 			<part name="footSize" type="c" />
 			<part name="facialRate" type="c" />
-			<part name="unk1 == 0" type="c" />
-			<part name="height" type="d" />
-			<part name="unk2 == 63" type="c" />
+			<part name="0x00" type="c" />
+			<part name="height" type="f" />
+			<part name="0x00" type="c" />
 			<part name="raceSex" type="d" />
-			<part name="unk" type="d" />
+			<part name="mapId" type="d" />
 			<part name="x" type="f" />
 			<part name="y" type="f" />
 			<part name="z" type="f" />
 			<part name="unk" type="d" />
-			<part name="unk" type="d" />
+			<part name="level" type="d" />
+			<part name="0x00*20*4" type="b" size="80" />
+			<part name="item#1Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#2Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#3Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#4Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#5Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#6Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#7Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#8Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#9Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#10Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#11Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#12Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#13Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#14Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#15Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
+			<part name="item#16Equipped?" type="c">
+				<reader type="Boolean" />
+			</part>
+			<part name="deletionTime" type="d" />
+			<part name="0x00" type="c" />
 		</packet>
 		<packet id="0xC1" name="SM_CHARACTER_LIST">
 			<part name="playOk2" type="d" />
 			<part id="0" name="characters" type="c" />
 			<for id="0">
 				<part name="objectId" type="d" />
-				<part name="charName" type="S" size="20" />
-				<part name="unk" type="b" size="24" />
-				<part name="famale" type="d" />
-				<part name="race" type="d" />
+				<part name="characterName" type="S" size="44" />
+				<part name="gender(0=female,1=male)" type="d" />
+				<part name="race(0=asmo,1=elys)" type="d" />
 				<part name="classId" type="d" />
 				<part name="voice" type="d" />
-				<part name="skinRGB" type="d" />
-				<part name="hairRGB" type="d" />
-				<part name="lipRGB" type="d" />
-				<part name="eyeColor" type="d" />
+				<part name="skinRGB" type="d">
+					<reader type="Color" />
+				</part>
+				<part name="hairRGB" type="d">
+					<reader type="Color" />
+				</part>
+				<part name="eyeRGB" type="d">
+					<reader type="Color" />
+				</part>
+				<part name="lipRGB" type="d">
+					<reader type="Color" />
+				</part>
 				<part name="face" type="c" />
 				<part name="hair" type="c" />
 				<part name="deco" type="c" />
-				<part name="tatto" type="c" />
-				<part name="unk == 4" type="c" />
+				<part name="tattoo" type="c" />
+				<part name="0x04" type="c" />
 				<part name="faceShape" type="c" />
-				<part name="forehead" type="c" />
-				<part name="eyeHeigh" type="c" />
+				<part name="foreHead" type="c" />
+				<part name="eyeHeight" type="c" />
 				<part name="eyeSpace" type="c" />
 				<part name="eyeWidth" type="c" />
 				<part name="eyeSize" type="c" />
 				<part name="eyeShape" type="c" />
 				<part name="eyeAngle" type="c" />
-				<part name="browHeigh" type="c" />
+				<part name="browHeight" type="c" />
 				<part name="browAngle" type="c" />
 				<part name="browShape" type="c" />
 				<part name="nose" type="c" />
@@ -525,14 +637,10 @@
 				<part name="lipSize" type="c" />
 				<part name="smile" type="c" />
 				<part name="lipShape" type="c" />
-				<part name="jawHeigh" type="c" />
+				<part name="jawHeight" type="c" />
 				<part name="chinJut" type="c" />
 				<part name="earShape" type="c" />
 				<part name="headSize" type="c" />
-				<part name="unk = 00" type="c" />
-				<part name="shoulderSize" type="c" />
-				<part name="armLength" type="c" />
-				<part name="legLength" type="c" />
 				<part name="neck" type="c" />
 				<part name="neckLength" type="c" />
 				<part name="shoulders" type="c" />
@@ -540,55 +648,117 @@
 				<part name="chest" type="c" />
 				<part name="waist" type="c" />
 				<part name="hips" type="c" />
-				<part name="armThickne" type="c" />
+				<part name="armThickness" type="c" />
 				<part name="handSize" type="c" />
-				<part name="legThicnkes" type="c" />
+				<part name="legThicknes" type="c" />
 				<part name="footSize" type="c" />
 				<part name="facialRate" type="c" />
-				<part name="unk1 == 0" type="c" />
-				<part name="unk2" type="c" />
-				<part name="unk3" type="c" />
-				<part name="unk4" type="c" />
-				<part name="unk5" type="c" />
-				<part name="unk6 == 63" type="c" />
+				<part name="0x00" type="c" />
+				<part name="height" type="f" />
+				<part name="0x00" type="c" />
 				<part name="raceSex" type="d" />
-				<part name="MapId" type="d" />
+				<part name="mapId" type="d" />
 				<part name="x" type="f" />
 				<part name="y" type="f" />
 				<part name="z" type="f" />
-				<part name="unk == 6f" type="d" />
-				<part name="lvl" type="d" />
 				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="d" />
-				<part name="unk" type="b" size="176" />
-				<part name="delete time[s]" type="d" />
-				<part name="unk" type="b" size="18" />
+				<part name="level" type="d" />
+				<part name="0x00*20*4" type="b" size="80" />
+				<part name="item#1Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#2Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#3Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#4Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#5Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#6Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#7Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#8Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#9Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#10Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#11Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#12Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#13Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#14Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#15Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
+				<part name="item#16Equipped?" type="c">
+					<reader type="Boolean" />
+				</part>
+				<part name="deletionTime" type="d" />
+				<part name="0x00" type="c" />
 			</for>
 		</packet>
 		<packet id="0xC2" name="SM_FLY_TELEPORT">
@@ -804,31 +974,40 @@
 			<part name="playOk2" type="d" />
 			<part name="account" type="S" />
 			<part name="nick" type="b" size="44" />
-			<part name="famale" type="d" />
-			<part name="race" type="d" />
+			<part name="sex(0=male,1=female)" type="d" />
+			<part name="race(0=asmo,1=elys)" type="d" />
 			<part name="classId" type="d" />
 			<part name="voice" type="d" />
-			<part name="skinRGB" type="d" />
-			<part name="hairRGB" type="d" />
-			<part name="lipRGB" type="d" />
+			<part name="skinRGB" type="d">
+				<reader type="Color" />
+			</part>
+			<part name="hairRGB" type="d">
+				<reader type="Color" />
+			</part>
+			<part name="eyeRGB" type="d">
+				<reader type="Color" />
+			</part>
+			<part name="lipRGB" type="d">
+				<reader type="Color" />
+			</part>
 			<part name="face" type="c" />
 			<part name="hair" type="c" />
 			<part name="deco" type="c" />
-			<part name="tatto" type="c" />
-			<part name="unk == 4" type="c" />
+			<part name="tattoo" type="c" />
+			<part name="unk" type="c" />
 			<part name="faceShape" type="c" />
-			<part name="forehead" type="c" />
-			<part name="eyeHeigh" type="c" />
+			<part name="foreHead" type="c" />
+			<part name="eyeHeight" type="c" />
 			<part name="eyeSpace" type="c" />
 			<part name="eyeWidth" type="c" />
 			<part name="eyeSize" type="c" />
 			<part name="eyeShape" type="c" />
 			<part name="eyeAngle" type="c" />
-			<part name="browHeigh" type="c" />
+			<part name="browHeight" type="c" />
 			<part name="browAngle" type="c" />
 			<part name="browShape" type="c" />
 			<part name="nose" type="c" />
-			<part name="noseBridg" type="c" />
+			<part name="noseBridge" type="c" />
 			<part name="noseWidth" type="c" />
 			<part name="noseTip" type="c" />
 			<part name="cheek" type="c" />
@@ -837,28 +1016,28 @@
 			<part name="lipSize" type="c" />
 			<part name="smile" type="c" />
 			<part name="lipShape" type="c" />
-			<part name="jawHeigh" type="c" />
+			<part name="jawHeight" type="c" />
 			<part name="chinJut" type="c" />
 			<part name="earShape" type="c" />
 			<part name="headSize" type="c" />
 			<part name="neck" type="c" />
 			<part name="neckLength" type="c" />
-			<part name="shoulders" type="c" />
+			<part name="shoulderSize" type="c" />
 			<part name="torso" type="c" />
 			<part name="chest" type="c" />
 			<part name="waist" type="c" />
 			<part name="hips" type="c" />
-			<part name="armThickne" type="c" />
+			<part name="armThickness" type="c" />
 			<part name="handSize" type="c" />
-			<part name="legThicnkes" type="c" />
+			<part name="legThickness" type="c" />
 			<part name="footSize" type="c" />
 			<part name="facialRate" type="c" />
-			<part name="unk1 == 0" type="c" />
-			<part name="unk2" type="c" />
-			<part name="unk3" type="c" />
-			<part name="unk4" type="c" />
-			<part name="unk5" type="c" />
-			<part name="unk6 == 63" type="c" />
+			<part name="unk" type="c" />
+			<part name="armLength" type="c" />
+			<part name="legLength" type="c" />
+			<part name="unk" type="c" />
+			<part name="unk" type="c" />
+			<part name="height" type="f" />
 		</packet>
 		<packet id="0x02" name="CM_DELETE_CHARACTER">
 			<part name="playOk2" type="d" />

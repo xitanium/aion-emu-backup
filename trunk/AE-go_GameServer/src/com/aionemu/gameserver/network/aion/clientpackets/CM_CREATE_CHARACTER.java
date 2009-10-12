@@ -159,7 +159,7 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		readC(); // always 0
 		playerAppearance.setArmLength(readC()); // 1.5.x add ArmLength 
 		playerAppearance.setLegLength(readC()); // 1.5.x add LegLength
-		byte unk1 = (byte) readC(); // always 0
+		readC(); // always 0
 		playerAppearance.setShoulderSize(readC()); // 1.5.x May be ShoulderSize
 		readC(); // always 0
 		readC();

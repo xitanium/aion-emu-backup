@@ -22,6 +22,7 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerAppearance;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
+import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
@@ -59,9 +60,10 @@ public class SM_PLAYER_INFO extends AionServerPacket
 	{
 		PlayerCommonData pcd = player.getCommonData();
 		
-		final int raceId = pcd.getRace().getRaceId();
-		final int genderId = pcd.getGender().getGenderId();
-		final PlayerAppearance playerAppearance = player.getPlayerAppearance();
+		int raceId = pcd.getRace().getRaceId();
+		int genderId = pcd.getGender().getGenderId();
+		PlayerAppearance playerAppearance = player.getPlayerAppearance();
+		PlayerLifeStats pls = player.getLifeStats();
 
 		writeF(buf, player.getX());// x
 		writeF(buf, player.getY());// y
@@ -107,7 +109,7 @@ public class SM_PLAYER_INFO extends AionServerPacket
 			(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 };
 		writeB(buf, unk);
 
-		writeC(buf, 100);// %hp
+		writeC(buf, Math.round(pls.getCurrentHp() * 100f / pls.getMaxHp()));// %hp
 		writeC(buf, 0x00);// unk (0x00)
 		writeC(buf, 0x00);// unk (0x00)
 		writeC(buf, 0x00);// unk (0x00)
