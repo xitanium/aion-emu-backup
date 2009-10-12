@@ -90,7 +90,8 @@ public class PlayerAppearance
 			if (fi.getType().isPrimitive()) {
 				try { str += fi.getName()+":"+fi.getInt(this)+","; }
 				catch(Exception e) { try { str += fi.getName()+":"+fi.getBoolean(this)+","; }
-				catch(Exception f) { } }
+				catch(Exception f) { try { str += fi.getName()+":"+fi.getFloat(this)+","; }
+				catch(Exception g) { } } }
 			}
 		}
 		str += "}";
