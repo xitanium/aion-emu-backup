@@ -20,7 +20,7 @@ import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.AionPacketHandler;
 import com.aionemu.gameserver.network.aion.AionConnection.State;
 import com.aionemu.gameserver.network.aion.clientpackets.*;
-
+import com.aionemu.gameserver.model.gameobjects.player.DropList;
 
 import com.google.inject.Injector;
 
@@ -37,7 +37,8 @@ public class AionPacketHandlerFactory
 {
 	private Injector			injector;
 	private AionPacketHandler	handler	= new AionPacketHandler();
-
+	private DropList dropList;
+	
 	/**
 	 * Creates new instance of <tt>AionPacketHandlerFactory</tt><br>
 	 * 
@@ -46,6 +47,7 @@ public class AionPacketHandlerFactory
 	public AionPacketHandlerFactory(Injector injector)
 	{
 		this.injector = injector;
+		this.dropList = dropList;
 
 		addPacket(new CM_RECONNECT_AUTH(0x21), State.AUTHED);
 		addPacket(new CM_L2AUTH_LOGIN_CHECK(0x7F), State.CONNECTED);
@@ -90,7 +92,7 @@ public class AionPacketHandlerFactory
 		addPacket(new CM_TRADE_CANCEL(0x0F), State.IN_GAME);
 		addPacket(new CM_TRADE_OK(0x0C), State.IN_GAME);
 		addPacket(new CM_TERRITORY(0x4A), State.IN_GAME);
-		addPacket(new CM_START_LOOT(0x04), State.IN_GAME);
+		addPacket(new CM_START_LOOT(0x04, dropList), State.IN_GAME);
 		addPacket(new CM_LOOT_ITEM(0x05), State.IN_GAME);
 		addPacket(new CM_CLOSE_LOOT(0x06), State.IN_GAME);
 		addPacket(new CM_CASTSPELL(0x8B), State.IN_GAME);

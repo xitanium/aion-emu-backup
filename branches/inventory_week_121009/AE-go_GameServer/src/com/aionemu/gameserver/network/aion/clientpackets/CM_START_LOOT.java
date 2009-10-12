@@ -30,11 +30,12 @@ import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
 
+
 import org.apache.log4j.Logger;
 import java.util.Random;
 /**
  * 
- * @author alexa026
+ * @author alexa026, Correted by Metos
  * 
  */
 public class CM_START_LOOT extends AionClientPacket
@@ -44,6 +45,7 @@ public class CM_START_LOOT extends AionClientPacket
 	/**
 	 * Target object id that client wants to TALK WITH or 0 if wants to unselect
 	 */
+	private DropList dropList;
 	private int					targetObjectId;
 	private int					unk;
 	private int					activePlayer;
@@ -53,17 +55,16 @@ public class CM_START_LOOT extends AionClientPacket
 	 * Constructs new instance of <tt>CM_CM_REQUEST_DIALOG </tt> packet
 	 * @param opcode
 	 */
-	public CM_START_LOOT(int opcode)
-	{
+	public CM_START_LOOT(int opcode, DropList dropList) {
 		super(opcode);
+		this.dropList = dropList;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void readImpl()
-	{
+	protected void readImpl() {
 		targetObjectId = readD();// empty
 		unk = readC();
 	}
@@ -72,75 +73,51 @@ public class CM_START_LOOT extends AionClientPacket
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void runImpl()
-	{
+	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
 		PlayerGameStats playerGameStats = player.getGameStats();
 		activePlayer = player.getObjectId();
-
-		Random generator = new Random();
-
+		
 		Npc npc = (Npc) world.findAionObject(targetObjectId);
 		int monsterId = npc.getTemplate().getNpcId();
-
-		// load items from database.
-		DropList dropData = new DropList();
-		dropData.getDropList(monsterId);
-
-		int totalItemsCount = dropData.getItemsCount();
-		int row = 0;
-
-
-
-		int ran = generator.nextInt(100)+1;
-
-		// need to get item name id's from somewhere
-		int itemNameId = 2211143 + ran;
 		
-		if (playerGameStats.getItemId() == 0)
-		{
-			if (totalItemsCount == 0) {
+		int [][] mytab = dropList.getLootTable(monsterId);
+		int [][] dropedlist = new int[mytab.length][2];;
+		
+		if (playerGameStats.getItemId() == 0) {
+			if (mytab.length == 0) { //je trouve sa inutile mais bon
 				//if no item is found for that mob, give item
 				playerGameStats.setItemId(100000530);
 				playerGameStats.setItemCount(1);
-				sendPacket(new SM_LOOT_ITEMLIST(monsterId,targetObjectId, player));
-				sendPacket(new SM_LOOT_STATUS(targetObjectId,2));
-			} else {
-				int itemId = 1;
-				int itemMin = 1;
-				int itemMax = 1;
-				int itemChance = 1;
-				int randomCountChance = 1;
-
-				while (totalItemsCount > 0) {
-					itemId = dropData.getDropDataItemId(row);
-					itemMin = dropData.getDropDataMin(row);
- 					itemMax = dropData.getDropDataMax(row);
- 					itemChance = dropData.getDropDataChance(row); 
-
-					randomCountChance = (int)Math.random() * (itemMax - itemMin) + itemMin;
-			
-					totalItemsCount = totalItemsCount-1;
-					playerGameStats.setItemId(itemId);
-					playerGameStats.setItemCount(randomCountChance);
-
-					row+=1;
+				mytab = new int[1][2];
+				mytab[1][0] = 100000530;
+				mytab[1][1] = 1;
+				sendPacket(new SM_LOOT_ITEMLIST(monsterId, targetObjectId, player, mytab, 1));
+				sendPacket(new SM_LOOT_STATUS(targetObjectId, 2));
+			}
+			else {
+				int arrayLenght = 0;
+				for(int i = 0; i < mytab.length; i++) {
+					if (Math.random() * 100 <= mytab[i][3]) {
+						dropedlist[i][0] = mytab[i][0];
+						dropedlist[i][1] = mytab[i][1] + (int)(Math.random() * (mytab[i][2] - mytab[i][1]));
+						playerGameStats.setItemId(dropedlist[i][0]); //toujours pas bien compri a quoi sa sert
+						playerGameStats.setItemCount(dropedlist[i][1]);
+						arrayLenght++;
+					}
 				}
-
-				totalItemsCount = dropData.getItemsCount();
-				if (totalItemsCount > 0) {
-					sendPacket(new SM_LOOT_ITEMLIST(monsterId,targetObjectId, player));
-					sendPacket(new SM_LOOT_STATUS(targetObjectId,2));
+				
+				if (arrayLenght > 0) {
+					sendPacket(new SM_LOOT_ITEMLIST(monsterId, targetObjectId, player, dropedlist, arrayLenght));
+					sendPacket(new SM_LOOT_STATUS(targetObjectId, 2));
 				}
 			}
-
-			sendPacket(new SM_LOOT_STATUS(targetObjectId,2));
-			sendPacket(new SM_EMOTION(targetObjectId,35,0));
-
-		}else
-		{
-			//sendPacket(new SM_LOOT_ITEMLIST(targetObjectId,itemId,1));	
-			sendPacket(new SM_LOOT_STATUS(targetObjectId,3));
+			
+			sendPacket(new SM_LOOT_STATUS(targetObjectId, 2));
+			sendPacket(new SM_EMOTION(targetObjectId, 35, 0));
+		}
+		else {	
+			sendPacket(new SM_LOOT_STATUS(targetObjectId, 3));
 			sendPacket(new SM_DELETE((Creature) player.getTarget()));
 			playerGameStats.setItemId(0);
 		}

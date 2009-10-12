@@ -35,7 +35,7 @@ import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryProvider;
-
+import com.aionemu.gameserver.model.gameobjects.player.DropList;
 /**
  * @author Luno
  *
@@ -44,10 +44,12 @@ public class NetworkInjectionModule extends AbstractModule
 {
 
 	private Injector	injector;
+	private DropList dropList;
 
-	public void setInjector(Injector injector)
+	public void setInjector(Injector injector, DropList dropList)
 	{
 		this.injector = injector;
+		this.dropList = dropList;
 	}
 	@Override
 	protected void configure()

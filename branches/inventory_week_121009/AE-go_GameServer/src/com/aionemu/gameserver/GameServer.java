@@ -35,6 +35,7 @@ import com.aionemu.gameserver.utils.Util;
 import com.aionemu.gameserver.utils.gametime.GameTimeManager;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.aionemu.gameserver.model.gameobjects.player.DropList;
 
 /**
  * <tt>GameServer</tt> is the main class of the application and represents the whole game server.<br>
@@ -49,6 +50,7 @@ public class GameServer
 	private static final Logger	log	= Logger.getLogger(GameServer.class);
 
 	private Injector			injector;
+	private DropList dropList; 
 
 	/**
 	 * Creates instance of GameServer, which includes loading static data, initializing world.
@@ -60,11 +62,13 @@ public class GameServer
 		// in InjectionModule with asEagerSingleton() call
 		DataInjectionModule dataIM = new DataInjectionModule();
 		NetworkInjectionModule networkIM = new NetworkInjectionModule();
+		
+		dropList = new DropList();
 
 		
 		injector = Guice.createInjector(dataIM,networkIM, new IDFactoriesInjectionModule());
 		dataIM.setInjector(injector);
-		networkIM.setInjector(injector);
+		networkIM.setInjector(injector, dropList);
 	}
 
 	/**

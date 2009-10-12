@@ -17,8 +17,6 @@
 
 package com.aionemu.gameserver.model.gameobjects.player;
 
-import java.util.Random;
-
 import com.aionemu.gameserver.configs.Config;
 import org.apache.log4j.Logger;
 
@@ -32,67 +30,60 @@ import com.aionemu.commons.database.ParamReadStH;
 
 /**
  *
- * @author Avol
+ * @author Metos
  */
-public class DropList
-{
-	public int player;
-	public int totalItemsCount;
-	public int DropDataItemId[];
-	public int DropDataMin[];
-	public int DropDataMax[];
-	public int DropDataChance[];
+public class DropList {
+	//not finish sorry, need optimize
+	private int [][] fullDL;
+	private int maxDL;
 	
-	public void getDropList(int mobId) {
-		PreparedStatement ps = DB.prepareStatement("SELECT `itemId`, `min`, `max`, `chance` FROM `droplist` WHERE `mobId`=" + mobId);
-		try
-		{
-			ResultSet rs = ps.executeQuery();
-			rs.last();
-			int row = rs.getRow();
-			int row2 = 0;
-			totalItemsCount = row;
-			DropDataItemId = new int[row+1];
-			DropDataMin = new int[row+1];
-			DropDataMax = new int[row+1];
-			DropDataChance = new int[row+1];
+	public DropList () { //full load of droplist
+		try {
+			PreparedStatement ps = DB.prepareStatement("SELECT COUNT(*) AS nb FROM droplist");
+			ResultSet prs = ps.executeQuery();
+			prs.first();
+			maxDL = prs.getInt("nb");
 			
-			while (row > 0) {
-				rs.absolute(row);
-				DropDataItemId[row2] = rs.getInt("itemId");
-				DropDataMin[row2] = rs.getInt("min");
-				DropDataMax[row2] = rs.getInt("max");
-				DropDataChance[row2] = rs.getInt("chance");
-				row2 = row2 +1;
-				row = row - 1;
+			fullDL = new int[maxDL][5];
+			int nb = 0;
+			
+			ResultSet rs = ps.executeQuery("SELECT * FROM droplist");
+			while (rs.next()) {
+				fullDL[nb][0] = rs.getInt("mobId");
+				fullDL[nb][1] = rs.getInt("itemId");
+				fullDL[nb][2] = rs.getInt("min");
+				fullDL[nb][3] = rs.getInt("max");
+				fullDL[nb][4] = rs.getInt("chance");
+				nb++;
+			}
+			DB.close(ps);
+			//log.info("ListDrop Loaded ("+maxDL+")");
+			System.out.println("ListDrop Loaded ("+maxDL+")"); //need use log system
+		}
+		catch (SQLException e) {
+			Logger.getLogger(DropList.class).error("Error loading droplist", e);
+		}
+	}
+	
+	public int [][] getLootTable (int mobId) {
+		int nb = 0;
+		for (int i = 0; i < maxDL; i++) {
+			if (fullDL[i][0] == mobId) {
+				nb++;
 			}
 		}
-		catch (SQLException e)
-		{
-			Logger.getLogger(DropList.class).error("Error loading droplist", e);
-			
+		
+		int [][] temp = new int[nb][4];
+		nb = 0;
+		for (int i = 0; i < maxDL; i++) {
+			if (fullDL[i][0] == mobId) {
+				temp[nb][0] = fullDL[i][1];
+				temp[nb][1] = fullDL[i][2];
+				temp[nb][2] = fullDL[i][3];
+				temp[nb][3] = fullDL[i][4];
+				nb++;
+			}
 		}
-		finally
-		{
-			DB.close(ps);
-		}
+		return temp;
 	}
-
-	public int getDropDataItemId(int row) {
-		return DropDataItemId[row];
-	}
-	public int getDropDataMin(int row) {
-		return DropDataMin[row];
-	}
-	public int getDropDataMax(int row) {
-		return DropDataMax[row];
-	}
-	public int getDropDataChance(int row) {
-		return DropDataChance[row];
-	}
-	public int getItemsCount() {
-		return totalItemsCount;
-	}
-
-
 }
