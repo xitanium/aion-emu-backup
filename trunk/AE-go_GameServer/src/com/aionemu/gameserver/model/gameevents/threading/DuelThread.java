@@ -36,6 +36,7 @@ public class DuelThread extends Thread
 		_responder = responder;
 	}
 	
+	@SuppressWarnings("static-access")
 	public void run() {
 		
 		int requesterHP = _requester.getLifeStats().getCurrentHp();
@@ -43,7 +44,7 @@ public class DuelThread extends Thread
 		
 		while(requesterHP > 0 && responderHP > 0) {
 			try {
-				Thread.sleep(250);
+				Thread.currentThread().sleep(250);
 			}
 			catch(InterruptedException e) {
 				log.error("Cannot sleep DuelThread", e);
