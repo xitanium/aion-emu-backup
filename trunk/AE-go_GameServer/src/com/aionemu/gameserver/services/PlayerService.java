@@ -137,6 +137,8 @@ public class PlayerService
 	public void storePlayer(Player player)
 	{
 		DAOManager.getDAO(PlayerDAO.class).storePlayer(player);
+		DAOManager.getDAO(PlayerStatsDAO.class).storeLifeStats(player.getObjectId(), player.getLifeStats());
+		DAOManager.getDAO(PlayerStatsDAO.class).storeGameStats(player.getObjectId(), player.getGameStats());
 	}
 
 	/**
@@ -362,13 +364,5 @@ public class PlayerService
 	public Player getCachedPlayer(int playerObjectId)
 	{
 		return playerCache.get(playerObjectId);
-	}
-	
-	public void storeLifeStats(Player player) {
-		DAOManager.getDAO(PlayerStatsDAO.class).storeLifeStats(player.getObjectId(), player.getLifeStats());
-	}
-	
-	public void storeGameStats(Player player) {
-		DAOManager.getDAO(PlayerStatsDAO.class).storeGameStats(player.getObjectId(), player.getGameStats());
 	}
 }

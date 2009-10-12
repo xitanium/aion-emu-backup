@@ -137,9 +137,11 @@ public class PlayerController extends CreatureController<Player>
 
 		if(vls.isAlreadyDead())
 		{
-			if (attacker instanceof Npc) {
+			if (attacker instanceof Npc) { // PvE
 				PacketSendUtility.broadcastPacket(victim, new SM_EMOTION(victim.getObjectId(), 13 , attacker.getObjectId()), true);
 				this.onDie();
+			} else { // PvP
+				this.duelEndWith((Player)attacker);
 			}
 		}
 		return true;
@@ -172,15 +174,16 @@ public class PlayerController extends CreatureController<Player>
 	
 	public void startDuelWith (Player player) {
 		//PacketSendUtility.sendPacket(getOwner(), SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(player.getName()));
-		log.info("Player "+this.getOwner().getName()+" start duel with "+player.getName());
+		log.debug("[PvP] Player "+this.getOwner().getName()+" start duel with "+player.getName());
 	}
 	
-	public void onDuel () {
-		
+	public void onDuelWith (Player provocker) {
+		log.debug("[PvP] Player "+provocker.getName()+" provocked in duel "+this.getOwner().getName());
 	}
 	
-	public void duelEnd () {
-		
+	public void duelEndWith (Player attacker) {
+		// TODO Fin du duel
+		log.debug("[PvP] Player "+attacker.getName()+" won versus "+this.getOwner().getName());
 	}
 
 	/**

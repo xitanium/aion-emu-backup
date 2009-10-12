@@ -16,20 +16,10 @@
  */
 package com.aionemu.gameserver.network.aion.clientpackets;
 
-import java.util.Random;
+import org.apache.log4j.Logger;
 
-import com.aionemu.gameserver.model.gameobjects.Npc;
-import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_INVENTORY_UPDATE;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_STATUPDATE_EXP;
-import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.world.World;
 /**
  * 
  * @author alexa026, Avol, ATracer
@@ -44,10 +34,8 @@ public class CM_ATTACK extends AionClientPacket
 	private int					attackno;
 	private int					time;
 	private int					type;
-	private long                exp;
-	private long                maxexp;
-	private int					at;
-
+	private static Logger		log = Logger.getLogger(CM_ATTACK.class);
+	
 	public CM_ATTACK(int opcode)
 	{
 		super(opcode);
@@ -63,6 +51,7 @@ public class CM_ATTACK extends AionClientPacket
 		attackno = readC();// empty
 		time = readH();// empty
 		type = readH();// empty
+		log.debug(this.getConnection().getActivePlayer().getObjectId()+" attacking "+targetObjectId+": attack#"+attackno+",time:"+time+",type:"+type);
 	}
 
 	/**

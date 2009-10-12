@@ -131,8 +131,8 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 					pls.setMaxMp(rset.getInt("max_mp"));
 					pls.setMaxDp(rset.getInt("max_dp"));
 					pls.setCurrentHp(rset.getInt("current_hp"));
-					pls.setCurrentDp(rset.getInt("current_mp"));
-					pls.setCurrentMp(rset.getInt("current_dp"));
+					pls.setCurrentMp(rset.getInt("current_mp"));
+					pls.setCurrentDp(rset.getInt("current_dp"));
 					pls.setInitialized(true);
 					log.debug("loaded life stats for player #"+playerId+":"+pls);
 				}

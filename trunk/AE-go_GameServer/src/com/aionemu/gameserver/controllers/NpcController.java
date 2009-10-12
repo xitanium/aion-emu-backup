@@ -80,6 +80,7 @@ public class NpcController extends CreatureController<Npc>
 		}
 		if(player.getLifeStats().isAlreadyDead())
 		{
+			player.getController().onDie();
 			getOwner().getNpcAi().stopTask();
 		}
 	}
@@ -123,10 +124,10 @@ public class NpcController extends CreatureController<Npc>
 	 * @see com.aionemu.gameserver.controllers.CreatureController#onAttack(com.aionemu.gameserver.model.gameobjects.Creature)
 	 */
 	@Override
-	public boolean onAttack(Creature creature, int damages)
+	public boolean onAttack(Creature attacker, int damages)
 	{
-		Npc npc = getOwner();
-		NpcLifeStats lifeStats = npc.getLifeStats();
+		Npc victim = getOwner();
+		NpcLifeStats lifeStats = victim.getLifeStats();
 		
 		if(lifeStats.isAlreadyDead())
 		{
@@ -136,8 +137,15 @@ public class NpcController extends CreatureController<Npc>
 		//TODO: Reduce hp corresponding to real damages done by player
 		lifeStats.reduceHp(damages);
 		
-		NpcAi npcAi = npc.getNpcAi();
-		npcAi.handleEvent(new AttackEvent(creature));
+		if (lifeStats.isAlreadyDead()) {
+			PacketSendUtility.broadcastPacket(victim, new SM_EMOTION(victim.getObjectId(), 13 , attacker.getObjectId()));
+			this.doDrop();
+			this.doReward(attacker);
+			this.onDie();
+		} else {
+			NpcAi npcAi = victim.getNpcAi();
+			npcAi.handleEvent(new AttackEvent(attacker));
+		}
 
 		return true;
 	}

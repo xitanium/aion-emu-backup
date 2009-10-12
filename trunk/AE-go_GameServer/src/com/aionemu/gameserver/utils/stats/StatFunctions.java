@@ -45,7 +45,7 @@ public class StatFunctions
 	 * @param target
 	 * @return XP reward from target
 	 */
-	public static long calculateSoloExperienceReward(Player player, Creature target)
+	public static int calculateSoloExperienceReward(Player player, Creature target)
 	{
 		int playerLevel = player.getCommonData().getLevel();
 		int targetLevel = target.getLevel();
@@ -55,7 +55,10 @@ public class StatFunctions
 		
 		int xpPercentage =  XPRewardEnum.xpRewardFrom(targetLevel - playerLevel);
 		
-		return (int) Math.floor(baseXP * xpPercentage * Config.EXP_RATE / 100);
+		int xpReward = Math.round(baseXP * xpPercentage * Config.EXP_RATE / 100f);
+		
+		log.debug("Calculating XP reward for "+player.getObjectId()+" level "+playerLevel+" killing "+target.getObjectId()+" level "+targetLevel+": "+xpReward+"xp");
+		return xpReward;
 	}
 	
 	/**
@@ -69,8 +72,8 @@ public class StatFunctions
 		CreatureGameStats<?> sgs = speller.getGameStats();
 		CreatureGameStats<?> tgs = target.getGameStats();
 		log.debug("Calculating magic damages between "+speller.getObjectId()+" and "+target.getObjectId()+" ...");
-		log.debug("---> Attacker game stats : "+sgs);
-		log.debug("---> Target game stats   : "+tgs);
+		log.debug("| Attacker: "+sgs);
+		log.debug("| Target  : "+tgs);
 		int baseDamages = st.getDamages();
 		int elementaryDefense = tgs.getMagicalDefenseFor(st.getElement());
 		int magicalResistance = tgs.getMagicResistance();
@@ -91,6 +94,7 @@ public class StatFunctions
 		if (missedSpell) {
 			damages = 0;
 		}
+		log.debug("|=> Magic damages calculation result: missed("+missedSpell+"),damages("+damages+")");
 		return damages;
 	}
 	
@@ -106,8 +110,8 @@ public class StatFunctions
 		CreatureGameStats<?> tgs = target.getGameStats();
 		
 		log.debug("Calculating base damages...");
-		log.debug("---> Attacker game stats : "+ags);
-		log.debug("---> Target game stats   : "+tgs);
+		log.debug("| Attacker: "+ags);
+		log.debug("| Target  : "+tgs);
 		int baseDamages = ags.getMainHandAttack();
 		int critRate = ags.getMainHandCritRate();
 		int accuracy = ags.getMainHandAccuracy();
@@ -146,6 +150,7 @@ public class StatFunctions
 		if (blockedAttack||missedAttack) {
 			damages = 0;
 		}
+		log.debug("|=> Damages calculation result: missed("+missedAttack+"),blocked("+blockedAttack+"),parred("+parredAttack+"),critical("+critAttack+"),damages("+damages+")");
 		return damages;
 	}
 }
