@@ -38,7 +38,10 @@ public enum ItemSlot
 	PANTS(12),
 	POWER_SHARD_RIGHT(13),
 	POWER_SHARD_LEFT(14),
-	WINGS(15);
+	WINGS(15),
+	WAIST(16),
+	SECOND_MAIN_HAND(17),
+	SECOND_OFF_HAND(18);
 	
 	private short slotIdMask;
 	

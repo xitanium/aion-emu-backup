@@ -17,18 +17,18 @@
 
 package com.aionemu.gameserver.model.gameobjects.player;
 
-import java.util.Random;
-
-import com.aionemu.gameserver.configs.Config;
-import org.apache.log4j.Logger;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DB;
-import com.aionemu.commons.database.IUStH;
-import com.aionemu.commons.database.ParamReadStH;
+import com.aionemu.gameserver.model.ItemSlot;
+import com.aionemu.gameserver.model.gameobjects.Item;
 
 /**
  *
@@ -37,6 +37,7 @@ import com.aionemu.commons.database.ParamReadStH;
 public class Inventory
 {
 
+	private Map<ItemSlot, Item> items;
 	public int kinah;
 	public int totalItemsCount;
 	public int itemUniqueIdArray[];
@@ -57,6 +58,11 @@ public class Inventory
 
 	public int newItemUniqueIdValue;
 
+	public Inventory()
+	{
+		items = new HashMap<ItemSlot, Item>();
+		Set items.keySet() = "d";
+	}
 	public void getInventoryFromDb(int activePlayer) {
 		PreparedStatement ps = DB.prepareStatement("SELECT `itemUniqueId`, `itemId`,`itemCount`FROM `inventory` WHERE `itemOwner`=" + activePlayer);
 		try

@@ -71,9 +71,10 @@ public class NpcEquippedGear implements Iterable<ItemTemplate>
 				items = new TreeMap<ItemSlot, ItemTemplate>();
 				for(ItemTemplate item : v.items)
 				{
-					items.put(item.getItemSlot(), item);
-					mask |= item.getItemSlot().getSlotIdMask();
-					v = null;
+					//TODO temporary commented for compiling
+//					items.put(item.getItemSlot(), item);
+//					mask |= item.getItemSlot().getSlotIdMask();
+//					v = null;
 				}
 			}
 		}

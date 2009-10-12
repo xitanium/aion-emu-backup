@@ -16,20 +16,45 @@
  */
 package com.aionemu.gameserver.model.gameobjects;
 
+import com.aionemu.gameserver.model.templates.ItemTemplate;
+
+/**
+ * @author ATracer
+ */
 public class Item extends AionObject
 {
+	
+	private ItemTemplate itemTemplate;
+	
 	/**
 	 * @param objId
 	 */
 	public Item(int objId)
 	{
 		super(objId);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String getName()
 	{
-		return null; // To change body of implemented methods use File | Settings | File Templates.
+		//TODO
+		//item description should return probably string and not id
+		return String.valueOf(itemTemplate.getDescription());
+	}
+
+	/**
+	 * @return the itemTemplate
+	 */
+	public ItemTemplate getItemTemplate()
+	{
+		return itemTemplate;
+	}
+
+	/**
+	 * @param itemTemplate the itemTemplate to set
+	 */
+	public void setItemTemplate(ItemTemplate itemTemplate)
+	{
+		this.itemTemplate = itemTemplate;
 	}
 }
