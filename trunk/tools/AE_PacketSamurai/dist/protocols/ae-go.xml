@@ -423,7 +423,7 @@
 		<packet id="0xC0" name="SM_CREATE_CHARACTER">
 			<part name="responseCode" type="d" />
 			<part name="objectId" type="d" />
-			<part name="characterName" type="S" size="44" />
+			<part name="characterName" type="b" size="44" />
 			<part name="gender(0=female,1=male)" type="d" />
 			<part name="race(0=asmo,1=elys)" type="d" />
 			<part name="classId" type="d" />
@@ -587,14 +587,14 @@
 				<reader type="Boolean" />
 			</part>
 			<part name="deletionTime" type="d" />
-			<part name="0x00" type="c" />
+			<part name="0x00" type="d" />
 		</packet>
 		<packet id="0xC1" name="SM_CHARACTER_LIST">
 			<part name="playOk2" type="d" />
 			<part id="0" name="characters" type="c" />
 			<for id="0">
 				<part name="objectId" type="d" />
-				<part name="characterName" type="S" size="44" />
+				<part name="characterName" type="b" size="44" />
 				<part name="gender(0=female,1=male)" type="d" />
 				<part name="race(0=asmo,1=elys)" type="d" />
 				<part name="classId" type="d" />
@@ -757,8 +757,9 @@
 				<part name="item#16Equipped?" type="c">
 					<reader type="Boolean" />
 				</part>
-				<part name="deletionTime" type="d" />
-				<part name="0x00" type="c" />
+				<part name="itemId" type="d" />
+				<part name="0x00" type="d" />
+				<part name="0x00" type="d" />
 			</for>
 		</packet>
 		<packet id="0xC2" name="SM_FLY_TELEPORT">
@@ -1038,6 +1039,7 @@
 			<part name="unk" type="c" />
 			<part name="unk" type="c" />
 			<part name="height" type="f" />
+			<part name="unk" type="c" />
 		</packet>
 		<packet id="0x02" name="CM_DELETE_CHARACTER">
 			<part name="playOk2" type="d" />

@@ -17,6 +17,8 @@
 
 package com.aionemu.gameserver.model.gameobjects.player;
 
+import java.lang.reflect.Field;
+
 /**
  * 
  * 
@@ -80,6 +82,20 @@ public class PlayerAppearance
 	private int	voice;
 	private float	height;
 
+	@Override
+	public String toString () {
+		String str = new String ("{");
+		Class<?> clazz = PlayerAppearance.class;
+		for (Field fi : clazz.getDeclaredFields()) {
+			if (fi.getType().isPrimitive()) {
+				try { str += fi.getName()+":"+fi.getInt(this)+","; }
+				catch(Exception e) { try { str += fi.getName()+":"+fi.getBoolean(this)+","; }
+				catch(Exception f) { } }
+			}
+		}
+		str += "}";
+		return str;
+	}
 
 	/**
 	 * Returns character face

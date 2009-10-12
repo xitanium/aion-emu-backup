@@ -18,6 +18,8 @@ package com.aionemu.gameserver.network.aion;
 
 import java.nio.ByteBuffer;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.account.PlayerAccountData;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerAppearance;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
@@ -31,6 +33,8 @@ import com.aionemu.gameserver.model.gameobjects.player.Inventory;
  */
 public abstract class PlayerInfo extends AionServerPacket
 {
+	private static Logger log = Logger.getLogger(PlayerInfo.class);
+	
 	protected PlayerInfo()
 	{
 		
@@ -42,6 +46,7 @@ public abstract class PlayerInfo extends AionServerPacket
 		final int raceId = pbd.getRace().getRaceId();
 		final int genderId = pbd.getGender().getGenderId();
 		final PlayerAppearance playerAppearance = accPlData.getAppereance();
+		log.debug("Sending player [id:"+pbd.getPlayerObjId()+",race:"+raceId+",gender:"+genderId+"] appearance:"+playerAppearance);
 		writeD(buf, pbd.getPlayerObjId());
 		writeS(buf, pbd.getName());
 		/**
@@ -154,6 +159,6 @@ public abstract class PlayerInfo extends AionServerPacket
 		    writeD(buf, 0x00);
 		}
 		writeD(buf, accPlData.getDeletionTimeInSeconds());
-		writeC(buf, 0x00);// unk
+		writeD(buf, 0x00);// unk
 	}
 }

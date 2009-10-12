@@ -47,7 +47,6 @@ import com.google.inject.Inject;
 public class CM_CREATE_CHARACTER extends AionClientPacket
 {
 	/** Logger for this class. */
-	@SuppressWarnings("unused")
 	private static final Logger	log	= Logger.getLogger(CM_CREATE_CHARACTER.class);
 
 	/** Character appearance */
@@ -162,8 +161,9 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		readC(); // always 0
 		playerAppearance.setShoulderSize(readC()); // 1.5.x May be ShoulderSize
 		readC(); // always 0
-		readC();
 		playerAppearance.setHeight(readF());
+		readC();
+		log.debug("Creating new player #"+playerCommonData.getPlayerObjId()+" with appearance:"+playerAppearance);
 	}
 
 	/**
