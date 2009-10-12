@@ -63,7 +63,7 @@ public class CreatureGameStats<T extends Creature>
 	private boolean initialized = false;
 	private Creature owner = null;
 	
-	public CreatureGameStats (Creature owner, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int offHandAttack, int offHandCritRate, float attackSpeed, float attackRange)
+	public CreatureGameStats (Creature owner, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int offHandAttack, int offHandCritRate, int attackSpeed, int attackRange)
 	{
 		this.owner = owner;
 		this.initialized = true;
@@ -296,9 +296,9 @@ public class CreatureGameStats<T extends Creature>
 	/**
 	 * @param attackSpeed the attackSpeed to set
 	 */
-	public void setAttackSpeed(float attackSpeed)
+	public void setAttackSpeed(int attackSpeed)
 	{
-		this.attackSpeed = Math.round(attackSpeed*1000);
+		this.attackSpeed = attackSpeed;
 	}
 
 	/**
@@ -312,9 +312,9 @@ public class CreatureGameStats<T extends Creature>
 	/**
 	 * @param attackRange the attackRange to set
 	 */
-	public void setAttackRange(float attackRange)
+	public void setAttackRange(int attackRange)
 	{
-		this.attackRange = Math.round(attackRange*1000);
+		this.attackRange = attackRange;
 	}
 
 	/**

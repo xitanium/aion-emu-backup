@@ -98,8 +98,8 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 					pgs.setEarth(rset.getInt("earth"));
 					pgs.setFire(rset.getInt("fire"));
 					pgs.setFlyTime(rset.getInt("fly_time"));
-					pgs.setAttackSpeed(rset.getFloat("attack_speed"));
-					pgs.setAttackRange(rset.getFloat("attack_range"));
+					pgs.setAttackSpeed(rset.getInt("attack_speed"));
+					pgs.setAttackRange(rset.getInt("attack_range"));
 					pgs.setInitialized(true);
 					log.debug("loaded game stats for player #"+playerId+":"+pgs);
 				}
@@ -173,8 +173,8 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 				stmt.setInt(21, pgs.getEarth());
 				stmt.setInt(22, pgs.getFire());
 				stmt.setInt(23, pgs.getFlyTime());
-				stmt.setFloat(24, pgs.getAttackSpeed());
-				stmt.setFloat(25, pgs.getAttackRange());
+				stmt.setInt(24, pgs.getAttackSpeed());
+				stmt.setInt(25, pgs.getAttackRange());
 				stmt.execute();
 			}
 		});
@@ -224,8 +224,8 @@ public class MySQL5PlayerStatsDAO extends PlayerStatsDAO
 				stmt.setInt(14, pgs.getEarth());
 				stmt.setInt(15, pgs.getFire());
 				stmt.setInt(16, pgs.getFlyTime());
-				stmt.setFloat(17, pgs.getAttackSpeed()/1000f);
-				stmt.setFloat(18, pgs.getAttackRange()/1000f);
+				stmt.setInt(17, pgs.getAttackSpeed());
+				stmt.setInt(18, pgs.getAttackRange());
 				stmt.setInt(19, playerId);
 				stmt.execute();
 			}

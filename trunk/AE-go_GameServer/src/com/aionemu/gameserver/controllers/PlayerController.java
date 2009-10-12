@@ -90,8 +90,6 @@ public class PlayerController extends CreatureController<Player>
 	@Override
 	public void onDie()
 	{
-		super.onDie();
-
 		//TODO probably introduce variable - last attack creature in player AI
 		PacketSendUtility.broadcastPacket(this.getOwner(), new SM_EMOTION(this.getOwner().getObjectId(), 13 , lastAttacker.getObjectId()), true);
 		Player player = this.getOwner();
@@ -124,7 +122,6 @@ public class PlayerController extends CreatureController<Player>
 	@Override
 	public boolean onAttack(Creature attacker, int damages)
 	{
-		super.onAttack(attacker,damages);
 		lastAttacker = attacker;
 		
 		Player victim = getOwner();
@@ -171,7 +168,6 @@ public class PlayerController extends CreatureController<Player>
 	public void doDrop()
 	{
 		// TODO Auto-generated method stub
-		super.doDrop();
 	}
 	
 	public void startDuelWith (Player player) {
@@ -215,5 +211,25 @@ public class PlayerController extends CreatureController<Player>
 		PacketSendUtility.sendPacket(p, new SM_PLAYER_INFO(p, true));	
 		
 		this.teleportTo(p.getWorldId(), p.getX(), p.getY(), p.getZ(), p.getHeading());
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.controllers.CreatureController#doReward(com.aionemu.gameserver.model.gameobjects.Creature)
+	 */
+	@Override
+	public void doReward(Creature creature)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.aionemu.gameserver.controllers.CreatureController#onRespawn()
+	 */
+	@Override
+	public void onRespawn()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

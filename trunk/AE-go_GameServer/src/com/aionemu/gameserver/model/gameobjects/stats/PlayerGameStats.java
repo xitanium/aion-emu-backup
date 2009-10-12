@@ -58,15 +58,15 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 		setEarth(0);
 		setFire(0);
 		// TODO find good values for attack range
-		setAttackRange(15.0f);
-		setAttackSpeed(pst.getAttackSpeed());
+		setAttackRange(1500);
+		setAttackSpeed(Math.round(pst.getAttackSpeed()*1000));
 		// TODO find good values for fly time
 		setFlyTime(60);
 		setInitialized(true);
 		log.debug("loading base game stats for player "+owner.getName()+" (id "+owner.getObjectId()+"): "+this);
 	}
 	
-	public PlayerGameStats (Player player, PlayerStatsData psd, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int otherHandAttack, int otherHandCritRate, float attackSpeed, float attackRange)
+	public PlayerGameStats (Player player, PlayerStatsData psd, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int otherHandAttack, int otherHandCritRate, int attackSpeed, int attackRange)
 	{
 		super(player,power,health,agility,accuracy,knowledge,will,mainHandAttack,mainHandCritRate,otherHandAttack,otherHandCritRate,attackSpeed,attackRange);
 		this.playerStatsData = psd;

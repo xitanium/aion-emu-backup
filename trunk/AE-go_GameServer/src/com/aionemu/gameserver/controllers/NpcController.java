@@ -67,12 +67,10 @@ public class NpcController extends CreatureController<Npc>
 			System.out.println(e);
 		}
 
-
 		PacketSendUtility.broadcastPacket(player,
 			new SM_ATTACK(npc.getObjectId(), player.getObjectId(),
 				npcGameStats.getAttackCounter(), (int) time, attackType, damages), true);
-		
-		
+				
 		boolean attackSuccess = player.getController().onAttack(npc,damages);
 		
 		if(attackSuccess)
@@ -91,9 +89,7 @@ public class NpcController extends CreatureController<Npc>
 	 */
 	@Override
 	public void onDie()
-	{
-		super.onDie();
-		
+	{	
 		NpcAi npcAi = this.getOwner().getNpcAi();
 		npcAi.setAiState(AIState.DEAD);
 		npcAi.stopTask();
@@ -118,7 +114,6 @@ public class NpcController extends CreatureController<Npc>
 	@Override
 	public void onRespawn()
 	{
-		super.onRespawn();
 		this.getOwner().getNpcAi().setAiState(AIState.IDLE);
 		NpcStatsTemplate statsTemplate = getOwner().getTemplate().getStatsTemplate();
 		this.getOwner().setLifeStats(new NpcLifeStats(getOwner(),statsTemplate));
@@ -130,7 +125,6 @@ public class NpcController extends CreatureController<Npc>
 	@Override
 	public boolean onAttack(Creature creature, int damages)
 	{
-		super.onAttack(creature,damages);
 		Npc npc = getOwner();
 		NpcLifeStats lifeStats = npc.getLifeStats();
 		
@@ -154,7 +148,6 @@ public class NpcController extends CreatureController<Npc>
 	@Override
 	public void doDrop()
 	{
-		super.doDrop();
 		PacketSendUtility.broadcastPacket(this.getOwner(), new SM_LOOT_STATUS(this.getOwner().getObjectId(), 0));
 	}
 
@@ -164,8 +157,6 @@ public class NpcController extends CreatureController<Npc>
 	@Override
 	public void doReward(Creature creature)
 	{
-		super.doReward(creature);
-
 		if(creature instanceof Player)
 		{
 			Player player = (Player) creature;
