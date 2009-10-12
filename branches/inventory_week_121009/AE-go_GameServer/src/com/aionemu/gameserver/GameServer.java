@@ -49,8 +49,7 @@ public class GameServer
 	/** Logger for gameserver */
 	private static final Logger	log	= Logger.getLogger(GameServer.class);
 
-	private Injector			injector;
-	private DropList dropList; 
+	private Injector			injector; 
 
 	/**
 	 * Creates instance of GameServer, which includes loading static data, initializing world.
@@ -63,12 +62,9 @@ public class GameServer
 		DataInjectionModule dataIM = new DataInjectionModule();
 		NetworkInjectionModule networkIM = new NetworkInjectionModule();
 		
-		dropList = new DropList();
-
-		
 		injector = Guice.createInjector(dataIM,networkIM, new IDFactoriesInjectionModule());
 		dataIM.setInjector(injector);
-		networkIM.setInjector(injector, dropList);
+		networkIM.setInjector(injector);
 	}
 
 	/**
@@ -91,6 +87,10 @@ public class GameServer
 		
 		// Ininitialize skill engine
 		SkillEngine.getInstance().registerAllSkills(gs.injector);
+		
+		// Drop list
+		
+		DropList.getInstance();
 
 		Util.printMemoryUsage(log);
 		log.info("###########################################################################");

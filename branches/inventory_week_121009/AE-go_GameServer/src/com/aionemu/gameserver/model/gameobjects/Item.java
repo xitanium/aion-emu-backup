@@ -24,6 +24,8 @@ import com.aionemu.gameserver.model.templates.ItemTemplate;
 public class Item extends AionObject
 {
 	
+	private int itemCount = 1;
+	
 	private ItemTemplate itemTemplate;
 	
 	/**
@@ -56,5 +58,31 @@ public class Item extends AionObject
 	public void setItemTemplate(ItemTemplate itemTemplate)
 	{
 		this.itemTemplate = itemTemplate;
+	}
+
+	/**
+	 * @return the itemCount
+	 *  Number of this item in stack. Should be not more than template maxstackcount ?
+	 */
+	public int getItemCount()
+	{
+		return itemCount;
+	}
+
+	/**
+	 * @param itemCount the itemCount to set
+	 */
+	public void setItemCount(int itemCount)
+	{
+		this.itemCount = itemCount;
+	}
+	
+	/**
+	 * @param addCount 
+	 */
+	public void increaseItemCount(int addCount)
+	{
+		//TODO overflow check
+		this.itemCount += addCount;
 	}
 }

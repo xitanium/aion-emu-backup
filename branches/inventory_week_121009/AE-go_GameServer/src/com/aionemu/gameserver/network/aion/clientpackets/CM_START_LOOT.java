@@ -16,23 +16,20 @@
  */
 package com.aionemu.gameserver.network.aion.clientpackets;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.gameobjects.Creature;
-import com.aionemu.gameserver.model.gameobjects.player.Player;
-import com.aionemu.gameserver.model.gameobjects.player.DropList;
 import com.aionemu.gameserver.model.gameobjects.Npc;
+import com.aionemu.gameserver.model.gameobjects.player.DropList;
+import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_ITEMLIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
-import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
-
-
-import org.apache.log4j.Logger;
-import java.util.Random;
 /**
  * 
  * @author alexa026, Correted by Metos
@@ -45,7 +42,7 @@ public class CM_START_LOOT extends AionClientPacket
 	/**
 	 * Target object id that client wants to TALK WITH or 0 if wants to unselect
 	 */
-	private DropList dropList;
+	
 	private int					targetObjectId;
 	private int					unk;
 	private int					activePlayer;
@@ -55,9 +52,8 @@ public class CM_START_LOOT extends AionClientPacket
 	 * Constructs new instance of <tt>CM_CM_REQUEST_DIALOG </tt> packet
 	 * @param opcode
 	 */
-	public CM_START_LOOT(int opcode, DropList dropList) {
+	public CM_START_LOOT(int opcode) {
 		super(opcode);
-		this.dropList = dropList;
 	}
 
 	/**
@@ -81,7 +77,7 @@ public class CM_START_LOOT extends AionClientPacket
 		Npc npc = (Npc) world.findAionObject(targetObjectId);
 		int monsterId = npc.getTemplate().getNpcId();
 		
-		int [][] mytab = dropList.getLootTable(monsterId);
+		int [][] mytab = DropList.getInstance().getLootTable(monsterId);
 		int [][] dropedlist = new int[mytab.length][2];;
 		
 		if (playerGameStats.getItemId() == 0) {

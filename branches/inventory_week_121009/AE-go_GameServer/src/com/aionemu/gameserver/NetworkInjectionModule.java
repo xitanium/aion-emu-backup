@@ -44,12 +44,10 @@ public class NetworkInjectionModule extends AbstractModule
 {
 
 	private Injector	injector;
-	private DropList dropList;
 
-	public void setInjector(Injector injector, DropList dropList)
+	public void setInjector(Injector injector)
 	{
 		this.injector = injector;
-		this.dropList = dropList;
 	}
 	@Override
 	protected void configure()

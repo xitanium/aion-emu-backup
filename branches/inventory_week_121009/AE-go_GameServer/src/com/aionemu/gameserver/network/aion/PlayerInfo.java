@@ -41,7 +41,6 @@ public abstract class PlayerInfo extends AionServerPacket
 		
 	}
 
-
 	protected void writePlayerInfo(ByteBuffer buf, PlayerAccountData accPlData)
 	{
 		PlayerCommonData pbd = accPlData.getPlayerCommonData();
@@ -146,8 +145,9 @@ public abstract class PlayerInfo extends AionServerPacket
 		writeD(buf, 0);// unk 50379392
 		writeD(buf, 0);// unk 1242638636
 
+		//TODO refactor to new inventory
 		int itemsSize = 0;
-
+		
 		Inventory equipedItems = new Inventory();
 		equipedItems.getEquipedItemsFromDb(pbd.getPlayerObjId());
 		int totalEquipedItemsCount = equipedItems.getEquipedItemsCount();

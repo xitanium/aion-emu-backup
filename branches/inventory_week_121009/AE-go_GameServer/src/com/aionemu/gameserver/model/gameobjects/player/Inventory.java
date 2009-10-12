@@ -20,24 +20,21 @@ package com.aionemu.gameserver.model.gameobjects.player;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.aionemu.commons.database.DB;
-import com.aionemu.gameserver.model.ItemSlot;
 import com.aionemu.gameserver.model.gameobjects.Item;
+import com.aionemu.gameserver.model.items.ItemStorage;
 
 /**
- *
  * @author Avol
+ * modified by ATracer
  */
 public class Inventory
 {
-
-	private Map<ItemSlot, Item> items;
+	
 	public int kinah;
 	public int totalItemsCount;
 	public int itemUniqueIdArray[];
@@ -57,12 +54,44 @@ public class Inventory
 	public int equipedItemIdArray[];
 
 	public int newItemUniqueIdValue;
-
+	
+	private final ItemStorage defaultItemBag;
+	
 	public Inventory()
 	{
-		items = new HashMap<ItemSlot, Item>();
-		Set items.keySet() = "d";
+		defaultItemBag = new ItemStorage(30);
 	}
+	
+	/**
+	 * @param item
+	 */
+	public void addToBag(Item item)
+	{
+		defaultItemBag.addItemToStorage(item);
+	}
+	
+	/**
+	 * @param items
+	 */
+	public void addToBag(List<Item> items)
+	{
+		for(Item item : items)
+		{
+			addToBag(item);
+		}
+	}
+	
+	/**
+	 * @param item
+	 */
+	public void removeFromBag(Item item)
+	{
+		defaultItemBag.removeItemFromStorage(item);
+	}
+
+	
+	// TODO REMOVE THIS CODE UNDER
+	
 	public void getInventoryFromDb(int activePlayer) {
 		PreparedStatement ps = DB.prepareStatement("SELECT `itemUniqueId`, `itemId`,`itemCount`FROM `inventory` WHERE `itemOwner`=" + activePlayer);
 		try
