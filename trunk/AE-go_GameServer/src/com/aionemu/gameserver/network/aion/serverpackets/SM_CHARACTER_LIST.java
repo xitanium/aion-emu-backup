@@ -58,7 +58,7 @@ public class SM_CHARACTER_LIST extends PlayerInfo
 		for(PlayerAccountData playerData : account)
 		{	
 			writePlayerInfo(buf, playerData);
-			writeB(buf, new byte[14]);
+			writeB(buf, new byte[22]);
 		}
 	}
 

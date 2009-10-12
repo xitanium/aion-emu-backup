@@ -470,6 +470,10 @@
 			<part name="chinJut" type="c" />
 			<part name="earShape" type="c" />
 			<part name="headSize" type="c" />
+			<part name="0x00" type="c" />
+			<part name="shoulderSize" type="c" />
+			<part name="armLength" type="c" />
+			<part name="legLength" type="c" />
 			<part name="neck" type="c" />
 			<part name="neckLength" type="c" />
 			<part name="shoulders" type="c" />
@@ -479,12 +483,12 @@
 			<part name="hips" type="c" />
 			<part name="armThickness" type="c" />
 			<part name="handSize" type="c" />
-			<part name="legThicknes" type="c" />
+			<part name="legThickness" type="c" />
 			<part name="footSize" type="c" />
 			<part name="facialRate" type="c" />
 			<part name="0x00" type="c" />
-			<part name="height" type="f" />
 			<part name="0x00" type="c" />
+			<part name="height" type="f" />
 			<part name="raceSex" type="d" />
 			<part name="mapId" type="d" />
 			<part name="x" type="f" />
@@ -492,7 +496,8 @@
 			<part name="z" type="f" />
 			<part name="unk" type="d" />
 			<part name="level" type="d" />
-			<part name="0x00*20*4" type="b" size="80" />
+			<part name="-1" type="d" />
+			<part name="0x00*19*4" type="b" size="76" />
 			<part name="item#1Equipped?" type="c">
 				<reader type="Boolean" />
 			</part>
@@ -586,6 +591,9 @@
 			<part name="item#16Equipped?" type="c">
 				<reader type="Boolean" />
 			</part>
+			<part name="itemId" type="d" />
+			<part name="0x00" type="d" />
+			<part name="0x00" type="d" />
 			<part name="deletionTime" type="d" />
 			<part name="0x00" type="d" />
 		</packet>
@@ -641,6 +649,10 @@
 				<part name="chinJut" type="c" />
 				<part name="earShape" type="c" />
 				<part name="headSize" type="c" />
+				<part name="0x00" type="c" />
+				<part name="shoulderSize" type="c" />
+				<part name="armLength" type="c" />
+				<part name="legLength" type="c" />
 				<part name="neck" type="c" />
 				<part name="neckLength" type="c" />
 				<part name="shoulders" type="c" />
@@ -654,8 +666,8 @@
 				<part name="footSize" type="c" />
 				<part name="facialRate" type="c" />
 				<part name="0x00" type="c" />
-				<part name="height" type="f" />
 				<part name="0x00" type="c" />
+				<part name="height" type="f" />
 				<part name="raceSex" type="d" />
 				<part name="mapId" type="d" />
 				<part name="x" type="f" />
@@ -663,7 +675,8 @@
 				<part name="z" type="f" />
 				<part name="unk" type="d" />
 				<part name="level" type="d" />
-				<part name="0x00*20*4" type="b" size="80" />
+				<part name="-1" type="d" />
+				<part name="0x00*19*4" type="b" size="76" />
 				<part name="item#1Equipped?" type="c">
 					<reader type="Boolean" />
 				</part>
@@ -760,6 +773,7 @@
 				<part name="itemId" type="d" />
 				<part name="0x00" type="d" />
 				<part name="0x00" type="d" />
+				<part name="0x00*22" type="b" size="22" />
 			</for>
 		</packet>
 		<packet id="0xC2" name="SM_FLY_TELEPORT">
@@ -995,7 +1009,7 @@
 			<part name="hair" type="c" />
 			<part name="deco" type="c" />
 			<part name="tattoo" type="c" />
-			<part name="unk" type="c" />
+			<part name="0x00" type="c" />
 			<part name="faceShape" type="c" />
 			<part name="foreHead" type="c" />
 			<part name="eyeHeight" type="c" />
@@ -1021,9 +1035,13 @@
 			<part name="chinJut" type="c" />
 			<part name="earShape" type="c" />
 			<part name="headSize" type="c" />
+			<part name="0x00" type="c" />
+			<part name="shoulderSize" type="c" />
+			<part name="armLength" type="c" />
+			<part name="legLength" type="c" />
 			<part name="neck" type="c" />
 			<part name="neckLength" type="c" />
-			<part name="shoulderSize" type="c" />
+			<part name="shoulders" type="c" />
 			<part name="torso" type="c" />
 			<part name="chest" type="c" />
 			<part name="waist" type="c" />
@@ -1034,12 +1052,8 @@
 			<part name="footSize" type="c" />
 			<part name="facialRate" type="c" />
 			<part name="unk" type="c" />
-			<part name="armLength" type="c" />
-			<part name="legLength" type="c" />
-			<part name="unk" type="c" />
 			<part name="unk" type="c" />
 			<part name="height" type="f" />
-			<part name="unk" type="c" />
 		</packet>
 		<packet id="0x02" name="CM_DELETE_CHARACTER">
 			<part name="playOk2" type="d" />
