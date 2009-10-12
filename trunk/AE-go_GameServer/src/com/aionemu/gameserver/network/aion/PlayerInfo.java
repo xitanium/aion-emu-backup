@@ -152,7 +152,7 @@ public abstract class PlayerInfo extends AionServerPacket
 		    writeD(buf, 0x00);
 		    writeD(buf, 0x00);
 		}
-		for (int row = totalEquipedItemsCount; row <= 16; row++) {
+		for (int row = totalEquipedItemsCount; row < 16; row++) {
 			writeC(buf, 0x00); // item not equiped
  			writeD(buf, 0x00);
 		    writeD(buf, 0x00);
