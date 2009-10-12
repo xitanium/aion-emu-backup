@@ -101,21 +101,20 @@ public class PlayerController extends CreatureController<Player>
 
 	public void attackTarget(int targetObjectId)
 	{
-		Player player = getOwner();
-		PlayerGameStats gameStats = player.getGameStats();
-		long time = System.currentTimeMillis();
+		Player attacker = getOwner();
+		PlayerGameStats ags = attacker.getGameStats();
+		int time = Math.round(System.currentTimeMillis()/1000f);
 		int attackType = 0; //TODO investigate attack types	
 
 		Creature target = (Creature) world.findAionObject(targetObjectId);
-		int damages = StatFunctions.calculateBaseDamageToTarget(player, target);
-		PacketSendUtility.broadcastPacket(player,
-			new SM_ATTACK(player.getObjectId(), targetObjectId,	gameStats.getAttackCounter(), (int) time, attackType, damages), true);
+		int damages = StatFunctions.calculateBaseDamageToTarget(attacker, target);
+		PacketSendUtility.broadcastPacket(attacker,
+			new SM_ATTACK(attacker.getObjectId(), targetObjectId, ags.getAttackCounter(), time, attackType, damages), true);
 
-		boolean attackSuccess = target.getController().onAttack(player, damages);
+		boolean attackSuccess = target.getController().onAttack(attacker, damages);
 		if(attackSuccess)
 		{
-			target.getLifeStats().reduceHp(damages);
-			gameStats.increaseAttackCounter();
+			ags.increaseAttackCounter();
 		}
 	}
 
@@ -123,26 +122,28 @@ public class PlayerController extends CreatureController<Player>
 	 * @see com.aionemu.gameserver.controllers.CreatureController#onAttack(com.aionemu.gameserver.model.gameobjects.Creature)
 	 */
 	@Override
-	public boolean onAttack(Creature creature, int damages)
+	public boolean onAttack(Creature attacker, int damages)
 	{
-		super.onAttack(creature,damages);
-		lastAttacker = creature;
+		super.onAttack(attacker,damages);
+		lastAttacker = attacker;
 		
-		Player player = getOwner();
-		PlayerLifeStats lifeStats = player.getLifeStats();
+		Player victim = getOwner();
+		PlayerLifeStats vls = victim.getLifeStats();
 
 		//TODO resolve synchronization issue
-		if(lifeStats.isAlreadyDead())
+		if(vls.isAlreadyDead())
 		{
 			return false;
 		}
 
-		lifeStats.reduceHp(damages);
+		vls.reduceHp(damages);
 
-		if(lifeStats.isAlreadyDead())
+		if(vls.isAlreadyDead())
 		{
-			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(this.getOwner().getObjectId(), 13 , creature.getObjectId()), true);
-			this.onDie();
+			if (attacker instanceof Npc) {
+				PacketSendUtility.broadcastPacket(victim, new SM_EMOTION(victim.getObjectId(), 13 , attacker.getObjectId()), true);
+				this.onDie();
+			}
 		}
 		return true;
 	}
@@ -181,6 +182,10 @@ public class PlayerController extends CreatureController<Player>
 	public void onDuel () {
 		
 	}
+	
+	public void duelEnd () {
+		
+	}
 
 	/**
 	 * Teleport player to new location
@@ -192,7 +197,6 @@ public class PlayerController extends CreatureController<Player>
 	 */
 	public void teleportTo (int worldId, float x, float y, float z, byte heading) {
 		Player p = getOwner();
-		int oldWorldId = p.getWorldId();
 		world.despawn(p);
 		world.setPosition(p, worldId, x, y, z, heading);
 		p.setProtectionActive(true);
