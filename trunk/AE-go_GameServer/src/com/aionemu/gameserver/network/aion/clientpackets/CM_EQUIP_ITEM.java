@@ -102,7 +102,12 @@ public class CM_EQUIP_ITEM extends AionClientPacket
 	boolean isAnInt= test>='0' && test<='9';
 	
 	if (isAnInt){
-		slot = ItemSlot.values()[test];
+		try {
+			slot = ItemSlot.values()[Integer.parseInt(slotName)];
+		} catch (Exception e) {
+			log.error("Invalid item slot "+slotName);
+			slot = ItemSlot.NONE;
+		}
 	} else {
 		slot = ItemSlot.NONE;
 	}

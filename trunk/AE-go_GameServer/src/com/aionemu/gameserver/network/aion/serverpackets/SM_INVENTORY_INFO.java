@@ -18,6 +18,8 @@ package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 import com.aionemu.gameserver.model.ItemSlot;
@@ -38,6 +40,7 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 	private int itemQuanty;
 	private int entries;
 	private ItemSlot slot;
+	private static Logger log = Logger.getLogger(SM_INVENTORY_INFO.class);
 	/**
 	 * Constructs new <tt>SM_INVENTORY_INFO </tt> packet
 	 */
@@ -71,7 +74,12 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 		boolean isAnInt= test>='0' && test<='9';
 	
 		if (isAnInt){
-			slot = ItemSlot.values()[test];
+			try {
+				slot = ItemSlot.values()[Integer.parseInt(slotName)];
+			} catch (Exception e) {
+				log.error("Invalid item slot "+slotName);
+				slot = ItemSlot.NONE;
+			}
 		} else {
 			slot = ItemSlot.NONE;
 		}
