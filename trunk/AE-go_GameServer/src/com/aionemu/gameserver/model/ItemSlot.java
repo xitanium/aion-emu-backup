@@ -23,26 +23,27 @@ package com.aionemu.gameserver.model;
  */
 public enum ItemSlot
 {
-	INVENTORY(0),
-	MAIN_HAND(1),
-	OFF_HAND(2),
-	HELMET(3),
-	TORSO(4),
-	GLOVES(5),
-	BOOTS(6),
-	EARRINGS_LEFT(7),
-	EARRINGS_RIGHT(8),
-	RING_LEFT(9),
-	RING_RIGHT(10),
-	NECKLACE(11),
-	PAULDRON(12),
-	PANTS(13),
-	POWER_SHARD_LEFT(14),
-	POWER_SHARD_RIGHT(15),
-	WINGS(16),
-	WAIST(17),
-	SECONDARY_MAIN_HAND(18),
-	SECONDARY_OFF_HAND(19);
+	INVENTORY(0x0000),
+	MAIN_HAND(0x0001),
+	OFF_HAND(0x0002),
+	BOTH_HANDS(0x0003),
+	HELMET(0x0004),
+	TORSO(0x0008),
+	GLOVES(0x0010),
+	BOOTS(0x0020),
+	EARRINGS_LEFT(0x0040),
+	EARRINGS_RIGHT(0x0080),
+	RING_LEFT(0x0100),
+	RING_RIGHT(0x0200),
+	NECKLACE(0x0400),
+	PAULDRON(0x0800),
+	PANTS(0x1000),
+	POWER_SHARD_LEFT(0x2000),
+	POWER_SHARD_RIGHT(0x4000),
+	WINGS(0x8000),
+	WAIST(0x10000),
+	SECONDARY_MAIN_HAND(0x20000),
+	SECONDARY_OFF_HAND(0x40000);
 	
 	private int slotId;
 	
@@ -56,12 +57,7 @@ public enum ItemSlot
 		return slotId;
 	}
 	
-	public short getSlotMask() throws IllegalArgumentException {
-		if ((slotId<0)||(slotId>=ItemSlot.values().length)) {
-			throw new IllegalArgumentException("Invalid slot id "+slotId);
-		}
-		if (slotId==0)
-			return 0;
-		return (short)Math.round(Math.pow(2, slotId-1));
+	public int getSlotMask() throws IllegalArgumentException {
+		return slotId;
 	}
 }

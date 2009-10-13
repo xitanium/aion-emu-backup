@@ -151,7 +151,6 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 				writeD(buf, 0);
 				writeD(buf, 0);
 				writeH(buf, 0);
-				writeC(buf, 0);
 				writeD(buf, 0);
 //				writeD(buf, 0);
 //				writeD(buf, 0);
