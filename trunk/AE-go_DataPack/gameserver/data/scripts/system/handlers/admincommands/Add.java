@@ -24,6 +24,7 @@ import com.aionemu.gameserver.dataholders.ItemData;
 import com.aionemu.gameserver.dataholders.SpawnData;
 import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.ChatType;
+import com.aionemu.gameserver.model.ItemSlot;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.templates.ItemTemplate;
@@ -50,7 +51,7 @@ public class Add extends AdminCommand
     * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.gameobjects.Player, java.lang.String[])
     */
     @Override
-    public void executeCommand(Player admin, String... params)
+    public void executeCommand(Player admin, String[] params)
     {
         if(params == null || params.length == 0 || params.length > 2)
         {
@@ -113,7 +114,7 @@ public class Add extends AdminCommand
 			items.getLastUniqueIdFromDb();
 			int newItemUniqueId = items.getnewItemUniqueIdValue();
 				
-			PacketSendUtility.sendPacket(targetPlayer, new SM_INVENTORY_INFO(newItemUniqueId, itemId, count, 1, 8));
+			PacketSendUtility.sendPacket(targetPlayer, new SM_INVENTORY_INFO(newItemUniqueId, itemId, count, 1, ItemSlot.NONE));
 	        PacketSendUtility.sendMessage(admin, "Added Item.");
 			}else{
 		        PacketSendUtility.sendMessage(admin, "Target's cube has not enough space for that item(s)");

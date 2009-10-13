@@ -18,6 +18,8 @@ package com.aionemu.gameserver.network.aion.clientpackets;
 
 import java.util.Random;
 import org.apache.log4j.Logger;
+
+import com.aionemu.gameserver.model.ItemSlot;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -37,7 +39,7 @@ public class CM_EQUIP_ITEM extends AionClientPacket
 	private static final Logger	log	= Logger.getLogger(CM_EQUIP_ITEM.class);
 
 	public int slotRead;
-	public int slot;
+	public ItemSlot slot;
 	public int itemUniqueId;
 	public int action;
 	public CM_EQUIP_ITEM(int opcode)
@@ -100,63 +102,47 @@ public class CM_EQUIP_ITEM extends AionClientPacket
 	boolean isAnInt= test>='0' && test<='9';
 	
 	if (isAnInt){
-		slot = Integer.parseInt(slotName);
-		if (slot==5) {
-			slot = 1; // or 2 weapon
-		}
-		if (slot==6) {
-			slot = 8192;//or 16384 power shard
-		}
-		if (slot==7) {
-			slot = 256;// 512 rings
-		}
-		if (slot==9) {
-			slot = 64;// 128 earrings
-		}
+		slot = ItemSlot.values()[test];
 	} else {
-		slot = 0;
+		slot = ItemSlot.NONE;
 	}
 	
+	final Player activePlayer = getConnection().getActivePlayer();
+	int activeplayer = activePlayer.getObjectId();
+	inventory.getIsEquipedFromDb(activeplayer, slot);
+	int isEquiped = inventory.getIsEquiped();
+	int unequipItemUniqueId = inventory.getIsEquipedItemUniqueId();
 
-		final Player activePlayer = getConnection().getActivePlayer();
-		int activeplayer = activePlayer.getObjectId();
-
-		inventory.getIsEquipedFromDb(activeplayer, slot);
-		int isEquiped = inventory.getIsEquiped();
-		int unequipItemUniqueId = inventory.getIsEquipedItemUniqueId();
-
-		if (action==0) {
-			if (isEquiped==1) {
-				inventory.putIsEquipedToDb(unequipItemUniqueId, 0, 0);
-				sendPacket(new SM_UPDATE_ITEM(0, 1, unequipItemUniqueId));
+	if (action==0) {
+		if (isEquiped==1) {
+			inventory.putIsEquipedToDb(unequipItemUniqueId, 0, slot);
+			sendPacket(new SM_UPDATE_ITEM(slot, 1, unequipItemUniqueId));
 				
-				inventory.putIsEquipedToDb(itemUniqueId, 1, slot);
-				sendPacket(new SM_UPDATE_ITEM(slot, action, itemUniqueId));
+			inventory.putIsEquipedToDb(itemUniqueId, 1, slot);
+			sendPacket(new SM_UPDATE_ITEM(slot, action, itemUniqueId));
 
-				sendPacket(new SM_UPDATE_PLAYER_APPEARANCE(activeplayer));
-			}
-			if (isEquiped==0) {
-				inventory.putIsEquipedToDb(itemUniqueId, 1, slot);
-				sendPacket(new SM_UPDATE_ITEM(slot, action, itemUniqueId));
-				
-				sendPacket(new SM_UPDATE_PLAYER_APPEARANCE(activeplayer));
-			}
-		} else if (action==1) {
-			inventory.getInventoryFromDb(activeplayer);
-			int totalItemsCount = inventory.getItemsCount();
+			sendPacket(new SM_UPDATE_PLAYER_APPEARANCE(activeplayer));
+		}
+		if (isEquiped==0) {
+			inventory.putIsEquipedToDb(itemUniqueId, 1, slot);
+			sendPacket(new SM_UPDATE_ITEM(slot, action, itemUniqueId));
+			sendPacket(new SM_UPDATE_PLAYER_APPEARANCE(activeplayer));
+		}
+	} else if (action==1) {
+		inventory.getInventoryFromDb(activeplayer);
+		int totalItemsCount = inventory.getItemsCount();
 
-			inventory.getEquipedItemsFromDb(activeplayer);
-			int totalEquipedItemsCount = inventory.getEquipedItemsCount();
+		inventory.getEquipedItemsFromDb(activeplayer);
+		int totalEquipedItemsCount = inventory.getEquipedItemsCount();
 
-			totalItemsCount = totalItemsCount - totalEquipedItemsCount;
+		totalItemsCount = totalItemsCount - totalEquipedItemsCount;
 			
-			int cubes = 1;
-			int cubesize = 27;
-			int allowItemsCount = cubesize*cubes-1;
-
+		int cubes = 1;
+		int cubesize = 27;
+		int allowItemsCount = cubesize*cubes-1;
 			if (totalItemsCount<=allowItemsCount) {
-				inventory.putIsEquipedToDb(itemUniqueId, 0, 0);
-				sendPacket(new SM_UPDATE_ITEM(0, 1, itemUniqueId));
+				inventory.putIsEquipedToDb(itemUniqueId, 0, ItemSlot.NONE);
+				sendPacket(new SM_UPDATE_ITEM(ItemSlot.NONE, 1, itemUniqueId));
 				sendPacket(new SM_UPDATE_PLAYER_APPEARANCE(activeplayer));
 			}
 		}

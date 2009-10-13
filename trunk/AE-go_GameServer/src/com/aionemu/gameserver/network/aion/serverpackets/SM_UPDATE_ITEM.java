@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
+import com.aionemu.gameserver.model.ItemSlot;
 import com.aionemu.gameserver.model.gameobjects.player.ItemList;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import java.util.Random;
@@ -33,8 +34,8 @@ public class SM_UPDATE_ITEM extends AionServerPacket
 	private static final Logger	log	= Logger.getLogger(SM_UPDATE_ITEM.class);
 	private int action;
 	private int uniqueId;
-	private int slot;
-	public SM_UPDATE_ITEM(int slot, int action, int uniqueId)
+	private ItemSlot slot;
+	public SM_UPDATE_ITEM(ItemSlot slot, int action, int uniqueId)
 	{
 		this.slot = slot;
 		this.action = action;
@@ -64,7 +65,7 @@ public class SM_UPDATE_ITEM extends AionServerPacket
 			writeH(buf, 5); // length of item details section
 			//item details block//
 			writeC(buf, 6);
-			writeD(buf, slot); // slot
+			writeD(buf, slot.getSlotId()); // slot
 			//end of item details block//
 		} 
 		//unequip

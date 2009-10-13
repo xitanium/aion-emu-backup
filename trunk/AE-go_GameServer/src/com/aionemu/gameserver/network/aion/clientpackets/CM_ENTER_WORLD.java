@@ -23,6 +23,7 @@ import java.util.Iterator;
 import com.aionemu.gameserver.model.gameobjects.player.ItemList;
 import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.model.ChatType;
+import com.aionemu.gameserver.model.ItemSlot;
 import com.aionemu.gameserver.model.account.AccountTime;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
@@ -141,10 +142,10 @@ public class CM_ENTER_WORLD extends AionClientPacket
 
 			int row = 0;
 			if (totalItemsCount==0) {
-				sendPacket(new SM_INVENTORY_INFO(1234235, 169300001, 20, 1, 8)); // give item	
+				sendPacket(new SM_INVENTORY_INFO(1234235, 169300001, 20, 1, ItemSlot.NONE)); // give item	
 			}
 			while (totalItemsCount > 0) {
-				sendPacket(new SM_INVENTORY_INFO(items.getItemUniqueIdArray(row), items.getItemIdArray(row), items.getItemCountArray(row), 1, 0)); // give item
+				sendPacket(new SM_INVENTORY_INFO(items.getItemUniqueIdArray(row), items.getItemIdArray(row), items.getItemCountArray(row), 1, ItemSlot.NONE)); // give item
 				totalItemsCount = totalItemsCount-1;
 				row+=1;
 			} 

@@ -72,7 +72,7 @@ public class NpcEquippedGear implements Iterable<ItemTemplate>
 				for(ItemTemplate item : v.items)
 				{
 					items.put(item.getItemSlot(), item);
-					mask |= item.getItemSlot().getSlotIdMask();
+					mask |= item.getItemSlot().getSlotMask();
 					v = null;
 				}
 			}

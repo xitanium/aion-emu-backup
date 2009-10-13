@@ -23,6 +23,8 @@ import java.nio.ByteBuffer;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
+
+import com.aionemu.gameserver.model.ItemSlot;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import com.aionemu.gameserver.network.aion.AionConnection;
@@ -53,20 +55,8 @@ public class SM_UPDATE_PLAYER_APPEARANCE extends AionServerPacket
 		int itemsCount = 0;
 		int row = 0;
 		while (totalEquipedItemsCount > 0) {
-			int slot = equipedItems.getEquipedItemSlotArray(row);
-			if (slot==5) {
-				slot = 1; // or 2 weapon
-			}
-			if (slot==6) {
-				slot = 8192;//or 16384 power shard
-			}
-			if (slot==7) {
-				slot = 256;// 512 rings
-			}
-			if (slot==9) {
-				slot = 64;// 128 earrings
-			}
-			itemsCount = itemsCount + slot;
+			ItemSlot slot = equipedItems.getEquipedItemSlotArray(row);
+			itemsCount = itemsCount + slot.getSlotMask();
 			totalEquipedItemsCount = totalEquipedItemsCount-1;
 			row+=1;
 		}

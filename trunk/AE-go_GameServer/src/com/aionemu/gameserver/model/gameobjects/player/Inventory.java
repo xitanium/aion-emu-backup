@@ -24,6 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.aionemu.commons.database.DB;
+import com.aionemu.gameserver.model.ItemSlot;
 
 /**
  *
@@ -47,7 +48,7 @@ public class Inventory
 
 	public int totalEquipedItemsCount;
 	public int equipedItemUniqueIdArray[];
-	public int equipedItemSlotArray[];
+	public ItemSlot equipedItemSlotArray[];
 	public int equipedItemIdArray[];
 
 	public int newItemUniqueIdValue;
@@ -100,13 +101,13 @@ public class Inventory
 				int row2 = 0;
 				
 				equipedItemUniqueIdArray = new int[row+1];
-				equipedItemSlotArray = new int[row+1];
+				equipedItemSlotArray = new ItemSlot[row+1];
 				equipedItemIdArray = new int[row+1];
 
 				while (row > 0) {
 					rs.absolute(row);
 					equipedItemUniqueIdArray[row2] = rs.getInt("itemUniqueId");
-					equipedItemSlotArray[row2] = rs.getInt("slot");
+					equipedItemSlotArray[row2] = ItemSlot.values()[rs.getInt("slot")];
 					equipedItemIdArray[row2] = rs.getInt("itemId");
 					row2 = row2 +1;
 					row = row - 1;
@@ -142,8 +143,8 @@ public class Inventory
 		}
 	}
 
-	public void getIsEquipedFromDb(int activePlayer, int slot) {
-		PreparedStatement ps6 = DB.prepareStatement("SELECT `isEquiped`,`itemId`,`itemUniqueId`  FROM `inventory` WHERE `slot` =" + slot);
+	public void getIsEquipedFromDb(int activePlayer, ItemSlot slot) {
+		PreparedStatement ps6 = DB.prepareStatement("SELECT `isEquiped`,`itemId`,`itemUniqueId`  FROM `inventory` WHERE `slot` =" + slot.getSlotId());
 		try
 		{
 			ResultSet rs = ps6.executeQuery();
@@ -267,12 +268,12 @@ public class Inventory
 		}
 	}
 	
-	public void putIsEquipedToDb(int itemUniqueId, int IsEquiped, int slot) {
+	public void putIsEquipedToDb(int itemUniqueId, int IsEquiped, ItemSlot slot) {
 		PreparedStatement ps4 = DB.prepareStatement("UPDATE `inventory` SET `isEquiped` = ? , `slot` = ? WHERE `itemUniqueId` =" + itemUniqueId);
 		try
 		{
 			ps4.setInt(1, IsEquiped);
-			ps4.setInt(2, slot);
+			ps4.setInt(2, slot.getSlotId());
 			ps4.executeUpdate();
 		}
 		catch(SQLException e)
@@ -340,7 +341,7 @@ public class Inventory
 	public int getItemId() {
 		return itemId;
 	}
-	public int getEquipedItemSlotArray(int row) {
+	public ItemSlot getEquipedItemSlotArray(int row) {
 		return equipedItemSlotArray[row];
 	}
 	public int getEquipedItemUniqueIdArray(int row) {

@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.clientpackets;
 
+import com.aionemu.gameserver.model.ItemSlot;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
@@ -106,7 +107,7 @@ public class CM_LOOT_ITEM extends AionClientPacket
 				items.getLastUniqueIdFromDb();
 				int newItemUniqueId = items.getnewItemUniqueIdValue();
 					
-				sendPacket(new SM_INVENTORY_INFO(newItemUniqueId, itemId, count, 1, 8));
+				sendPacket(new SM_INVENTORY_INFO(newItemUniqueId, itemId, count, 1, ItemSlot.NONE));
 	
 				} else {
 				//todo show SM_INVENTORY_IS_FULL packet or smth.

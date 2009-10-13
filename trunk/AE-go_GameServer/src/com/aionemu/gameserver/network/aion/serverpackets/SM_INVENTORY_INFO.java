@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
+import com.aionemu.gameserver.model.ItemSlot;
 import com.aionemu.gameserver.model.gameobjects.player.ItemList;
 
 /**
@@ -36,11 +37,11 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 	private int itemNameId;
 	private int itemQuanty;
 	private int entries;
-	private int slot;
+	private ItemSlot slot;
 	/**
 	 * Constructs new <tt>SM_INVENTORY_INFO </tt> packet
 	 */
-	public SM_INVENTORY_INFO(int uniqueItemId, int itemId, int itemQuanty, int entries, int slot)
+	public SM_INVENTORY_INFO(int uniqueItemId, int itemId, int itemQuanty, int entries, ItemSlot slot)
 	{
 		this.uniqueItemId = uniqueItemId;
 		this.itemId = itemId;
@@ -70,21 +71,9 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 		boolean isAnInt= test>='0' && test<='9';
 	
 		if (isAnInt){
-			slot = Integer.parseInt(slotName);
-			if (slot==5) {
-				slot = 1; // or 2 weapon
-			}
-			if (slot==6) {
-				slot = 8192;//or 16384 power shard
-			}
-			if (slot==7) {
-				slot = 256;// 512 rings
-			}
-			if (slot==9) {
-				slot = 64;// 128 earrings
-			}
+			slot = ItemSlot.values()[test];
 		} else {
-			slot = 0;
+			slot = ItemSlot.NONE;
 		}
 
 		// something wrong with cube part.
@@ -105,7 +94,7 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 
 
 		writeH(buf, 22); //lenght of item details
-if (slot == 0) {
+if (slot == ItemSlot.NONE) {
 		writeC(buf, 0x00);
 		writeH(buf, 0x23E3);
 		writeD(buf, itemQuanty);
@@ -117,8 +106,7 @@ if (slot == 0) {
 		writeD(buf, 0);	
 		writeD(buf, 0);	
 		writeH(buf, 0);	
-}
-if (slot > 0) {
+} else {
 		//item details block//
 
 		writeC(buf, 0x02); // equiped data follows

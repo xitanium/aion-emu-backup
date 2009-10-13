@@ -18,37 +18,42 @@ package com.aionemu.gameserver.model;
 
 /**
  * This enum is defining inventory slots, to which items can be equipped.
- * @author Luno
+ * @author xavier
  *
  */
 public enum ItemSlot
 {
-	MAIN_HAND(0),
-	OFF_HAND(1),
-	HELMET(2),
-	TORSO(3),
-	GLOVES(4),
-	BOOTS(5),
-	EARRINGS_LEFT(6),
-	EARRINGS_RIGHT(7),
-	RING_LEFT(8),
-	RING_RIGHT(9),
-	NECKLACE(10),
-	PAULDRON(11),
+	NONE(0),
+	UNK1(1),
+	UNK2(2),
+	UNK3(3),
+	UNK4(4),
+	MAIN_HAND(5),
+	UNK6(6),
+	UNK7(7),
+	UNK8(8),
+	ARMOR(9),
+	UNK10(10),
+	UNK11(11),
 	PANTS(12),
-	POWER_SHARD_RIGHT(13),
-	POWER_SHARD_LEFT(14),
-	WINGS(15);
+	UNK13(13),
+	UNK14(14),
+	UNK15(15),
+	UNK16(16);
 	
-	private short slotIdMask;
+	private int slotId;
 	
 	private ItemSlot(int slotId)
 	{
-		this.slotIdMask = (short)(Math.pow(2, slotId));
+		this.slotId = slotId;
 	}
 	
-	public short getSlotIdMask()
+	public int getSlotId()
 	{
-		return slotIdMask;
+		return slotId;
+	}
+	
+	public short getSlotMask() {
+		return (short)Math.round(Math.pow(2, slotId));
 	}
 }

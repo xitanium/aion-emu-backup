@@ -121,19 +121,7 @@ public class SM_PLAYER_INFO extends AionServerPacket
 		int itemsCount = 0;
 		int row = 0;
 		while (totalEquipedItemsCount > 0) {
-			int slot = equipedItems.getEquipedItemSlotArray(row);
-			if (slot==5) {
-				slot = 1; // or 2 weapon
-			}
-			if (slot==6) {
-				slot = 8192;//or 16384 power shard
-			}
-			if (slot==7) {
-				slot = 256;// 512 rings
-			}
-			if (slot==9) {
-				slot = 64;// 128 earrings
-			}
+			short slot = equipedItems.getEquipedItemSlotArray(row).getSlotMask();
 			itemsCount = itemsCount + slot;
 			totalEquipedItemsCount = totalEquipedItemsCount-1;
 			row+=1;
