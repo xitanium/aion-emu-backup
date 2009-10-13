@@ -24,18 +24,18 @@ package com.aionemu.gameserver.model;
 public enum ItemSlot
 {
 	NONE(0),
-	OFF_HAND(1),
-	HELMET(2),
-	EARRINGS_LEFT(3),
-	GLOVES(4),
-	BOOTS(5),
-	MAIN_HAND(6),
-	EARRINGS_RIGHT(7),
-	RING_LEFT(8),
-	RING_RIGHT(9),
-	TORSO(10),
-	PAULDRON(11),
-	NECKLACE(12),
+	MAIN_HAND(1),
+	OFF_HAND(2),
+	HELMET(3),
+	TORSO(4),
+	GLOVES(5),
+	BOOTS(6),
+	EARRINGS_LEFT(7),
+	EARRINGS_RIGHT(8),
+	RING_LEFT(9),
+	RING_RIGHT(10),
+	NECKLACE(11),
+	PAULDRON(12),
 	PANTS(13),
 	UNK14(14),
 	UNK15(15),
@@ -53,7 +53,7 @@ public enum ItemSlot
 		return slotId;
 	}
 	
-	public short getSlotMask() {
+	public short getSlotMask() throws IllegalArgumentException {
 		if ((slotId<0)||(slotId>16)) {
 			throw new IllegalArgumentException("Invalid slot id "+slotId);
 		}

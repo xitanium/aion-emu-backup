@@ -97,7 +97,7 @@ public class SM_CREATE_CHARACTER extends PlayerInfo
 				uniqueId = inventory.putItemToDb(activePlayer, 110500003, 1);
 				inventory.putIsEquipedToDb(uniqueId, 1, ItemSlot.TORSO);// Chain armor for training
 				uniqueId = inventory.putItemToDb(activePlayer, 113500001, 1);
-				inventory.putIsEquipedToDb(uniqueId, 1, ItemSlot.BOOTS);// Chain Greaves for training
+				inventory.putIsEquipedToDb(uniqueId, 1, ItemSlot.PANTS);// Chain Greaves for training
 				inventory.putItemToDb(activePlayer, 160000001, 12); // mercenary Fruit Juice
 				inventory.putItemToDb(activePlayer, 169300001, 20); // bandage
 			}
@@ -108,7 +108,7 @@ public class SM_CREATE_CHARACTER extends PlayerInfo
 				uniqueId = inventory.putItemToDb(activePlayer, 110300015, 1);
 				inventory.putIsEquipedToDb(uniqueId, 1, ItemSlot.TORSO);// Leather Jerkin for training
 				uniqueId = inventory.putItemToDb(activePlayer, 113300005, 1);
-				inventory.putIsEquipedToDb(uniqueId, 1, ItemSlot.BOOTS);// Leather leggins for training
+				inventory.putIsEquipedToDb(uniqueId, 1, ItemSlot.PANTS);// Leather leggins for training
 				inventory.putItemToDb(activePlayer, 160000001, 12); // mercenary Fruit Juice
 				inventory.putItemToDb(activePlayer, 169300001, 20); // bandage
 			}
@@ -119,7 +119,7 @@ public class SM_CREATE_CHARACTER extends PlayerInfo
 				uniqueId = inventory.putItemToDb(activePlayer, 110100009, 1);
 				inventory.putIsEquipedToDb(uniqueId, 1, ItemSlot.TORSO);// Cloth Tunic for Training
 				uniqueId = inventory.putItemToDb(activePlayer, 113100005, 1);
-				inventory.putIsEquipedToDb(uniqueId, 1, ItemSlot.BOOTS);// Cloth Leggins for training
+				inventory.putIsEquipedToDb(uniqueId, 1, ItemSlot.PANTS);// Cloth Leggins for training
 				inventory.putItemToDb(activePlayer, 160000001, 12); // mercenary Fruit Juice
 				inventory.putItemToDb(activePlayer, 169300001, 20); // bandage
 			}
@@ -130,7 +130,7 @@ public class SM_CREATE_CHARACTER extends PlayerInfo
 				uniqueId = inventory.putItemToDb(activePlayer, 110300292, 1);
 				inventory.putIsEquipedToDb(uniqueId, 1, ItemSlot.TORSO);// Leather armor for training
 				uniqueId = inventory.putItemToDb(activePlayer, 113300278, 1);
-				inventory.putIsEquipedToDb(uniqueId, 1, ItemSlot.BOOTS);// Leather leg armor for training
+				inventory.putIsEquipedToDb(uniqueId, 1, ItemSlot.PANTS);// Leather leg armor for training
 				inventory.putItemToDb(activePlayer, 160000001, 12); // mercenary Fruit Juice
 				inventory.putItemToDb(activePlayer, 169300001, 20); // bandage
 			}
