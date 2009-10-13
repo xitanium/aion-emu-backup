@@ -196,7 +196,7 @@
 				</case>
 			</switch>
 		</packet>
-		<packet id="0x1D" name="SM_INVENTORY_INFO">
+		<packet id="0x13" name="SM_INVENTORY_INFO">
 			<part name="hide?" type="d" />
 			<part id="0" name="items" type="h" />
 			<for id="0">

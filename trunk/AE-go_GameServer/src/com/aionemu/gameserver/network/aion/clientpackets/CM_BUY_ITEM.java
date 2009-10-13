@@ -35,6 +35,7 @@ public class CM_BUY_ITEM extends AionClientPacket
 	public int amount;
 	public int itemId;
 	public int count;
+	public int playerId;
 
 	public int unk2;
 	
@@ -72,8 +73,7 @@ public class CM_BUY_ITEM extends AionClientPacket
 			items.putItemToDb(_activePlayer, _itemId, _count);
 			items.getLastUniqueIdFromDb();
 			int newItemUniqueId = items.getnewItemUniqueIdValue();
-				
-			sendPacket(new SM_INVENTORY_INFO(newItemUniqueId, _itemId, _count, 1, ItemSlot.NONE));
+			//sendPacket(new SM_INVENTORY_INFO(getConnection().getActivePlayer().getObjectId()));
 
 			} else {
 			//todo show SM_INVENTORY_IS_FULL packet or smth.
@@ -124,5 +124,6 @@ public class CM_BUY_ITEM extends AionClientPacket
 	@Override
 	protected void runImpl()
 	{
+		sendPacket(new SM_INVENTORY_INFO(getConnection().getActivePlayer().getObjectId()));
 	}
 }

@@ -106,12 +106,11 @@ public class CM_LOOT_ITEM extends AionClientPacket
 				items.putItemToDb(activePlayer, itemId, count);
 				items.getLastUniqueIdFromDb();
 				int newItemUniqueId = items.getnewItemUniqueIdValue();
-					
-				sendPacket(new SM_INVENTORY_INFO(newItemUniqueId, itemId, count, 1, ItemSlot.NONE));
 	
 				} else {
 				//todo show SM_INVENTORY_IS_FULL packet or smth.
 			}
 		}
+		sendPacket(new SM_INVENTORY_INFO(getConnection().getActivePlayer().getObjectId()));
 	}
 }

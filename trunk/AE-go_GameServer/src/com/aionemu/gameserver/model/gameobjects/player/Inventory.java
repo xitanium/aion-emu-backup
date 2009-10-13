@@ -39,6 +39,8 @@ public class Inventory
 	public int itemIdArray[];
 	public int itemNameIdArray[];
 	public int itemCountArray[];
+	public ItemSlot itemSlotArray[];
+	public boolean itemIsEquipedArray[];
 	public int totalDbItemsCount;
 	public int isEquiped;
 	public int isEquipedItemId;
@@ -54,7 +56,7 @@ public class Inventory
 	public int newItemUniqueIdValue;
 
 	public void getInventoryFromDb(int activePlayer) {
-		PreparedStatement ps = DB.prepareStatement("SELECT `itemUniqueId`, `itemId`,`itemCount`FROM `inventory` WHERE `itemOwner`=" + activePlayer);
+		PreparedStatement ps = DB.prepareStatement("SELECT `itemUniqueId`, `itemId`,`itemCount`,`slot`,`isEquiped` FROM `inventory` WHERE `itemOwner`=" + activePlayer);
 		try
 		{
 			ResultSet rs = ps.executeQuery();
@@ -67,12 +69,16 @@ public class Inventory
 				itemUniqueIdArray = new int[row+1];
 				itemIdArray = new int[row+1];
 				itemCountArray = new int[row+1];
+				itemSlotArray = new ItemSlot[row+1];
+				itemIsEquipedArray = new boolean[row+1];
 			
 				while (row > 0) {
 					rs.absolute(row);
 					itemUniqueIdArray[row2] = rs.getInt("itemUniqueId");
 					itemIdArray[row2] = rs.getInt("itemId");
 					itemCountArray[row2] = rs.getInt("itemCount");
+					itemSlotArray[row2] = ItemSlot.values()[rs.getInt("slot")];
+					itemIsEquipedArray[row2] = rs.getBoolean("isEquiped");
 					row2 = row2 +1;
 					row = row - 1;
 				}
@@ -90,7 +96,7 @@ public class Inventory
 	}
 
 	public void getEquipedItemsFromDb(int activePlayer) {
-		PreparedStatement ps10 = DB.prepareStatement("SELECT `itemUniqueId`,`itemId`, `slot` FROM `inventory` WHERE `isEquiped`='1' AND `itemOwner`=" + activePlayer + " ORDER BY `slot` DESC"); //  
+		PreparedStatement ps10 = DB.prepareStatement("SELECT `itemUniqueId`,`itemId`, `slot`, `nameId` FROM `inventory` WHERE `isEquiped`='1' AND `itemOwner`=" + activePlayer + " ORDER BY `slot` DESC"); //  
 		try
 		{
 			ResultSet rs = ps10.executeQuery();
@@ -332,6 +338,12 @@ public class Inventory
 	}
 	public int getItemIdArray(int row) {
 		return itemIdArray[row];
+	}
+	public boolean getItemIsEquipedArray(int row) {
+		return itemIsEquipedArray[row];
+	}
+	public ItemSlot getItemSlotArray(int row) {
+		return itemSlotArray[row];
 	}
 
 	public int getItemCountArray(int row) {

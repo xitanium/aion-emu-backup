@@ -114,7 +114,7 @@ public class Add extends AdminCommand
 			items.getLastUniqueIdFromDb();
 			int newItemUniqueId = items.getnewItemUniqueIdValue();
 				
-			PacketSendUtility.sendPacket(targetPlayer, new SM_INVENTORY_INFO(newItemUniqueId, itemId, count, 1, ItemSlot.NONE));
+			PacketSendUtility.sendPacket(targetPlayer, new SM_INVENTORY_INFO(targetPlayer.getObjectId()));
 	        PacketSendUtility.sendMessage(admin, "Added Item.");
 			}else{
 		        PacketSendUtility.sendMessage(admin, "Target's cube has not enough space for that item(s)");

@@ -23,7 +23,7 @@ package com.aionemu.gameserver.model;
  */
 public enum ItemSlot
 {
-	NONE(0),
+	INVENTORY(0),
 	MAIN_HAND(1),
 	OFF_HAND(2),
 	HELMET(3),
@@ -37,9 +37,12 @@ public enum ItemSlot
 	NECKLACE(11),
 	PAULDRON(12),
 	PANTS(13),
-	UNK14(14),
-	UNK15(15),
-	UNK16(16);
+	POWER_SHARD_LEFT(14),
+	POWER_SHARD_RIGHT(15),
+	WINGS(16),
+	WAIST(17),
+	SECONDARY_MAIN_HAND(18),
+	SECONDARY_OFF_HAND(19);
 	
 	private int slotId;
 	
@@ -54,7 +57,7 @@ public enum ItemSlot
 	}
 	
 	public short getSlotMask() throws IllegalArgumentException {
-		if ((slotId<0)||(slotId>16)) {
+		if ((slotId<0)||(slotId>=ItemSlot.values().length)) {
 			throw new IllegalArgumentException("Invalid slot id "+slotId);
 		}
 		if (slotId==0)

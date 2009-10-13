@@ -106,10 +106,10 @@ public class CM_EQUIP_ITEM extends AionClientPacket
 			slot = ItemSlot.values()[Integer.parseInt(slotName)];
 		} catch (Exception e) {
 			log.error("Invalid item slot "+slotName);
-			slot = ItemSlot.NONE;
+			slot = ItemSlot.INVENTORY;
 		}
 	} else {
-		slot = ItemSlot.NONE;
+		slot = ItemSlot.INVENTORY;
 	}
 	
 	final Player activePlayer = getConnection().getActivePlayer();
@@ -146,8 +146,8 @@ public class CM_EQUIP_ITEM extends AionClientPacket
 		int cubesize = 27;
 		int allowItemsCount = cubesize*cubes-1;
 			if (totalItemsCount<=allowItemsCount) {
-				inventory.putIsEquipedToDb(itemUniqueId, 0, ItemSlot.NONE);
-				sendPacket(new SM_UPDATE_ITEM(ItemSlot.NONE, 1, itemUniqueId));
+				inventory.putIsEquipedToDb(itemUniqueId, 0, ItemSlot.INVENTORY);
+				sendPacket(new SM_UPDATE_ITEM(ItemSlot.INVENTORY, 1, itemUniqueId));
 				sendPacket(new SM_UPDATE_PLAYER_APPEARANCE(activeplayer));
 			}
 		}

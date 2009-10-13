@@ -142,24 +142,25 @@ public class CM_ENTER_WORLD extends AionClientPacket
 
 			int row = 0;
 			if (totalItemsCount==0) {
-				sendPacket(new SM_INVENTORY_INFO(1234235, 169300001, 20, 1, ItemSlot.NONE)); // give item	
+				inventory.putItemToDb(activePlayer, 169300001, 20);
+				//sendPacket(new SM_INVENTORY_INFO(1234235, 169300001, 20, 1, ItemSlot.NONE)); // give item	
 			}
-			while (totalItemsCount > 0) {
-				sendPacket(new SM_INVENTORY_INFO(items.getItemUniqueIdArray(row), items.getItemIdArray(row), items.getItemCountArray(row), 1, ItemSlot.NONE)); // give item
-				totalItemsCount = totalItemsCount-1;
-				row+=1;
-			} 
+//			while (totalItemsCount > 0) {
+//				sendPacket(new SM_INVENTORY_INFO(items.getItemUniqueIdArray(row), items.getItemIdArray(row), items.getItemCountArray(row), 1, ItemSlot.NONE)); // give item
+//				totalItemsCount = totalItemsCount-1;
+//				row+=1;
+//			} 
 			Inventory equipedItems = new Inventory();
 			equipedItems.getEquipedItemsFromDb(activePlayer);
 			int totalEquipedItemsCount = equipedItems.getEquipedItemsCount();
 
 
 			row = 0;
-			while (totalEquipedItemsCount > 0) {
-				sendPacket(new SM_UPDATE_ITEM(equipedItems.getEquipedItemSlotArray(row), 0, equipedItems.getEquipedItemUniqueIdArray(row)));
-				totalEquipedItemsCount = totalEquipedItemsCount-1;
-				row+=1;
-			}
+//			while (totalEquipedItemsCount > 0) {
+//				sendPacket(new SM_UPDATE_ITEM(equipedItems.getEquipedItemSlotArray(row), 0, equipedItems.getEquipedItemUniqueIdArray(row)));
+//				totalEquipedItemsCount = totalEquipedItemsCount-1;
+//				row+=1;
+//			}
 				
 			
 
@@ -171,8 +172,9 @@ public class CM_ENTER_WORLD extends AionClientPacket
 			kinah2.getKinahFromDb(activePlayer);
 			int kinah = kinah2.getKinahCount();
 			int uniquedeId = 0;
-			sendPacket(new SM_INVENTORY_UPDATE(uniquedeId, 182400001, kinah));
+			//sendPacket(new SM_INVENTORY_UPDATE(uniquedeId, 182400001, kinah));
 			
+			sendPacket(new SM_INVENTORY_INFO(activePlayer));
 			// set tag for GMs
 			PlayerCommonData pcd2 = player2.getCommonData();
 			int playerGMLevel = pcd2.getAdminLevel();
