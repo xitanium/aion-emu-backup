@@ -80,11 +80,17 @@ public class CM_START_LOOT extends AionClientPacket
 		int [][] mytab = DropList.getInstance().getLootTable(monsterId);
 		int [][] dropedlist = new int[mytab.length][2];;
 		
-		if (playerGameStats.getItemId() == 0) {
+		if (playerGameStats.getItemId() == 0 && mytab.length != 0) {
+			//they are one or more item to loot
+			/*
 			if (mytab.length == 0) { //je trouve sa inutile mais bon
 				//if no item is found for that mob, give item
+				
+				
 				playerGameStats.setItemId(100000530);
 				playerGameStats.setItemCount(1);
+				
+				
 				mytab = new int[1][2];
 				mytab[1][0] = 100000530;
 				mytab[1][1] = 1;
@@ -92,6 +98,7 @@ public class CM_START_LOOT extends AionClientPacket
 				sendPacket(new SM_LOOT_STATUS(targetObjectId, 2));
 			}
 			else {
+			*/
 				int arrayLenght = 0;
 				for(int i = 0; i < mytab.length; i++) {
 					if (Math.random() * 100 <= mytab[i][3]) {
@@ -107,12 +114,12 @@ public class CM_START_LOOT extends AionClientPacket
 					sendPacket(new SM_LOOT_ITEMLIST(monsterId, targetObjectId, player, dropedlist, arrayLenght));
 					sendPacket(new SM_LOOT_STATUS(targetObjectId, 2));
 				}
-			}
+			//}
 			
 			sendPacket(new SM_LOOT_STATUS(targetObjectId, 2));
 			sendPacket(new SM_EMOTION(targetObjectId, 35, 0));
 		}
-		else {	
+		else { //nothing to loot	
 			sendPacket(new SM_LOOT_STATUS(targetObjectId, 3));
 			sendPacket(new SM_DELETE((Creature) player.getTarget()));
 			playerGameStats.setItemId(0);

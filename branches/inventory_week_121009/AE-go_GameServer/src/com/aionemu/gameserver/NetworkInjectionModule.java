@@ -35,7 +35,7 @@ import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryProvider;
-import com.aionemu.gameserver.model.gameobjects.player.DropList;
+
 /**
  * @author Luno
  *

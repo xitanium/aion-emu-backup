@@ -20,7 +20,6 @@ import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.AionPacketHandler;
 import com.aionemu.gameserver.network.aion.AionConnection.State;
 import com.aionemu.gameserver.network.aion.clientpackets.*;
-import com.aionemu.gameserver.model.gameobjects.player.DropList;
 
 import com.google.inject.Injector;
 
