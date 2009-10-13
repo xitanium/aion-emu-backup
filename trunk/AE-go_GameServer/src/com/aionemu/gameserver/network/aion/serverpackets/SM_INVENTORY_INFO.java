@@ -111,12 +111,12 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 			writeH(buf, 0x24); // always 36
 			writeD(buf, itemNameId); // item name id
 			writeH(buf, 0); // always 0
-			writeH(buf, 0x17); // lenght of item details
+			writeH(buf, 0x16); // lenght of item details
 			if(itemSlot != ItemSlot.INVENTORY)
 			{
 				writeC(buf, 0x06); // equiped data follows
-				writeC(buf, inventory.getItemSlotArray(itemNumber).getSlotMask()|0xFF00); // where this can be equiped. or
-				writeC(buf, inventory.getItemSlotArray(itemNumber).getSlotMask()|0x00FF);// whatever
+				writeC(buf, inventory.getItemSlotArray(itemNumber).getSlotMask()&0xFF00); // where this can be equiped. or
+				writeC(buf, inventory.getItemSlotArray(itemNumber).getSlotMask()&0x00FF);// whatever
 
 				// ---------------
 
@@ -127,7 +127,7 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 				writeD(buf, 0);
 				writeD(buf, 0);
 				writeH(buf, 0);
-
+				writeC(buf, 0);
 				/*
 				 * //--------------- writeC(buf, 0x0B); // appearance info follows? writeH(buf, 0); writeD(buf,
 				 * 0x7C85AE06); // changing this value tags item as skinned writeD(buf, 0); // 4608 manastone type
