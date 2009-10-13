@@ -17,6 +17,7 @@
 package com.aionemu.gameserver.model.items;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.aionemu.gameserver.model.gameobjects.Item;
@@ -28,6 +29,9 @@ import com.aionemu.gameserver.model.templates.ItemTemplate;
 public class ItemStorage
 {
 
+	/**
+	 * In current implementation storageItems might contain Item object or null
+	 */
 	private List<Item> storageItems ;
 
 	private int limit = 0;
@@ -40,10 +44,13 @@ public class ItemStorage
 
 	/**
 	 * @return the storageItems
+	 * 	Returns new reference to storageItems. Null values are removed.
 	 */
-	protected List<Item> getStorageItems()
+	public List<Item> getStorageItems()
 	{
-		return storageItems;
+		List<Item> readOnlyList =  new ArrayList<Item>(storageItems);
+		readOnlyList.removeAll(Collections.singleton(null));
+		return readOnlyList;
 	}
 
 	/**
@@ -72,10 +79,13 @@ public class ItemStorage
 
 		for(Item item : storageItems)
 		{
-			ItemTemplate itemTemplate = item.getItemTemplate();
-			if(itemTemplate.getItemId() == itemId)
+			if(item != null)
 			{
-				return item;
+				ItemTemplate itemTemplate = item.getItemTemplate();
+				if(itemTemplate.getItemId() == itemId)
+				{
+					return item;
+				}
 			}
 			index++;
 		}
@@ -110,15 +120,19 @@ public class ItemStorage
 	 */
 	protected int getNextAvailableSlot()
 	{
-		int index = 0;
-
-		for(Item item : storageItems)
+		int size = storageItems.size();
+		for(int i = 0; i < size; i++)
 		{
-			if(item == null)
+			if(storageItems.get(i) == null)
 			{
-				return index;
+				return i;
 			}
-			index++;
+		}
+		
+		if(size < limit)
+		{
+			storageItems.add(null);
+			return size + 1;
 		}
 		return -1;
 	}
@@ -144,29 +158,8 @@ public class ItemStorage
 		int availableSlot = getNextAvailableSlot();
 		if(availableSlot != -1)
 		{
-			addItemToSlot(item, availableSlot);
+			storageItems.add(availableSlot, item);
 		}
-		return false;
-	}
-
-	/**
-	 * @param item
-	 * @param slot
-	 * @return
-	 */
-	public boolean addItemToSlot(Item item, int slot)
-	{
-		if(slot > limit)
-		{
-			return false;
-		}
-
-		if(isSlotEmpty(slot))
-		{
-			storageItems.add(slot, item); //TODO stackable items
-			return true;
-		}
-
 		return false;
 	}
 	

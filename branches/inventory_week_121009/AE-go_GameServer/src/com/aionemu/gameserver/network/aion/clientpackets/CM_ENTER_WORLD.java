@@ -128,10 +128,11 @@ public class CM_ENTER_WORLD extends AionClientPacket
 
 
 
-
+			//TODO no need to load items here - inventory will be populated at startup
+			// will be removed next time
 
 			//items
-
+			
 			Inventory items = new Inventory();
 			items.getInventoryFromDb(activePlayer);
 			int totalItemsCount = items.getItemsCount();

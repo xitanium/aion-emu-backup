@@ -1,12 +1,12 @@
 /**
- * This file is part of aion-unique <aionunique.smfnew.com>.
+ * This file is part of aion-unique <aion-unique.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  aion-emu is distributed in the hope that it will be useful,
+ *  aion-unique is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -55,13 +55,39 @@ public class Inventory
 
 	public int newItemUniqueIdValue;
 	
+	//TODO Remove code upper
+	
+	private Player owner;
+	
 	private final ItemStorage defaultItemBag;
 	
 	public Inventory()
 	{
-		defaultItemBag = new ItemStorage(30);
+		defaultItemBag = new ItemStorage(30); //TODO check this amount
 	}
 	
+	public Inventory(Player owner)
+	{
+		this();
+		this.owner = owner;
+	}	
+	
+	/**
+	 * @return the owner
+	 */
+	public Player getOwner()
+	{
+		return owner;
+	}
+
+	/**
+	 * @param owner the owner to set
+	 */
+	public void setOwner(Player owner)
+	{
+		this.owner = owner;
+	}
+
 	/**
 	 * @param item
 	 */
@@ -87,6 +113,11 @@ public class Inventory
 	public void removeFromBag(Item item)
 	{
 		defaultItemBag.removeItemFromStorage(item);
+	}
+	
+	public List<Item> getItems()
+	{
+		return defaultItemBag.getStorageItems();
 	}
 
 	
