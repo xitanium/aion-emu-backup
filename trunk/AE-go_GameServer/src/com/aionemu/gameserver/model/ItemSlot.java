@@ -16,6 +16,9 @@
  */
 package com.aionemu.gameserver.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This enum is defining inventory slots, to which items can be equipped.
  * @author xavier
@@ -45,19 +48,33 @@ public enum ItemSlot
 	SECONDARY_MAIN_HAND(0x20000),
 	SECONDARY_OFF_HAND(0x40000);
 	
-	private int slotId;
+	private int slotMask;
 	
-	private ItemSlot(int slotId)
-	{
-		this.slotId = slotId;
+	private static final List<ItemSlot> slotIds = new ArrayList<ItemSlot> ();
+	
+	static {
+		for (ItemSlot slot : ItemSlot.values()) {
+			slotIds.add(slot);
+		}
 	}
 	
-	public int getSlotId()
+	private ItemSlot(int slotMask)
 	{
-		return slotId;
+		this.slotMask = slotMask;
 	}
 	
-	public int getSlotMask() throws IllegalArgumentException {
-		return slotId;
+	public static ItemSlot getItemSlot (int slotId) throws AssertionError {
+		if (slotIds.get(slotId)==null) {
+			throw new AssertionError ("Invalid slot id "+slotId);
+		}
+		return slotIds.get(slotId);
+	}
+	
+	public int getSlotId () {
+		return slotIds.indexOf(this);
+	}
+	
+	public int getSlotMask() {
+		return slotMask;
 	}
 }

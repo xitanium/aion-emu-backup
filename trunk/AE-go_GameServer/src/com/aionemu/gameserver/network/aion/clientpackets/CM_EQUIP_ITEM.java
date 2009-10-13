@@ -100,7 +100,7 @@ public class CM_EQUIP_ITEM extends AionClientPacket
 	
 	if (isAnInt){
 		try {
-			slot = ItemSlot.values()[Integer.parseInt(slotName)];
+			slot = ItemSlot.getItemSlot(Integer.parseInt(slotName));
 		} catch (Exception e) {
 			log.error("Invalid item slot "+slotName);
 			slot = ItemSlot.INVENTORY;

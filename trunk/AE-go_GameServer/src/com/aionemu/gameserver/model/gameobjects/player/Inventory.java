@@ -77,7 +77,7 @@ public class Inventory
 					itemUniqueIdArray[row2] = rs.getInt("itemUniqueId");
 					itemIdArray[row2] = rs.getInt("itemId");
 					itemCountArray[row2] = rs.getInt("itemCount");
-					itemSlotArray[row2] = ItemSlot.values()[rs.getInt("slot")];
+					itemSlotArray[row2] = ItemSlot.getItemSlot(rs.getInt("slot"));
 					itemIsEquipedArray[row2] = rs.getBoolean("isEquiped");
 					row2 = row2 +1;
 					row = row - 1;
@@ -113,7 +113,7 @@ public class Inventory
 				while (row > 0) {
 					rs.absolute(row);
 					equipedItemUniqueIdArray[row2] = rs.getInt("itemUniqueId");
-					equipedItemSlotArray[row2] = ItemSlot.values()[rs.getInt("slot")];
+					equipedItemSlotArray[row2] = ItemSlot.getItemSlot(rs.getInt("slot"));
 					equipedItemIdArray[row2] = rs.getInt("itemId");
 					row2 = row2 +1;
 					row = row - 1;
