@@ -115,8 +115,8 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 			if(itemSlot != ItemSlot.INVENTORY)
 			{
 				writeC(buf, 0x06); // equiped data follows
-				writeD(buf, inventory.getItemSlotArray(itemNumber).getSlotMask()); // where this can be equiped. or
-																					// whatever
+				writeC(buf, inventory.getItemSlotArray(itemNumber).getSlotMask()|0xFF00); // where this can be equiped. or
+				writeC(buf, inventory.getItemSlotArray(itemNumber).getSlotMask()|0x00FF);// whatever
 
 				// ---------------
 
