@@ -249,14 +249,21 @@ public class Inventory
 		}
 	}
 
-	public void putItemToDb(int activePlayer, int itemId, int itemCount) {
+	public int putItemToDb(int activePlayer, int itemId, int itemCount) {
 		PreparedStatement ps4 = DB.prepareStatement("INSERT INTO `inventory` (`itemId`,`itemCount`,`itemOwner`) VALUES(?,?,?)");
+		PreparedStatement ps = DB.prepareStatement("SELECT itemUniqueId FROM inventory WHERE itemId=? AND itemOwner=?");
+		int itemUniqueId = 0;
 		try
 		{
 			ps4.setInt(1, itemId);
 			ps4.setInt(2, itemCount);
 			ps4.setInt(3, activePlayer);
 			ps4.executeUpdate();
+			ps.setInt(1, itemId);
+			ps.setInt(2, activePlayer);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			itemUniqueId = rs.getInt("itemUniqueId");
 		}
 		catch(SQLException e)
 		{
@@ -266,6 +273,7 @@ public class Inventory
 		{
 			DB.close(ps4);
 		}
+		return itemUniqueId;
 	}
 	
 	public void putIsEquipedToDb(int itemUniqueId, int IsEquiped, ItemSlot slot) {
