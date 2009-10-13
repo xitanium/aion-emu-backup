@@ -4,7 +4,7 @@
 	<skill_template skill_id="1803" name="Bandage Heal" level="1" recharge_time="16" launch_time="4" heals="178" />
 	<skill_template skill_id="1351" name="Flame Bolt I" level="1" element="FIRE" cost="40" recharge_time="1" launch_time="2" inflicts="80" skill_type="SPELL_SIMPLE" />
 	<skill_template skill_id="975" name="Smite I" level="1" element="EARTH" cost="18" recharge_time="2" launch_time="2" inflicts="81" skill_type="SPELL_SIMPLE" />
-	<skill_template skill_id="169" name="Severe Strike I" level="1" launch_time="1" recharge_time="10" inflicts="40" />
+	<skill_template skill_id="169" name="Severe Strike I" level="1" launch_time="1" recharge_time="10" inflicts="40" skill_type="SPELL_SIMPLE" />
 	<skill_template skill_id="965" name="Healing Light I" level="1" launch_time="2" recharge_time="1" heals="93" />
 	<skill_template skill_id="1099" name="Root I" level="1" launch_time="1"  recharge_time="1" />
 </skill_data>
