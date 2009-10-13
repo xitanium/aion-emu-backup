@@ -99,29 +99,35 @@ public class CM_START_LOOT extends AionClientPacket
 			}
 			else {
 			*/
-				int arrayLenght = 0;
-				for(int i = 0; i < mytab.length; i++) {
-					if (Math.random() * 100 <= mytab[i][3]) {
-						dropedlist[i][0] = mytab[i][0];
-						dropedlist[i][1] = mytab[i][1] + (int)(Math.random() * (mytab[i][2] - mytab[i][1]));
-						playerGameStats.setItemId(dropedlist[i][0]); //toujours pas bien compri a quoi sa sert
-						playerGameStats.setItemCount(dropedlist[i][1]);
-						arrayLenght++;
-					}
+			int arrayLenght = 0;
+			for(int i = 0; i < mytab.length; i++) {
+				if (Math.random() * 100 <= mytab[i][3]) {
+					dropedlist[i][0] = mytab[i][0];
+					dropedlist[i][1] = mytab[i][1] + (int)(Math.random() * (mytab[i][2] - mytab[i][1]));
+					playerGameStats.setItemId(dropedlist[i][0]); //toujours pas bien compri a quoi sa sert
+					playerGameStats.setItemCount(dropedlist[i][1]);
+					arrayLenght++;
 				}
-				
-				if (arrayLenght > 0) {
-					sendPacket(new SM_LOOT_ITEMLIST(monsterId, targetObjectId, player, dropedlist, arrayLenght));
-					sendPacket(new SM_LOOT_STATUS(targetObjectId, 2));
-				}
+			}
+			
+			if (arrayLenght > 0) {
+				sendPacket(new SM_LOOT_ITEMLIST(monsterId, targetObjectId, player, dropedlist, arrayLenght));
+				sendPacket(new SM_LOOT_STATUS(targetObjectId, 2));
+				sendPacket(new SM_EMOTION(targetObjectId, 35, 0));
+			}
+			else {
+				sendPacket(new SM_LOOT_STATUS(targetObjectId, 3)); //i think is no loot icon mouse
+				sendPacket(new SM_DELETE((Creature) player.getTarget())); // need deleted creature ?
+				playerGameStats.setItemId(0);
+			}
 			//}
 			
-			sendPacket(new SM_LOOT_STATUS(targetObjectId, 2));
-			sendPacket(new SM_EMOTION(targetObjectId, 35, 0));
+			//sendPacket(new SM_LOOT_STATUS(targetObjectId, 2));
+			//sendPacket(new SM_EMOTION(targetObjectId, 35, 0));
 		}
 		else { //nothing to loot	
-			sendPacket(new SM_LOOT_STATUS(targetObjectId, 3));
-			sendPacket(new SM_DELETE((Creature) player.getTarget()));
+			sendPacket(new SM_LOOT_STATUS(targetObjectId, 3)); //i think is no loot icon mouse
+			sendPacket(new SM_DELETE((Creature) player.getTarget())); // need deleted creature ?
 			playerGameStats.setItemId(0);
 		}
 	}

@@ -28,13 +28,21 @@ import com.aionemu.commons.database.DB;
 /**
  *
  * @author Metos
+ * Thank to not delete comment
  */
 public class DropList {
-	
 	private static final DropList instance = new DropList();
 	
-	//not finish sorry, need optimize
 	private int [][] fullDL;
+	
+	/*
+	private int [] mobId;
+	private int [] itemId;
+	private short [] min;
+	private short [] max;
+	private byte [] chance;
+	private int [] quest;
+	*/
 	private int maxDL;
 	
 	public DropList () { //full load of droplist
@@ -44,7 +52,12 @@ public class DropList {
 			prs.first();
 			maxDL = prs.getInt("nb");
 			
-			fullDL = new int[maxDL][5];
+			if (maxDL == 0) { //nothing in database
+				Logger.getLogger(DropList.class).error("Error : Can't load droplist, database is empty");
+				return;
+			}
+			
+			fullDL = new int[maxDL][5]; //6 to quest
 			int nb = 0;
 			
 			ResultSet rs = ps.executeQuery("SELECT * FROM droplist");
@@ -54,11 +67,21 @@ public class DropList {
 				fullDL[nb][2] = rs.getInt("min");
 				fullDL[nb][3] = rs.getInt("max");
 				fullDL[nb][4] = rs.getInt("chance");
+				//fullDL[nb][5] = rs.getInt("quest");
+				
+				/*
+				mobId[nb] = rs.getInt("mobId");
+				itemId[nb] = rs.getInt("itemId");
+				min[nb] = rs.getInt("min");
+				max[nb] = rs.getInt("max");
+				chance[nb] = rs.getInt("chance");
+				quest[nb] = rs.getInt("quest");
+				*/
+				
 				nb++;
 			}
 			DB.close(ps);
-			//log.info("ListDrop Loaded ("+maxDL+")");
-			System.out.println("ListDrop Loaded ("+maxDL+")"); //need use log system
+			Logger.getLogger(DropList.class).info("ListDrop Loaded ("+maxDL+")");
 		}
 		catch (SQLException e) {
 			Logger.getLogger(DropList.class).error("Error loading droplist", e);
@@ -66,14 +89,19 @@ public class DropList {
 	}
 	
 	public int [][] getLootTable (int mobId) {
+		if (maxDL == 0) { //nothing in database
+			return new int[0][4];
+		}
 		int nb = 0;
 		for (int i = 0; i < maxDL; i++) {
 			if (fullDL[i][0] == mobId) {
 				nb++;
 			}
 		}
-		
-		int [][] temp = new int[nb][4];
+		if (nb == 0) { //nothing to loot with this creature
+			return new int[0][4];
+		}
+		int [][] temp = new int[nb][4]; //5 to quest
 		nb = 0;
 		for (int i = 0; i < maxDL; i++) {
 			if (fullDL[i][0] == mobId) {
@@ -81,14 +109,14 @@ public class DropList {
 				temp[nb][1] = fullDL[i][2];
 				temp[nb][2] = fullDL[i][3];
 				temp[nb][3] = fullDL[i][4];
+				//temp[nb][4] = fullDL[i][5];
 				nb++;
 			}
 		}
 		return temp;
 	}
 	
-	public static DropList getInstance()
-	{
+	public static DropList getInstance() {
 		return instance;
 	}
 }
