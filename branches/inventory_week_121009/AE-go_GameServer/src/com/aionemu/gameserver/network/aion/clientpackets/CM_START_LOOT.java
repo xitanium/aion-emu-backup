@@ -30,6 +30,8 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_ITEMLIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
+import java.util.Random;
+
 /**
  * 
  * @author alexa026, Correted by Metos
@@ -77,33 +79,23 @@ public class CM_START_LOOT extends AionClientPacket
 		Npc npc = (Npc) world.findAionObject(targetObjectId);
 		int monsterId = npc.getTemplate().getNpcId();
 		
-		int [][] mytab = DropList.getInstance().getLootTable(monsterId);
-		int [][] dropedlist = new int[mytab.length][2];;
+		//int [][] mytab = DropList.getInstance().getLootTable(monsterId);
+		DropList.lootingList [] mytab = DropList.getInstance().getLootTable(monsterId);
+		int [][] dropedlist = new int[mytab.length][2];
+		Random rand = new Random();
 		
 		if (playerGameStats.getItemId() == 0 && mytab.length != 0) {
-			//they are one or more item to loot
-			/*
-			if (mytab.length == 0) { //je trouve sa inutile mais bon
-				//if no item is found for that mob, give item
-				
-				
-				playerGameStats.setItemId(100000530);
-				playerGameStats.setItemCount(1);
-				
-				
-				mytab = new int[1][2];
-				mytab[1][0] = 100000530;
-				mytab[1][1] = 1;
-				sendPacket(new SM_LOOT_ITEMLIST(monsterId, targetObjectId, player, mytab, 1));
-				sendPacket(new SM_LOOT_STATUS(targetObjectId, 2));
-			}
-			else {
-			*/
 			int arrayLenght = 0;
 			for(int i = 0; i < mytab.length; i++) {
-				if (Math.random() * 100 <= mytab[i][3]) {
-					dropedlist[i][0] = mytab[i][0];
-					dropedlist[i][1] = mytab[i][1] + (int)(Math.random() * (mytab[i][2] - mytab[i][1]));
+				//if (rand.nextFloat(100) <= mytab[i][3]) {
+				if (rand.nextFloat() * 100 <= mytab[i].mobId) {
+					dropedlist[i][0] = mytab[i].itemId;
+					if (mytab[i].max - mytab[i].min > 0) {
+						dropedlist[i][1] = mytab[i].min + rand.nextInt(mytab[i].max - mytab[i].min);
+					}
+					else {
+						dropedlist[i][1] = mytab[i].max;
+					}
 					playerGameStats.setItemId(dropedlist[i][0]); //toujours pas bien compri a quoi sa sert
 					playerGameStats.setItemCount(dropedlist[i][1]);
 					arrayLenght++;
@@ -120,10 +112,6 @@ public class CM_START_LOOT extends AionClientPacket
 				sendPacket(new SM_DELETE((Creature) player.getTarget())); // need deleted creature ?
 				playerGameStats.setItemId(0);
 			}
-			//}
-			
-			//sendPacket(new SM_LOOT_STATUS(targetObjectId, 2));
-			//sendPacket(new SM_EMOTION(targetObjectId, 35, 0));
 		}
 		else { //nothing to loot	
 			sendPacket(new SM_LOOT_STATUS(targetObjectId, 3)); //i think is no loot icon mouse
