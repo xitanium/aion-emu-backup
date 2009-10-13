@@ -111,7 +111,7 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 			writeH(buf, 0x24); // always 36
 			writeD(buf, itemNameId); // item name id
 			writeH(buf, 0); // always 0
-			writeC(buf, 0x16); // lenght of item details
+			writeH(buf, 0x17); // lenght of item details
 			if(itemSlot != ItemSlot.INVENTORY)
 			{
 				writeC(buf, 0x06); // equiped data follows
