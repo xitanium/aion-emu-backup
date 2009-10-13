@@ -16,19 +16,16 @@
  */
 package com.aionemu.gameserver.network.aion.clientpackets;
 
-import java.util.Random;
 import org.apache.log4j.Logger;
 
 import com.aionemu.gameserver.model.ItemSlot;
-import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_UPDATE_ITEM;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_UPDATE_PLAYER_APPEARANCE;
 import com.aionemu.gameserver.model.gameobjects.player.ItemList;
-import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.world.World;
+
 /**
  * 
  * @author Avol
