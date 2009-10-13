@@ -121,7 +121,7 @@ public class SM_PLAYER_INFO extends AionServerPacket
 		int itemsCount = 0;
 		int row = 0;
 		while (totalEquipedItemsCount > 0) {
-			short slot = equipedItems.getEquipedItemSlotArray(row).getSlotMask();
+			int slot = equipedItems.getEquipedItemSlotArray(row).getSlotMask();
 			itemsCount = itemsCount + slot;
 			totalEquipedItemsCount = totalEquipedItemsCount-1;
 			row+=1;
