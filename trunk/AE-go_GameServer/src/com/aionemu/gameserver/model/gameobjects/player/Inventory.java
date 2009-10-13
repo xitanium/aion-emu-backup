@@ -56,7 +56,7 @@ public class Inventory
 	public int newItemUniqueIdValue;
 
 	public void getInventoryFromDb(int activePlayer) {
-		PreparedStatement ps = DB.prepareStatement("SELECT `itemUniqueId`, `itemId`,`itemCount`,`slot`,`isEquiped` FROM `inventory` WHERE `itemOwner`=" + activePlayer);
+		PreparedStatement ps = DB.prepareStatement("SELECT `itemUniqueId`, `itemId`,`itemCount`,`slot`,`isEquiped` FROM `inventory` WHERE `itemOwner`=" + activePlayer+" ORDER BY `isEquiped` ASC");
 		try
 		{
 			ResultSet rs = ps.executeQuery();
