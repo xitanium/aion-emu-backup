@@ -112,7 +112,7 @@ public class CreatureGameStats<T extends Creature>
 		this.attackCounter = attackCounter;
 	}
 	
-	public void increateAttackCounter()
+	public void increaseAttackCounter()
 	{
 		if(attackCounter == ATTACK_MAX_COUNTER)
 		{

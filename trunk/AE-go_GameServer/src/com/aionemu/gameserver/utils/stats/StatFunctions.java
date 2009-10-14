@@ -77,18 +77,6 @@ public class StatFunctions
 		return pAttack - targetPDef / 10;
 	}
 	
-	/**
-	 * @param player
-	 * @param target
-	 * @param skillTemplate
-	 * @return HP damage to target
-	 */
-	public static int calculateMagicDamageToTarget(Player player, Creature target, SkillTemplate skillTemplate)
-	{
-		//TODO this is a dummmy cacluations
-		return skillTemplate.getDamages() * skillTemplate.getLevel() * 2;
-	}
-	
 	public static int calculateNpcBaseDamageToPlayer(Npc npc, Player player)
 	{
 		//TODO this is a dummy calcs

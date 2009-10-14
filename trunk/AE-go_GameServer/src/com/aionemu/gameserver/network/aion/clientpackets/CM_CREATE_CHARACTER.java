@@ -149,10 +149,10 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 
 		playerAppearance.setHips(readC());
 		playerAppearance.setArmThickness(readC());
-		playerAppearance.setArmLength(readC());
+
 		playerAppearance.setHandSize(readC());
 		playerAppearance.setLegThicnkess(readC());
-		playerAppearance.setLegLength(readC()); //wrong??
+
 		playerAppearance.setFootSize(readC());
 		playerAppearance.setFacialRate(readC());
 

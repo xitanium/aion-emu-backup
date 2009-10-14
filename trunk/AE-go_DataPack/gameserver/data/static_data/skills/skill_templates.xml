@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <skill_data  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="skills.xsd">
 	<skill_template skill_id="1801" name="Return" level="1" recharge_time="1200" launch_time="6" />
-	<skill_template skill_id="1803" name="Bandage Heal" level="1" recharge_time="16" launch_time="4" heals="178" />
+	<skill_template skill_id="1803" name="Bandage Heal" level="1" recharge_time="16" launch_time="4" heals="178" skill_type="HEAL_OBJECT">
+		<needs item="169300001" quantity="1" />
+	</skill_template>
 	<skill_template skill_id="1351" name="Flame Bolt I" level="1" element="FIRE" cost="40" recharge_time="1" launch_time="2" inflicts="80" skill_type="SPELL_SIMPLE" />
 	<skill_template skill_id="975" name="Smite I" level="1" element="EARTH" cost="18" recharge_time="2" launch_time="2" inflicts="81" skill_type="SPELL_SIMPLE" />
-	<skill_template skill_id="169" name="Severe Strike I" level="1" launch_time="1" recharge_time="10" inflicts="40" />
-	<skill_template skill_id="965" name="Healing Light I" level="1" launch_time="2" recharge_time="1" heals="93" />
+	<skill_template skill_id="169" name="Severe Strike I" level="1" launch_time="1" recharge_time="10" inflicts="40" skill_type="ATTACK_SIMPLE" />
+	<skill_template skill_id="965" name="Healing Light I" level="1" launch_time="2" recharge_time="1" heals="93" skill_type="HEAL_SIMPLE" />
 	<skill_template skill_id="1099" name="Root I" level="1" launch_time="1"  recharge_time="1" />
+	<skill_template skill_id="564" name="Swift Edge I" level="1" launch_time="0" recharge_time="7" inflicts="63" skill_type="ATTACK_SIMPLE" />
+	<skill_template skill_id="169" name="Ferocious Strike I" level="1" launch_time="0" recharge_time="10" inflicts="41" skill_type="ATTACK_SIMPLE" />
+	<skill_template skill_id="1362" name="Ice Chain I" level="3" element="WATER" launch_time="2"  recharge_time="10" cost="43" inflicts="76" skill_type="SPELL_SIMPLE" />
+	<skill_template skill_id="1366" name="Blaze I" level="5" element="FIRE" launch_time="0"  recharge_time="30" cost="62" inflicts="106" skill_type="SPELL_SIMPLE" />
+	<skill_template skill_id="1358" name="Erosion I" level="5" element="EARTH" launch_time="0"  recharge_time="3" cost="38" inflicts="34" skill_type="SPELL_SIMPLE" />
+	<skill_template skill_id="1355" name="Frozen Shock I" level="7" element="WATER" launch_time="0"  recharge_time="30" cost="52" inflicts="116" skill_type="SPELL_SIMPLE" />
 </skill_data>
