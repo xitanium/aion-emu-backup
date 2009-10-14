@@ -43,7 +43,6 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 	// private int entries;
 	private int				ownerId;
 	// private ItemSlot slot;
-	@SuppressWarnings("unused")
 	private static Logger	log	= Logger.getLogger(SM_INVENTORY_INFO.class);
 
 	/**
@@ -62,6 +61,7 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 	private void writeItem(AionConnection con, ByteBuffer buf, int itemUniqueId, int itemId, int itemNameId,
 		ItemSlot itemSlot, int count)
 	{
+		log.debug("sending item [uid:"+itemUniqueId+",id:"+itemId+",nid:"+itemNameId+",slot:"+itemSlot+",count:"+count+"] to player "+con.getActivePlayer().getObjectId());
 		writeD(buf, itemUniqueId); // Unique Id
 		writeD(buf, itemId); // item Id 162000007
 		writeH(buf, 0x24); // always 36

@@ -81,7 +81,7 @@ public class SM_NPC_INFO extends AionServerPacket
 		writeD(buf, 0x00);// unk
 		writeD(buf, 0x00);// unk
 		writeC(buf, 0x00);// unk
-		writeC(buf, 100);// %hp
+		writeC(buf, Math.round(npc.getLifeStats().getCurrentHp()*100f/npc.getLifeStats().getMaxHp()));// %hp
 
 		writeD(buf, 2961);// unk 172, 143, 2961, 199, 28396...
 		writeC(buf, npc.getLevel());// lvl
