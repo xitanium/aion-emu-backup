@@ -47,7 +47,7 @@ public class Account
 	/**
 	 * Account activated
 	 */
-	private boolean		activated;
+	//private boolean		activated;
 
 	/**
 	 * last server visited by user -1 if none

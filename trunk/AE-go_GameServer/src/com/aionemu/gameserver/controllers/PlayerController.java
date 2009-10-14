@@ -224,6 +224,8 @@ public class PlayerController extends CreatureController<Player>
 	public void onRevive()
 	{
 		Player p = this.getOwner();
+		PlayerLifeStats pls = p.getLifeStats();
+		pls.setCurrentHp(Math.round(0.75f*pls.getMaxHp()));
 		PacketSendUtility.sendPacket(p, SM_SYSTEM_MESSAGE.REVIVE);
 		PacketSendUtility.sendPacket(p, new SM_UNK72());
 		PacketSendUtility.sendPacket(p, new SM_STATS_INFO(p));
@@ -251,7 +253,10 @@ public class PlayerController extends CreatureController<Player>
 	@Override
 	public void onRespawn()
 	{
-		// TODO Auto-generated method stub
-
+		Player p = this.getOwner();
+		PlayerLifeStats pls = p.getLifeStats();
+		if (pls.isAlreadyDead()) { // Problem occurs on revive
+			pls.setCurrentHp(Math.round(pls.getMaxHp()*0.75f));
+		}
 	}
 }
