@@ -48,6 +48,7 @@ public class Save extends AdminCommand
 	{
 		if(params.length == 0)
 		{
+			service = new PlayerService(null,null,null,null,null);
 			service.storePlayer(admin);
 			PacketSendUtility.sendMessage(admin, "Character saved");
 		}
