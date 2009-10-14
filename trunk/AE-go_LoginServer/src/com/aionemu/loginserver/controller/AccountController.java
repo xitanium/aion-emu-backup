@@ -198,7 +198,7 @@ public class AccountController
 		}
 		
 		// check for paswords beeing equals
-		if(account.getActivated() != 1)
+		if(!account.getActivated())
 		{
 			log.debug("AionAuthResponse = NOT_ACTIVATED");
 			return AionAuthResponse.INVALID_PASSWORD;
@@ -301,7 +301,7 @@ public class AccountController
 		account.setName(name);
 		account.setPasswordHash(passwordHash);
 		account.setAccessLevel((byte) 0);
-		account.setActivated((byte) 1);
+		account.setActivated(true);
 
 		if(getAccountDAO().insertAccount(account))
 		{

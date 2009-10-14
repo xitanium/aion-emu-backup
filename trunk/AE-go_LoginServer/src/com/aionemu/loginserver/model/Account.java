@@ -47,7 +47,7 @@ public class Account
 	/**
 	 * Account activated
 	 */
-	private byte		activated;
+	private boolean		activated;
 
 	/**
 	 * last server visited by user -1 if none
@@ -158,7 +158,7 @@ public class Account
 	 *
 	 * @return access level of account
 	 */
-	public byte getActivated()
+	public boolean getActivated()
 	{
 		return activated;
 	}
@@ -169,7 +169,7 @@ public class Account
 	 * @param accessLevel
 	 *            access level of account
 	 */
-	public void setActivated(byte activated)
+	public void setActivated(boolean activated)
 	{
 		this.activated = activated;
 	}
