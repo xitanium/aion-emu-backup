@@ -91,7 +91,8 @@ public class CM_PLAY extends AionClientPacket
 				sendPacket(new SM_PLAY_OK(key));
 			}
 		}
-		else
+		else {
 			con.close(new SM_LOGIN_FAIL(AionAuthResponse.SYSTEM_ERROR), true);
+		}
 	}
 }
