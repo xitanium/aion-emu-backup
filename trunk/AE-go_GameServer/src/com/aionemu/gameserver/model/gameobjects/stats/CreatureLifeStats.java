@@ -331,5 +331,10 @@ public class CreatureLifeStats<T extends Creature>
 			this.lifeRestoreTask = null;
 		}
 	}
-
+	
+	public void reset () {
+		setCurrentHp(getMaxHp());
+		setCurrentMp(getMaxMp());
+		alreadyDead = false;
+	}
 }
