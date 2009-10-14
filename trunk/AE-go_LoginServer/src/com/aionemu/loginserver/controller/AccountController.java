@@ -198,11 +198,11 @@ public class AccountController
 		}
 		
 		// check for paswords beeing equals
-		if(!account.getActivated())
-		{
-			log.debug("AionAuthResponse = NOT_ACTIVATED");
-			return AionAuthResponse.INVALID_PASSWORD;
-		}
+//		if(!account.getActivated())
+//		{
+//			log.debug("AionAuthResponse = NOT_ACTIVATED");
+//			return AionAuthResponse.INVALID_PASSWORD;
+//		}
 
 		// If account expired
 		if(AccountTimeController.isAccountExpired(account))
@@ -301,7 +301,7 @@ public class AccountController
 		account.setName(name);
 		account.setPasswordHash(passwordHash);
 		account.setAccessLevel((byte) 0);
-		account.setActivated(true);
+		//account.setActivated(true);
 
 		if(getAccountDAO().insertAccount(account))
 		{

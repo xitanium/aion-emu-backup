@@ -27,27 +27,27 @@ public enum MovementType
 	/**
 	 * Movement by mouse.
 	 */
-	MOVEMENT_START_MOUSE(0xE0),
+	MOVEMENT_START_MOUSE(-32),
 	/**
 	 * Movement by keyboard.
 	 */
-	MOVEMENT_START_KEYBOARD(0xC0),
+	MOVEMENT_START_KEYBOARD(-64),
 	/**
 	 * Validation (movement by mouse).
 	 */
-	VALIDATE_MOUSE(0xA0),
+	VALIDATE_MOUSE(-96),
 	/**
 	 * Validation (movement by keyboard).
 	 */
-	VALIDATE_KEYBOARD(0x80),
+	VALIDATE_KEYBOARD(-128),
 	/**
 	 * Validation (jump).
 	 */
-	VALIDATE_JUMP(0x08),
+	VALIDATE_JUMP(8),
 	/**
 	 * Validation (jump while moving).
 	 */
-	VALIDATE_JUMP_WHILE_MOVING(0x48),
+	VALIDATE_JUMP_WHILE_MOVING(72),
 	/**
 	 * Movement stop.
 	 */

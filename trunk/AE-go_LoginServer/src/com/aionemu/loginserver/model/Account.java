@@ -158,10 +158,10 @@ public class Account
 	 *
 	 * @return access level of account
 	 */
-	public boolean getActivated()
-	{
-		return activated;
-	}
+//	public boolean getActivated()
+//	{
+//		return activated;
+//	}
 
 	/**
 	 * Sets access level of account
@@ -169,10 +169,10 @@ public class Account
 	 * @param accessLevel
 	 *            access level of account
 	 */
-	public void setActivated(boolean activated)
-	{
-		this.activated = activated;
-	}
+//	public void setActivated(boolean activated)
+//	{
+//		this.activated = activated;
+//	}
 	
 	/**
 	 * Returns last server that player visited
