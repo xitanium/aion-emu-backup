@@ -20,62 +20,56 @@
 
 package admincommands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import com.aionemu.gameserver.model.AdminLevel;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.services.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.chathandlers.AdminCommand;
-import com.aionemu.gameserver.utils.chathandlers.AdminCommandChatHandler;
 
-public class Commands extends AdminCommand
+public class Save extends AdminCommand
 {
 	/**
 	 * @param commandName
-	 * 
-	 * Display a list of available commands for player's account level.
 	 */
-	public Commands()
+	private PlayerService service;
+	
+	public Save()
 	{
-		super("commands", AdminLevel.PLAYER);
+		super("save", AdminLevel.PLAYER);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.gameobjects.Player, java.lang.String[])
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void executeCommand(Player admin, String[] params)
 	{
-		Iterator<AdminCommand> commands = AdminCommandChatHandler.getAllCommands().values().iterator();
-		List<AdminCommand> availableCommands = new ArrayList<AdminCommand>();
-		while(commands.hasNext()) 
+		if(params.length == 0)
 		{
-			AdminCommand cmd = commands.next();
-			if(admin.getCommonData().getAdminLevel() >= cmd.getRequiredGMLevel().valueOf())
-			{
-				availableCommands.add(cmd);
-			}
+			service.storePlayer(admin);
+			PacketSendUtility.sendMessage(admin, "Character saved");
 		}
-		PacketSendUtility.sendMessage(admin, "Available commands at your level :");
-		if(availableCommands.size() == 0) 
+		else 
 		{
-			PacketSendUtility.sendMessage(admin, "--no command available--");
-		}
-		else
-		{
-			StringBuilder sb = new StringBuilder();
-			for(AdminCommand aCmd : availableCommands)
+			if(admin.getCommonData().getAdminLevel() >= 2) 
 			{
-				sb.append(aCmd.getCommandName() + " | ");
+				PacketSendUtility.sendMessage(admin, "Please wait, saving characters ...");
+				Iterator<Player> players = admin.getActiveRegion().getWorld().getPlayersIterator();
+				while(players.hasNext()) 
+				{
+					service.storePlayer(players.next());
+					try 
+					{
+						Thread.sleep(10);
+					}
+					catch(InterruptedException e) 
+					{
+					}
+				}
+				PacketSendUtility.sendMessage(admin, "Characters successfully saved.");
 			}
-			sb.append("--");
-			PacketSendUtility.sendMessage(admin, sb.toString());
 		}
 	}
 }
