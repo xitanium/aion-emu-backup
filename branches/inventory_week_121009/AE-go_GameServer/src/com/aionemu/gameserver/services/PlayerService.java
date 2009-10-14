@@ -28,6 +28,7 @@ import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.controllers.PlayerController;
 import com.aionemu.gameserver.dao.BlockListDAO;
 import com.aionemu.gameserver.dao.FriendListDAO;
+import com.aionemu.gameserver.dao.InventoryDAO;
 import com.aionemu.gameserver.dao.PlayerAppearanceDAO;
 import com.aionemu.gameserver.dao.PlayerDAO;
 import com.aionemu.gameserver.dao.PlayerMacrossesDAO;
@@ -162,9 +163,8 @@ public class PlayerService
 		player.setFriendList(DAOManager.getDAO(FriendListDAO.class).load(player, world));
 		player.setBlockList(DAOManager.getDAO(BlockListDAO.class).load(player,world));
 		
-		//TODO populate inventory from database (DAO);
-		//Inventory inventory = DAOManager.getDAO(InventoryDAO.class).loadInventory(playerObjId);
-		player.setInventory(new Inventory());
+		Inventory inventory = DAOManager.getDAO(InventoryDAO.class).load(playerObjId);
+		player.setInventory(inventory);
 		
 		if(CacheConfig.CACHE_PLAYERS)
 			playerCache.put(playerObjId, player);	
@@ -187,7 +187,9 @@ public class PlayerService
 		WorldPosition position = world.createPosition(ld.getMapId(), ld.getX(), ld.getY(), ld.getZ(), ld.getHeading());
 
 		playerCommonData.setPosition(position);
-
+		
+		Player newPlayer = new Player(new PlayerController(), playerCommonData, playerAppearance);
+		
 		// TODO: starting skills
 		
 		// Starting items
@@ -196,7 +198,8 @@ public class PlayerService
 		
 		List<ItemType> items = playerCreationData.getItems();
 		
-		Inventory playerInventory = new Inventory();
+		Inventory playerInventory = new Inventory(newPlayer);
+		newPlayer.setInventory(playerInventory);
 		
 		for(ItemType itemType : items)
 		{
@@ -209,47 +212,9 @@ public class PlayerService
 			
 			playerInventory.addToBag(item);
 		}	
+		// Save starting inventory
+		DAOManager.getDAO(InventoryDAO.class).store(playerInventory);
 		
-		//TODO save inventory to db with corresponding playerObjectId	
-		// and
-		//TODO remove this code below
-		
-		Inventory inventory = new Inventory();
-		int activePlayer = playerCommonData.getPlayerObjId();
-		if (playerCommonData.getPlayerClass().getClassId() == 0) {// warrior
-				inventory.putItemToDb(activePlayer, 100000094, 1);//sword for training
-				inventory.putItemToDb(activePlayer, 110500003, 1);//Chain armor for training
-				inventory.putItemToDb(activePlayer, 113500001, 1);//Chain Greaves for training
-				inventory.putItemToDb(activePlayer, 160000001, 12); // mercenary Fruit Juice
-				inventory.putItemToDb(activePlayer, 169300001, 20); // bandage
-		}
-		if (playerCommonData.getPlayerClass().getClassId() == 3) { //SCOUT	
-				inventory.putItemToDb(activePlayer, 100200112, 1);//Dagger for training
-				inventory.putItemToDb(activePlayer, 110300015, 1);//Leather Jerkin for training
-				inventory.putItemToDb(activePlayer, 113300005, 1);//Leather leggins for training
-				inventory.putItemToDb(activePlayer, 160000001, 12); // mercenary Fruit Juice
-				inventory.putItemToDb(activePlayer, 169300001, 20); // bandage
-		}
-		if (playerCommonData.getPlayerClass().getClassId() == 6) {//MAGE
-				inventory.putItemToDb(activePlayer, 100600034, 1);//SpellBook for training
-				inventory.putItemToDb(activePlayer, 110100009, 1);//Cloth Tunic for Training
-				inventory.putItemToDb(activePlayer, 113100005, 1);//Cloth Leggins for training
-				inventory.putItemToDb(activePlayer, 160000001, 12); // mercenary Fruit Juice
-				inventory.putItemToDb(activePlayer, 169300001, 20); // bandage
-		}
-		if (playerCommonData.getPlayerClass().getClassId() == 9) {//PRIEST
-				inventory.putItemToDb(activePlayer, 100100011, 1);//Mace for training
-				inventory.putItemToDb(activePlayer, 110300292, 1);//Leather armor for training
-				inventory.putItemToDb(activePlayer, 113300278, 1);//Leather leg armor for training
-				inventory.putItemToDb(activePlayer, 160000001, 12); // mercenary Fruit Juice
-				inventory.putItemToDb(activePlayer, 169300001, 20); // bandage
-		}
-		
-		
-		Player newPlayer = new Player(new PlayerController(), playerCommonData, playerAppearance);
-		newPlayer.setInventory(inventory);
-		
-		//TODO retrieve from storage and calculate
 		newPlayer.setLifeStats(new PlayerLifeStats(
 			ClassStats.getMaxHpFor(newPlayer.getPlayerClass(), newPlayer.getLevel()), 650));
 		newPlayer.setGameStats(new PlayerGameStats());
