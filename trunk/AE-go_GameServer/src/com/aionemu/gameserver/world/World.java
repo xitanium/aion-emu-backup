@@ -30,6 +30,7 @@ import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.templates.WorldMapTemplate;
+import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.idfactory.IDFactory;
 import com.aionemu.gameserver.utils.idfactory.IDFactoryAionObject;
 import com.aionemu.gameserver.world.container.PlayerContainer;
@@ -83,6 +84,20 @@ public class World
 		for(WorldMapTemplate template : worldMapsData)
 		{
 			worldMaps.put(template.getMapId(), new WorldMap(template, this));
+		}
+	}
+	
+	/**
+	 * Send announce to all connected players
+	 * 
+	 * @param message
+	 */
+	public void announce(String message) 
+	{
+		Iterator<Player> onlinePlayers = getPlayersIterator();
+		while(onlinePlayers.hasNext())
+		{
+			PacketSendUtility.sendMessage(onlinePlayers.next(), "<Announce> " + message);
 		}
 	}
 
