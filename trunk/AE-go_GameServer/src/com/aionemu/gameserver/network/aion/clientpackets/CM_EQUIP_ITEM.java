@@ -35,15 +35,15 @@ public class CM_EQUIP_ITEM extends AionClientPacket
 {
 	private static final Logger	log	= Logger.getLogger(CM_EQUIP_ITEM.class);
 
-	public int slotRead;
-	public ItemSlot slot;
-	public int itemUniqueId;
-	public int action;
+	public int					slotRead;
+	public ItemSlot				slot;
+	public int					itemUniqueId;
+	public int					action;
+
 	public CM_EQUIP_ITEM(int opcode)
 	{
 		super(opcode);
 	}
-
 
 	@Override
 	protected void readImpl()
@@ -55,99 +55,90 @@ public class CM_EQUIP_ITEM extends AionClientPacket
 
 	@Override
 	protected void runImpl()
-	{	
+	{
 
+		/*
+		 * slots 0 - inventory 1 - main hand 2 - off hand 3 - if 2 handed sword. covers 2 slots. 4 - head 8 - jacket 16
+		 * - glove 32 - shoes 64 - Right Earring 128 - Left Earring 256 - Right Ring 512 - Left Right 1024 - Necklace
+		 * 2048 - Pauldrons 4096 - Legs 8192 - Left Power Shard 16384 - Right Power Shard 32758 - Wings 65536 - Waist
+		 * 131072 - Secondary Main Hand 262144 - Secondary Off Hand there are alot of other combinations like
+		 * head+jacket+main hand etc.
+		 */
+		final Player activePlayer = getConnection().getActivePlayer();
+		int activeplayer = activePlayer.getObjectId();
 
-	/*	
-	slots
-	0 - inventory
-	1 - main hand
-	2 - off hand
-	3 - if 2 handed sword. covers 2 slots.
-	4 - head
-	8 - jacket
-	16 - glove
-	32 - shoes 
-	64 - Right Earring 
-	128 - Left Earring
-	256 - Right Ring
-	512 - Left Right
-	1024 - Necklace
-	2048 - Pauldrons
-	4096 - Legs
-	8192 - Left Power Shard
-	16384 - Right Power Shard
-	32758 - Wings
-	65536 - Waist
-	131072 - Secondary Main Hand
-	262144 - Secondary Off Hand
- 	
-	there are alot of other combinations like head+jacket+main hand etc.
-	*/
-	
-	Inventory inventory = new Inventory();
+		Inventory inventory = new Inventory();
 
-	inventory.getItemIdByUniqueItemId(itemUniqueId);
-	int itemId = inventory.getItemId();
+		inventory.getItemIdByUniqueItemId(itemUniqueId);
+		int itemId = inventory.getItemId();
 
-	ItemList itemName = new ItemList();
+		ItemList itemName = new ItemList();
 
-	itemName.getItemList(itemId);
-	String slotName = itemName.getEquipmentSlots();
-	
-	char test = slotName.charAt(0);
-	boolean isAnInt= test>='0' && test<='9';
-	
-	if (isAnInt){
-		try {
-			slot = ItemSlot.getItemSlot(Integer.parseInt(slotName));
-		} catch (Exception e) {
-			log.error("Invalid item slot "+slotName);
+		itemName.getItemList(itemId);
+		String slotName = itemName.getEquipmentSlots();
+
+		char test = slotName.charAt(0);
+		boolean isAnInt = test >= '0' && test <= '9';
+
+		if(isAnInt)
+		{
+			try
+			{
+				slot = ItemSlot.getItemSlot(Integer.parseInt(slotName));
+			}
+			catch(Exception e)
+			{
+				log.error("Invalid item slot " + slotName);
+				slot = ItemSlot.INVENTORY;
+			}
+		}
+		else
+		{
 			slot = ItemSlot.INVENTORY;
 		}
-	} else {
-		slot = ItemSlot.INVENTORY;
-	}
-	
-	final Player activePlayer = getConnection().getActivePlayer();
-	int activeplayer = activePlayer.getObjectId();
-	inventory.getIsEquipedFromDb(activeplayer, slot);
-	int isEquiped = inventory.getIsEquiped();
-	int unequipItemUniqueId = inventory.getIsEquipedItemUniqueId();
 
-	if (action==0) {
-		if (isEquiped==1) {
-			inventory.putIsEquipedToDb(unequipItemUniqueId, 0, slot);
-			sendPacket(new SM_UPDATE_ITEM(slot, 1, unequipItemUniqueId));
-				
-			inventory.putIsEquipedToDb(itemUniqueId, 1, slot);
-			sendPacket(new SM_UPDATE_ITEM(slot, action, itemUniqueId));
+		int isEquiped = inventory.getIsEquiped();
+		int unequipItemUniqueId = inventory.getIsEquipedItemUniqueId();
 
-			sendPacket(new SM_UPDATE_PLAYER_APPEARANCE(activeplayer));
+		if(action == 0)
+		{
+			if(isEquiped == 1)
+			{
+				inventory.putIsEquipedToDb(unequipItemUniqueId, 0, slot);
+				sendPacket(new SM_UPDATE_ITEM(slot, 1, unequipItemUniqueId));
+
+				inventory.putIsEquipedToDb(itemUniqueId, 1, slot);
+				sendPacket(new SM_UPDATE_ITEM(slot, action, itemUniqueId));
+
+				sendPacket(new SM_UPDATE_PLAYER_APPEARANCE(activeplayer));
+			}
+			if(isEquiped == 0)
+			{
+				inventory.putIsEquipedToDb(itemUniqueId, 1, slot);
+				sendPacket(new SM_UPDATE_ITEM(slot, action, itemUniqueId));
+				sendPacket(new SM_UPDATE_PLAYER_APPEARANCE(activeplayer));
+			}
 		}
-		if (isEquiped==0) {
-			inventory.putIsEquipedToDb(itemUniqueId, 1, slot);
-			sendPacket(new SM_UPDATE_ITEM(slot, action, itemUniqueId));
-			sendPacket(new SM_UPDATE_PLAYER_APPEARANCE(activeplayer));
-		}
-	} else if (action==1) {
-		inventory.getInventoryFromDb(activeplayer);
-		int totalItemsCount = inventory.getItemsCount();
+		else if(action == 1)
+		{
+			inventory.getInventoryFromDb(activeplayer);
+			int totalItemsCount = inventory.getItemsCount();
 
-		inventory.getEquipedItemsFromDb(activeplayer);
-		int totalEquipedItemsCount = inventory.getEquipedItemsCount();
+			inventory.getEquipedItemsFromDb(activeplayer);
+			int totalEquipedItemsCount = inventory.getEquipedItemsCount();
 
-		totalItemsCount = totalItemsCount - totalEquipedItemsCount;
-			
-		int cubes = 1;
-		int cubesize = 27;
-		int allowItemsCount = cubesize*cubes-1;
-			if (totalItemsCount<=allowItemsCount) {
+			totalItemsCount = totalItemsCount - totalEquipedItemsCount;
+
+			int cubes = 1;
+			int cubesize = 27;
+			int allowItemsCount = cubesize * cubes - 1;
+			if(totalItemsCount <= allowItemsCount)
+			{
 				inventory.putIsEquipedToDb(itemUniqueId, 0, ItemSlot.INVENTORY);
 				sendPacket(new SM_UPDATE_ITEM(ItemSlot.INVENTORY, 1, itemUniqueId));
 				sendPacket(new SM_UPDATE_PLAYER_APPEARANCE(activeplayer));
 			}
 		}
-		
+
 	}
 }

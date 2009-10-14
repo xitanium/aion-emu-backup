@@ -29,6 +29,7 @@
     	<xs:enumeration value="SPELL_SIMPLE"/>
     	<xs:enumeration value="HEAL_OBJECT"/>
     	<xs:enumeration value="HEAL_SIMPLE"/>
+    	<xs:enumeration value="ATTACK_SIMPLE"/>
     </xs:restriction>
   </xs:simpleType>
   
@@ -56,6 +57,14 @@
 	</xs:simpleType>
 		
 	<xs:complexType name="SkillTemplate">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="needs">
+				<xs:complexType>
+					<xs:attribute name="item" type="xs:int" use="required" />
+					<xs:attribute name="quantity" type="xs:int" default="0" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
 		<xs:attribute name="skill_id" type="SkillId" use="required" />
 		<xs:attribute name="name" type="xs:string" use="required" />
 		<xs:attribute name="level" type="xs:int" use="required" />

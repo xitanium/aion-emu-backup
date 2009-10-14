@@ -16,18 +16,14 @@
  */
 package com.aionemu.gameserver.network.aion.clientpackets;
 
-import com.aionemu.gameserver.model.ItemSlot;
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.Inventory;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_ITEMLIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_INVENTORY_INFO;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
-import com.aionemu.gameserver.network.aion.serverpackets.SM_UPDATE_ITEM;
-import org.apache.log4j.Logger;
 
-import java.util.Random;
 /**
  * 
  * @author alexa026
@@ -35,10 +31,11 @@ import java.util.Random;
  */
 public class CM_LOOT_ITEM extends AionClientPacket
 {
+	@SuppressWarnings("unused")
 	private static final Logger	log	= Logger.getLogger(CM_LOOT_ITEM.class);
 
 	private int					targetObjectId;
-	private int					unk;
+	private int					itemIdArray;
 
 	public CM_LOOT_ITEM(int opcode)
 	{
@@ -52,7 +49,7 @@ public class CM_LOOT_ITEM extends AionClientPacket
 	protected void readImpl()
 	{
 		targetObjectId = readD();// empty
-		unk = readC();
+		readC();
 	}
 
 	/**
@@ -62,55 +59,54 @@ public class CM_LOOT_ITEM extends AionClientPacket
 	protected void runImpl()
 	{
 
-		
 		Player player = getConnection().getActivePlayer();
 		int activePlayer = player.getObjectId();
-		int itemId = player.getGameStats().getItemId();
-		int count = player.getGameStats().getItemCount();
 
-		log.info(String.format("CM_LOOT_ITEM itemId: %s", itemId));
-			
-		if (itemId==182400001){
-		 //Figure out packet to update kinah
-			Random generator = new Random();
-			int randomKinah = generator.nextInt(50)+1;
-			int randomUniqueId = generator.nextInt(99999999)+generator.nextInt(99999999)+99999999+99999999; // To prevent replacement of other item.
-		
-			//calculate how much kinah to send
+		Inventory itemsDbOfPlayerCount = new Inventory(); // wrong
+		itemsDbOfPlayerCount.getInventoryFromDb(activePlayer);
+		int totalItemsCount = itemsDbOfPlayerCount.getItemsCount();
 
-			Inventory kina = new Inventory();
-			kina.getKinahFromDb(activePlayer);
-			int kinah = kina.getKinahCount();
-			int totalKinah = kinah + randomKinah;
-			//kina.putKinahToDb(activePlayer, totalKinah);
-			//sendPacket(new SM_UPDATE_ITEM(0, 2, 0));
-		
-		} else { 
-			Inventory itemsDbOfPlayerCount = new Inventory(); // wrong
-			itemsDbOfPlayerCount.getInventoryFromDb(activePlayer);
-			int totalItemsCount = itemsDbOfPlayerCount.getItemsCount();
+		Inventory equipedItems = new Inventory();
+		equipedItems.getEquipedItemsFromDb(activePlayer);
+		int totalEquipedItemsCount = equipedItems.getEquipedItemsCount();
 
-			Inventory equipedItems = new Inventory();
-			equipedItems.getEquipedItemsFromDb(activePlayer);
-			int totalEquipedItemsCount = equipedItems.getEquipedItemsCount();
+		int itemCountArray;
+		int cubes = 1;
+		int cubesize = 27;
+		int allowItemsCount = cubesize * cubes - 1;
 
-			int cubes = 1;
-			int cubesize = 27;
-			int allowItemsCount = cubesize*cubes-1;
+		totalItemsCount = totalItemsCount - totalEquipedItemsCount;
 
-			totalItemsCount = totalItemsCount - totalEquipedItemsCount;
+		if(totalItemsCount <= allowItemsCount)
+		{
+			Inventory items = new Inventory();
+			int arrayLenght = player.getGameStats().getArrayLenght();
 
-			if (totalItemsCount<=allowItemsCount){
+			int a = 0;
 
-				Inventory items = new Inventory();
-				items.putItemToDb(activePlayer, itemId, count);
-				items.getLastUniqueIdFromDb();
-				int newItemUniqueId = items.getnewItemUniqueIdValue();
-	
-				} else {
-				//todo show SM_INVENTORY_IS_FULL packet or smth.
+			while(arrayLenght > 0)
+			{
+				itemIdArray = player.getGameStats().getItemIdArray(a);
+				itemCountArray = player.getGameStats().getItemCountArray(a);
+				if(itemIdArray == 182400001)
+				{
+					Inventory kinah2 = new Inventory();
+					kinah2.putKinahToDb(activePlayer, itemCountArray);
+				}
+				else
+				{
+					items.putItemToDb(activePlayer, itemIdArray, itemCountArray);
+				}
+				arrayLenght--;
+				a++;
 			}
+			sendPacket(new SM_INVENTORY_INFO(getConnection().getActivePlayer().getObjectId()));
+			sendPacket(new SM_LOOT_STATUS(targetObjectId, 3));
+
 		}
-		sendPacket(new SM_INVENTORY_INFO(getConnection().getActivePlayer().getObjectId()));
+		else
+		{
+			// todo show SM_INVENTORY_IS_FULL packet or smth.
+		}
 	}
 }

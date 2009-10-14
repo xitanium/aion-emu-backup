@@ -16,6 +16,11 @@
  */
 package com.aionemu.gameserver.controllers;
 
+import java.util.concurrent.Future;
+
+import org.apache.log4j.Logger;
+
+import com.aionemu.gameserver.ai.AIState;
 import com.aionemu.gameserver.ai.events.AttackEvent;
 import com.aionemu.gameserver.ai.npcai.NpcAi;
 import com.aionemu.gameserver.model.gameobjects.Creature;
@@ -45,6 +50,11 @@ public class NpcController extends CreatureController<Npc>
 	public NpcController (World world) {
 		super(world);
 	}
+
+	private static Logger log = Logger.getLogger(NpcController.class);
+	
+	private Future<?> decayTask;
+
 	public void attackTarget(int targetObjectId)
 	{
 		Npc npc = getOwner();
@@ -61,21 +71,13 @@ public class NpcController extends CreatureController<Npc>
 		PacketSendUtility.broadcastPacket(player,
 			new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
 
-		try {
-			Thread.sleep(50);	
-		} catch (InterruptedException e) {
-			System.out.println(e);
-		}
-
 		PacketSendUtility.broadcastPacket(player,
 			new SM_ATTACK(npc.getObjectId(), player.getObjectId(),
 				npcGameStats.getAttackCounter(), (int) time, attackType, damages), true);
-				
 		boolean attackSuccess = player.getController().onAttack(npc,damages);
 		
 		if(attackSuccess)
 		{
-			player.getLifeStats().reduceHp(damages);
 			npcGameStats.increaseAttackCounter();
 		}
 		if(player.getLifeStats().isAlreadyDead())
@@ -98,12 +100,11 @@ public class NpcController extends CreatureController<Npc>
 		PacketSendUtility.broadcastPacket(getOwner(), new SM_EMOTION(this.getOwner().getObjectId(), 13 , getOwner().getObjectId()));
 		this.doDrop();
 
-		//TODO change - now reward is given to target only
-		Player target = (Player) this.getOwner().getTarget();
-		this.doReward(target);
-
-		RespawnService.getInstance().scheduleRespawnTask(this.getOwner());
-		DecayService.getInstance().scheduleDecayTask(this.getOwner());
+		if(decayTask == null)
+		{
+			RespawnService.getInstance().scheduleRespawnTask(this.getOwner());
+			decayTask = DecayService.getInstance().scheduleDecayTask(this.getOwner());
+		}	
 		
 		//deselect target at the end
 		getOwner().setTarget(null);
@@ -115,6 +116,8 @@ public class NpcController extends CreatureController<Npc>
 	@Override
 	public void onRespawn()
 	{
+		this.decayTask = null;
+		
 		this.getOwner().getNpcAi().setAiState(AIState.IDLE);
 		NpcStatsTemplate statsTemplate = getOwner().getTemplate().getStatsTemplate();
 		this.getOwner().setLifeStats(new NpcLifeStats(getOwner(),statsTemplate));

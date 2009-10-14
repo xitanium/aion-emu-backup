@@ -21,26 +21,31 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 
 /**
- * @author ATracer
- *
+ * @author ATracer, Avol
+ * 
  */
 public class PlayerGameStats extends CreatureGameStats<Player>
 {
-	private int itemId; //TODO remove
-	private int itemNameId; //TODO remove
-	private int itemCount; //todo remove
-	private PlayerStatsData playerStatsData; 
-	
-	public PlayerGameStats () {
-		super(null,0,0,0,0,0,0,0,0,0,0,0,0);
+	private int				itemId;			// TODO remove
+	private int				itemNameId;		// TODO remove
+	private int				itemCount;			// todo remove
+	private PlayerStatsData	playerStatsData;
+	private int[]			itemIdArray;
+	private int[]			itemCountArray;
+	private int				itemIdArrayLength;
+
+	public PlayerGameStats()
+	{
+		super(null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		setInitialized(false);
 		this.playerStatsData = null;
 	}
 
-	public PlayerGameStats (PlayerStatsData playerStatsData, Player owner) {
-		super(owner,0,0,0,0,0,0,0,0,0,0,0,0);
+	public PlayerGameStats(PlayerStatsData playerStatsData, Player owner)
+	{
+		super(owner, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		this.playerStatsData = playerStatsData;
-		PlayerStatsTemplate pst = playerStatsData.getTemplate(owner.getPlayerClass(),1);
+		PlayerStatsTemplate pst = playerStatsData.getTemplate(owner.getPlayerClass(), 1);
 		setAttackCounter(1);
 		setPower(pst.getPower());
 		setHealth(pst.getHealth());
@@ -59,25 +64,67 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 		setFire(0);
 		// TODO find good values for attack range
 		setAttackRange(1500);
-		setAttackSpeed(Math.round(pst.getAttackSpeed()*1000));
+		setAttackSpeed(Math.round(pst.getAttackSpeed() * 1000));
 		// TODO find good values for fly time
 		setFlyTime(60);
 		setInitialized(true);
-		log.debug("loading base game stats for player "+owner.getName()+" (id "+owner.getObjectId()+"): "+this);
+		log.debug("loading base game stats for player " + owner.getName() + " (id " + owner.getObjectId() + "): "
+			+ this);
 	}
-	
-	public PlayerGameStats (Player player, PlayerStatsData psd, int power, int health, int agility, int accuracy, int knowledge, int will, int mainHandAttack, int mainHandCritRate, int otherHandAttack, int otherHandCritRate, int attackSpeed, int attackRange)
+
+	public PlayerGameStats(Player player, PlayerStatsData psd, int power, int health, int agility, int accuracy,
+		int knowledge, int will, int mainHandAttack, int mainHandCritRate, int otherHandAttack, int otherHandCritRate,
+		int attackSpeed, int attackRange)
 	{
-		super(player,power,health,agility,accuracy,knowledge,will,mainHandAttack,mainHandCritRate,otherHandAttack,otherHandCritRate,attackSpeed,attackRange);
+		super(player, power, health, agility, accuracy, knowledge, will, mainHandAttack, mainHandCritRate,
+			otherHandAttack, otherHandCritRate, attackSpeed, attackRange);
 		this.playerStatsData = psd;
 	}
-	
-	public PlayerGameStats getBaseGameStats () {
+
+	public PlayerGameStats getBaseGameStats()
+	{
 		int level = this.getOwner().getLevel();
-		final PlayerGameStats pgs = new PlayerGameStats (playerStatsData,(Player)getOwner());
+		final PlayerGameStats pgs = new PlayerGameStats(playerStatsData, (Player) getOwner());
 		pgs.doEvolution(1, level);
-		log.debug("Loading base game stats for player "+getOwner().getName()+"(id "+getOwner().getObjectId()+") for level "+level+": "+pgs);
+		log.debug("Loading base game stats for player " + getOwner().getName() + "(id " + getOwner().getObjectId()
+			+ ") for level " + level + ": " + pgs);
 		return pgs;
+	}
+
+	/**
+	 * @param itemIdArray
+	 *            the itemIdArray to set
+	 */
+	public void setItemIdArrayLenght(int lenght)
+	{
+		this.itemIdArray = new int[lenght];
+		this.itemCountArray = new int[lenght];
+		this.itemIdArrayLength = lenght;
+	}
+
+	public void setItemIdArray(int itemId, int arrayRow)
+	{
+		this.itemIdArray[arrayRow] = itemId;
+	}
+
+	public void setItemCountArray(int count, int arrayRow)
+	{
+		this.itemCountArray[arrayRow] = count;
+	}
+
+	public int getItemIdArray(int arrayRow)
+	{
+		return itemIdArray[arrayRow];
+	}
+
+	public int getItemCountArray(int arrayRow)
+	{
+		return itemCountArray[arrayRow];
+	}
+
+	public int getArrayLenght()
+	{
+		return itemIdArrayLength;
 	}
 
 	/**
@@ -89,7 +136,8 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 	}
 
 	/**
-	 * @param itemId the itemId to set
+	 * @param itemId
+	 *            the itemId to set
 	 */
 	public void setItemId(int itemId)
 	{
@@ -105,7 +153,8 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 	}
 
 	/**
-	 * @param itemNameId the itemNameId to set
+	 * @param itemNameId
+	 *            the itemNameId to set
 	 */
 	public void setItemNameId(int itemNameId)
 	{
@@ -127,13 +176,15 @@ public class PlayerGameStats extends CreatureGameStats<Player>
 	{
 		this.itemCount = itemCount;
 	}
-	
-	public void setPlayerStatsData (PlayerStatsData playerStatsData) {
+
+	public void setPlayerStatsData(PlayerStatsData playerStatsData)
+	{
 		this.playerStatsData = playerStatsData;
 	}
-	
+
 	// TODO Find the good stats evolution rates according to level
-	public void doEvolution (int fromLevel, int toLevel) {
+	public void doEvolution(int fromLevel, int toLevel)
+	{
 		setPower(getPower() + (int) Math.round((toLevel - fromLevel) * 1.1688));
 		setHealth(getHealth() + (int) Math.round((toLevel - fromLevel) * 1.1688));
 		setAgility(getAgility() + (int) Math.round((toLevel - fromLevel) * 1.1688));
