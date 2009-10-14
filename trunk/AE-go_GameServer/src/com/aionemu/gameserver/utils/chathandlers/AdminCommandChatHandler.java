@@ -37,6 +37,9 @@ public class AdminCommandChatHandler implements ChatHandler
 	private static final Logger			log			= Logger.getLogger(AdminCommandChatHandler.class);
 
 	private Map<String, AdminCommand>	commands	= new HashMap<String, AdminCommand>();
+	
+	// Static field used to retrieve AdminCommands from elsewhere in code
+	public static Map<String, AdminCommand> adminCommands;
 
 	AdminCommandChatHandler()
 	{
@@ -56,6 +59,7 @@ public class AdminCommandChatHandler implements ChatHandler
 			log.warn("Overriding handler for command " + commandName + " from " + old.getClass().getName() + " to "
 				+ command.getClass().getName());
 		}
+		adminCommands = commands;
 	}
 
 	/**
@@ -112,5 +116,9 @@ public class AdminCommandChatHandler implements ChatHandler
 	public int getSize()
 	{
 		return this.commands.size();
+	}
+	
+	public static Map getAllCommands() {
+		return adminCommands;
 	}
 }
