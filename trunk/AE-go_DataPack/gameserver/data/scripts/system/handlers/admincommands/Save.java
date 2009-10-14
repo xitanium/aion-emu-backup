@@ -59,6 +59,7 @@ public class Save extends AdminCommand
 				Iterator<Player> players = admin.getActiveRegion().getWorld().getPlayersIterator();
 				while(players.hasNext()) 
 				{
+					service = new PlayerService(null,null,null,null,null);
 					service.storePlayer(players.next());
 					try 
 					{
