@@ -143,8 +143,6 @@ public class PlayerController extends CreatureController<Player>
 		{
 			if(attacker instanceof Npc)
 			{ // PvE
-				PacketSendUtility.broadcastPacket(victim, new SM_EMOTION(victim.getObjectId(), 13, attacker
-					.getObjectId()), true);
 				this.onDie();
 			}
 			else

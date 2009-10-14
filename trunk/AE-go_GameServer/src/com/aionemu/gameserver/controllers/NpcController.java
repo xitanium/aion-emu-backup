@@ -141,9 +141,8 @@ public class NpcController extends CreatureController<Npc>
 		lifeStats.reduceHp(damages);
 		
 		if (lifeStats.isAlreadyDead()) {
-			PacketSendUtility.broadcastPacket(victim, new SM_EMOTION(victim.getObjectId(), 13 , attacker.getObjectId()));
-			this.doReward(attacker);
 			this.onDie();
+			this.doReward(attacker);
 		} else {
 			NpcAi npcAi = victim.getNpcAi();
 			npcAi.handleEvent(new AttackEvent(attacker));
