@@ -16,10 +16,19 @@
  */
 package com.aionemu.gameserver.skillengine.handlers;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
+import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.stats.CreatureLifeStats;
+import com.aionemu.gameserver.model.templates.SkillTemplate;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL_END;
 import com.aionemu.gameserver.skillengine.SkillHandler;
+import com.aionemu.gameserver.utils.PacketSendUtility;
+import com.aionemu.gameserver.utils.ThreadPoolManager;
+import com.aionemu.gameserver.utils.stats.StatFunctions;
 
 /**
  * @author xavier
@@ -40,10 +49,51 @@ public class AttackSimple extends SkillHandler
 	 * @see com.aionemu.gameserver.skillengine.SkillHandler#useSkill(com.aionemu.gameserver.model.gameobjects.Creature, java.util.List)
 	 */
 	@Override
-	public void useSkill(Creature creature, List<Creature> targets)
+	public void useSkill(final Creature creature, List<Creature> targets)
 	{
 		// TODO Auto-generated method stub
-
+		final int spellerId = creature.getObjectId();
+		SkillTemplate st = this.getSkillTemplate();
+		CreatureLifeStats<?> cls = creature.getLifeStats();
+    	final int reload = st.getLaunchTime();
+    	final int cost = st.getCost();
+    	final int spellId = getSkillId();
+    	final int level = st.getLevel();
+    	// If spell cost > current play MP
+    	final int unk = 0;
+    	if (cost>cls.getCurrentMp()) {
+    		log.info("You cannot use "+st.getName()+" because it needs "+cost+"MP and you have only "+cls.getCurrentMp()+"MP");
+    		return;
+    	}
+    	log.info("You are using "+st.getName());
+        Iterator<Creature> iter = targets.iterator();
+        while (iter.hasNext()) {
+        	final Creature target = iter.next();
+        	final int targetId = target.getObjectId();
+        	final int damages = StatFunctions.calculateBaseDamageToTarget(creature, target);
+        	PacketSendUtility.broadcastPacket(creature, new SM_CASTSPELL(targetId, spellId, level, unk, targetId, st.getRechargeTime()));
+        	if (creature instanceof Player) {
+        		PacketSendUtility.sendPacket((Player)creature, new SM_CASTSPELL(spellerId,getSkillId(),st.getLevel(),unk,targetId,st.getRechargeTime()));
+        	}
+        	target.getController().onAttack(creature,damages);
+        	ThreadPoolManager.getInstance().schedule(new Runnable()
+        	{
+        		public void run()
+        		{
+        			PacketSendUtility.broadcastPacket(creature, new SM_CASTSPELL_END(spellerId, spellId, level, unk, targetId, damages));
+        			if (creature instanceof Player) {
+        				PacketSendUtility.sendPacket((Player)creature,new SM_CASTSPELL_END(spellerId, spellId, level, unk,targetId, damages));
+        			}
+        			performAction(creature,target,damages,cost);
+        		}
+        	}, (reload-1)*1000);
+        }
 	}
-
+	
+	private void performAction(final Creature speller, final Creature target, final int damages, final int cost) {
+    	CreatureLifeStats<?> tls = speller.getLifeStats();
+    	CreatureLifeStats<?> als = target.getLifeStats();
+    	als.reduceHp(damages);
+    	tls.reduceMp(cost);
+    }
 }

@@ -91,7 +91,7 @@ public class SpellSimple extends SkillHandler
     private void performAction(final Creature speller, final Creature target, final int damages, final int cost) {
     	CreatureLifeStats<?> tls = speller.getLifeStats();
     	CreatureLifeStats<?> als = target.getLifeStats();
-    	tls.reduceHp(damages);
-    	als.reduceMp(cost);
+    	als.reduceHp(damages);
+    	tls.reduceMp(cost);
     }
 }
