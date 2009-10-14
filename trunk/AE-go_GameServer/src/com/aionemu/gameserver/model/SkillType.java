@@ -17,6 +17,7 @@
 package com.aionemu.gameserver.model;
 
 import com.aionemu.gameserver.skillengine.SkillHandler;
+import com.aionemu.gameserver.skillengine.handlers.AttackSimple;
 import com.aionemu.gameserver.skillengine.handlers.SpellSimple;
 import com.aionemu.gameserver.skillengine.handlers.SpellWithObject;
 import com.aionemu.gameserver.skillengine.handlers.HealSimple;
@@ -36,7 +37,7 @@ public enum SkillType
 	HEAL_SIMPLE,
 	ATTACK_SIMPLE;
 	
-	public SkillHandler getHandler (int skillId) throws IllegalStateException {
+	public SkillHandler getHandler (int skillId) throws AssertionError {
 		final SkillHandler handler;
 		switch (this) {
 			case SPELL_OBJECT:
@@ -52,10 +53,10 @@ public enum SkillType
 				handler = new HealSimple (skillId);
 				break;
 			case ATTACK_SIMPLE:
-				handler = new HealSimple (skillId);
+				handler = new AttackSimple(skillId);
 				break;
 			default:
-				throw new IllegalStateException("Cannot instantiate handler for skill type "+this);
+				throw new AssertionError("Cannot instantiate handler for skill type "+this);
 		}
 		return handler;
 	}
