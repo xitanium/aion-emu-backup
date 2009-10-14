@@ -33,7 +33,8 @@ public enum SkillType
 	SPELL_OBJECT,
 	SPELL_SIMPLE,
 	HEAL_OBJECT,
-	HEAL_SIMPLE;
+	HEAL_SIMPLE,
+	ATTACK_SIMPLE;
 	
 	public SkillHandler getHandler (int skillId) throws IllegalStateException {
 		final SkillHandler handler;
@@ -48,6 +49,9 @@ public enum SkillType
 				handler = new HealWithObject (skillId);
 				break;
 			case HEAL_SIMPLE:
+				handler = new HealSimple (skillId);
+				break;
+			case ATTACK_SIMPLE:
 				handler = new HealSimple (skillId);
 				break;
 			default:
