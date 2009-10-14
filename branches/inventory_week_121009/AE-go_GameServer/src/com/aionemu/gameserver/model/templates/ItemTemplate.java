@@ -206,9 +206,14 @@ public class ItemTemplate
 		return itemId;
 	}
 
-	public String getItemSlot()
+	public int getItemSlot()
 	{
-		return itemSlot;
+		int slot = 0;
+        if(!itemSlot.equals("none"))
+        {
+            slot = Integer.parseInt(itemSlot);
+        }
+        return slot;
 	}
 	
 	@SuppressWarnings("unused")
