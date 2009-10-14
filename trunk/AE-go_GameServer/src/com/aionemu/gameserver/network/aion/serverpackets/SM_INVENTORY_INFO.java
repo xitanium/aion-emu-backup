@@ -17,7 +17,7 @@
 package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
-import java.util.UUID;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
 
@@ -173,6 +173,7 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 			writeItem(con, buf, itemUniqueId, itemId, itemNameId, itemSlot, count);
 		}
 		inventory.getKinahFromDb(ownerId);
-		writeItem(con,buf,UUID.randomUUID().hashCode(),182400001,0, ItemSlot.INVENTORY,inventory.getKinahCount());
+		Random generator = new Random ();
+		writeItem(con,buf,100000000+generator.nextInt(100000000),182400001,0, ItemSlot.INVENTORY,inventory.getKinahCount());
 	}
 }
