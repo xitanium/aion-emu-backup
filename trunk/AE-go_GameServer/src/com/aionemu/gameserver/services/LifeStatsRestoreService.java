@@ -50,29 +50,23 @@ public class LifeStatsRestoreService
 	{
 		return ThreadPoolManager.getInstance().scheduleAtFixedRate((new Runnable()
 		{
+			private final Logger log = Logger.getLogger(LifeStatsRestoreService.class);
+			
 			@Override
 			public void run()
-			{				
-				
-				if(lifeStats.getCurrentHp() == lifeStats.getMaxHp() || lifeStats.isAlreadyDead())
+			{
+				if(((lifeStats.getCurrentHp() == lifeStats.getMaxHp()) && lifeStats.getCurrentMp() == lifeStats.getMaxMp()) || lifeStats.isAlreadyDead())
 				{
 					lifeStats.cancelRestoreTask();
 				}
 				else
 				{
 					lifeStats.increaseHp(HP_RESTORE_TICK);
-				}
-				
-				if(lifeStats.getCurrentMp() == lifeStats.getMaxMp())
-				{
-					lifeStats.cancelRestoreTask();
-				}
-				else
-				{
+					log.debug("LifeStatsRestore task increasing player "+lifeStats.getOwner().getObjectId()+" HP by "+HP_RESTORE_TICK+", new current HP:"+lifeStats.getCurrentHp());
 					lifeStats.increaseMp(MP_RESTORE_TICK);
+					log.debug("LifeStatsRestore task increasing player "+lifeStats.getOwner().getObjectId()+" MP by "+MP_RESTORE_TICK+", new current MP:"+lifeStats.getCurrentMp());
 				}
-			}
-			
+			}			
 		}), 1700, DEFAULT_DELAY);
 
 	}

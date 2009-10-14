@@ -255,6 +255,8 @@ public class PlayerController extends CreatureController<Player>
 	{
 		Player p = this.getOwner();
 		PlayerLifeStats pls = p.getLifeStats();
+		log.debug("player "+p.getObjectId()+" respawning");
+		pls.scheduleRestoreTask();
 		if (pls.isAlreadyDead()) { // Problem occurs on revive
 			pls.reset();
 		}

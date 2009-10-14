@@ -62,9 +62,6 @@ public class CreatureLifeStats<T extends Creature>
 		this.maxMp = maxMp;
 		this.owner = owner;
 		this.initialized = true;
-		if (owner instanceof Player) {
-			this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
-		}
 	}
 	
 	@Override
@@ -254,6 +251,14 @@ public class CreatureLifeStats<T extends Creature>
 		sendHpPacketUpdate();
 		
 		return currentHp;
+	}
+	
+	public void scheduleRestoreTask () {
+		if (getOwner() instanceof Player) {
+			if (lifeRestoreTask == null) {
+				this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
+			}
+		}
 	}
 	
 	/**
