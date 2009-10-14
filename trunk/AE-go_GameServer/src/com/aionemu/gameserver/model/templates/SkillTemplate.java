@@ -16,9 +16,12 @@
  */
 package com.aionemu.gameserver.model.templates;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.aionemu.gameserver.model.SkillElement;
@@ -68,7 +71,9 @@ public class SkillTemplate
 	
 	@XmlAttribute(name = "launch_time")
 	private int launch_time;
-
+	
+	@XmlElement(name = "needs")
+	private List<SkillNeedsData> needs;
 	/**
 	 * @return the skillId
 	 */
@@ -162,5 +167,13 @@ public class SkillTemplate
 	public int getCost()
 	{
 		return cost;
+	}
+
+	/**
+	 * @return the needs of the spell
+	 */
+	public List<SkillNeedsData> getSkillNeedsData()
+	{
+		return needs;
 	}
 }

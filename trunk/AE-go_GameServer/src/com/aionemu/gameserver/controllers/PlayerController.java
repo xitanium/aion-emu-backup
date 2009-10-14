@@ -44,16 +44,17 @@ import com.aionemu.gameserver.world.World;
  * This class is for controlling players.
  * 
  * @author -Nemesiss-, ATracer (2009-09-29)
- *
+ * 
  */
 public class PlayerController extends CreatureController<Player>
 {
-	public PlayerController (World world) {
+	public PlayerController(World world)
+	{
 		super(world);
 	}
-	
+
 	// TEMP till player AI introduced
-	private Creature lastAttacker;
+	private Creature	lastAttacker;
 
 	/**
 	 * {@inheritDoc}
@@ -85,13 +86,14 @@ public class PlayerController extends CreatureController<Player>
 	/**
 	 * {@inheritDoc}
 	 * 
-	 *  Shoul only be triggered from one place (life stats)
+	 * Shoul only be triggered from one place (life stats)
 	 */
 	@Override
 	public void onDie()
 	{
-		//TODO probably introduce variable - last attack creature in player AI
-		PacketSendUtility.broadcastPacket(this.getOwner(), new SM_EMOTION(this.getOwner().getObjectId(), 13 , lastAttacker.getObjectId()), true);
+		// TODO probably introduce variable - last attack creature in player AI
+		PacketSendUtility.broadcastPacket(this.getOwner(), new SM_EMOTION(this.getOwner().getObjectId(), 13,
+			lastAttacker.getObjectId()), true);
 		Player player = this.getOwner();
 		PacketSendUtility.sendPacket(player, new SM_DIE());
 		PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.DIE);
@@ -101,13 +103,13 @@ public class PlayerController extends CreatureController<Player>
 	{
 		Player attacker = getOwner();
 		PlayerGameStats ags = attacker.getGameStats();
-		int time = Math.round(System.currentTimeMillis()/1000f);
-		int attackType = 0; //TODO investigate attack types	
+		int time = Math.round(System.currentTimeMillis() / 1000f);
+		int attackType = 0; // TODO investigate attack types
 
 		Creature target = (Creature) world.findAionObject(targetObjectId);
 		int damages = StatFunctions.calculateBaseDamageToTarget(attacker, target);
-		PacketSendUtility.broadcastPacket(attacker,
-			new SM_ATTACK(attacker.getObjectId(), targetObjectId, ags.getAttackCounter(), time, attackType, damages), true);
+		PacketSendUtility.broadcastPacket(attacker, new SM_ATTACK(attacker.getObjectId(), targetObjectId, ags
+			.getAttackCounter(), time, attackType, damages), true);
 
 		boolean attackSuccess = target.getController().onAttack(attacker, damages);
 		if(attackSuccess)
@@ -116,18 +118,20 @@ public class PlayerController extends CreatureController<Player>
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.controllers.CreatureController#onAttack(com.aionemu.gameserver.model.gameobjects.Creature)
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * com.aionemu.gameserver.controllers.CreatureController#onAttack(com.aionemu.gameserver.model.gameobjects.Creature)
 	 */
 	@Override
 	public boolean onAttack(Creature attacker, int damages)
 	{
 		lastAttacker = attacker;
-		
+
 		Player victim = getOwner();
 		PlayerLifeStats vls = victim.getLifeStats();
 
-		//TODO resolve synchronization issue
+		// TODO resolve synchronization issue
 		if(vls.isAlreadyDead())
 		{
 			return false;
@@ -137,33 +141,41 @@ public class PlayerController extends CreatureController<Player>
 
 		if(vls.isAlreadyDead())
 		{
-			if (attacker instanceof Npc) { // PvE
-				PacketSendUtility.broadcastPacket(victim, new SM_EMOTION(victim.getObjectId(), 13 , attacker.getObjectId()), true);
+			if(attacker instanceof Npc)
+			{ // PvE
+				PacketSendUtility.broadcastPacket(victim, new SM_EMOTION(victim.getObjectId(), 13, attacker
+					.getObjectId()), true);
 				this.onDie();
-			} else { // PvP
-				this.duelEndWith((Player)attacker);
+			}
+			else
+			{ // PvP
+				this.duelEndWith((Player) attacker);
 			}
 		}
 		return true;
 	}
-	
+
 	public void useSkill(int skillId)
 	{
 		SkillHandler skillHandler = SkillEngine.getSkillHandlerFor(skillId);
-		
+
 		if(skillHandler != null)
 		{
-			if (this.getOwner().getTarget()!=null) {
+			if(this.getOwner().getTarget() != null)
+			{
 				Vector<Creature> list = new Vector<Creature>();
 				list.add(this.getOwner().getTarget());
 				skillHandler.useSkill(this.getOwner(), list);
-			} else {
+			}
+			else
+			{
 				skillHandler.useSkill(this.getOwner(), null);
 			}
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see com.aionemu.gameserver.controllers.CreatureController#doDrop()
 	 */
 	@Override
@@ -171,19 +183,22 @@ public class PlayerController extends CreatureController<Player>
 	{
 		// TODO Auto-generated method stub
 	}
-	
-	public void startDuelWith (Player player) {
-		//PacketSendUtility.sendPacket(getOwner(), SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(player.getName()));
-		log.debug("[PvP] Player "+this.getOwner().getName()+" start duel with "+player.getName());
+
+	public void startDuelWith(Player player)
+	{
+		// PacketSendUtility.sendPacket(getOwner(), SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(player.getName()));
+		log.debug("[PvP] Player " + this.getOwner().getName() + " start duel with " + player.getName());
 	}
-	
-	public void onDuelWith (Player provocker) {
-		log.debug("[PvP] Player "+provocker.getName()+" provocked in duel "+this.getOwner().getName());
+
+	public void onDuelWith(Player provocker)
+	{
+		log.debug("[PvP] Player " + provocker.getName() + " provocked in duel " + this.getOwner().getName());
 	}
-	
-	public void duelEndWith (Player attacker) {
+
+	public void duelEndWith(Player attacker)
+	{
 		// TODO Fin du duel
-		log.debug("[PvP] Player "+attacker.getName()+" won versus "+this.getOwner().getName());
+		log.debug("[PvP] Player " + attacker.getName() + " won versus " + this.getOwner().getName());
 	}
 
 	/**
@@ -194,45 +209,49 @@ public class PlayerController extends CreatureController<Player>
 	 * @param y
 	 * @param z
 	 */
-	public void teleportTo (int worldId, float x, float y, float z, byte heading) {
+	public void teleportTo(int worldId, float x, float y, float z, byte heading)
+	{
 		Player p = getOwner();
 		world.despawn(p);
 		world.setPosition(p, worldId, x, y, z, heading);
 		p.setProtectionActive(true);
 		PacketSendUtility.sendPacket(p, new SM_UNKF5(p));
 	}
-	
+
 	/**
 	 * Do player revival
 	 */
 	public void onRevive()
 	{
 		Player p = this.getOwner();
-		PacketSendUtility.sendPacket(p,SM_SYSTEM_MESSAGE.REVIVE);
+		PacketSendUtility.sendPacket(p, SM_SYSTEM_MESSAGE.REVIVE);
 		PacketSendUtility.sendPacket(p, new SM_UNK72());
-		PacketSendUtility.sendPacket(p, new SM_STATS_INFO(p));			
-		PacketSendUtility.sendPacket(p, new SM_PLAYER_INFO(p, true));	
-		
+		PacketSendUtility.sendPacket(p, new SM_STATS_INFO(p));
+		PacketSendUtility.sendPacket(p, new SM_PLAYER_INFO(p, true));
+
 		this.teleportTo(p.getWorldId(), p.getX(), p.getY(), p.getZ(), p.getHeading());
 	}
 
-	/* (non-Javadoc)
-	 * @see com.aionemu.gameserver.controllers.CreatureController#doReward(com.aionemu.gameserver.model.gameobjects.Creature)
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * com.aionemu.gameserver.controllers.CreatureController#doReward(com.aionemu.gameserver.model.gameobjects.Creature)
 	 */
 	@Override
 	public void doReward(Creature creature)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see com.aionemu.gameserver.controllers.CreatureController#onRespawn()
 	 */
 	@Override
 	public void onRespawn()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

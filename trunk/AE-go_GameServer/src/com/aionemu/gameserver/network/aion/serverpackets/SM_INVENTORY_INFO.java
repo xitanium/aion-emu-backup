@@ -17,6 +17,7 @@
 package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
@@ -58,6 +59,67 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 		this.ownerId = ownerId;
 	}
 
+	private void writeItem(AionConnection con, ByteBuffer buf, int itemUniqueId, int itemId, int itemNameId,
+		ItemSlot itemSlot, int count)
+	{
+		writeD(buf, itemUniqueId); // Unique Id
+		writeD(buf, itemId); // item Id 162000007
+		writeH(buf, 0x24); // always 36
+		writeD(buf, itemNameId); // item name id
+		writeH(buf, 0); // always 0
+		writeH(buf, 0x16); // lenght of item details
+		if(itemSlot != ItemSlot.INVENTORY)
+		{
+			writeC(buf, 0x06); // equiped data follows
+			writeC(buf, itemSlot.getSlotMask() & 0x00FF); // where this can be equiped. or
+			writeC(buf, itemSlot.getSlotMask() & 0xFF00);// whatever
+
+			// ---------------
+
+			writeC(buf, 0x02);
+			writeC(buf, 0x00);
+			writeC(buf, 0x08);
+			writeD(buf, 0);
+			writeD(buf, 0);
+			writeD(buf, 0);
+			writeH(buf, 0);
+			writeC(buf, 0);
+			/*
+			 * //--------------- writeC(buf, 0x0B); // appearance info follows? writeH(buf, 0); writeD(buf, 0x7C85AE06);
+			 * // changing this value tags item as skinned writeD(buf, 0); // 4608 manastone type writeD(buf, 0); // 14
+			 * mana stone atribute bonus writeD(buf, 0); writeD(buf, 0); writeD(buf, 0); writeD(buf, 0); writeC(buf, 0);
+			 * writeC(buf, 0); writeC(buf, 0); //------------ writeC(buf, 0x0A); writeD(buf, 196628); writeC(buf, 0);
+			 * writeC(buf, 0); writeC(buf, 0); //------------ writeC(buf, 0x0A); writeD(buf, 20971923); writeC(buf, 0);
+			 * writeC(buf, 0); writeC(buf, 0); //------------ writeC(buf, 0x0A); writeD(buf, 327784); writeC(buf, 0);
+			 * writeC(buf, 0); writeC(buf, 0); //------------
+			 */
+
+			writeC(buf, 0); // general info fallows
+			writeH(buf, 0xFFFF); // sets the varios bits of attribute test on the tooltip
+			writeC(buf, count); // quanty
+		}
+		else
+		{
+			writeC(buf, 0x00);
+			writeH(buf, 0x633E);
+			writeD(buf, count);
+			writeD(buf, 0);
+			writeD(buf, 0);
+			writeH(buf, 0);
+			writeD(buf, 0);
+			// writeD(buf, 0);
+			// writeD(buf, 0);
+			// writeD(buf, 0);
+			// writeD(buf, 0);
+			// writeD(buf, 0);
+			// writeH(buf, 0);
+			writeC(buf, 0);
+			writeC(buf, 0x18); // location in inventory -?
+			writeC(buf, 0); //
+			writeC(buf, 0); // sometimes 0x01
+		}
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -97,72 +159,20 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 		writeC(buf, 1); // TRUE/FALSE (1/0) update cube size
 		writeC(buf, 0); // cube size
 		writeH(buf, 0); // padding?
-		writeH(buf, itemsCount); // number of entries
+		writeH(buf, itemsCount+1); // number of entries
 
-		for(int itemNumber = 0; itemNumber < itemsCount; itemNumber++)
+		for(int itemNumber = 0; itemNumber < itemsCount-1; itemNumber++)
 		{
 			ItemList itemName = new ItemList();
 			int itemId = inventory.getItemIdArray(itemNumber);
 			itemName.getItemList(itemId);
 			int itemNameId = itemName.getItemNameId();
 			ItemSlot itemSlot = inventory.getItemSlotArray(itemNumber);
-			writeD(buf, inventory.getItemUniqueIdArray(itemNumber)); // Unique Id
-			writeD(buf, inventory.getItemIdArray(itemNumber)); // item Id 162000007
-			writeH(buf, 0x24); // always 36
-			writeD(buf, itemNameId); // item name id
-			writeH(buf, 0); // always 0
-			writeH(buf, 0x16); // lenght of item details
-			if(itemSlot != ItemSlot.INVENTORY)
-			{
-				writeC(buf, 0x06); // equiped data follows
-				writeC(buf, inventory.getItemSlotArray(itemNumber).getSlotMask()&0x00FF); // where this can be equiped. or
-				writeC(buf, inventory.getItemSlotArray(itemNumber).getSlotMask()&0xFF00);// whatever
-
-				// ---------------
-
-				writeC(buf, 0x02);
-				writeC(buf, 0x00);
-				writeC(buf, 0x08);
-				writeD(buf, 0);
-				writeD(buf, 0);
-				writeD(buf, 0);
-				writeH(buf, 0);
-				writeC(buf, 0);
-				/*
-				 * //--------------- writeC(buf, 0x0B); // appearance info follows? writeH(buf, 0); writeD(buf,
-				 * 0x7C85AE06); // changing this value tags item as skinned writeD(buf, 0); // 4608 manastone type
-				 * writeD(buf, 0); // 14 mana stone atribute bonus writeD(buf, 0); writeD(buf, 0); writeD(buf, 0);
-				 * writeD(buf, 0); writeC(buf, 0); writeC(buf, 0); writeC(buf, 0); //------------ writeC(buf, 0x0A);
-				 * writeD(buf, 196628); writeC(buf, 0); writeC(buf, 0); writeC(buf, 0); //------------ writeC(buf,
-				 * 0x0A); writeD(buf, 20971923); writeC(buf, 0); writeC(buf, 0); writeC(buf, 0); //------------
-				 * writeC(buf, 0x0A); writeD(buf, 327784); writeC(buf, 0); writeC(buf, 0); writeC(buf, 0);
-				 * //------------
-				 */
-
-				writeC(buf, 0); // general info fallows
-				writeH(buf, 0xFFFF); // sets the varios bits of attribute test on the tooltip
-				writeC(buf, inventory.getItemCountArray(itemNumber)); // quanty
-			}
-			else
-			{
-				writeC(buf, 0x00);
-				writeH(buf, 0x633E);
-				writeD(buf, inventory.getItemCountArray(itemNumber));
-				writeD(buf, 0);
-				writeD(buf, 0);
-				writeH(buf, 0);
-				writeD(buf, 0);
-//				writeD(buf, 0);
-//				writeD(buf, 0);
-//				writeD(buf, 0);
-//				writeD(buf, 0);
-//				writeD(buf, 0);
-//				writeH(buf, 0);
-				writeC(buf, 0);
-				writeC(buf, 0x18); // location in inventory -?
-				writeC(buf, 0); //
-				writeC(buf, 0); // sometimes 0x01
-			}
+			int itemUniqueId = inventory.getItemUniqueIdArray(itemNumber);
+			int count = inventory.getItemCountArray(itemNumber);
+			writeItem(con, buf, itemUniqueId, itemId, itemNameId, itemSlot, count);
 		}
+		inventory.getKinahFromDb(ownerId);
+		writeItem(con,buf,UUID.randomUUID().hashCode(),182400001,0, ItemSlot.INVENTORY,inventory.getKinahCount());
 	}
 }

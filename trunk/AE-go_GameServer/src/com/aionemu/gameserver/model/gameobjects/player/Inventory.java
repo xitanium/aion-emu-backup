@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import com.aionemu.commons.database.DB;
 import com.aionemu.gameserver.model.ItemSlot;
@@ -131,7 +132,7 @@ public class Inventory
 		}
 	}
 
-	public void getKinahFromDb(int activePlayer) {
+	public int getKinahFromDb(int activePlayer) {
 		PreparedStatement ps2 = DB.prepareStatement("SELECT `kinah` FROM `players` WHERE `id`=" + activePlayer);
 		try
 		{
@@ -147,6 +148,7 @@ public class Inventory
 		{
 			DB.close(ps2);
 		}
+		return activePlayer;
 	}
 
 	public void getIsEquipedFromDb(int activePlayer, ItemSlot slot) {
@@ -237,8 +239,8 @@ public class Inventory
 		}
 	}
 
-	public void putKinahToDb(int activePlayer, int count) {
-		PreparedStatement ps3 = DB.prepareStatement("UPDATE `players` SET `kinah` = ? WHERE `id`= ? ");
+	public int putKinahToDb(int activePlayer, int count) {
+		PreparedStatement ps3 = DB.prepareStatement("UPDATE `players` SET `kinah` = kinah+? WHERE `id`= ? ");
 		try
 		{
 			ps3.setInt(1, count);
@@ -253,6 +255,7 @@ public class Inventory
 		{
 			DB.close(ps3);
 		}
+		return UUID.randomUUID().hashCode();
 	}
 
 	public int putItemToDb(int activePlayer, int itemId, int itemCount) {

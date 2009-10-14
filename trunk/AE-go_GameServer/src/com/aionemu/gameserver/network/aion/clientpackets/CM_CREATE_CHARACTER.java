@@ -47,20 +47,20 @@ import com.google.inject.Inject;
 public class CM_CREATE_CHARACTER extends AionClientPacket
 {
 	/** Logger for this class. */
-	private static final Logger	log	= Logger.getLogger(CM_CREATE_CHARACTER.class);
+	private static final Logger		log	= Logger.getLogger(CM_CREATE_CHARACTER.class);
 
 	/** Character appearance */
-	private PlayerAppearance	playerAppearance;
+	private PlayerAppearance		playerAppearance;
 	/** Player base data */
-	private PlayerCommonData	playerCommonData;
+	private PlayerCommonData		playerCommonData;
 
 	@Inject
-	private PlayerService		playerService;
+	private PlayerService			playerService;
 	@Inject
-	private PlayerExperienceTable playerExperienceTable;
+	private PlayerExperienceTable	playerExperienceTable;
 	@Inject
 	@IDFactoryAionObject
-	private IDFactory			aionObjectsIDFactory;
+	private IDFactory				aionObjectsIDFactory;
 
 	/**
 	 * Constructs new instance of <tt>CM_CREATE_CHARACTER </tt> packet
@@ -81,7 +81,7 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 		readD(); // ignored for now
 		readS(); // something + accointId
 
-		playerCommonData = new PlayerCommonData(aionObjectsIDFactory.nextId(),playerExperienceTable);
+		playerCommonData = new PlayerCommonData(aionObjectsIDFactory.nextId(), playerExperienceTable);
 		String name = readS();
 
 		playerCommonData.setName(name);
@@ -139,12 +139,12 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 
 		readC();
 		playerAppearance.setShoulderSize(readC());
-		playerAppearance.setArmLength(readC()); // 1.5.x add ArmLength 
+		playerAppearance.setArmLength(readC()); // 1.5.x add ArmLength
 		playerAppearance.setLegLength(readC()); // 1.5.x add LegLength
-		
+
 		playerAppearance.setNeck(readC());
 		playerAppearance.setNeckLength(readC());
-		
+
 		playerAppearance.setShoulders(readC());
 		playerAppearance.setTorso(readC());
 		playerAppearance.setChest(readC()); // only woman
@@ -152,15 +152,17 @@ public class CM_CREATE_CHARACTER extends AionClientPacket
 
 		playerAppearance.setHips(readC());
 		playerAppearance.setArmThickness(readC());
+
 		playerAppearance.setHandSize(readC());
 		playerAppearance.setLegThicnkess(readC());
+
 		playerAppearance.setFootSize(readC());
 		playerAppearance.setFacialRate(readC());
 
 		readC(); // always 0
 		readC(); // always 0
 		playerAppearance.setHeight(readF());
-		log.debug("Creating new player #"+playerCommonData.getPlayerObjId()+" with appearance:"+playerAppearance);
+		log.debug("Creating new player #" + playerCommonData.getPlayerObjId() + " with appearance:" + playerAppearance);
 	}
 
 	/**
