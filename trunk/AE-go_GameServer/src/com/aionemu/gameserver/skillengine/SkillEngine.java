@@ -84,7 +84,7 @@ public class SkillEngine
 				handler.setSkillTemplate(template);
 				skillHandlers.put(skillId, handler);
 				log.debug("Loaded generic skill#"+skillId+" ("+template.getName()+") handler "+handler.getClass().getName());
-			} catch (IllegalStateException e) {
+			} catch (AssertionError e) {
 				log.debug("Generic handler for skill#"+skillId+" not found: "+e.getMessage());
 			}
 		}
