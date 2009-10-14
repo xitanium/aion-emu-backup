@@ -23,7 +23,6 @@ import com.aionemu.gameserver.model.gameobjects.Citizen;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 import com.aionemu.gameserver.world.World;
-import com.google.inject.Inject;
 
 /**
  * 
@@ -32,12 +31,11 @@ import com.google.inject.Inject;
  */
 public class SM_DIALOG_WINDOW extends AionServerPacket
 {
-	@Inject
 	private World world;
 	
 	private int	targetObjectId;
 	
-	public SM_DIALOG_WINDOW(int targetObjectId)
+	public SM_DIALOG_WINDOW(int targetObjectId, World world)
 	{
 		this.targetObjectId = targetObjectId;
 	}
