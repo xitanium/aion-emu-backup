@@ -33,7 +33,6 @@ public class CM_SHOW_DIALOG extends AionClientPacket
 	* Target object id that client wants to TALK WITH or 0 if wants to unselect
 	*/
 	private int					targetObjectId;
-	private World world;
 	/**
 	* Constructs new instance of <tt>CM_CM_REQUEST_DIALOG </tt> packet
 	* @param opcode
@@ -41,7 +40,6 @@ public class CM_SHOW_DIALOG extends AionClientPacket
 	public CM_SHOW_DIALOG(int opcode)
 	{
 		super(opcode);
-		world = this.getConnection().getActivePlayer().getActiveRegion().getWorld();
 	}
 
 	/**
@@ -62,10 +60,10 @@ public class CM_SHOW_DIALOG extends AionClientPacket
 		// TODO: get quests 
 		if (targetObjectId==0x40018b14) { // testing
 			sendPacket(new SM_DIALOG(targetObjectId, 0x3e));
-			sendPacket(new SM_DIALOG_WINDOW(targetObjectId, world));
+			sendPacket(new SM_DIALOG_WINDOW(targetObjectId));
 		} else {
 			sendPacket(new SM_DIALOG(targetObjectId, 4688));
-			sendPacket(new SM_DIALOG_WINDOW(targetObjectId, world));
+			sendPacket(new SM_DIALOG_WINDOW(targetObjectId));
 		}
 
 	}

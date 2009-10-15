@@ -31,13 +31,19 @@ import com.aionemu.gameserver.world.World;
  */
 public class SM_DIALOG_WINDOW extends AionServerPacket
 {
-	private World world;
+	private World _world;
 	
 	private int	targetObjectId;
 	
+	public SM_DIALOG_WINDOW(int targetObjectId)
+	{
+		this.targetObjectId = targetObjectId;
+		_world = null;
+	}
 	public SM_DIALOG_WINDOW(int targetObjectId, World world)
 	{
 		this.targetObjectId = targetObjectId;
+		_world = world;
 	}
 
 	/**
@@ -47,7 +53,8 @@ public class SM_DIALOG_WINDOW extends AionServerPacket
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
 	{
-		AionObject target = world.findAionObject(targetObjectId);
+		if(_world != null) {
+		AionObject target = _world.findAionObject(targetObjectId);
 		writeD(buf, targetObjectId);
 		if (target instanceof Citizen) {
 			writeD(buf,0x03);
@@ -61,6 +68,6 @@ public class SM_DIALOG_WINDOW extends AionServerPacket
 			writeD(buf, 10); // window mode. 1- opens stigma window and show somekind of aura. 2- create legion window. 3 and higher - npc/quest dialog window + it's id.
 		}
 		writeD(buf, 0); // Quest id
-
+		}
 	}	
 }
