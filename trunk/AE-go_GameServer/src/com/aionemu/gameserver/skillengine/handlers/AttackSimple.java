@@ -57,15 +57,10 @@ public class AttackSimple extends SkillHandler
 		SkillTemplate st = this.getSkillTemplate();
 		CreatureLifeStats<?> cls = creature.getLifeStats();
     	final int reload = st.getLaunchTime();
-    	final int cost = st.getCost();
     	final int spellId = getSkillId();
     	final int level = st.getLevel();
     	// If spell cost > current play MP
     	final int unk = 0;
-    	if (cost>cls.getCurrentMp()) {
-    		log.info("You cannot use "+st.getName()+" because it needs "+cost+"MP and you have only "+cls.getCurrentMp()+"MP");
-    		return;
-    	}
     	log.info("You are using "+st.getName());
     	if(targets != null)
     	{
@@ -87,17 +82,15 @@ public class AttackSimple extends SkillHandler
 	        			if (creature instanceof Player) {
 	        				PacketSendUtility.sendPacket((Player)creature,new SM_CASTSPELL_END(spellerId, spellId, level, unk,targetId, damages));
 	        			}
-	        			performAction(creature,target,damages,cost);
+	        			performAction(creature,target,damages);
 	        		}
 	        	}, (reload-1)*1000);
 	        }
     	}
 	}
 	
-	private void performAction(final Creature speller, final Creature target, final int damages, final int cost) {
-    	CreatureLifeStats<?> tls = speller.getLifeStats();
+	private void performAction(final Creature speller, final Creature target, final int damages) {
     	CreatureLifeStats<?> als = target.getLifeStats();
     	als.reduceHp(damages);
-    	tls.reduceMp(cost);
     }
 }
