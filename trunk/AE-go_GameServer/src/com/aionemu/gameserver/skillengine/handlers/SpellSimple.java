@@ -58,7 +58,7 @@ public class SpellSimple extends SkillHandler
     	final int cost = st.getCost();
     	final int spellId = getSkillId();
     	final int level = st.getLevel();
-    	final int unk = 0;
+    	final int unk = 15;
     	if (cost>cls.getCurrentMp()) {
     		log.info("You cannot use "+st.getName()+" because it needs "+cost+"MP and you have only "+cls.getCurrentMp()+"MP");
     		return;
