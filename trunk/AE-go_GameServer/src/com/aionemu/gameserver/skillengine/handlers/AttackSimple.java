@@ -70,7 +70,7 @@ public class AttackSimple extends SkillHandler
         while (iter.hasNext()) {
         	final Creature target = iter.next();
         	final int targetId = target.getObjectId();
-        	final int damages = StatFunctions.calculateBaseDamageToTarget(creature, target);
+        	final int damages = st.getDamages();
         	PacketSendUtility.broadcastPacket(creature, new SM_CASTSPELL(targetId, spellId, level, unk, targetId, st.getRechargeTime()));
         	if (creature instanceof Player) {
         		PacketSendUtility.sendPacket((Player)creature, new SM_CASTSPELL(spellerId,getSkillId(),st.getLevel(),unk,targetId,st.getRechargeTime()));
