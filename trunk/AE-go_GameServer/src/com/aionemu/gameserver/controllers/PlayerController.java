@@ -131,14 +131,14 @@ public class PlayerController extends CreatureController<Player>
 		Player victim = getOwner();
 		PlayerLifeStats vls = victim.getLifeStats();
 
-		// TODO resolve synchronization issue
+		/*// TODO resolve synchronization issue
 		if(vls.isAlreadyDead())
 		{
 			return false;
-		}
+		}*/
 
 		vls.reduceHp(damages);
-
+		//TODO: dead code here i think, will never be executed as isAlreadyDead() = true returns false above.
 		if(vls.isAlreadyDead())
 		{
 			if(attacker instanceof Npc)
@@ -149,6 +149,11 @@ public class PlayerController extends CreatureController<Player>
 			{ // PvP
 				this.duelEndWith((Player) attacker);
 			}
+			return false;
+		}
+		else 
+		{
+			vls.reduceHp(damages);
 		}
 		return true;
 	}

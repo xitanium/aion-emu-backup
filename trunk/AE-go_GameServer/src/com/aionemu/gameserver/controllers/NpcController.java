@@ -114,6 +114,10 @@ public class NpcController extends CreatureController<Npc>
 		}	
 		
 		//deselect target at the end
+		if(getOwner().getTarget() instanceof Player) 
+		{
+			getOwner().getTarget().setTarget(null);
+		}
 		getOwner().setTarget(null);
 	}
 
