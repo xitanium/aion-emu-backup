@@ -18,6 +18,7 @@ package com.aionemu.gameserver.skillengine.handlers;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -72,11 +73,19 @@ public class AttackSimple extends SkillHandler
 	        while (iter.hasNext()) {
 	        	final Creature target = iter.next();
 	        	final int targetId = target.getObjectId();
-	        	final int damages = st.getDamages();
+	        	int damagesAdd = 0;
 	        	PacketSendUtility.broadcastPacket(creature, new SM_CASTSPELL(targetId, spellId, level, unk, targetId, st.getRechargeTime()));
 	        	if (creature instanceof Player) {
 	        		PacketSendUtility.sendPacket((Player)creature, new SM_CASTSPELL(spellerId,getSkillId(),st.getLevel(),unk,targetId,st.getRechargeTime()));
+	        		int criticalRate = ((Player)creature).getGameStats().getMainHandCritRate();
+	        		double random = Math.random() * 100;
+	        		if(random < criticalRate)
+	        		{
+	        			// Critical hit !
+	        			damagesAdd = 15;
+	        		}
 	        	}
+	        	final int damages = st.getDamages() + damagesAdd;
 	        	target.getController().onAttack(creature,damages);
 	        	ThreadPoolManager.getInstance().schedule(new Runnable()
 	        	{
