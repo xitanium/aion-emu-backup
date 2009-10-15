@@ -76,7 +76,7 @@ public class AttackSimple extends SkillHandler
 	        	int damagesAdd = 0;
 	        	PacketSendUtility.broadcastPacket(creature, new SM_CASTSPELL(targetId, spellId, level, unk, targetId, st.getRechargeTime()));
 	        	if (creature instanceof Player) {
-	        		PacketSendUtility.sendPacket((Player)creature, new SM_CASTSPELL(spellerId,getSkillId(),st.getLevel(),unk,targetId,st.getRechargeTime()));
+	        		//PacketSendUtility.sendPacket((Player)creature, new SM_CASTSPELL(spellerId,getSkillId(),st.getLevel(),unk,targetId,st.getRechargeTime()));
 	        		int criticalRate = ((Player)creature).getGameStats().getMainHandCritRate();
 	        		double random = Math.random() * 100;
 	        		if(random < criticalRate)
