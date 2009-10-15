@@ -66,28 +66,31 @@ public class AttackSimple extends SkillHandler
     		return;
     	}
     	log.info("You are using "+st.getName());
-        Iterator<Creature> iter = targets.iterator();
-        while (iter.hasNext()) {
-        	final Creature target = iter.next();
-        	final int targetId = target.getObjectId();
-        	final int damages = st.getDamages();
-        	PacketSendUtility.broadcastPacket(creature, new SM_CASTSPELL(targetId, spellId, level, unk, targetId, st.getRechargeTime()));
-        	if (creature instanceof Player) {
-        		PacketSendUtility.sendPacket((Player)creature, new SM_CASTSPELL(spellerId,getSkillId(),st.getLevel(),unk,targetId,st.getRechargeTime()));
-        	}
-        	target.getController().onAttack(creature,damages);
-        	ThreadPoolManager.getInstance().schedule(new Runnable()
-        	{
-        		public void run()
-        		{
-        			PacketSendUtility.broadcastPacket(creature, new SM_CASTSPELL_END(spellerId, spellId, level, unk, targetId, damages));
-        			if (creature instanceof Player) {
-        				PacketSendUtility.sendPacket((Player)creature,new SM_CASTSPELL_END(spellerId, spellId, level, unk,targetId, damages));
-        			}
-        			performAction(creature,target,damages,cost);
-        		}
-        	}, (reload-1)*1000);
-        }
+    	if(targets != null)
+    	{
+	        Iterator<Creature> iter = targets.iterator();
+	        while (iter.hasNext()) {
+	        	final Creature target = iter.next();
+	        	final int targetId = target.getObjectId();
+	        	final int damages = st.getDamages();
+	        	PacketSendUtility.broadcastPacket(creature, new SM_CASTSPELL(targetId, spellId, level, unk, targetId, st.getRechargeTime()));
+	        	if (creature instanceof Player) {
+	        		PacketSendUtility.sendPacket((Player)creature, new SM_CASTSPELL(spellerId,getSkillId(),st.getLevel(),unk,targetId,st.getRechargeTime()));
+	        	}
+	        	target.getController().onAttack(creature,damages);
+	        	ThreadPoolManager.getInstance().schedule(new Runnable()
+	        	{
+	        		public void run()
+	        		{
+	        			PacketSendUtility.broadcastPacket(creature, new SM_CASTSPELL_END(spellerId, spellId, level, unk, targetId, damages));
+	        			if (creature instanceof Player) {
+	        				PacketSendUtility.sendPacket((Player)creature,new SM_CASTSPELL_END(spellerId, spellId, level, unk,targetId, damages));
+	        			}
+	        			performAction(creature,target,damages,cost);
+	        		}
+	        	}, (reload-1)*1000);
+	        }
+    	}
 	}
 	
 	private void performAction(final Creature speller, final Creature target, final int damages, final int cost) {
