@@ -59,6 +59,7 @@ public class NpcController extends CreatureController<Npc>
 	{
 		Npc npc = getOwner();
 		NpcGameStats npcGameStats = npc.getGameStats();
+		NpcLifeStats npcLS = npc.getLifeStats();
 		long time = System.currentTimeMillis();
 		int attackType = 1; //TODO investigate attack types	
 
@@ -66,24 +67,30 @@ public class NpcController extends CreatureController<Npc>
 		Player player = (Player) world.findAionObject(targetObjectId);
 
 		//TODO fix last attack - cause mob is already dead
-		int damages = StatFunctions.calculateBaseDamageToTarget(npc, player);
-		
-		PacketSendUtility.broadcastPacket(player,
-			new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
-
-		PacketSendUtility.broadcastPacket(player,
-			new SM_ATTACK(npc.getObjectId(), player.getObjectId(),
-				npcGameStats.getAttackCounter(), (int) time, attackType, damages), true);
-		boolean attackSuccess = player.getController().onAttack(npc,damages);
-		
-		if(attackSuccess)
-		{
-			npcGameStats.increaseAttackCounter();
+		if(npcLS.getCurrentHp() > 0) {
+			int damages = StatFunctions.calculateBaseDamageToTarget(npc, player);
+			
+			PacketSendUtility.broadcastPacket(player,
+				new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
+	
+			PacketSendUtility.broadcastPacket(player,
+				new SM_ATTACK(npc.getObjectId(), player.getObjectId(),
+					npcGameStats.getAttackCounter(), (int) time, attackType, damages), true);
+			boolean attackSuccess = player.getController().onAttack(npc,damages);
+			
+			if(attackSuccess)
+			{
+				npcGameStats.increaseAttackCounter();
+			}
+			if(player.getLifeStats().isAlreadyDead())
+			{
+				player.getController().onDie();
+				getOwner().getNpcAi().stopTask();
+			}
 		}
-		if(player.getLifeStats().isAlreadyDead())
+		else
 		{
-			player.getController().onDie();
-			getOwner().getNpcAi().stopTask();
+			this.onDie();
 		}
 	}
 
