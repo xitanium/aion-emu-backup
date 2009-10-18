@@ -35,7 +35,7 @@ public class Account extends AdminCommand
 		super("account", AdminLevel.PLAYER);
 	}
 
-	/* (non-Javadoc)
+	/* (non-Javadc)
 	 * @see com.aionemu.gameserver.utils.chathandlers.admincommands.AdminCommand#executeCommand(com.aionemu.gameserver.gameobjects.Player, java.lang.String[])
 	 */
 	@Override
