@@ -16,10 +16,20 @@
  */
 package com.aionemu.gameserver.skillengine.handlers;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
+import com.aionemu.gameserver.model.gameobjects.player.Inventory;
+import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.stats.CreatureLifeStats;
+import com.aionemu.gameserver.model.templates.SkillNeedsData;
+import com.aionemu.gameserver.model.templates.SkillTemplate;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_CASTSPELL_END;
 import com.aionemu.gameserver.skillengine.SkillHandler;
+import com.aionemu.gameserver.utils.PacketSendUtility;
+import com.aionemu.gameserver.utils.ThreadPoolManager;
 
 /**
  * @author xavier
@@ -40,10 +50,64 @@ public class HealWithObject extends SkillHandler
 	 * @see com.aionemu.gameserver.skillengine.SkillHandler#useSkill(com.aionemu.gameserver.model.gameobjects.Creature, java.util.List)
 	 */
 	@Override
-	public void useSkill(Creature creature, List<Creature> targets)
+	public void useSkill(final Creature speller, List<Creature> targets)
 	{
-		// TODO Auto-generated method stub
-
+		final int spellerId = speller.getObjectId();
+		SkillTemplate st = this.getSkillTemplate();
+    	CreatureLifeStats<?> cls = speller.getLifeStats();
+    	Inventory inventory = new Inventory();
+    	inventory.getInventoryFromDb(speller.getObjectId());
+    	final int reload = st.getLaunchTime();
+    	final int cost = st.getCost();
+    	final int spellId = getSkillId();
+    	final int level = st.getLevel();
+    	final int unk = 15;
+    	final int gain = st.getGain();
+    	final List<SkillNeedsData> needs = st.getSkillNeedsData();
+    	if (cost>cls.getCurrentMp()) {
+    		log.info("You cannot use "+st.getName()+" because it needs "+cost+"MP and you have only "+cls.getCurrentMp()+"MP");
+    		return;
+    	}
+    	for (SkillNeedsData need : needs) {
+    		// TODO check if we use the needs for each target or not
+    		if (!inventory.contains(need.getQuantityNeeded(),need.getNeededItemId())) {
+    			log.info("You cannot use "+st.getName()+" because it needs "+need.getQuantityNeeded()+" item(s) "+need.getNeededItemId());
+    		}
+    	}
+        log.info("You are using "+st.getName());
+        Iterator<Creature> iter = targets.iterator();
+        while (iter.hasNext()) {
+        	final Creature target = iter.next();
+        	final int targetId = target.getObjectId();
+        	PacketSendUtility.broadcastPacket(speller, new SM_CASTSPELL(spellerId, spellId, level, unk, targetId, reload, st.getRechargeTime()));
+        	if (speller instanceof Player) {
+        		PacketSendUtility.sendPacket((Player)speller, new SM_CASTSPELL(spellerId,getSkillId(),st.getLevel(),0,targetId,reload,st.getRechargeTime()));
+        	}
+        	ThreadPoolManager.getInstance().schedule(new Runnable()
+        	{
+        		public void run()
+        		{
+        			PacketSendUtility.broadcastPacket(speller, new SM_CASTSPELL_END(spellerId, spellId, level, unk, targetId, -gain));
+        			if (speller instanceof Player) {
+        				PacketSendUtility.sendPacket((Player)speller,new SM_CASTSPELL_END(spellerId, spellId, level, unk,targetId, -gain));
+        			}
+        			performAction(speller,target,gain,cost,needs);
+        		}
+        	}, (reload-1)*1000);
+        }
+    }
+    
+    private void performAction(final Creature speller, final Creature target, final int gain, final int cost, final List<SkillNeedsData> needs) {
+    	CreatureLifeStats<?> tls = speller.getLifeStats();
+    	CreatureLifeStats<?> als = target.getLifeStats();
+    	Inventory inventory = new Inventory();
+    	als.increaseHp(gain);
+    	tls.reduceMp(cost);
+    	if (speller instanceof Player) {
+    		inventory.getInventoryFromDb(speller.getObjectId());
+    		for (SkillNeedsData need : needs) {
+    			inventory.updateItemInDb((Player)speller, need.getNeededItemId(), need.getQuantityNeeded());
+    		}
+    	}
 	}
-
 }

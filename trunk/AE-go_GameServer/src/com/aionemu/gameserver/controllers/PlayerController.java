@@ -22,14 +22,17 @@ import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.player.RequestResponseHandler;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.PlayerLifeStats;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DIE;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_DUEL_STARTED;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_NPC_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAYER_INFO;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_QUESTION_WINDOW;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_STATS_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.network.aion.serverpackets.unk.SM_UNK72;
@@ -43,7 +46,7 @@ import com.aionemu.gameserver.world.World;
 /**
  * This class is for controlling players.
  * 
- * @author -Nemesiss-, ATracer (2009-09-29)
+ * @author -Nemesiss-, ATracer (2009-09-29), Xavier
  * 
  */
 public class PlayerController extends CreatureController<Player>
@@ -151,7 +154,7 @@ public class PlayerController extends CreatureController<Player>
 			}
 			return false;
 		}
-		else 
+		else
 		{
 			vls.reduceHp(damages);
 		}
@@ -187,15 +190,58 @@ public class PlayerController extends CreatureController<Player>
 		// TODO Auto-generated method stub
 	}
 
+	public void onDuelRequest (Player requester) {
+		log.debug("[PvP] Player "+ this.getOwner().getName()+ "has been requested for a duel by "+ requester.getName());
+		RequestResponseHandler rrh = new RequestResponseHandler(requester){
+			@Override
+			public void denyRequest(Player requester, Player responder)
+			{
+				responder.getController().rejectDuelRequest(requester);
+			}
+			@Override
+			public void acceptRequest(Player requester, Player responder)
+			{
+				responder.getController().startDuelWith(requester);
+			}
+		};
+		this.getOwner().getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL, rrh);
+		PacketSendUtility.sendPacket(this.getOwner(), new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_ACCEPT_DUEL, requester.getName()));
+		PacketSendUtility.sendPacket(this.getOwner(), SM_SYSTEM_MESSAGE.DUEL_ASKED_BY(requester.getName()));
+	}
+	
+	public void confirmDuelWith (Player target) {
+		log.debug("[PvP] Player "+ this.getOwner().getName()+ "has to confirm his duel with "+target.getName());
+		RequestResponseHandler rrh = new RequestResponseHandler(target){
+			@Override
+			public void denyRequest(Player requester, Player responder)
+			{
+				responder.getController().cancelDuelRequest(requester);
+			}
+			@Override
+			public void acceptRequest(Player requester, Player responder)
+			{
+				responder.getController().startDuelWith(requester);
+			}
+		};
+		this.getOwner().getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL, rrh);
+		PacketSendUtility.sendPacket(this.getOwner(), new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_DUEL_DO_YOU_CONFIRM_DUEL, target.getName()));
+		PacketSendUtility.sendPacket(this.getOwner(), SM_SYSTEM_MESSAGE.DUEL_ASKED_BY(target.getName()));
+	}
+	
+	public void rejectDuelRequest (Player requester) {
+		log.debug("[PvP] Player "+this.getOwner().getName()+ "rejected duel request from "+requester.getName());
+		requester.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_REJECTED_BY(this.getOwner().getName()));
+	}
+	
+	public void cancelDuelRequest (Player target) {
+		log.debug("[PvP] Player "+this.getOwner().getName()+ "cancelled his duel request with "+target.getName());
+		target.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.DUEL_REJECTED_BY(this.getOwner().getName()));
+	}
+	
 	public void startDuelWith(Player player)
 	{
-		// PacketSendUtility.sendPacket(getOwner(), SM_SYSTEM_MESSAGE.DUEL_STARTED_WITH(player.getName()));
 		log.debug("[PvP] Player " + this.getOwner().getName() + " start duel with " + player.getName());
-	}
-
-	public void onDuelWith(Player provocker)
-	{
-		log.debug("[PvP] Player " + provocker.getName() + " provocked in duel " + this.getOwner().getName());
+		PacketSendUtility.sendPacket(getOwner(), new SM_DUEL_STARTED(player.getObjectId()));
 	}
 
 	public void duelEndWith(Player attacker)

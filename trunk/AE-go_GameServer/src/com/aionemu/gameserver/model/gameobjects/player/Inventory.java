@@ -26,6 +26,9 @@ import java.util.UUID;
 
 import com.aionemu.commons.database.DB;
 import com.aionemu.gameserver.model.ItemSlot;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_INVENTORY_INFO;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_INVENTORY_UPDATE;
+import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
  *
@@ -281,8 +284,41 @@ public class Inventory
 		finally
 		{
 			DB.close(ps4);
+			DB.close(ps);
 		}
 		return itemUniqueId;
+	}
+	
+	public void updateItemInDb(Player owner, int itemId, int itemCount) {
+		PreparedStatement ps1 = DB.prepareStatement("SELECT `itemCount`,`itemUniqueId` FROM `inventory` WHERE `itemId`=? AND `itemOwner`=?");
+		PreparedStatement ps2 = DB.prepareStatement("UPDATE `inventory` SET `itemCount`=? WHERE `itemId`=? AND `itemOwner`=?");
+		int newItemCount = 0;
+		int itemUniqueId = 0;
+		try {
+			ps1.setInt(1, itemId);
+			ps1.setInt(2, owner.getObjectId());
+			ResultSet rs = ps1.executeQuery();
+			rs.next();
+			newItemCount = rs.getInt("itemCount")-itemCount;
+			itemUniqueId = rs.getInt("itemUniqueId");
+			if (newItemCount==0) {
+				this.deleteItemFromDb(itemUniqueId);
+			}
+			ps2.setInt(1, newItemCount);
+			ps2.setInt(2, itemId);
+			ps2.setInt(3, owner.getObjectId());
+			ps2.executeUpdate();
+		} catch (SQLException e) {
+			Logger.getLogger(Inventory.class).error("Error updating item",e);
+		} finally {
+			DB.close(ps1);
+			DB.close(ps2);
+		}
+		if (newItemCount==0) {
+			PacketSendUtility.sendPacket(owner, new SM_INVENTORY_INFO(owner.getObjectId()));
+		} else {
+			PacketSendUtility.sendPacket(owner, new SM_INVENTORY_UPDATE(itemUniqueId,itemId,newItemCount));
+		}
 	}
 	
 	public void putIsEquipedToDb(int itemUniqueId, int IsEquiped, ItemSlot slot) {
@@ -375,6 +411,17 @@ public class Inventory
 	}
 	public int getnewItemUniqueIdValue() {
 		return newItemUniqueIdValue;
+	}
+	
+	public boolean contains (int count, int itemId) {
+		for (int i =0; i < totalDbItemsCount; i++) {
+			if (itemId==itemIdArray[i]) {
+				if (count<=itemCountArray[i]) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }
