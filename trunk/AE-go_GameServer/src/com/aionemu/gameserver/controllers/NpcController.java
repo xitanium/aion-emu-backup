@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import com.aionemu.gameserver.ai.AIState;
 import com.aionemu.gameserver.ai.events.AttackEvent;
 import com.aionemu.gameserver.ai.npcai.NpcAi;
+import com.aionemu.gameserver.model.ChatType;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -30,8 +31,10 @@ import com.aionemu.gameserver.model.gameobjects.stats.NpcGameStats;
 import com.aionemu.gameserver.model.gameobjects.stats.NpcLifeStats;
 import com.aionemu.gameserver.model.templates.stats.NpcStatsTemplate;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_CUSTOM_PACKET;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_MESSAGE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.ai.AIState;
 import com.aionemu.gameserver.services.DecayService;
@@ -59,6 +62,7 @@ public class NpcController extends CreatureController<Npc>
 	{
 		Npc npc = getOwner();
 		NpcGameStats npcGameStats = npc.getGameStats();
+		NpcLifeStats npcLS = npc.getLifeStats();
 		long time = System.currentTimeMillis();
 		int attackType = 1; //TODO investigate attack types	
 
@@ -66,24 +70,30 @@ public class NpcController extends CreatureController<Npc>
 		Player player = (Player) world.findAionObject(targetObjectId);
 
 		//TODO fix last attack - cause mob is already dead
-		int damages = StatFunctions.calculateBaseDamageToTarget(npc, player);
-		
-		PacketSendUtility.broadcastPacket(player,
-			new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
-
-		PacketSendUtility.broadcastPacket(player,
-			new SM_ATTACK(npc.getObjectId(), player.getObjectId(),
-				npcGameStats.getAttackCounter(), (int) time, attackType, damages), true);
-		boolean attackSuccess = player.getController().onAttack(npc,damages);
-		
-		if(attackSuccess)
-		{
-			npcGameStats.increaseAttackCounter();
+		if(npcLS.getCurrentHp() > 0) {
+			int damages = StatFunctions.calculateBaseDamageToTarget(npc, player);
+			
+			PacketSendUtility.broadcastPacket(player,
+				new SM_EMOTION(npc.getObjectId(), 19, player.getObjectId()), true);
+	
+			PacketSendUtility.broadcastPacket(player,
+				new SM_ATTACK(npc.getObjectId(), player.getObjectId(),
+					npcGameStats.getAttackCounter(), (int) time, attackType, damages), true);
+			boolean attackSuccess = player.getController().onAttack(npc,damages);
+			
+			if(attackSuccess)
+			{
+				npcGameStats.increaseAttackCounter();
+			}
+			if(player.getLifeStats().isAlreadyDead())
+			{
+				player.getController().onDie();
+				getOwner().getNpcAi().stopTask();
+			}
 		}
-		if(player.getLifeStats().isAlreadyDead())
+		else
 		{
-			player.getController().onDie();
-			getOwner().getNpcAi().stopTask();
+			this.onDie();
 		}
 	}
 
@@ -107,6 +117,12 @@ public class NpcController extends CreatureController<Npc>
 		}	
 		
 		//deselect target at the end
+		if(getOwner().getTarget() instanceof Player) 
+		{
+			Player player = (Player) getOwner().getTarget();
+			player.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.ACCUMULATED_TIME(5, 25, 3, 0));
+			getOwner().getTarget().setTarget(null);
+		}
 		getOwner().setTarget(null);
 	}
 
@@ -141,10 +157,8 @@ public class NpcController extends CreatureController<Npc>
 		lifeStats.reduceHp(damages);
 		
 		if (lifeStats.isAlreadyDead()) {
-			PacketSendUtility.broadcastPacket(victim, new SM_EMOTION(victim.getObjectId(), 13 , attacker.getObjectId()));
-			this.doDrop();
-			this.doReward(attacker);
 			this.onDie();
+			this.doReward(attacker);
 		} else {
 			NpcAi npcAi = victim.getNpcAi();
 			npcAi.handleEvent(new AttackEvent(attacker));

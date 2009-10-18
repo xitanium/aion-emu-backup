@@ -17,7 +17,7 @@
 package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.nio.ByteBuffer;
-import java.util.UUID;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
 
@@ -43,7 +43,6 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 	// private int entries;
 	private int				ownerId;
 	// private ItemSlot slot;
-	@SuppressWarnings("unused")
 	private static Logger	log	= Logger.getLogger(SM_INVENTORY_INFO.class);
 
 	/**
@@ -62,6 +61,7 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 	private void writeItem(AionConnection con, ByteBuffer buf, int itemUniqueId, int itemId, int itemNameId,
 		ItemSlot itemSlot, int count)
 	{
+		log.debug("sending item [uid:"+itemUniqueId+",id:"+itemId+",nid:"+itemNameId+",slot:"+itemSlot+",count:"+count+"] to player "+con.getActivePlayer().getObjectId());
 		writeD(buf, itemUniqueId); // Unique Id
 		writeD(buf, itemId); // item Id 162000007
 		writeH(buf, 0x24); // always 36
@@ -173,6 +173,7 @@ public class SM_INVENTORY_INFO extends AionServerPacket
 			writeItem(con, buf, itemUniqueId, itemId, itemNameId, itemSlot, count);
 		}
 		inventory.getKinahFromDb(ownerId);
-		writeItem(con,buf,UUID.randomUUID().hashCode(),182400001,0, ItemSlot.INVENTORY,inventory.getKinahCount());
+		Random generator = new Random ();
+		writeItem(con,buf,100000000+generator.nextInt(100000000),182400001,0, ItemSlot.INVENTORY,inventory.getKinahCount());
 	}
 }

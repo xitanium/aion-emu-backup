@@ -64,7 +64,7 @@ public class MySQL5AccountDAO extends AccountDAO
 				account.setName(name);
 				account.setPasswordHash(rs.getString("password"));
 				account.setAccessLevel(rs.getByte("access_level"));
-				account.setActivated(rs.getByte("activated"));
+				//account.setActivated(rs.getBoolean("activated"));
 				account.setLastServer(rs.getByte("last_server"));
 				account.setLastIp(rs.getString("last_ip"));
 				account.setIpForce(rs.getString("ip_force"));
@@ -155,7 +155,7 @@ public class MySQL5AccountDAO extends AccountDAO
 			st.setString(1, account.getName());
 			st.setString(2, account.getPasswordHash());
 			st.setByte(3, account.getAccessLevel());
-			st.setByte(4, account.getActivated());
+			//st.setBoolean(4, account.getActivated());
 			st.setByte(5, account.getLastServer());
 			st.setString(6, account.getLastIp());
 			st.setString(7, account.getIpForce());

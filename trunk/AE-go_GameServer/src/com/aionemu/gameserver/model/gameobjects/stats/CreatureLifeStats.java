@@ -205,11 +205,6 @@ public class CreatureLifeStats<T extends Creature>
 			{
 				this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
 			}
-		}	
-		
-		if(lifeRestoreTask == null && !alreadyDead)
-		{
-			this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
 		}
 		
 		return currentHp;
@@ -256,6 +251,14 @@ public class CreatureLifeStats<T extends Creature>
 		sendHpPacketUpdate();
 		
 		return currentHp;
+	}
+	
+	public void scheduleRestoreTask () {
+		if (getOwner() instanceof Player) {
+			if (lifeRestoreTask == null) {
+				this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleRestoreTask(this);
+			}
+		}
 	}
 	
 	/**
@@ -331,5 +334,10 @@ public class CreatureLifeStats<T extends Creature>
 			this.lifeRestoreTask = null;
 		}
 	}
-
+	
+	public void reset () {
+		setCurrentHp(getMaxHp());
+		setCurrentMp(getMaxMp());
+		alreadyDead = false;
+	}
 }

@@ -1133,11 +1133,33 @@
 			<part name="unk" type="h" />
 		</packet>
 		<packet id="0x9A" name="CM_MOVE">
-			<part name="x" type="f" />
-			<part name="y" type="f" />
-			<part name="z" type="f" />
-			<part name="unk" type="c" />
-			<part name="unk" type="c" />
+			<part name="fromX" type="f" />
+			<part name="fromY" type="f" />
+			<part name="fromZ" type="f" />
+			<part name="fromHeading" type="c" />
+			<part name="movementType" id="0" type="c" />
+			<switch id="0">
+				<case id="-64" comment="MOVEMENT_START_MOUSE">
+					<part name="toX" type="f" />
+					<part name="toY" type="f" />
+					<part name="toZ" type="f" />
+				</case>
+				<case id="-32" comment="MOVEMENT_START_KEYBOARD">
+					<part name="toX" type="f" />
+					<part name="toY" type="f" />
+					<part name="toZ" type="f" />
+				</case>
+				<case id="-96" comment="VALIDATE_MOUSE" />
+				<case id="-128" comment="VALIDATE_KEYBOARD" />
+				<case id="8" comment="VALIDATE_JUMP" />
+				<case id="72" comment="VALIDATE_JUMP_WHILE_MOVING" />
+				<case id="0" comment="MOVEMENT_STOP">
+					<part name="toX" type="f" />
+					<part name="toY" type="f" />
+					<part name="toZ" type="f" />
+				</case>
+				<case id="default" comment="Unknown" />
+			</switch>
 		</packet>
 		<packet id="0x9D" name="CM_BUY_ITEM" />
 		<packet id="0x9E" name="CM_SHOW_DIALOG">

@@ -131,26 +131,29 @@ public class PlayerController extends CreatureController<Player>
 		Player victim = getOwner();
 		PlayerLifeStats vls = victim.getLifeStats();
 
-		// TODO resolve synchronization issue
+		/*// TODO resolve synchronization issue
 		if(vls.isAlreadyDead())
 		{
 			return false;
-		}
+		}*/
 
 		vls.reduceHp(damages);
-
+		//TODO: dead code here i think, will never be executed as isAlreadyDead() = true returns false above.
 		if(vls.isAlreadyDead())
 		{
 			if(attacker instanceof Npc)
 			{ // PvE
-				PacketSendUtility.broadcastPacket(victim, new SM_EMOTION(victim.getObjectId(), 13, attacker
-					.getObjectId()), true);
 				this.onDie();
 			}
 			else
 			{ // PvP
 				this.duelEndWith((Player) attacker);
 			}
+			return false;
+		}
+		else 
+		{
+			vls.reduceHp(damages);
 		}
 		return true;
 	}
@@ -224,6 +227,8 @@ public class PlayerController extends CreatureController<Player>
 	public void onRevive()
 	{
 		Player p = this.getOwner();
+		PlayerLifeStats pls = p.getLifeStats();
+		pls.reset();
 		PacketSendUtility.sendPacket(p, SM_SYSTEM_MESSAGE.REVIVE);
 		PacketSendUtility.sendPacket(p, new SM_UNK72());
 		PacketSendUtility.sendPacket(p, new SM_STATS_INFO(p));
@@ -251,7 +256,12 @@ public class PlayerController extends CreatureController<Player>
 	@Override
 	public void onRespawn()
 	{
-		// TODO Auto-generated method stub
-
+		Player p = this.getOwner();
+		PlayerLifeStats pls = p.getLifeStats();
+		log.debug("player "+p.getObjectId()+" respawning");
+		pls.scheduleRestoreTask();
+		if (pls.isAlreadyDead()) { // Problem occurs on revive
+			pls.reset();
+		}
 	}
 }

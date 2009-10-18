@@ -129,9 +129,9 @@ public class PlayerLifeStats extends CreatureLifeStats<Player>
 	}
 	
 	public void doEvolution (int fromLevel, int toLevel) {
-		setMaxHp((int) Math.round(this.getMaxHp() * 1.07 * (toLevel - fromLevel)));
-		setMaxMp((int) Math.round(this.getMaxMp() * 1.07 * (toLevel - fromLevel)));
-		setMaxDp((int) Math.round(this.getMaxDp() * 1.07 * (toLevel - fromLevel)));
+		setMaxHp(Math.round(this.getMaxHp() * (1 + 0.108f * (toLevel - fromLevel))));
+		setMaxMp(Math.round(this.getMaxMp() * (1 + 0.108f * (toLevel - fromLevel))));
+		setMaxDp(Math.round(this.getMaxDp() * (1 + 0.108f * (toLevel - fromLevel))));
 	}
 	
 	public void setPlayerStatsData (PlayerStatsData playerStatsData) {

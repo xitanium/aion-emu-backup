@@ -20,6 +20,8 @@ package com.aionemu.loginserver.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.commons.utils.NetworkUtils;
 import com.aionemu.loginserver.GameServerInfo;
@@ -33,6 +35,7 @@ import com.aionemu.loginserver.network.aion.AionAuthResponse;
 import com.aionemu.loginserver.network.aion.AionConnection;
 import com.aionemu.loginserver.network.aion.AionConnection.State;
 import com.aionemu.loginserver.network.aion.SessionKey;
+import com.aionemu.loginserver.network.aion.clientpackets.CM_LOGIN;
 import com.aionemu.loginserver.network.aion.serverpackets.SM_UPDATE_SESSION;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
 import com.aionemu.loginserver.network.gameserver.serverpackets.SM_ACCOUNT_AUTH_RESPONSE;
@@ -68,6 +71,8 @@ public class AccountController
 	{
 		accountsOnLS.remove(account.getId());
 	}
+	
+	private static final Logger	log	= Logger.getLogger(AccountController.class);
 
 	/**
 	 * This method is for answering GameServer question about account authentication on GameServer side.
@@ -181,30 +186,35 @@ public class AccountController
 		// If account not found and not created
 		if(account == null)
 		{
+			log.debug("AionAuthResponse = INVALID_PASSWORD");
 			return AionAuthResponse.INVALID_PASSWORD;
 		}
 
 		// check for paswords beeing equals
 		if(!account.getPasswordHash().equals(AccountUtils.encodePassword(password)))
 		{
+			log.debug("AionAuthResponse = INVALID_PASSWORD");
 			return AionAuthResponse.INVALID_PASSWORD;
 		}
 		
 		// check for paswords beeing equals
-		if(account.getActivated() != 1)
-		{
-			return AionAuthResponse.INVALID_PASSWORD;
-		}
+//		if(!account.getActivated())
+//		{
+//			log.debug("AionAuthResponse = NOT_ACTIVATED");
+//			return AionAuthResponse.INVALID_PASSWORD;
+//		}
 
 		// If account expired
 		if(AccountTimeController.isAccountExpired(account))
 		{
+			log.debug("AionAuthResponse = TIME_EXPIRED");
 			return AionAuthResponse.TIME_EXPIRED;
 		}
 
 		// if account is banned
 		if(AccountTimeController.isAccountPenaltyActive(account))
 		{
+			log.debug("AionAuthResponse = BAN_IP");
 			return AionAuthResponse.BAN_IP;
 		}
 
@@ -213,6 +223,7 @@ public class AccountController
 		{
 			if(!NetworkUtils.checkIPMatching(account.getIpForce(), connection.getIP()))
 			{
+				log.debug("AionAuthResponse = BAN_IP");
 				return AionAuthResponse.BAN_IP;
 			}
 		}
@@ -220,6 +231,7 @@ public class AccountController
 		// if ip is banned
 		if(BannedIpController.isBanned(connection.getIP()))
 		{
+			log.debug("AionAuthResponse = BAN_IP");
 			return AionAuthResponse.BAN_IP;
 		}
 
@@ -229,6 +241,7 @@ public class AccountController
 			if(GameServerTable.isAccountOnAnyGameServer(account))
 			{
 				GameServerTable.kickAccountFromGameServer(account);
+				log.debug("AionAuthResponse = ALREADY_LOGGED_IN");
 				return AionAuthResponse.ALREADY_LOGGED_IN;
 			}
 
@@ -238,7 +251,7 @@ public class AccountController
 				AionConnection	aionConnection = accountsOnLS.remove(account.getId());
 
 				aionConnection.close(true);
-
+				log.debug("AionAuthResponse = ALREADY_LOGGED_IN");
 				return AionAuthResponse.ALREADY_LOGGED_IN;
 			}
 			else
@@ -252,7 +265,7 @@ public class AccountController
 
 		// if everything was OK
 		getAccountDAO().updateLastIp(account.getId(), connection.getIP());
-
+		log.debug("AionAuthResponse = AUTHED");
 		return AionAuthResponse.AUTHED;
 	}
 
@@ -288,7 +301,7 @@ public class AccountController
 		account.setName(name);
 		account.setPasswordHash(passwordHash);
 		account.setAccessLevel((byte) 0);
-		account.setActivated((byte) 1);
+		//account.setActivated(true);
 
 		if(getAccountDAO().insertAccount(account))
 		{

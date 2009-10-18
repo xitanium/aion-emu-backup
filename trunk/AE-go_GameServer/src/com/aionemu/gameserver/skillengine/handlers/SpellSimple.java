@@ -58,7 +58,7 @@ public class SpellSimple extends SkillHandler
     	final int cost = st.getCost();
     	final int spellId = getSkillId();
     	final int level = st.getLevel();
-    	final int unk = 0;
+    	final int unk = 15;
     	if (cost>cls.getCurrentMp()) {
     		log.info("You cannot use "+st.getName()+" because it needs "+cost+"MP and you have only "+cls.getCurrentMp()+"MP");
     		return;
@@ -69,9 +69,9 @@ public class SpellSimple extends SkillHandler
         	final Creature target = iter.next();
         	final int targetId = target.getObjectId();
         	final int damages = StatFunctions.calculateMagicDamageToTarget(speller, target, st);
-        	PacketSendUtility.broadcastPacket(speller, new SM_CASTSPELL(spellerId, spellId, level, unk, targetId, st.getRechargeTime()));
+        	PacketSendUtility.broadcastPacket(speller, new SM_CASTSPELL(spellerId, spellId, level, unk, targetId, reload, st.getRechargeTime()));
         	if (speller instanceof Player) {
-        		PacketSendUtility.sendPacket((Player)speller, new SM_CASTSPELL(spellerId,getSkillId(),st.getLevel(),0,targetId,st.getRechargeTime()));
+        		PacketSendUtility.sendPacket((Player)speller, new SM_CASTSPELL(spellerId,getSkillId(),st.getLevel(),0,targetId,reload,st.getRechargeTime()));
         	}
         	target.getController().onAttack(speller,damages);
         	ThreadPoolManager.getInstance().schedule(new Runnable()
@@ -91,7 +91,7 @@ public class SpellSimple extends SkillHandler
     private void performAction(final Creature speller, final Creature target, final int damages, final int cost) {
     	CreatureLifeStats<?> tls = speller.getLifeStats();
     	CreatureLifeStats<?> als = target.getLifeStats();
-    	tls.reduceHp(damages);
-    	als.reduceMp(cost);
+    	als.reduceHp(damages);
+    	tls.reduceMp(cost);
     }
 }

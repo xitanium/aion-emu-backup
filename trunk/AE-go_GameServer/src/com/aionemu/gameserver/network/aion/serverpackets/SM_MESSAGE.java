@@ -25,7 +25,7 @@ import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
- * Massage [chat, etc]
+ * Message [chat, etc]
  * 
  * @author -Nemesiss-
  * 
@@ -104,15 +104,22 @@ public class SM_MESSAGE extends AionServerPacket
 	 */
 	@Override
 	protected void writeImpl(AionConnection con, ByteBuffer buf)
-	{
-		boolean canRead = true;
-		if(race != null)
+	{		
+		int canReadMessage = 0;
+		if(race == null)
 		{
-			canRead = race.equals(con.getActivePlayer().getCommonData().getRace());
+			canReadMessage = 1;
+		}
+		else
+		{
+			if(race == con.getActivePlayer().getCommonData().getRace()) 
+			{
+				canReadMessage = 1;
+			}
 		}
 
 		writeC(buf, chatType.toInteger()); // type
-		writeC(buf, canRead ? 0 : 1); // is race valid? In other case we will get bullshit instead of valid chat;
+		writeC(buf, canReadMessage); // is race valid? In other case we will get bullshit instead of valid chat;
 		writeD(buf, senderObjectId); // sender object id
 
 		switch(chatType)

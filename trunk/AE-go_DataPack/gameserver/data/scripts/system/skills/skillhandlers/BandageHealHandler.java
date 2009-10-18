@@ -60,7 +60,7 @@ public class BandageHealHandler extends SkillHandler
         	log.info("Healing damages = " + gains);
         	final int reload = st.getLaunchTime();
         	final int cost = st.getCost();
-        	PacketSendUtility.sendPacket(player, new SM_CASTSPELL(attackerId,getSkillId(),st.getLevel(),0,st.getRechargeTime(),targetId));
+        	PacketSendUtility.sendPacket(player, new SM_CASTSPELL(attackerId,getSkillId(),st.getLevel(),0,st.getRechargeTime(),targetId,0));
         	ThreadPoolManager.getInstance().schedule(new Runnable()
         	{
         		public void run() 

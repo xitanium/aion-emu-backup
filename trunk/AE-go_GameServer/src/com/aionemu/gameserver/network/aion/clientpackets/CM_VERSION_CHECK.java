@@ -16,8 +16,11 @@
  */
 package com.aionemu.gameserver.network.aion.clientpackets;
 
+import org.apache.log4j.Logger;
+
 import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_VERSION_CHECK;
+import com.aionemu.gameserver.world.World;
 
 /**
  * @author -Nemesiss-
@@ -30,6 +33,7 @@ public class CM_VERSION_CHECK extends AionClientPacket
 	@SuppressWarnings("unused")
 	private int	unk2;
 
+	private static final Logger				log			= Logger.getLogger(World.class);
 	/**
 	 * Constructs new instance of <tt>CM_VERSION_CHECK </tt> packet
 	 * @param opcode
@@ -47,6 +51,7 @@ public class CM_VERSION_CHECK extends AionClientPacket
 	{
 		unk1 = readD();
 		unk2 = readD();
+		log.debug("Received from client in CM_VERSION_CHECK : unk1=" + unk1 + " | unk2=" + unk2);
 	}
 
 	/**
