@@ -43,7 +43,7 @@ import com.google.inject.Injector;
  * <tt>GameServer</tt> is the main class of the application and represents the whole game server.<br>
  * This class is also an entry point with main() method.
  * 
- * @author -Nemesiss-
+ * @author Nemesiss
  * @author SoulKeeper
  */
 public class GameServer
