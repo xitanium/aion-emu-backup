@@ -16,7 +16,6 @@
  */
 package com.aionemu.gameserver.network.aion.clientpackets;
 
-import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.DropList;
 import com.aionemu.gameserver.model.gameobjects.Npc;
@@ -26,12 +25,11 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_ITEMLIST;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_DELETE;
-import com.aionemu.gameserver.network.aion.AionClientPacket;
 import com.aionemu.gameserver.world.World;
 import com.google.inject.Inject;
 
 import org.apache.log4j.Logger;
-import java.util.Random;
+
 /**
  * 
  * @author alexa026
@@ -39,14 +37,13 @@ import java.util.Random;
  */
 public class CM_START_LOOT extends AionClientPacket
 {
+	@SuppressWarnings("unused")
 	private static final Logger	log	= Logger.getLogger(CM_START_LOOT.class);
 
 	/**
 	 * Target object id that client wants to TALK WITH or 0 if wants to unselect
 	 */
 	private int					targetObjectId;
-	private int					unk;
-	private int					activePlayer;
 	@Inject	
 	private World			world;
 	/**
@@ -65,7 +62,7 @@ public class CM_START_LOOT extends AionClientPacket
 	protected void readImpl()
 	{
 		targetObjectId = readD();// empty
-		unk = readC();
+		readC();
 	}
 
 	/**
@@ -76,9 +73,8 @@ public class CM_START_LOOT extends AionClientPacket
 	{
 		Player player = getConnection().getActivePlayer();
 		PlayerGameStats playerGameStats = player.getGameStats();
-		activePlayer = player.getObjectId();
 
-		Random generator = new Random();
+		// Random generator = new Random();
 
 		Npc npc = (Npc) world.findAionObject(targetObjectId);
 		int monsterId = npc.getTemplate().getNpcId();
@@ -92,10 +88,10 @@ public class CM_START_LOOT extends AionClientPacket
 
 
 
-		int ran = generator.nextInt(100)+1;
+		// int ran = generator.nextInt(100)+1;
 
 		// need to get item name id's from somewhere
-		int itemNameId = 2211143 + ran;
+		// int itemNameId = 2211143 + ran;
 		
 		if (playerGameStats.getItemId() == 0)
 		{
@@ -109,14 +105,14 @@ public class CM_START_LOOT extends AionClientPacket
 				int itemId = 1;
 				int itemMin = 1;
 				int itemMax = 1;
-				int itemChance = 1;
+				// int itemChance = 1;
 				int randomCountChance = 1;
 
 				while (totalItemsCount > 0) {
 					itemId = dropData.getDropDataItemId(row);
 					itemMin = dropData.getDropDataMin(row);
  					itemMax = dropData.getDropDataMax(row);
- 					itemChance = dropData.getDropDataChance(row); 
+ 					// itemChance = dropData.getDropDataChance(row); 
 
 					randomCountChance = (int)Math.random() * (itemMax - itemMin) + itemMin;
 			
@@ -141,7 +137,7 @@ public class CM_START_LOOT extends AionClientPacket
 		{
 			//sendPacket(new SM_LOOT_ITEMLIST(targetObjectId,itemId,1));	
 			sendPacket(new SM_LOOT_STATUS(targetObjectId,3));
-			sendPacket(new SM_DELETE(player.getTarget()));
+			sendPacket(new SM_DELETE(world.findAionObject(targetObjectId)));
 			playerGameStats.setItemId(0);
 		}
 	}
