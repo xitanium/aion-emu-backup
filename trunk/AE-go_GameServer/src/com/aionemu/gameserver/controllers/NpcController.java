@@ -120,7 +120,7 @@ public class NpcController extends CreatureController<Npc>
 		if(getOwner().getTarget() instanceof Player) 
 		{
 			Player player = (Player) getOwner().getTarget();
-			player.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.ACCUMULATED_TIME(5, 25, 3, 0));
+			//player.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.ACCUMULATED_TIME(5, 25, 3, 0));
 			getOwner().getTarget().setTarget(null);
 		}
 		getOwner().setTarget(null);
